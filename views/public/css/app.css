@@ -1,0 +1,15 @@
+html, body {
+    font: normal 12px verdana;
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    overflow: hidden;
+    height: 100%;
+}
+p {
+    margin: 5px;
+}
+
+.details .x-btn-text {
+    background-image: url('images/custom/details.gif');
+}

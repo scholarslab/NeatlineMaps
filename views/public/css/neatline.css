@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+.themap {
+    width: 100%;
+    height: 512px;s
+    border: 1px solid #ccc;
+    float:none;
+    display:block;
+    background-color:white
+}
+
+.hand-icon { background-image: url(img/panning-hand-off.png) 0 6px no-repeat !important; }
+.ruler-icon { background-image: url(img/measuring-stick-off.png) 0 6px no-repeat !important; }
+.area-icon { background-image: url(img/marker.png) 0 6px no-repeat !important; }

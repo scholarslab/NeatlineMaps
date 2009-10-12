@@ -8,7 +8,8 @@
 
 require_once 'Curl.php';
 
-define('NEATLINEMAPS_PLUGIN_VERSION', get_plugin_ini('neatlinemaps', 'version'));
+define('NEATLINEMAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));
+define('NEATLINEMAPS_PLUGIN_DIR', dirname(__FILE__));
 
 define('NEATLINE_GEOSERVER', 'http://localhost:8080/geoserver');
 define('NEATLINE_GEOSERVER_NAMESPACE_PREFIX', 'neatline');

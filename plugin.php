@@ -46,6 +46,8 @@ function neatlinemaps_install()
 		}
 		else {
 		 $logger->err("Failed to add Neatline/GeoServer namespace: check  Neatline config.");
+		 $logger->err("Returned error is:" . $response->getStatus() .
+       ": " . $response->getMessage() . "\n");
 		}
 	}
 }

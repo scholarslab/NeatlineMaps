@@ -39,7 +39,7 @@ function neatlinemaps_install()
 	if ( !preg_match( NEATLINE_GEOSERVER_NAMESPACE_URL, $client->request(Zend_Http_Client::GET)->getBody() ) ) {
 		$namespace_json =
 	"{'namespace' : { 'prefix': '" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX . "', 'uri': '" . NEATLINE_GEOSERVER_NAMESPACE_URL . "'} }";
-		$response = $client->setRawData($namespace_json, 'text/json')->request(Zend_Http_Client::POST);
+		$response = $client->setRawData($namespace_json, 'text/json')->request(Zend_Http_Client::PUT);
 		if ($response->isSuccessful()) {
 		 $logger->info("Neatline GeoServer namespace " . NEATLINE_GEOSERVER_NAMESPACE_PREFIX
 		 . "(" . NEATLINE_GEOSERVER_NAMESPACE_URL . ")" . " added to GeoServer config.");

@@ -35,7 +35,7 @@ function neatlinemaps_install()
 	$geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/namespaces" ;
 	$client = new Zend_Http_Client($geoserver_config_addy);
 	$client->setAuth(NEATLINE_GEOSERVER_ADMINUSER, NEATLINE_GEOSERVER_ADMINPW);
-
+	$logger->info("Using namespace address: " . $geoserver_config_addy);
 	if ( !preg_match( NEATLINE_GEOSERVER_NAMESPACE_URL, $client->request(Zend_Http_Client::GET)->getBody() ) ) {
 		$namespace_json =
 	"{'namespace' : { 'prefix': '" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX . "', 'uri': '" . NEATLINE_GEOSERVER_NAMESPACE_URL . "'} }";

@@ -50,6 +50,12 @@ function neatlinemaps_install()
        ": " . $response->getMessage() . "\n");
 		}
 	}
+	
+	# now we add 'Historic Map' item type
+	$db = get_db();
+	$sql = "INSERT INTO omeka_item_types VALUES('',Historical map','Historical map')"
+	$db->query($sql);
+	
 }
 
 function neatlinemaps_uninstall()

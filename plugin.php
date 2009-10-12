@@ -45,7 +45,7 @@ function neatlinemaps_install()
 		 . "(" . NEATLINE_GEOSERVER_NAMESPACE_URL . ")" . " added to GeoServer config.");
 		}
 		else {
-		 $logger->error("Failed to add Neatline/GeoServer namespace: check  Neatline config.");
+		 $logger->err("Failed to add Neatline/GeoServer namespace: check  Neatline config.");
 		}
 	}
 }
@@ -98,7 +98,7 @@ function load_geoserver_raster($file, $item)
 
 	# now we attach up the Zipfile
 	$putFileSize   = filesize($zipfilename);
-	$logger->log("Zipfile size: " . $putFileSize, Zend_Log::INFO);
+	$logger->info("Zipfile size: " . $putFileSize);
 	$putFileHandle = fopen($zipfilename, "r");
 	$adapter->setConfig(array(
     'curloptions' => array(

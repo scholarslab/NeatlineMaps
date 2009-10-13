@@ -23,10 +23,11 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 		# now we need to retrieve the bounding box and projection ID
 		$serviceaddy = NEATLINE_GEOSERVER . "/wms" ;
-		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
+		
+		/* $serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
 		if ($serviceaddys) {
 			$serviceaddy = $serviceaddys[0]->text;
-		}
+		} */
 		$this->view->serviceaddy = $serviceaddy ;
 
 		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;

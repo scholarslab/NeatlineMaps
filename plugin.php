@@ -50,12 +50,26 @@ function neatlinemaps_install()
        ": " . $response->getMessage() . "\n");
 		}
 	}
-	
+
 	# now we add 'Historic Map' item type
-	$db = get_db();
-	$sql = "INSERT INTO omeka_item_types VALUES('','Historical map','Historical map')";
-	$db->query($sql);
-	
+	$histmitemtype = array(
+     'name'       => "Historical map", 
+      'description' => "Historical map with accompanying WMS service"
+      );
+
+      $histmitemtypemetadata =array(
+      array(
+              'name'        => "Service Address", 
+              'description' => "Address of WMS server at which this map is to found"             
+              ),
+      "Service Address",
+              array(
+              'name'        => "Layername",
+              'description' => "WMS Name of map", 
+              ),
+      "Layername"
+      );
+      insert_item_type($histmitemtype,$histmitemtypemetadata);
 }
 
 function neatlinemaps_uninstall()
@@ -76,16 +90,15 @@ function neatlinemaps_routes($router)
 
 function load_geoserver_raster($file, $item)
 {
-	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
-	$logger = new Zend_Log($writer);
-
-	// Use this in your model, view and controller files
-	$logger->info("Item type: " . $item->getItemType()->name);
 
 	if ($item->getItemType()->name != "Historical map") {
 		# then this is not a historical map
 		return;
 	}
+
+	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
+	$logger = new Zend_Log($writer);
+
 	# we'll POST a ZIPfile to GeoServer's RESTful config interface
 	$zip = new ZipArchive();
 	$zipfilename = ARCHIVE_DIR . DIRECTORY_SEPARATOR . $file->archive_filename . ".zip";

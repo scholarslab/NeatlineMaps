@@ -62,14 +62,14 @@ function neatlinemaps_install()
               'name'        => "Service Address", 
               'description' => "Address of WMS server at which this map is to found"             
               ),
-      "Service Address",
+              ,
               array(
               'name'        => "Layername",
               'description' => "WMS Name of map", 
-              ),
-      "Layername"
-      );
-      insert_item_type($histmitemtype,$histmitemtypemetadata);
+              )
+               
+              );
+     insert_item_type($histmitemtype,$histmitemtypemetadata);
 }
 
 function neatlinemaps_uninstall()

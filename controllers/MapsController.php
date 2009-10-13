@@ -19,7 +19,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	{
 
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
-		$item = $this->findById($id,"Item");
+		//$item = $this->findById($id,"Item");
 
 		# now we need to retrieve the bounding box and projection ID
 		$serviceaddy = NEATLINE_GEOSERVER . "/wms" ;
@@ -30,7 +30,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		} */
 		$this->view->serviceaddy = $serviceaddy ;
 
-		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
+		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $id;
 		$this->view->layername = $layername ;
 
 		$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
@@ -54,7 +54,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
 		$client->setUri($proj4jsurl);
 		$this->view->proj4js = $client->request()->getBody();
-
+		/*
 		# we assemble any features that are tagged with this map
 		$contextInstance = Omeka_Context::getInstance();
 		$itemTable = $contextInstance->getDb()->getTable('Item');
@@ -75,7 +75,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$shapes = array_map("pull_shapes_from_feature", $features);
 		$this->logger->info("Shapes are " . join(' ',$shapes));
 		$this->view->features = Zend_Json::encode($shapes);
-
+		*/
 	}
 
 

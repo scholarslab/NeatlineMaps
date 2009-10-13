@@ -14,7 +14,7 @@
 	layername = "<?php echo $layername;?>";
 	serviceaddy = "<?php echo $serviceaddy;?>";
 	srs = "<?php echo $srs;?>";
-	features = <?php echo $features;?>;
+	//features = <?php echo $features;?>;
 	bbox = new OpenLayers.Bounds(<?php echo $minx;?>,
 	<?php echo $miny;?>,
 	<?php echo $maxx;?>,

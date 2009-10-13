@@ -30,7 +30,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		} */
 		
 		// temporary for first "release"
-		$serviceaddy = $_SERVER['SERVER_NAME'] . ":8080/geoserver/wms"
+		$serviceaddy = $_SERVER['SERVER_NAME'] . ":8080/geoserver/wms";
 		$this->view->serviceaddy = $serviceaddy ;
 
 		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $id;

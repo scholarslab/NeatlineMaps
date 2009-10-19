@@ -30,7 +30,7 @@ function neatlinemaps_install()
 	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
 	$logger = new Zend_Log($writer);
 
-	set_option('neatline_version', NEATLINE_PLUGIN_VERSION);
+	set_option('neatlinemaps_version', NEATLINEMAPS_PLUGIN_VERSION);
 
 	$geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/namespaces" ;
 	$client = new Zend_Http_Client($geoserver_config_addy);

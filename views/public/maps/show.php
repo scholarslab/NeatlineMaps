@@ -1,6 +1,6 @@
 <?php head(); ?>
 
-<?php echo $this->headScript()->prependFile('proj4js/proj4js-compressed.js'); ?>
+<?php  $this->headScript()->prependFile('proj4js/proj4js-compressed.js'); ?>
 <script type="text/javascript"><?php echo $proj4jsurl ?></script>
 <?php 
 $this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers.js');

@@ -1,7 +1,7 @@
 <?php head(); ?>
 
 <?php echo $this->headScript()->prependFile('proj4js/proj4js-compressed'); ?>
-<script type="text/javascript"><?php echo $proj4js ?></script>
+<script type="text/javascript"><?php echo $proj4jsurl ?></script>
 <?php 
 echo $this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers');
 $this->headScript()->prependFile('ext-3.0.0/adapter/ext/ext-base');

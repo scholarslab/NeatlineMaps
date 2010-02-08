@@ -3,7 +3,7 @@
 <?php echo $this->headScript()->prependFile('proj4js/proj4js-compressed'); ?>
 <script type="text/javascript"><?php echo $proj4js ?></script>
 <?php 
-$this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers');
+echo $this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers');
 $this->headScript()->prependFile('ext-3.0.0/adapter/ext/ext-base');
 $this->headScript()->prependFile('ext-3.0.0/ext-all'); 
 $this->headScript()->prependFile('GeoExt/GeoExt'); 

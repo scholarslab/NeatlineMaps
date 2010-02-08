@@ -10,7 +10,7 @@ echo $this->headScript();
 
 ?>
 
-<script type="text/javascript"><?php echo $proj4jsurl ?></script>
+<script type="text/javascript"><?php echo $proj4js ?></script>
 
 <script type="text/javascript">
 //<!--
@@ -63,7 +63,7 @@ Event.observe(window, 'load', Neatline.Maps.showSimple);
 <div id="readout">Minimum X = "<?php echo $minx;?>"
 	layername = "<?php echo $layername;?>"
 	serviceaddy = "<?php echo $serviceaddy;?>"
-	proj4jsurl = "<?php echo $proj4jsurl;?>"
+	proj4js = "<?php echo $proj4js;?>"
 	</div>
 <div id="layerlist"></div>
 <hr style="width: 700px;" />

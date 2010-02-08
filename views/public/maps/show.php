@@ -24,10 +24,7 @@ echo $this->headScript(); ?>
 
 //-->
 </script>
-<?php echo js('ext-3.0.0/adapter/ext/ext-base'); ?>
-<?php echo js('ext-3.0.0/ext-all'); ?>
-<?php echo js('GeoExt'); ?>
-<?php echo js('show'); ?>
+
 <link
 	rel="stylesheet" href="<?php echo css('neatline'); ?>" />
 <link

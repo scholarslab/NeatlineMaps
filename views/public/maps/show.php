@@ -1,13 +1,12 @@
 <?php head(); ?>
 
-<?php echo $this->headScript()->prependFile('proj4js/proj4js-compressed'); ?>
+<?php echo $this->headScript()->prependFile('proj4js/proj4js-compressed.js'); ?>
 <script type="text/javascript"><?php echo $proj4jsurl ?></script>
 <?php 
-echo $this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers');
-$this->headScript()->prependFile('ext-3.0.0/adapter/ext/ext-base');
-$this->headScript()->prependFile('ext-3.0.0/ext-all'); 
-$this->headScript()->prependFile('GeoExt/GeoExt'); 
-$this->headScript()->prependFile('prototype'); 
+$this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers.js');
+$this->headScript()->prependFile('ext-3.0.0/adapter/ext/ext-base.js');
+$this->headScript()->prependFile('ext-3.0.0/ext-all.js'); 
+$this->headScript()->prependFile('GeoExt/GeoExt.js'); 
 echo $this->headScript(); ?>
 
 <script type="text/javascript">

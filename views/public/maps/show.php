@@ -1,5 +1,5 @@
 <?php head(); ?>
-<?php echo js('proj4js/proj4js-compressed'); ?>
+<?php echo headScript()->prependFile('proj4js/proj4js-compressed'); ?>
 <script type="text/javascript"><?php echo $proj4js ?></script>
 <?php echo js('OpenLayers-2.8/lib/OpenLayers'); ?>
 <?php echo js('ext-3.0.0/adapter/ext/ext-base'); ?>

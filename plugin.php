@@ -68,7 +68,12 @@ function neatlinemaps_install()
               )
                
               );
-              insert_item_type($histmitemtype,$histmitemtypemetadata);
+              try {
+              	insert_item_type($histmitemtype,$histmitemtypemetadata);
+              }
+              catch (Exception $e) {
+              }
+
 }
 
 function neatlinemaps_uninstall()

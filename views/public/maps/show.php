@@ -63,7 +63,9 @@ Event.observe(window, 'load', Neatline.Maps.showSimple);
 <div id="readout">Minimum X = "<?php echo $minx;?>"
 	layername = "<?php echo $layername;?>"
 	serviceaddy = "<?php echo $serviceaddy;?>"
-	proj4js = "<?php echo $proj4js;?>"
+
+	capabilitiesrequest = "<?php echo $capabilitiesrequest;?>"
+	capabilities = "<?php echo $capabilities;?>"
 	</div>
 <div id="layerlist"></div>
 <hr style="width: 700px;" />

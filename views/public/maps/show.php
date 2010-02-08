@@ -1,13 +1,16 @@
-<?php head(); ?>
+<?php head(); 
 
-<?php  $this->headScript()->prependFile('proj4js/proj4js-compressed.js'); ?>
-<script type="text/javascript"><?php echo $proj4jsurl ?></script>
-<?php 
+
+$this->headScript()->prependFile('GeoExt/GeoExt.js'); 
+$this->headScript()->prependFile('proj4js/proj4js-compressed.js');
 $this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers.js');
 $this->headScript()->prependFile('ext-3.0.0/adapter/ext/ext-base.js');
 $this->headScript()->prependFile('ext-3.0.0/ext-all.js'); 
-$this->headScript()->prependFile('GeoExt/GeoExt.js'); 
-echo $this->headScript(); ?>
+echo $this->headScript();
+
+?>
+
+<script type="text/javascript"><?php echo $proj4jsurl ?></script>
 
 <script type="text/javascript">
 //<!--
@@ -57,7 +60,11 @@ Event.observe(window, 'load', Neatline.Maps.showSimple);
 
 <h1>Map <?php echo $layername;?></h1>
 
-<div id="readout"><?php echo $features;?></div>
+<div id="readout">Minimum X = "<?php echo $minx;?>"
+	layername = "<?php echo $layername;?>"
+	serviceaddy = "<?php echo $serviceaddy;?>"
+	proj4jsurl = "<?php echo $proj4jsurl;?>"
+	</div>
 <div id="layerlist"></div>
 <hr style="width: 700px;" />
 <div id="map" class="themap"></div>

@@ -49,7 +49,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->view->miny = $bb['miny'] ;
 		$this->view->maxy = $bb['maxy'] ;
 		$this->view->srs = $bb['SRS'] ;
-		#$this->view->render('maps/show.php');
+		$this->view->render('maps/show.php');
 
 		# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 		# transforms before the projection has been fetched.

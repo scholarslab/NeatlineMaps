@@ -1,15 +1,17 @@
-<?php head(); 
+<?php head(); ?>
 
+<body onload="init()">
+
+<?php
 echo js('proj4js/proj4js-compressed');
 echo js('OpenLayers-2.8/lib/OpenLayers');
-echo js('ext-3.0.0/adapter/ext/ext-base');
-echo js('ext-3.0.0/ext-all'); 
-echo js('GeoExt/GeoExt');
+//echo js('ext-3.0.0/adapter/ext/ext-base');
+//echo js('ext-3.0.0/ext-all'); 
+//echo js('GeoExt/GeoExt');
 echo js('show');
 ?>
 
 <script type="text/javascript"><?php echo $proj4js ?></script>
-
 <script type="text/javascript">
 //<!--
 
@@ -27,39 +29,27 @@ echo js('show');
 
 <link
 	rel="stylesheet" href="<?php echo css('neatline'); ?>" />
-<link
-	rel="stylesheet" href="<?php echo css('ext-all'); ?>" />
-<link
-	rel="stylesheet" href="<?php echo css('geoext-all'); ?>" />
-<style type="text/css">
-/* work around an Ext bug that makes the rendering
-               of menu items not as one would expect */
-.ext-ie .x-menu-item-icon {
-	left: -24px;
-}
 
-.ext-strict .x-menu-item-icon {
-	left: 3px;
-}
-
-.ext-ie6 .x-menu-item-icon {
-	left: -24px;
-}
-
-.ext-ie7 .x-menu-item-icon {
-	left: -24px;
-}
-</style>
-<script type="text/javascript">
-//<!--
-Event.observe(window, 'load', Neatline.Maps.showSimple);
-//-->
-</script>
 
 <h1>Map <?php echo $layername;?></h1>
 
-<div id="layerlist"></div>
 <hr style="width: 700px;" />
+
+        <div id="controlToggle">
+                <input type="radio" name="type" value="none" id="noneToggle"
+                       onclick="toggleControl(this);" checked="checked" />
+                <label for="noneToggle">navigate</label>
+                <input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
+                <label for="lineToggle">measure distance</label>
+                <input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
+                <label for="polygonToggle">measure area</label>
+                <input type="checkbox" name="geodesic" id="geodesicToggle" onclick="toggleGeodesic(this);" />
+                <label for="geodesicToggle">use geodesic measures</label>
+
+        </div>
+
+Measurement: <span id="output"/>
 <div id="map" class="themap"></div>
 <hr style="width: 700px;" />
 	<?php foot();?>
+	</body>

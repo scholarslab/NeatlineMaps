@@ -1,15 +1,9 @@
-Neatline = typeof (Neatline) == "undefined" ? new Object : Neatline;
-
-Neatline.Maps = Class.create( {
-});
-
-Neatline.Maps.showSimple = function() {
-	Ext.QuickTips.init();
+var init = function() {
 
 	wgs84 = new OpenLayers.Projection("EPSG:4326");
 	myproj = new OpenLayers.Projection(srs);
 	
-	map = new OpenLayers.Map( {
+	map = new OpenLayers.Map('map', {
 		projection : myproj,
 		displayProjection : myproj,
 		numZoomLevels : 128
@@ -21,100 +15,71 @@ Neatline.Maps.showSimple = function() {
 	});
 	map.addLayer(layer);
 	
-	var ctrl, toolbarItems = [], action ;
+	// style the sketch fancy
+    var sketchSymbolizers = {
+        "Point": {
+            pointRadius: 4,
+            graphicName: "square",
+            fillColor: "white",
+            fillOpacity: 1,
+            strokeWidth: 1,
+            strokeOpacity: 1,
+            strokeColor: "#333333"
+        },
+        "Line": {
+            strokeWidth: 3,
+            strokeOpacity: 1,
+            strokeColor: "#666666",
+            strokeDashstyle: "dash"
+        },
+        "Polygon": {
+            strokeWidth: 2,
+            strokeOpacity: 1,
+            strokeColor: "#666666",
+            fillColor: "white",
+            fillOpacity: 0.3
+        }
+    };
+    var style = new OpenLayers.Style();
+    style.addRules([
+        new OpenLayers.Rule({symbolizer: sketchSymbolizers})
+    ]);
+    var styleMap = new OpenLayers.StyleMap({"default": style});
 
-    // Navigation control and DrawFeature controls
-    // in the same toggle group
-    action = new GeoExt.Action({
-        text: "nav",
-        iconCls: 'hand-icon',
-        control: new OpenLayers.Control.Navigation(),
-        map: map,
-        // button options
-        toggleGroup: "tog",
-        allowDepress: true,
-        pressed: true,
-        tooltip: "navigate",
-        // check item options
-        group: "tools",
-        checked: true
-    });
-    toolbarItems.push(action);
-    
-    var length = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
-		eventListeners : {
-			measure : function(evt) {
-				alert("The length was " + evt.measure + evt.units);
-			}
-		}
-	});
-
-	var area = new OpenLayers.Control.Measure(OpenLayers.Handler.Polygon, {
-		eventListeners : {
-			measure : function(evt) {
-				alert("The area was " + evt.measure + evt.units);
-			}
-		}
-	});
 	
-	action = new GeoExt.Action({
-        text: "length",
-        iconCls: 'ruler-icon',
-        control: length,
-        map: map,
-        // button options
-        toggleGroup: "tog",
-        allowDepress: true,
-        tooltip: "measure length",
-        // check item options
-        group: "tools"
-    });
-    toolbarItems.push(action);
+    measureControls = {
+            line: new OpenLayers.Control.Measure(
+                OpenLayers.Handler.Path, {
+                    persist: true,
+                    geodesic : true,
+                    handlerOptions: {
+                        layerOptions: {styleMap: styleMap}
+                    }
+                }
+            ),
+            polygon: new OpenLayers.Control.Measure(
+                OpenLayers.Handler.Polygon, {
+                    persist: true,
+                    
+                    handlerOptions: {
+                        layerOptions: {styleMap: styleMap}
+                    }
+                }
+            )
+        };
 
-    action = new GeoExt.Action({
-        text: "area",
-        iconCls: 'area-icon',
-        control: area,
-        map: map,
-        // button options
-        toggleGroup: "tog",
-        allowDepress: true,
-        tooltip: "measure area",
-        // check item options
-        group: "tools"
-    });
-    toolbarItems.push(action);
+    var control;
+    for(var key in measureControls) {
+        control = measureControls[key];
+        control.events.on({
+            "measure": handleMeasurements,
+            "measurepartial": handleMeasurements
+        });
+        map.addControl(control);
+    }
 
-    // Navigation history - two "button" controls
-    ctrl = new OpenLayers.Control.NavigationHistory();
-    map.addControl(ctrl);
+    
 
-    action = new GeoExt.Action({
-        text: "previous",
-        control: ctrl.previous,
-        disabled: true,
-        tooltip: "previous in history"
-    });
-    toolbarItems.push(action);
-
-    action = new GeoExt.Action({
-        text: "next",
-        control: ctrl.next,
-        disabled: true,
-        tooltip: "next in history"
-    });
-    toolbarItems.push(action);
-    toolbarItems.push("->");
-
-	mapPanel = new GeoExt.MapPanel( {
-		renderTo : 'map',
-		height : 512,
-		width : 1400,
-		map : map,
-		title : layername,
-		zoom: 4,
-		tbar: toolbarItems
-	});
 	
 	bbox.transform(myproj,wgs84);
 	map.addControl(new OpenLayers.Control.MousePosition());
@@ -125,4 +90,30 @@ Neatline.Maps.showSimple = function() {
 	if (!this.isInitialized) {
 		this.isInitialized = true;
 	}
+}
+
+function toggleControl(element) {
+    for(key in measureControls) {
+        var control = measureControls[key];
+        if(element.value == key && element.checked) {
+            control.activate();
+        } else {
+            control.deactivate();
+        }
+    }
+}
+
+function handleMeasurements(event) {
+    var geometry = event.geometry;
+    var units = event.units;
+    var order = event.order;
+    var measure = event.measure;
+    var element = document.getElementById('output');
+    var out = "";
+    if(order == 1) {
+        out += "measure: " + measure.toFixed(3) + " " + units;
+    } else {
+        out += "measure: " + measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
+    }
+    element.innerHTML = out;
 }

@@ -14,7 +14,7 @@ var init = function() {
 		projection : wgs84
 	});
 	map.addLayer(layer);
-	
+	/*
 	// style the sketch fancy
     var sketchSymbolizers = {
         "Point": {
@@ -76,7 +76,7 @@ var init = function() {
             "measurepartial": handleMeasurements
         });
         map.addControl(control);
-    }
+    } */
 
     
 
@@ -91,7 +91,7 @@ var init = function() {
 		this.isInitialized = true;
 	}
 }
-
+/*
 function toggleControl(element) {
     for(key in measureControls) {
         var control = measureControls[key];
@@ -117,3 +117,4 @@ function handleMeasurements(event) {
     }
     element.innerHTML = out;
 }
+*/

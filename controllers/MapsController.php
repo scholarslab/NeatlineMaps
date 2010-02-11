@@ -116,7 +116,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		try {
 			$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
 		}
-		catch (Omeka_Record_Exception e) {				
+		catch (Omeka_Record_Exception $e) {				
 		}
 		
 		if ($serviceaddys) {

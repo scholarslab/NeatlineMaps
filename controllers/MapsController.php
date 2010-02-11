@@ -13,20 +13,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->logger = new Zend_Log($writer);
 
 	}
-	
-	public function getServiceAddy($item)
-	{
-		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
-		if ($serviceaddys) {
-			$serviceaddy = $serviceaddys[0]->text;
-		}
-		if ($serviceaddy) {
-			return $serviceaddy;
-		}
-		else {
-			return NEATLINE_GEOSERVER . "/wms";
-		}		
-	}
+
 
 
 	public function showAction()
@@ -38,17 +25,17 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		# now we need to retrieve the bounding box and projection ID
 		$serviceaddy = $this->getServiceAddy($item) ;
 
-		
+
 		$this->view->serviceaddy = $serviceaddy ;
 
 		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $id;
 		$this->view->layername = $layername ;
 
 		$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
-	
+
 		$client = new Zend_Http_Client($capabilitiesrequest);
 		$capabilities = new SimpleXMLElement( $client->request()->getBody() );
-	
+
 		$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");
 		$bb = $tmp[0];
 
@@ -65,18 +52,18 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
 		$client->setUri($proj4jsurl);
 		$this->view->proj4js = $client->request()->getBody();
-		
+
 	}
-	
+
 	/* drops back through to GeoServer to supply WMS directly */
-	
+
 	public function wmsAction()
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
-		$serviceaddy = getServiceAddy(item); 
-		
-	
+		$serviceaddy = getServiceAddy(item);
+
+
 	}
 
 	public function composeAction()
@@ -122,6 +109,20 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$client->setUri($proj4jsurl);
 		$this->view->proj4js = $client->request()->getBody();
 
+	}
+
+	private function getServiceAddy($item)
+	{
+		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
+		if ($serviceaddys) {
+			$serviceaddy = $serviceaddys[0]->text;
+		}
+		if ($serviceaddy) {
+			return $serviceaddy;
+		}
+		else {
+			return NEATLINE_GEOSERVER . "/wms";
+		}
 	}
 
 

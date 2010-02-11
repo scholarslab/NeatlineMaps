@@ -1,13 +1,11 @@
 <?php head(); 
 
-
-// $this->headScript()->prependFile('GeoExt/GeoExt.js'); 
 echo js('GeoExt/GeoExt');
-$this->headScript()->prependFile('proj4js/proj4js-compressed.js');
-$this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers.js');
-$this->headScript()->prependFile('ext-3.0.0/adapter/ext/ext-base.js');
-$this->headScript()->prependFile('ext-3.0.0/ext-all.js'); 
-echo $this->headScript();
+echo js('proj4js/proj4js-compressed');
+echo js('OpenLayers-2.8/lib/OpenLayers');
+echo js('ext-3.0.0/adapter/ext/ext-base');
+echo js('ext-3.0.0/ext-all'); 
+
 
 ?>
 

@@ -43,9 +43,10 @@ echo js('show');
                 <label for="lineToggle">measure distance</label>
                 <input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
                 <label for="polygonToggle">measure area</label>
+                Measurement: <span id="output"/>
         </div> -->
 
-Measurement: <span id="output"/>
+
 <div id="map" class="themap"></div>
 <hr style="width: 700px;" />
 	<?php foot();?>

@@ -61,8 +61,8 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
-		$serviceaddy = getServiceAddy(item);
-
+		$serviceaddy = $this->getServiceAddy(item);
+		$this->view->serviceaddy = $serviceaddy;
 
 	}
 

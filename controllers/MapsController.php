@@ -14,7 +14,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 	}
 	
-	private function getServiceAddy($item)
+	public function getServiceAddy($item)
 	{
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
 		if ($serviceaddys) {

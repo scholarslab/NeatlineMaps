@@ -60,13 +60,6 @@ Event.observe(window, 'load', Neatline.Maps.showSimple);
 
 <h1>Map <?php echo $layername;?></h1>
 
-<div id="readout">Minimum X = "<?php echo $minx;?>"
-	layername = "<?php echo $layername;?>"
-	serviceaddy = "<?php echo $serviceaddy;?>"
-
-	capabilitiesrequest = "<?php echo $capabilitiesrequest;?>"
-	capabilities = "<?php echo $capabilities;?>"
-	</div>
 <div id="layerlist"></div>
 <hr style="width: 700px;" />
 <div id="map" class="themap"></div>

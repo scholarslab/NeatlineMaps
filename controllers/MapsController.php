@@ -29,22 +29,16 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 			$serviceaddy = $serviceaddys[0]->text;
 		} */
 		
-		// temporary for first "release"
-		$serviceaddy = "http://" . $_SERVER['SERVER_NAME'] . ":8080/geoserver/wms";
 		$this->view->serviceaddy = $serviceaddy ;
 
 		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $id;
 		$this->view->layername = $layername ;
 
 		$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
-		//db
-		$this->view->capabilitiesrequest = $capabilitiesrequest; 
-		
+	
 		$client = new Zend_Http_Client($capabilitiesrequest);
 		$capabilities = new SimpleXMLElement( $client->request()->getBody() );
-		//db
-		$this->view->capabilities = $capabilities;
-
+	
 		$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");
 		$bb = $tmp[0];
 
@@ -61,28 +55,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
 		$client->setUri($proj4jsurl);
 		$this->view->proj4js = $client->request()->getBody();
-		/*
-		# we assemble any features that are tagged with this map
-		$contextInstance = Omeka_Context::getInstance();
-		$itemTable = $contextInstance->getDb()->getTable('Item');
-		$tagTable = $contextInstance->getDb()->getTable('Tag');
-		$tag = $tagTable->findOrNew("Map:" . $item->id);
-		$filter = array();
-		$filter['tags'] = array($tag);
-		$features = $itemTable->findBy($filter);
-
-		function pull_shapes_from_feature($feature) {
-			function t($e){
-				return $e->text;
-			}
-			$tmp =  $feature->getElementTextsByElementNameAndSetName( 'Shape', 'Item Type Metadata') ;
-			return array_map("t",$tmp);
-		}
-
-		$shapes = array_map("pull_shapes_from_feature", $features);
-		$this->logger->info("Shapes are " . join(' ',$shapes));
-		$this->view->features = Zend_Json::encode($shapes);
-		*/
+		
 	}
 
 

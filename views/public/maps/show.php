@@ -2,7 +2,7 @@
 
 
 // $this->headScript()->prependFile('GeoExt/GeoExt.js'); 
-echo js('GeoExt/GeoExt.js');
+echo js('GeoExt/GeoExt');
 $this->headScript()->prependFile('proj4js/proj4js-compressed.js');
 $this->headScript()->prependFile('OpenLayers-2.8/lib/OpenLayers.js');
 $this->headScript()->prependFile('ext-3.0.0/adapter/ext/ext-base.js');

@@ -36,7 +36,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$item = $this->findById($id,"Item");
 
 		# now we need to retrieve the bounding box and projection ID
-		$serviceaddy = getServiceAddy($item) ;
+		$serviceaddy = $this->getServiceAddy($item) ;
 
 		
 		$this->view->serviceaddy = $serviceaddy ;

@@ -5,7 +5,7 @@ echo js('OpenLayers-2.8/lib/OpenLayers');
 echo js('ext-3.0.0/adapter/ext/ext-base');
 echo js('ext-3.0.0/ext-all'); 
 echo js('GeoExt/GeoExt');
-
+echo js('show');
 ?>
 
 <script type="text/javascript"><?php echo $proj4js ?></script>

@@ -35,7 +35,7 @@ echo js('show');
 
 <hr style="width: 700px;" />
 
-        <div id="controlToggle">
+       <!--   <div id="controlToggle">
                 <input type="radio" name="type" value="none" id="noneToggle"
                        onclick="toggleControl(this);" checked="checked" />
                 <label for="noneToggle">navigate</label>
@@ -43,10 +43,7 @@ echo js('show');
                 <label for="lineToggle">measure distance</label>
                 <input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
                 <label for="polygonToggle">measure area</label>
-                <input type="checkbox" name="geodesic" id="geodesicToggle" onclick="toggleGeodesic(this);" />
-                <label for="geodesicToggle">use geodesic measures</label>
-
-        </div>
+        </div> -->
 
 Measurement: <span id="output"/>
 <div id="map" class="themap"></div>

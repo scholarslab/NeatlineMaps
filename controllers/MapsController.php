@@ -13,6 +13,20 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->logger = new Zend_Log($writer);
 
 	}
+	
+	private function getServiceAddy($item)
+	{
+		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
+		if ($serviceaddys) {
+			$serviceaddy = $serviceaddys[0]->text;
+		}
+		if ($serviceaddy) {
+			return $serviceaddy;
+		}
+		else {
+			return NEATLINE_GEOSERVER . "/wms";
+		}		
+	}
 
 
 	public function showAction()
@@ -62,26 +76,8 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$item = $this->findById($id,"Item");
 		$serviceaddy = getServiceAddy(item); 
 		
-		
-
-		
-	}
 	
-	public function getServiceAddy($item)
-	{
-		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
-		if ($serviceaddys) {
-			$serviceaddy = $serviceaddys[0]->text;
-		}
-		if ($serviceaddy) {
-			return $serviceaddy;
-		}
-		else {
-			return NEATLINE_GEOSERVER . "/wms";
-		}		
 	}
-
-
 
 	public function composeAction()
 	{

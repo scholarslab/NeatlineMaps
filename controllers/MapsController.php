@@ -19,15 +19,11 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	{
 
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
-		//$item = $this->findById($id,"Item");
+		$item = $this->findById($id,"Item");
 
 		# now we need to retrieve the bounding box and projection ID
-		$serviceaddy = NEATLINE_GEOSERVER . "/wms" ;
-		
-		/* $serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
-		if ($serviceaddys) {
-			$serviceaddy = $serviceaddys[0]->text;
-		} */
+		$serviceaddy = getServiceAddy($item) ;
+
 		
 		$this->view->serviceaddy = $serviceaddy ;
 
@@ -56,6 +52,33 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$client->setUri($proj4jsurl);
 		$this->view->proj4js = $client->request()->getBody();
 		
+	}
+	
+	/* drops back through to GeoServer to supply WMS directly */
+	
+	public function wmsAction()
+	{
+		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
+		$item = $this->findById($id,"Item");
+		$serviceaddy = getServiceAddy(item); 
+		
+		
+
+		
+	}
+	
+	private function getServiceAddy($item)
+	{
+		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service address', 'Item Type Metadata');
+		if ($serviceaddys) {
+			$serviceaddy = $serviceaddys[0]->text;
+		}
+		if ($serviceaddy) {
+			return $serviceaddy;
+		}
+		else {
+			return NEATLINE_GEOSERVER . "/wms";
+		}		
 	}
 
 

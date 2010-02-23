@@ -5,7 +5,7 @@ var init = function() {
 	
 	map = new OpenLayers.Map('map', {
 		projection : myproj,
-		//displayProjection : myproj,
+		displayProjection : myproj,
 		numZoomLevels : 128
 	});
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {

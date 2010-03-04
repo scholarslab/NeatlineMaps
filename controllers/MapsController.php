@@ -12,7 +12,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
 		$this->logger = new Zend_Log($writer);
 	}
-	
+
 	public function showAction()
 	{
 
@@ -21,33 +21,34 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 		# now we need to retrieve the bounding box and projection ID
 		$serviceaddy = $this->getServiceAddy($item) ;
-
-
 		$this->view->serviceaddy = $serviceaddy ;
-
+		
+		$layername = $this->getLayerName($item) ;
+		$this->view->layername = $layername ;
+/*
 		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $id;
 		$this->view->layername = $layername ;
 		$this->logger->info("layername is: " . $layername);
-		
+*/
 
 		$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
 		$this->logger->info("GetCapabilities request is: " . $capabilitiesrequest);
-		
-		
+
+
 		$client = new Zend_Http_Client($capabilitiesrequest);
 		//$this->logger->info("GetCapabilities request returned: " . $client->request()->getBody());
-		
+
 		$capabilities = new SimpleXMLElement( $client->request()->getBody() );
 		$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");
 		$bb = $tmp[0];
 		$this->logger->info("Bounding box array is: " . print_r($bb,true));
-		
+
 		$this->view->minx = $bb['minx'] ;
 		$this->view->maxx = $bb['maxx'] ;
 		$this->view->miny = $bb['miny'] ;
 		$this->view->maxy = $bb['maxy'] ;
 		$this->view->srs = $bb['SRS'] ;
-		
+
 
 		# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 		# transforms before the projection has been fetched.
@@ -55,10 +56,10 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
 		$client->setUri($proj4jsurl);
 		$this->logger->info("proj4jsurl is: " . print_r($proj4jsurl,true));
-		
+
 		$this->view->proj4js = $client->request()->getBody();
 		$this->logger->info("$proj4js from spatial reference service is: " . print_r($this->view->proj4js,true));
-		
+
 		$this->view->render('maps/show.php');
 
 	}
@@ -73,7 +74,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->view->serviceaddy = $serviceaddy;
 
 	}
-
+/*
 	public function composeAction()
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
@@ -118,15 +119,15 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->view->proj4js = $client->request()->getBody();
 
 	}
-
+*/
 	private function getServiceAddy($item)
 	{
 		try {
 			$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
 		}
-		catch (Omeka_Record_Exception $e) {				
+		catch (Omeka_Record_Exception $e) {
 		}
-		
+
 		if ($serviceaddys) {
 			$serviceaddy = $serviceaddys[0]->text;
 		}
@@ -136,6 +137,27 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		else {
 			return NEATLINE_GEOSERVER . "/wms";
 		}
+	}
+	
+	function getLayerName($item)
+	{
+		try {
+			$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
+		}
+		catch (Omeka_Record_Exception $e) {
+		}
+
+		if ($serviceaddys) {
+			$serviceaddy = $serviceaddys[0]->text;
+		}
+		if ($serviceaddy) {
+			return $serviceaddy;
+		}
+		else {
+			return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
+		}
+
+
 	}
 
 

@@ -31,7 +31,8 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		
 
 		$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
-
+		$this->logger->info("GetCapabilities request is: " . $capabilitiesrequest);
+		
 		
 		$client = new Zend_Http_Client($capabilitiesrequest);
 		//$this->logger->info("GetCapabilities request returned: " . $client->request()->getBody());

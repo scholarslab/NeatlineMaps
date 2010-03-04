@@ -21,10 +21,10 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 		# now we need to retrieve the bounding box and projection ID
 		$serviceaddy = $this->getServiceAddy($item) ;
-		//$this->view->serviceaddy = $serviceaddy ;
+		$this->view->serviceaddy = $serviceaddy ;
 
 		$layername = $this->getLayerName($item) ;
-		//$this->view->layername = $layername ;
+		$this->view->layername = $layername ;
 		/*
 		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $id;
 		$this->view->layername = $layername ;
@@ -43,13 +43,13 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$bb = $tmp[0];
 		$this->logger->info("Bounding box array is: " . print_r($bb,true));
 
-		/*
+		
 		 $this->view->minx = $bb['minx'] ;
 		 $this->view->maxx = $bb['maxx'] ;
 		 $this->view->miny = $bb['miny'] ;
 		 $this->view->maxy = $bb['maxy'] ;
 		 $this->view->srs = $bb['SRS'] ;
-		 */
+		 
 
 		# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 		# transforms before the projection has been fetched.
@@ -61,9 +61,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->view->proj4js = $client->request()->getBody();
 		$this->logger->info("$proj4js from spatial reference service is: " . print_r($this->view->proj4js,true));
 
-		$this->view->partial('maps/map.phtml',array("layername" => $layername, "serviceaddy" => $serviceaddy, 'proj4js' => $proj4js,
-					"minx" => $bb['minx'] ,'maxx' => $bb['maxx'] ,'miny' => $bb['miny'] ,'maxy' => $bb['maxy'] ,'srs' => $bb['SRS'] 		));
-
+		$this->view->render();
 	}
 
 	/* drops back through to GeoServer to supply WMS directly */

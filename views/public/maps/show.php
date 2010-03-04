@@ -2,49 +2,12 @@
 
 <body onload="init()">
 
-<?php
-echo js('proj4js/proj4js-compressed');
-echo js('OpenLayers-2.8/lib/OpenLayers');
-echo js('maps/show/init');
-?>
+<?php 
 
-<script type="text/javascript"><?php echo $proj4js ?></script>
-<script type="text/javascript">
-//<!--
-
-	layername = "<?php echo $layername;?>";
-	serviceaddy = "<?php echo $serviceaddy;?>";
-	srs = "<?php echo $srs;?>";
-	//features = <?php echo $features;?>;
-	bbox = new OpenLayers.Bounds(<?php echo $minx;?>,
-	<?php echo $miny;?>,
-	<?php echo $maxx;?>,
-	<?php echo $maxy;?>);
-
-//-->
-</script>
-
-<link
-	rel="stylesheet" href="<?php echo css('neatline'); ?>" />
+echo $this->partial('maps/map.phtml',array("layername" => $layername, "serviceaddy" => $serviceaddy, 'proj4js' => $proj4js,
+					"minx" => $bb['minx'] ,'maxx' => $bb['maxx'] ,'miny' => $bb['miny'] ,'maxy' => $bb['maxy'] ,'srs' => $bb['SRS'] 		));
 
 
-<h1>Map <?php echo $layername;?></h1>
 
-<hr style="width: 700px;" />
-
-       <!--   <div id="controlToggle">
-                <input type="radio" name="type" value="none" id="noneToggle"
-                       onclick="toggleControl(this);" checked="checked" />
-                <label for="noneToggle">navigate</label>
-                <input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
-                <label for="lineToggle">measure distance</label>
-                <input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" />
-                <label for="polygonToggle">measure area</label>
-                Measurement: <span id="output"/>
-        </div> -->
-
-
-<div id="map" class="themap"></div>
-<hr style="width: 700px;" />
-	<?php foot();?>
-	</body>
+foot();?>
+</body>

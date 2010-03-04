@@ -1,0 +1,26 @@
+<?php 
+echo js('proj4js/proj4js-compressed');
+echo js('OpenLayers-2.8/lib/OpenLayers');
+echo js('maps/show/init');
+?>
+
+<script type="text/javascript"><?php echo $proj4js ?></script>
+<script type="text/javascript">
+//<!--
+
+	layername = "<?php echo $layername;?>";
+	serviceaddy = "<?php echo $serviceaddy;?>";
+	srs = "<?php echo $srs;?>";
+	//features = <?php echo $features;?>;
+	bbox = new OpenLayers.Bounds(<?php echo $minx;?>,
+	<?php echo $miny;?>,
+	<?php echo $maxx;?>,
+	<?php echo $maxy;?>);
+
+//-->
+</script>
+
+<link
+	rel="stylesheet" href="<?php echo css('neatline'); ?>" />
+
+<div id="map" class="themap"></div>	

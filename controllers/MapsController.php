@@ -27,11 +27,14 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $id;
 		$this->view->layername = $layername ;
+		$this->logger->info("layername is: " . $layername);
+		
 
 		$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
 
+		
 		$client = new Zend_Http_Client($capabilitiesrequest);
-		$this->logger->info("GetCapabilities request returned: " . $client->request()->getBody());
+		//$this->logger->info("GetCapabilities request returned: " . $client->request()->getBody());
 		
 		$capabilities = new SimpleXMLElement( $client->request()->getBody() );
 		$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");

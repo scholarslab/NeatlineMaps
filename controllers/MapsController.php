@@ -11,11 +11,8 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	{
 		$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
 		$this->logger = new Zend_Log($writer);
-
 	}
-
-
-
+	
 	public function showAction()
 	{
 
@@ -39,7 +36,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$capabilities = new SimpleXMLElement( $client->request()->getBody() );
 		$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");
 		$bb = $tmp[0];
-		$this->logger->info("Bounding box array is: " . print_r($bb,true);
+		$this->logger->info("Bounding box array is: " . print_r($bb,true));
 		
 		$this->view->minx = $bb['minx'] ;
 		$this->view->maxx = $bb['maxx'] ;
@@ -53,10 +50,10 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$client->resetParameters();
 		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
 		$client->setUri($proj4jsurl);
-		$this->logger->info("proj4jsurl is: " . print_r($proj4jsurl,true);
+		$this->logger->info("proj4jsurl is: " . print_r($proj4jsurl,true));
 		
 		$this->view->proj4js = $client->request()->getBody();
-		$this->logger->info("$proj4js from spatial reference service is: " . print_r($this->view->proj4js,true);
+		$this->logger->info("$proj4js from spatial reference service is: " . print_r($this->view->proj4js,true));
 		
 		$this->view->render('maps/show.php');
 

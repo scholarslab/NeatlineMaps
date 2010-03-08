@@ -99,8 +99,8 @@ function neatlinemaps_widget() {
 	$item = get_item_by_id(item('ID'),"Item");
 
 	# now we need to retrieve the bounding box and projection ID
-	$serviceaddy = $this->neatlinemaps_getServiceAddy($item) ;
-	$layername = $this->neatlinemaps_getLayerName($item) ;
+	$serviceaddy = neatlinemaps_getServiceAddy($item) ;
+	$layername = neatlinemaps_getLayerName($item) ;
 
 	$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
 

@@ -2,19 +2,37 @@ var init = function() {
 
 	wgs84 = new OpenLayers.Projection("EPSG:4326");
 	myproj = new OpenLayers.Projection(srs);
+	baseproj = new OpenLayers.Projection("EPSG:900913");
 	
 	map = new OpenLayers.Map('map', {
-		projection : myproj,
-		displayProjection : myproj,
-		numZoomLevels : 128
+		'projection' : baseproj,
+		//displayProjection : baseproj,
+		'units': 'm',
+		'numZoomLevels' : 20,
+		'maxResolution': 156543.0339,
+	    'maxExtent': new OpenLayers.Bounds(-20037508.34, -20037508.34,
+	                                     20037508.34, 20037508.34)
 	});
+	
+	var base = new OpenLayers.Layer.CloudMade("CloudMade", {
+		'key': 'BC9A493B41014CAABB98F0471D759707',
+		'styleId': 9202,
+		'sphericalMercator': 'true'
+	});
+	
+	var gsat = new OpenLayers.Layer.Google("Google Satellite", {
+        'type': G_SATELLITE_MAP,
+        'sphericalMercator': true,
+        'maxExtent': new OpenLayers.Bounds( - 20037508.34, -20037508.34, 20037508.34, 20037508.34)
+    });
+
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
-		layers : layername
-	}, {
-		projection : wgs84,
-		gutter : 5
+		'layers': layername,
+		'transparent': true,
+		'gutter': 5
 	});
-	map.addLayer(layer);
+
+	map.addLayers([gsat,base,layer]);
 	/*
 	// style the sketch fancy
     var sketchSymbolizers = {
@@ -81,11 +99,11 @@ var init = function() {
 
     
 
-	
-	bbox.transform(myproj,wgs84);
+	bbox.transform(myproj,baseproj);
 	map.addControl(new OpenLayers.Control.MousePosition());
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());
+	map.addControl(new OpenLayers.Control.LayerSwitcher());
 	
 	map.zoomToExtent(bbox); map.zoomIn();
 	if (!this.isInitialized) {

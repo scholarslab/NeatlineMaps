@@ -21,9 +21,10 @@ define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreference.org/ref');
 
 add_plugin_hook('install', 'neatlinemaps_install');
 add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
-
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
 add_plugin_hook('after_upload_file', 'load_geoserver_raster');
+add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
+
 
 function neatlinemaps_install()
 {
@@ -94,6 +95,38 @@ function neatlinemaps_routes($router)
 	DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
 }
 
+function neatlinemaps_widget() {
+	$item = get_item_by_id(item('ID'),"Item");
+
+	# now we need to retrieve the bounding box and projection ID
+	$serviceaddy = $this->getServiceAddy($item) ;
+	$layername = $this->getLayerName($item) ;
+
+	$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
+
+	$client = new Zend_Http_Client($capabilitiesrequest);
+
+	$capabilities = new SimpleXMLElement( $client->request()->getBody() );
+	$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");
+	$bb = $tmp[0];
+
+	$minx = $bb['minx'] ;
+	$maxx = $bb['maxx'] ;
+	$miny = $bb['miny'] ;
+	$maxy = $bb['maxy'] ;
+	$srs = $bb['SRS'] ;
+
+	# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
+	# transforms before the projection has been fetched.
+	$client->resetParameters();
+	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
+	$client->setUri($proj4jsurl);
+
+	$proj4js = $client->request()->getBody();
+	echo __v()->partial('maps/map.phtml',array("layername" => $layername, "serviceaddy" => $serviceaddy, 'proj4js' => $proj4js,
+					"minx" => $minx ,'maxx' => $maxx ,'miny' => $miny ,'maxy' => $maxy ,'srs' => $srs 		));
+}
+
 function load_geoserver_raster($file, $item)
 {
 
@@ -138,4 +171,44 @@ function load_geoserver_raster($file, $item)
 	$logger->info("Geoserver's response: " . $response->getBody());
 
 	#unlink($zipfile);
+}
+
+function getServiceAddy($item)
+{
+	try {
+		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
+	}
+	catch (Omeka_Record_Exception $e) {
+	}
+
+	if ($serviceaddys) {
+		$serviceaddy = $serviceaddys[0]->text;
+	}
+	if ($serviceaddy) {
+		return $serviceaddy;
+	}
+	else {
+		return NEATLINE_GEOSERVER . "/wms";
+	}
+}
+
+function getLayerName($item)
+{
+	try {
+		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
+	}
+	catch (Omeka_Record_Exception $e) {
+	}
+
+	if ($serviceaddys) {
+		$serviceaddy = $serviceaddys[0]->text;
+	}
+	if ($serviceaddy) {
+		return $serviceaddy;
+	}
+	else {
+		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
+	}
+
+
 }

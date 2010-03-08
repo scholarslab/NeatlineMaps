@@ -20,7 +20,10 @@ echo js('maps/show/init');
 //-->
 </script>
 
-<link
-	rel="stylesheet" href="<?php echo css('neatline'); ?>" />
+<link rel="stylesheet" href="<?php echo css('neatline'); ?>" />
 
 <div id="map" class="themap"></div>	
+
+<script text="text/javascript">
+	Event.observe(window, 'load', init );
+</script>

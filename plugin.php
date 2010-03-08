@@ -119,7 +119,7 @@ function neatlinemaps_widget() {
 	# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 	# transforms before the projection has been fetched.
 	$client->resetParameters();
-	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
+	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($srs),':','/') ."/proj4js/";
 	$client->setUri($proj4jsurl);
 
 	$proj4js = $client->request()->getBody();

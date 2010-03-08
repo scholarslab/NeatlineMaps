@@ -11,7 +11,8 @@ var init = function() {
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
 		layers : layername
 	}, {
-		projection : wgs84
+		projection : wgs84,
+		gutter : 5
 	});
 	map.addLayer(layer);
 	/*

@@ -1,9 +1,9 @@
 @CHARSET "UTF-8";
 .themap {
-    width: 100%;
-    height: 512px;s
+    width: 500px;
+    height: 512px;
     border: 1px solid #ccc;
-    float:none;
+    float:left;
     display:block;
     background-color:white
 }

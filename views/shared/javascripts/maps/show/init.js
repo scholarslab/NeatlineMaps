@@ -23,7 +23,7 @@ var init = function() {
 	var gsat = new OpenLayers.Layer.Google("Google Satellite", {
         'type': G_SATELLITE_MAP,
         'sphericalMercator': true,
-        'maxExtent': new OpenLayers.Bounds( - 20037508.34, -20037508.34, 20037508.34, 20037508.34)
+        'maxExtent': new OpenLayers.Bounds( -20037508.34, -20037508.34, 20037508.34, 20037508.34)
     });
 
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
@@ -97,9 +97,9 @@ var init = function() {
         map.addControl(control);
     } */
 
-    
-
+    alert(bbox);
 	bbox.transform(myproj,baseproj);
+	alert(bbox);
 	map.addControl(new OpenLayers.Control.MousePosition());
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());

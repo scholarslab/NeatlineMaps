@@ -60,7 +60,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->view->proj4js = $client->request()->getBody();
 		$this->logger->info("$proj4js from spatial reference service is: " . print_r($this->view->proj4js,true));
 
-		$this->view->render();
+		//$this->view->render();
 	}
 
 	/* drops back through to GeoServer to supply WMS directly */

@@ -98,33 +98,30 @@ function neatlinemaps_routes($router)
 function neatlinemaps_widget() {
 	$item = get_item_by_id(item('ID'),"Item");
 
+	$params = array();
+
 	# now we need to retrieve the bounding box and projection ID
-	$serviceaddy = neatlinemaps_getServiceAddy($item) ;
-	$layername = neatlinemaps_getLayerName($item) ;
+	$params["serviceaddy"] = $this->getServiceAddy($item) ;
+	$params["layername"] = $this->getLayerName($item) ;
 
-	$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
-
+	$capabilitiesrequest = $params["serviceaddy"] . "?request=GetCapabilities" ;
 	$client = new Zend_Http_Client($capabilitiesrequest);
-
 	$capabilities = new SimpleXMLElement( $client->request()->getBody() );
-	$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");
+	$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='" . $params["layername"] . "']/BoundingBox");
 	$bb = $tmp[0];
-
-	$minx = $bb['minx'] ;
-	$maxx = $bb['maxx'] ;
-	$miny = $bb['miny'] ;
-	$maxy = $bb['maxy'] ;
-	$srs = $bb['SRS'] ;
+	$params["minx"] = $bb['minx'] ;
+	$params["maxx"] = $bb['maxx'] ;
+	$params["miny"] = $bb['miny'] ;
+	$params["maxy"] = $bb['maxy'] ;
+	$params["srs"] = $bb['SRS'] ;
 
 	# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 	# transforms before the projection has been fetched.
 	$client->resetParameters();
-	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($srs),':','/') ."/proj4js/";
+	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($params["srs"]),':','/') ."/proj4js/";
 	$client->setUri($proj4jsurl);
-
-	$proj4js = $client->request()->getBody();
-	echo __v()->partial('maps/map.phtml',array("layername" => $layername, "serviceaddy" => $serviceaddy, 'proj4js' => $proj4js,
-					"minx" => $minx ,'maxx' => $maxx ,'miny' => $miny ,'maxy' => $maxy ,'srs' => $srs 		));
+	$params["proj4js"] = $client->request()->getBody();
+	echo __v()->partial('maps/map.phtml',array("params" => $params ));
 }
 
 function load_geoserver_raster($file, $item)

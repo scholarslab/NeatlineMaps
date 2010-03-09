@@ -5,10 +5,10 @@ var init = function() {
 	//baseproj = new OpenLayers.Projection("EPSG:900913");
 	
 	map = new OpenLayers.Map('map', {
-		'projection' : myproj,
-		'displayProjection' : myproj,
+		projection : myproj,
+		displayProjection : myproj,
 		//'units': 'm',
-		'numZoomLevels' : 20,
+		numZoomLevels : 20,
 		//'maxResolution': 156543.0339,
 	    //'maxExtent': new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
 	});
@@ -26,10 +26,10 @@ var init = function() {
     }); */
 
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
-		'layers': layername}, {
-			"projection": srs,
+		layers: layername}, {
+			projection: srs,
 		//'transparent': true,
-		'gutter': 5
+		gutter: 5
 	});
 
 	map.addLayers([layer]);

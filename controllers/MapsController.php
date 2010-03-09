@@ -14,13 +14,13 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 	public function showAction()
 	{
-		
+		$params = array();
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
 
 		# now we need to retrieve the bounding box and projection ID
 		$serviceaddy = $this->getServiceAddy($item) ;
-		$this->view->serviceaddy = $serviceaddy ;
+		$params["serviceaddy"] = $serviceaddy ;
 
 		$layername = $this->getLayerName($item) ;
 		$this->view->layername = $layername ;
@@ -59,7 +59,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 		$this->view->proj4js = $client->request()->getBody();
 		$this->logger->info("$proj4js from spatial reference service is: " . print_r($this->view->proj4js,true));
-
+		$this->view->params = $params;
 		//$this->view->render();
 	}
 

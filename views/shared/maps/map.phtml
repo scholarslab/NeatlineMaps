@@ -7,16 +7,11 @@ echo js('maps/show/init');
 <script type="text/javascript"><?php echo $proj4js ?></script>
 <script type="text/javascript">
 //<!--
-
-	layername = "<?php echo $layername;?>";
-	serviceaddy = "<?php echo $serviceaddy;?>";
-	srs = "<?php echo $srs;?>";
-	//features = <?php echo $features;?>;
-	bbox = new OpenLayers.Bounds(<?php echo $minx;?>,
-	<?php echo $miny;?>,
-	<?php echo $maxx;?>,
-	<?php echo $maxy;?>);
-
+	<?php foreach ($params as $name => $value) {
+			echo "$name = '$value';"	;		
+		}
+		?>
+		bbox = new OpenLayers.Bounds(minx,miny,maxx,maxy);
 //-->
 </script>
 

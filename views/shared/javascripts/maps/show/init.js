@@ -35,7 +35,7 @@ var init = function() {
 	 * G_SATELLITE_MAP, 'sphericalMercator': true, 'maxExtent': new
 	 * OpenLayers.Bounds( -20037508.34, -20037508.34, 20037508.34, 20037508.34)
 	 * });
-	 */
+	 *
 	 * 
 	 * // style the sketch fancy var sketchSymbolizers = { "Point": {
 	 * pointRadius: 4, graphicName: "square", fillColor: "white", fillOpacity:

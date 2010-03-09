@@ -27,7 +27,7 @@ var init = function() {
 
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
 		'layers': layername}, {
-			"projection": srs
+			"projection": srs,
 		//'transparent': true,
 		'gutter': 5
 	});

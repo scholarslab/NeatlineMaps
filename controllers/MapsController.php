@@ -24,10 +24,10 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$params["serviceaddy"] = $this->getServiceAddy($item) ;
 		$params["layername"] = $this->getLayerName($item) ;
 
-		$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
+		$capabilitiesrequest = $params["serviceaddy"] . "?request=GetCapabilities" ;
 		$client = new Zend_Http_Client($capabilitiesrequest);
 		$capabilities = new SimpleXMLElement( $client->request()->getBody() );
-		$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");
+		$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='" . $params["layername"] . "']/BoundingBox");
 		$bb = $tmp[0];
 		$params["minx"] = $bb['minx'] ;
 		$params["maxx"] = $bb['maxx'] ;
@@ -38,7 +38,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 		# transforms before the projection has been fetched.
 		$client->resetParameters();
-		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
+		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($params["srs"]),':','/') ."/proj4js/";
 		$client->setUri($proj4jsurl);
 		$params["proj4js"] = $client->request()->getBody();
 		

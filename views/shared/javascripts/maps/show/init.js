@@ -97,7 +97,9 @@ var init = function() {
         map.addControl(control);
     } */
 
+    alert(bbox);
 	bbox.transform(myproj,baseproj);
+	alert(bbox);
 	map.addControl(new OpenLayers.Control.MousePosition());
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());

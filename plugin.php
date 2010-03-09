@@ -97,7 +97,10 @@ function neatlinemaps_routes($router)
 
 function neatlinemaps_widget() {
 	$item = get_item_by_id(item('ID'),"Item");
+	echo __v()->partial('maps/map.phtml',array("params" => assemble_params_for_map($item) ));
+}
 
+function assemble_params_for_map($item) {
 	$params = array();
 
 	# now we need to retrieve the bounding box and projection ID
@@ -121,7 +124,8 @@ function neatlinemaps_widget() {
 	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($params["srs"]),':','/') ."/proj4js/";
 	$client->setUri($proj4jsurl);
 	$params["proj4js"] = $client->request()->getBody();
-	echo __v()->partial('maps/map.phtml',array("params" => $params ));
+	
+	return $params;
 }
 
 function load_geoserver_raster($file, $item)

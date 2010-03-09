@@ -7,23 +7,14 @@ var init = function() {
 	map = new OpenLayers.Map('map', {
 		projection : myproj,
 		displayProjection : myproj,
-		// 'units': 'm',
+		units: 'm',
 		numZoomLevels : 128,
 		// 'maxResolution': 156543.0339,
 	    // 'maxExtent': new OpenLayers.Bounds(-20037508.34, -20037508.34,
 		// 20037508.34, 20037508.34)
 	});
 	
-	/*
-	 * var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':
-	 * 'BC9A493B41014CAABB98F0471D759707', 'styleId': 9202, 'sphericalMercator':
-	 * 'true' });
-	 * 
-	 * var gsat = new OpenLayers.Layer.Google("Google Satellite", { 'type':
-	 * G_SATELLITE_MAP, 'sphericalMercator': true, 'maxExtent': new
-	 * OpenLayers.Bounds( -20037508.34, -20037508.34, 20037508.34, 20037508.34)
-	 * });
-	 */
+	
 
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
 		layers: layername
@@ -35,6 +26,17 @@ var init = function() {
 
 	map.addLayers([layer]);
 	/*
+	 * /*
+	 * var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':
+	 * 'BC9A493B41014CAABB98F0471D759707', 'styleId': 9202, 'sphericalMercator':
+	 * 'true' });
+	 * 
+	 * var gsat = new OpenLayers.Layer.Google("Google Satellite", { 'type':
+	 * G_SATELLITE_MAP, 'sphericalMercator': true, 'maxExtent': new
+	 * OpenLayers.Bounds( -20037508.34, -20037508.34, 20037508.34, 20037508.34)
+	 * });
+	 */
+	 * 
 	 * // style the sketch fancy var sketchSymbolizers = { "Point": {
 	 * pointRadius: 4, graphicName: "square", fillColor: "white", fillOpacity:
 	 * 1, strokeWidth: 1, strokeOpacity: 1, strokeColor: "#333333" }, "Line": {
@@ -58,14 +60,13 @@ var init = function() {
 	 * "measurepartial": handleMeasurements }); map.addControl(control); }
 	 */
 
-	bbox.transform(myproj,wgs84);
 	
 	map.addControl(new OpenLayers.Control.MousePosition());
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());
 	map.addControl(new OpenLayers.Control.LayerSwitcher());
 	
-	map.zoomToExtent(bbox); map.zoomIn();
+	map.zoomToExtent(bbox.transform(myproj,wgs84));
 	if (!this.isInitialized) {
 		this.isInitialized = true;
 	}

@@ -6,7 +6,6 @@
 
 class NeatlineMaps_MapsController extends Omeka_Controller_Action
 {
-
 	public function init()
 	{
 		$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
@@ -15,7 +14,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 	public function showAction()
 	{
-
+		
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
 

@@ -5,7 +5,7 @@ var init = function() {
 	//baseproj = new OpenLayers.Projection("EPSG:900913");
 	
 	map = new OpenLayers.Map('map', {
-		'projection' : wgs84,
+		'projection' : myproj,
 		'displayProjection' : myproj,
 		//'units': 'm',
 		'numZoomLevels' : 20,
@@ -97,7 +97,7 @@ var init = function() {
         map.addControl(control);
     } */
 
-	bbox.transform(myproj,wgs84);
+	//bbox.transform(myproj,wgs84);
 	
 	map.addControl(new OpenLayers.Control.MousePosition());
 	map.addControl(new OpenLayers.Control.Scale());

@@ -101,8 +101,8 @@ function neatlinemaps_widget() {
 	$params = array();
 
 	# now we need to retrieve the bounding box and projection ID
-	$params["serviceaddy"] = $this->getServiceAddy($item) ;
-	$params["layername"] = $this->getLayerName($item) ;
+	$params["serviceaddy"] = getServiceAddy($item) ;
+	$params["layername"] = getLayerName($item) ;
 
 	$capabilitiesrequest = $params["serviceaddy"] . "?request=GetCapabilities" ;
 	$client = new Zend_Http_Client($capabilitiesrequest);

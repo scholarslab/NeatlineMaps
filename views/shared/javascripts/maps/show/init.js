@@ -8,7 +8,7 @@ var init = function() {
 		projection : myproj,
 		displayProjection : myproj,
 		// 'units': 'm',
-		numZoomLevels : 20,
+		numZoomLevels : 128,
 		// 'maxResolution': 156543.0339,
 	    // 'maxExtent': new OpenLayers.Bounds(-20037508.34, -20037508.34,
 		// 20037508.34, 20037508.34)
@@ -26,10 +26,9 @@ var init = function() {
 	 */
 
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
-		layers: layername,
-		srs: srs
+		layers: layername
 		}, {
-			projection: srs,
+			projection: wgs84,
 		// 'transparent': true,
 		gutter: 5
 	});
@@ -59,7 +58,7 @@ var init = function() {
 	 * "measurepartial": handleMeasurements }); map.addControl(control); }
 	 */
 
-	// bbox.transform(wgs84,myproj);
+	bbox.transform(myproj,wgs84);
 	
 	map.addControl(new OpenLayers.Control.MousePosition());
 	map.addControl(new OpenLayers.Control.Scale());

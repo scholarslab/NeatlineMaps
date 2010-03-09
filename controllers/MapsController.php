@@ -14,53 +14,36 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 	public function showAction()
 	{
-		$params = array();
+
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
 
-		# now we need to retrieve the bounding box and projection ID
-		$serviceaddy = $this->getServiceAddy($item) ;
-		$params["serviceaddy"] = $serviceaddy ;
+		$params = array();
 
-		$layername = $this->getLayerName($item) ;
-		$this->view->layername = $layername ;
-		/*
-		$layername = NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $id;
-		$this->view->layername = $layername ;
-		$this->logger->info("layername is: " . $layername);
-		*/
+		# now we need to retrieve the bounding box and projection ID
+		$params["serviceaddy"] = $this->getServiceAddy($item) ;
+		$params["layername"] = $this->getLayerName($item) ;
 
 		$capabilitiesrequest = $serviceaddy . "?request=GetCapabilities" ;
-		$this->logger->info("GetCapabilities request is: " . $capabilitiesrequest);
-
-
 		$client = new Zend_Http_Client($capabilitiesrequest);
-		//$this->logger->info("GetCapabilities request returned: " . $client->request()->getBody());
-
 		$capabilities = new SimpleXMLElement( $client->request()->getBody() );
 		$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='$layername']/BoundingBox");
 		$bb = $tmp[0];
-		$this->logger->info("Bounding box array is: " . print_r($bb,true));
-
-		
-		 $this->view->minx = $bb['minx'] ;
-		 $this->view->maxx = $bb['maxx'] ;
-		 $this->view->miny = $bb['miny'] ;
-		 $this->view->maxy = $bb['maxy'] ;
-		 $this->view->srs = $bb['SRS'] ;
-		 
+		$params["minx"] = $bb['minx'] ;
+		$params["maxx"] = $bb['maxx'] ;
+		$params["miny"] = $bb['miny'] ;
+		$params["maxy"] = $bb['maxy'] ;
+		$params["srs"] = $bb['SRS'] ;			
 
 		# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 		# transforms before the projection has been fetched.
 		$client->resetParameters();
 		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($this->view->srs),':','/') ."/proj4js/";
 		$client->setUri($proj4jsurl);
-		$this->logger->info("proj4jsurl is: " . print_r($proj4jsurl,true));
-
-		$this->view->proj4js = $client->request()->getBody();
-		$this->logger->info("$proj4js from spatial reference service is: " . print_r($this->view->proj4js,true));
+		$params["proj4js"] = $client->request()->getBody();
+		
 		$this->view->params = $params;
-		//$this->view->render();
+
 	}
 
 	/* drops back through to GeoServer to supply WMS directly */

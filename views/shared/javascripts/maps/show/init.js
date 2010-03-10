@@ -5,8 +5,8 @@ var init = function() {
 	// baseproj = new OpenLayers.Projection("EPSG:900913");
 	
 	map = new OpenLayers.Map('map', {
-		projection : myproj,
-		displayProjection : myproj,
+		//projection : myproj,
+		//displayProjection : myproj,
 		units: 'm',
 		numZoomLevels : 128,
 		// 'maxResolution': 156543.0339,
@@ -19,7 +19,7 @@ var init = function() {
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
 		layers: layername
 		}, {
-			projection: wgs84,
+			//projection: wgs84,
 		// 'transparent': true,
 		gutter: 5
 	});
@@ -66,7 +66,7 @@ var init = function() {
 	map.addControl(new OpenLayers.Control.ScaleLine());
 	map.addControl(new OpenLayers.Control.LayerSwitcher());
 	console.log(bbox);
-	bbox.transform(myproj,wgs84);
+	//bbox.transform(myproj,wgs84);
 	console.log(bbox);
 	map.zoomToExtent(bbox);
 	if (!this.isInitialized) {

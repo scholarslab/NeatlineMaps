@@ -65,8 +65,8 @@ var init = function() {
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());
 	map.addControl(new OpenLayers.Control.LayerSwitcher());
-	
-	map.zoomToExtent(bbox.transform(myproj,wgs84));
+	bbbox = bbox.transform(myproj,wgs84);
+	map.zoomToExtent(bbbox);
 	if (!this.isInitialized) {
 		this.isInitialized = true;
 	}

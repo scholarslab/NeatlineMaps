@@ -5,7 +5,7 @@ var init = function() {
 	// baseproj = new OpenLayers.Projection("EPSG:900913");
 	
 	map = new OpenLayers.Map('map', {
-		//projection : myproj,
+		projection : myproj,
 		//displayProjection : myproj,
 		units: 'm',
 		numZoomLevels : 128,
@@ -19,7 +19,7 @@ var init = function() {
 	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
 		layers: layername
 		}, {
-			//projection: wgs84,
+			projection: myproj,
 		// 'transparent': true,
 		gutter: 5
 	});

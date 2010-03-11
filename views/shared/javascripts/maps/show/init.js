@@ -22,7 +22,7 @@ var init = function() {
     );
 
 	map.addLayers([layer]);
-	alert(bbox);
+
 	bbox.transform(myproj,wgs84);
 	map.zoomToExtent(bbox);
 	

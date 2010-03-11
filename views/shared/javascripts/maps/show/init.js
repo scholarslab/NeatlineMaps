@@ -1,30 +1,30 @@
 var init = function() {
 
-	wgs84 = new OpenLayers.Projection("EPSG:4326");
-	myproj = new OpenLayers.Projection(srs);
-	// baseproj = new OpenLayers.Projection("EPSG:900913");
-	
-	map = new OpenLayers.Map('map', {
-		projection : myproj,
-		//displayProjection : myproj,
-		units: 'm',
-		numZoomLevels : 128,
-		// 'maxResolution': 156543.0339,
-	    // 'maxExtent': new OpenLayers.Bounds(-20037508.34, -20037508.34,
-		// 20037508.34, 20037508.34)
-	});
-	
-	
+	var wgs84 = new OpenLayers.Projection("EPSG:4326");
+	var myproj = new OpenLayers.Projection(srs);
+	//var baseproj = new OpenLayers.Projection("EPSG:900913");
 
-	layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
-		layers: layername
-		}, {
-			projection: myproj,
-		// 'transparent': true,
-		gutter: 5
-	});
+    var map = new OpenLayers.Map("map", {
+        'maxResolution': 'auto',
+        'numZoomLevels': 20,
+        'projection': wgs84
+    });
+
+    var layer = new OpenLayers.Layer.WMS(
+    layername, serviceaddy,
+    {
+        'layers': layername
+    },
+    {
+        'buffer': 0,
+		'gutter': 5
+    }
+    );
 
 	map.addLayers([layer]);
+	alert(bbox);
+	bbox.transform(myproj,wgs84);
+	map.zoomToExtent(bbox);
 	/*
 	 * /*
 	 * var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':
@@ -65,10 +65,14 @@ var init = function() {
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());
 	map.addControl(new OpenLayers.Control.LayerSwitcher());
-	console.log(bbox);
-	bbox.transform(myproj,wgs84);
-	console.log(bbox);
-	map.zoomToExtent(bbox);
+	//console.log(bbox);
+	//bbox.transform(myproj,wgs84);
+	//console.log(bbox);
+	//map.zoomToMaxExtent();
+	//alert(bbox);
+	//alert(newbb);
+	//map.zoomToExtent(newbb);
+	
 	if (!this.isInitialized) {
 		this.isInitialized = true;
 	}

@@ -5,10 +5,7 @@ echo js('maps/show/init');
 ?>
 
 <script type="text/javascript"><?php echo $proj4js ?></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-	var map;
-	var $j = jQuery.noConflict();
 	
 //<!--
 	<?php foreach ($params as $name => $value) {
@@ -18,91 +15,11 @@ echo js('maps/show/init');
 		bbox = new OpenLayers.Bounds(minx,miny,maxx,maxy);
 //-->
 
-	function toggleControl(element) {
-		for(key in mapControls) {
-			var control = mapControls[key];
-			//alert ($(element).is('.ui-state-active'));
-			if(element.name == key && $j(element).is('.ui-state-active')) {
-		  	control.activate();
-			} else {
-		  	control.deactivate();
-			}
-	  }
-	}
-
-	$j(function(){
-		
-		$j('#layerswitcher').hide();
-		$j('#layers').click(function() {
-			$j('#layerswitcher').toggle();
-			$j(this).toggleClass('ui-state-active');
-			$j('#layerswitcher').css({
-				'width':'472px',
-				'border':'1px solid #444444'
-			});
-			$j('#layerswitcher, #layerswitcher *').css({
-				'position':'relative',
-				'background-color':'#FFFFFF',
-				'color': '#000000'
-			});
-		});
-	  
-	    //all hover and click logic for buttons
-	    $j(".fg-button:not(.ui-state-disabled)")
-	    .hover(
-		function(){
-		    $j(this).addClass("ui-state-hover");
-		},
-		function(){
-		    $j(this).removeClass("ui-state-hover");
-		}
-	    )
-	    .mousedown(function(){
-		$j(this).parents('.fg-buttonset-single:first').find(".fg-button.ui-state-active").removeClass("ui-state-active");
-		if( $j(this).is('.ui-state-active.fg-button-toggleable, .fg-buttonset-multi .ui-state-active') )
-		    { $j(this).removeClass("ui-state-active"); }
-		else { $j(this).addClass("ui-state-active"); }
-	    })
-	    .mouseup(function(){
-		if(! $j(this).is('.fg-button-toggleable, .fg-buttonset-single .fg-button, .fg-buttonset-multi .fg-button') ){
-		    $j(this).removeClass("ui-state-active");
-		}
-		//TODO use this else only for measure/pan toggle.
-		else {toggleControl(this);}
-	    });
-	});
-
 </script>
 
 <link rel="stylesheet" href="<?php echo css('neatline'); ?>" />
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css" type="text/css" />
-<style type="text/css" media="screen">
-	#mapcontrols {
-
-	}
-	#mapcontrols button {
-		width: 90px;
-		padding: 2px;
-		text-align: right;
-	}
-	#mapcontrols .ui-state-default .ui-icon {
-		float: left;
-	}
-	#mapcontrols .ui-button-text {
-		font-size: 10px;
-		vertical-align: middle;
-	}
-</style>
 
 <div id="map" class="themap"></div>	
-	<div id="mapcontrols" class="fg-buttonset fg-buttonset-single ui-helper-clearfix">
-		<button name='navigate'class="fg-button ui-state-default ui-state-active ui-priority-primary ui-corner-left"><span class="ui-icon ui-icon-arrow-4"></span><span class="ui-button-text">Navigate</span></button>
-		<button name='zoomin' class="fg-button ui-state-default fg-button-icon-solo" title="Zoom in"><span class="ui-icon ui-icon-circle-zoomin"></span><span class="ui-button-text">Zoom In</span></button>
-		<button name='zoomout' class="fg-button ui-state-default fg-button-icon-solo" title="Zoom out"><span class="ui-icon ui-icon-circle-zoomout"></span><span class="ui-button-text">Zoom Out</span></button>
-				<button id="layers" name='layers' class="fg-button ui-state-default fg-button-icon-solo ui-corner-right" title="Switch Layers"><span class="ui-icon ui-icon-circle-zoomout"></span><span class="ui-button-text">Layers</span></button>
-		<div id="layerswitcher"> </div>
-	</div>
-</div>
 
 <script text="text/javascript">
 	Event.observe(window, 'load', init );

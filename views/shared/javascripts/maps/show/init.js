@@ -4,7 +4,8 @@ var init = function() {
 	var myproj = new OpenLayers.Projection(srs);
 	//var baseproj = new OpenLayers.Projection("EPSG:900913");
 
-    var map = new OpenLayers.Map("map", {
+    map = new OpenLayers.Map("map", {
+		'controls': [],
         'maxResolution': 'auto',
         'numZoomLevels': 20,
         'projection': wgs84
@@ -25,6 +26,29 @@ var init = function() {
 	alert(bbox);
 	bbox.transform(myproj,wgs84);
 	map.zoomToExtent(bbox);
+	
+		mapControls = {
+		navigate: new OpenLayers.Control.Navigation(
+			{title:"Navigate"}
+		),
+		zoomin: new OpenLayers.Control.ZoomBox(
+		    {title:"Zoom in box", out: false}
+		),
+		zoomout: new OpenLayers.Control.ZoomBox(
+		    {title:"Zoom out box", out: true}
+		),
+		layers: new OpenLayers.Control.LayerSwitcher(
+			{'div':OpenLayers.Util.getElement('layerswitcher')}
+		)
+	    };
+
+	  var control;
+	  for(var key in mapControls) {
+			control = mapControls[key];
+			map.addControl(control);
+	  }
+	
+	
 	/*
 	 * /*
 	 * var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':
@@ -64,7 +88,7 @@ var init = function() {
 	map.addControl(new OpenLayers.Control.MousePosition());
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());
-	map.addControl(new OpenLayers.Control.LayerSwitcher());
+	//map.addControl(new OpenLayers.Control.LayerSwitcher());
 	//console.log(bbox);
 	//bbox.transform(myproj,wgs84);
 	//console.log(bbox);

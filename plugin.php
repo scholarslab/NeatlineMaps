@@ -104,8 +104,8 @@ function assemble_params_for_map($item) {
 	$params = array();
 
 	# now we need to retrieve the bounding box and projection ID
-	$params["serviceaddy"] = getServiceAddy($item) ;
-	$params["layername"] = getLayerName($item) ;
+	$params["serviceaddy"] = neatlinemaps_getServiceAddy($item) ;
+	$params["layername"] = neatlinemaps_getLayerName($item) ;
 
 	$capabilitiesrequest = $params["serviceaddy"] . "?request=GetCapabilities" ;
 	$client = new Zend_Http_Client($capabilitiesrequest);

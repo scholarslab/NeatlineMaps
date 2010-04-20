@@ -82,7 +82,7 @@ function neatlinemaps_install()
 }
 
 function neatlinemaps_show_item_in_page($item,$html){
-        $html =  neatlinemaps_widget();
+        return __v()->partial('maps/map.phtml',array("params" => assemble_params_for_map($item) ));
 }
 
 function neatlinemaps_uninstall()

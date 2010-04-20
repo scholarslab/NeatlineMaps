@@ -25,6 +25,8 @@ add_plugin_hook('define_routes', 'neatlinemaps_routes');
 add_plugin_hook('after_upload_file', 'load_geoserver_raster');
 add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 
+add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
+
 
 function neatlinemaps_install()
 {
@@ -77,6 +79,10 @@ function neatlinemaps_install()
               catch (Exception $e) {
               }
 
+}
+
+function neatlinemaps_show_item_in_page($item,$html){
+        $html =  neatlinemaps_widget();
 }
 
 function neatlinemaps_uninstall()

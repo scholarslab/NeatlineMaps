@@ -21,7 +21,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$params = array();
 
 		# now we need to retrieve the bounding box and projection ID
-		$params["serviceaddy"] = $this->getServiceAddy($item) ;
+		$params["serviceaddy"] = neatlinemaps_getServiceAddy($item) ;
 		$params["layername"] = $this->getLayerName($item) ;
 
 		$capabilitiesrequest = $params["serviceaddy"] . "?request=GetCapabilities" ;

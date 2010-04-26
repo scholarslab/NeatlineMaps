@@ -22,7 +22,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 		# now we need to retrieve the bounding box and projection ID
 		$params["serviceaddy"] = neatlinemaps_getServiceAddy($item) ;
-		$params["layername"] = $this->getLayerName($item) ;
+		$params["layername"] = neatlinemaps_getLayerName($item) ;
 
 		$capabilitiesrequest = $params["serviceaddy"] . "?request=GetCapabilities" ;
 		$client = new Zend_Http_Client($capabilitiesrequest);
@@ -52,51 +52,9 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
-		$serviceaddy = $this->getServiceAddy($item);
+		$serviceaddy = neatlinemaps_getServiceAddy($item);
 		$this->view->serviceaddy = $serviceaddy;
 
 	}
-	
-	private function getServiceAddy($item)
-	{
-		try {
-			$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
-		}
-		catch (Omeka_Record_Exception $e) {
-		}
-
-		if ($serviceaddys) {
-			$serviceaddy = $serviceaddys[0]->text;
-		}
-		if ($serviceaddy) {
-			return $serviceaddy;
-		}
-		else {
-			return NEATLINE_GEOSERVER . "/wms";
-		}
-	}
-
-	function getLayerName($item)
-	{
-		try {
-			$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
-		}
-		catch (Omeka_Record_Exception $e) {
-		}
-
-		if ($serviceaddys) {
-			$serviceaddy = $serviceaddys[0]->text;
-		}
-		if ($serviceaddy) {
-			return $serviceaddy;
-		}
-		else {
-			return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
-		}
-
-
-	}
-
-
 
 }

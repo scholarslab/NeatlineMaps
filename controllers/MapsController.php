@@ -43,6 +43,9 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$params["proj4js"] = $client->request()->getBody();
 		
 		$this->view->params = $params;
+		
+		# now we retrieve any features from other Items that are tagged with prefix:id
+		
 
 	}
 
@@ -55,6 +58,15 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$serviceaddy = neatlinemaps_getServiceAddy($item);
 		$this->view->serviceaddy = $serviceaddy;
 
+	}
+	
+	private function getFeaturesForItem($item) {
+		$tagstring = NEATLINE_TAG_PREFIX . $item->id;
+		$featureitems = get_db()->getTable('Item')->findBy(array('tags' => $tagstring), $limit);
+		$pull_wkt = create_function('$i', 'return $i->get' ) ;
+		foreach ( $featureitems as $featureitem ) {
+			
+		}
 	}
 
 }

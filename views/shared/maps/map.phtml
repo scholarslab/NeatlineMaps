@@ -12,6 +12,7 @@ echo js('maps/show/init');
 			echo "$name = '$value';"	;
 			$layers = $params['layers'];
 		}
+		?>Omeka.NeatlineMaps.layers = new Array();<?php
 		foreach (array_keys($layers) as $layername) {
 		  	?>
 		  	Omeka.NeatlineMaps.layers['<?php echo $layername; ?>'] = '<?php echo $layers[$layername];?>';

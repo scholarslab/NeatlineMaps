@@ -149,14 +149,14 @@ function neatlinemaps_getBackgroundLayers($item) {
 	$layers = array();
 	try {
 		$backgrounds = $item->getElementTextsByElementNameAndSetName( 'Background', 'Item Type Metadata');
+		foreach ($backgrounds as $background) {
+			$layer[ neatlinemaps_getLayerName($background->text) ] =
+			neatlinemaps_getServiceAddy($background->text);
+		}
+		return $layers;
 	}
 	catch (Omeka_Record_Exception $e) {
 	}
-	foreach ($backgrounds as $background) {
-		$layer[ neatlinemaps_getLayerName($background->text) ] =
-		neatlinemaps_getServiceAddy($background->text);
-	}
-	return $layers;
 }
 
 function load_geoserver_raster($file, $item)

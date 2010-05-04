@@ -33,7 +33,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$params["maxx"] = $bb['maxx'] ;
 		$params["miny"] = $bb['miny'] ;
 		$params["maxy"] = $bb['maxy'] ;
-		$params["srs"] = $bb['SRS'] ;			
+		$params["srs"] = $bb['SRS'] ;
 
 		# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 		# transforms before the projection has been fetched.
@@ -41,11 +41,11 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($params["srs"]),':','/') ."/proj4js/";
 		$client->setUri($proj4jsurl);
 		$params["proj4js"] = $client->request()->getBody();
-		
+
 		$this->view->params = $params;
-		
+
 		# now we retrieve any features from other Items that are tagged with prefix:id
-		
+
 
 	}
 
@@ -59,14 +59,20 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->view->serviceaddy = $serviceaddy;
 
 	}
+
+
 	
 	private function getFeaturesForItem($item) {
 		$tagstring = NEATLINE_TAG_PREFIX . $item->id;
 		$featureitems = get_db()->getTable('Item')->findBy(array('tags' => $tagstring), $limit);
-		$pull_wkt = create_function('$i', 'return $i->get' ) ;
+		$features = array();
 		foreach ( $featureitems as $featureitem ) {
-			
+			array_push($features,getWKTs($featureitem));
 		}
+	}
+
+	private function getWKTs($item) {
+
 	}
 
 }

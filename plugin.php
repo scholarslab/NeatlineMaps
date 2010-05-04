@@ -137,7 +137,26 @@ function neatlinemaps_assemble_params_for_map($item) {
 	$client->setUri($proj4jsurl);
 	$params["proj4js"] = $client->request()->getBody();
 
+	# now we must retrieve information of any background layers that should accompany
+	# this map Item
+	
+	$params->layers = getBackgroundLayers($item);
+
 	return $params;
+}
+
+private function getBackgroundLayers($item) {
+	$layers = array();
+	try {
+		$backgrounds = $item->getElementTextsByElementNameAndSetName( 'Background', 'Item Type Metadata');
+	}
+	catch (Omeka_Record_Exception $e) {
+	}
+	foreach ($backgrounds as $background) {
+		$layer[ neatlinemaps_getLayerName($background->text) ] =
+		neatlinemaps_getServiceAddy($background->text);
+	}
+	return $layers;
 }
 
 function load_geoserver_raster($file, $item)
@@ -188,6 +207,7 @@ function load_geoserver_raster($file, $item)
 
 function neatlinemaps_getServiceAddy($item)
 {
+	$item = is_numeric($item) ? $item = get_item_by_id($item) : $item;
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
 	}
@@ -207,6 +227,7 @@ function neatlinemaps_getServiceAddy($item)
 
 function neatlinemaps_getLayerName($item)
 {
+	$item = is_numeric($item) ? $item = get_item_by_id($item) : $item;
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}

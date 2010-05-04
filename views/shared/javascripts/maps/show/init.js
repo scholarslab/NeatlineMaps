@@ -1,34 +1,37 @@
+if (typeof (Omeka) == 'undefined') {
+	Omeka = new Object();
+}
+
+if (!Omeka.NeatlineMaps) {
+	Omeka.NeatlineMaps = new Object();
+}
+
 var init = function() {
 
 	var wgs84 = new OpenLayers.Projection("EPSG:4326");
 	var myproj = new OpenLayers.Projection(srs);
-	//var baseproj = new OpenLayers.Projection("EPSG:900913");
+	// var baseproj = new OpenLayers.Projection("EPSG:900913");
 
-    map = new OpenLayers.Map("map", {
-        'maxResolution': 'auto',
-        'numZoomLevels': 20,
-        'projection': wgs84
-    });
+	map = new OpenLayers.Map("map", {
+		'maxResolution' : 'auto',
+		'numZoomLevels' : 20,
+		'projection' : wgs84
+	});
 
-    var layer = new OpenLayers.Layer.WMS(
-    layername, serviceaddy,
-    {
-        'layers': layername
-    },
-    {
-        'buffer': 0,
-		'gutter': 5
-    }
-    );
+	var layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
+		'layers' : layername
+	}, {
+		'buffer' : 0,
+		'gutter' : 5
+	});
 
-	map.addLayers([layer]);
+	map.addLayers( [ layer ]);
 
-	bbox.transform(myproj,wgs84);
+	bbox.transform(myproj, wgs84);
 	map.zoomToExtent(bbox);
-	
+
 	/*
-	 * /*
-	 * var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':
+	 * /* var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':
 	 * 'BC9A493B41014CAABB98F0471D759707', 'styleId': 9202, 'sphericalMercator':
 	 * 'true' });
 	 * 
@@ -36,9 +39,8 @@ var init = function() {
 	 * G_SATELLITE_MAP, 'sphericalMercator': true, 'maxExtent': new
 	 * OpenLayers.Bounds( -20037508.34, -20037508.34, 20037508.34, 20037508.34)
 	 * });
-	 *
 	 * 
-	 * // style the sketch fancy var sketchSymbolizers = { "Point": {
+	 *  // style the sketch fancy var sketchSymbolizers = { "Point": {
 	 * pointRadius: 4, graphicName: "square", fillColor: "white", fillOpacity:
 	 * 1, strokeWidth: 1, strokeOpacity: 1, strokeColor: "#333333" }, "Line": {
 	 * strokeWidth: 3, strokeOpacity: 1, strokeColor: "#666666",
@@ -61,19 +63,18 @@ var init = function() {
 	 * "measurepartial": handleMeasurements }); map.addControl(control); }
 	 */
 
-	
 	map.addControl(new OpenLayers.Control.MousePosition());
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());
 	map.addControl(new OpenLayers.Control.LayerSwitcher());
-	//console.log(bbox);
-	//bbox.transform(myproj,wgs84);
-	//console.log(bbox);
-	//map.zoomToMaxExtent();
-	//alert(bbox);
-	//alert(newbb);
-	//map.zoomToExtent(newbb);
-	
+	// console.log(bbox);
+	// bbox.transform(myproj,wgs84);
+	// console.log(bbox);
+	// map.zoomToMaxExtent();
+	// alert(bbox);
+	// alert(newbb);
+	// map.zoomToExtent(newbb);
+
 	if (!this.isInitialized) {
 		this.isInitialized = true;
 	}

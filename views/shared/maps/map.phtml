@@ -9,7 +9,9 @@ echo js('maps/show/init');
 	
 //<!--
 	<?php foreach ($params as $name => $value) {
-			echo "$name = '$value';"	;		
+			echo "$name = '$value';"	;
+		  #foreach ($params['layers'] as 
+		  print_r($param['layers']);		
 		}
 		?>
 		bbox = new OpenLayers.Bounds(minx,miny,maxx,maxy);

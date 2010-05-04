@@ -11,12 +11,12 @@ echo js('maps/show/init');
 	<?php foreach ($params as $name => $value) {
 			echo "$name = '$value';"	;
 			$layers = $params['layers'];
-		  foreach (array_keys($layers) as $layername) {
+		}
+		foreach (array_keys($layers) as $layername) {
 		  	?>
 		  	Omeka.NeatlineMaps.layers['<?php echo $layername; ?>'] = '<?php echo $layers[$layername];?>';
 		  	<?php 
-		  } 	
-		}
+	 	 } 	
 		?>
 		bbox = new OpenLayers.Bounds(minx,miny,maxx,maxy);
 //-->

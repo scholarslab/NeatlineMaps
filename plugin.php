@@ -207,7 +207,7 @@ function load_geoserver_raster($file, $item)
 
 function neatlinemaps_getServiceAddy($item)
 {
-	$item = is_numeric($item) ? $item = get_item_by_id($item) : $item;
+	$item = is_numeric($item) ? get_item_by_id($item) : $item;
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
 	}
@@ -227,7 +227,7 @@ function neatlinemaps_getServiceAddy($item)
 
 function neatlinemaps_getLayerName($item)
 {
-	$item = is_numeric($item) ? $item = get_item_by_id($item) : $item;
+	$item = is_numeric($item) ? get_item_by_id($item) : $item;
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}

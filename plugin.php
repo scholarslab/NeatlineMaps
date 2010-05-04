@@ -150,7 +150,7 @@ function neatlinemaps_getBackgroundLayers($item) {
 	try {
 		$backgrounds = $item->getElementTextsByElementNameAndSetName( 'Background', 'Item Type Metadata');
 		foreach ($backgrounds as $background) {
-			$layer[ neatlinemaps_getLayerName($background->text) ] =
+			$layers[ neatlinemaps_getLayerName($background->text) ] =
 			neatlinemaps_getServiceAddy($background->text);
 		}
 		return $layers;

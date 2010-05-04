@@ -139,13 +139,13 @@ function neatlinemaps_assemble_params_for_map($item) {
 
 	# now we must retrieve information of any background layers that should accompany
 	# this map Item
-	
-	$params->layers = getBackgroundLayers($item);
+
+	$params->layers = neatlinemaps_getBackgroundLayers($item);
 
 	return $params;
 }
 
-private function getBackgroundLayers($item) {
+function neatlinemaps_getBackgroundLayers($item) {
 	$layers = array();
 	try {
 		$backgrounds = $item->getElementTextsByElementNameAndSetName( 'Background', 'Item Type Metadata');

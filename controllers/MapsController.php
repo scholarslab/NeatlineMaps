@@ -42,7 +42,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$client->setUri($proj4jsurl);
 		$params["proj4js"] = $client->request()->getBody();
 
-		$this->view->params = $params;
+		$this->view->params = neatlinemaps_assemble_params_for_map($item);
 
 		# now we retrieve any features from other Items that are tagged with prefix:id
 

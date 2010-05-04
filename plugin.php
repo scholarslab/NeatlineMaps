@@ -70,6 +70,10 @@ function neatlinemaps_install()
               array(
               'name'        => "Layername",
               'description' => "WMS Name of map", 
+              ),
+              array(
+              'name'        => "Background",
+              'description' => "ID of Map to use as background layer for this map", 
               )
                
               );
@@ -84,7 +88,7 @@ function neatlinemaps_install()
 }
 
 function neatlinemaps_show_item_in_page($html,$item){
-        return __v()->partial('maps/map.phtml',array("params" => assemble_params_for_map($item) ));
+	return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
 }
 
 function neatlinemaps_uninstall()
@@ -105,10 +109,10 @@ function neatlinemaps_routes($router)
 
 function neatlinemaps_widget() {
 	$item = get_item_by_id(item('ID'),"Item");
-	echo __v()->partial('maps/map.phtml',array("params" => assemble_params_for_map($item) ));
+	echo __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
 }
 
-function assemble_params_for_map($item) {
+function neatlinemaps_assemble_params_for_map($item) {
 	$params = array();
 
 	# now we need to retrieve the bounding box and projection ID
@@ -132,7 +136,7 @@ function assemble_params_for_map($item) {
 	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($params["srs"]),':','/') ."/proj4js/";
 	$client->setUri($proj4jsurl);
 	$params["proj4js"] = $client->request()->getBody();
-	
+
 	return $params;
 }
 

@@ -149,7 +149,7 @@ function neatlinemaps_getBackgroundLayers($item) {
 		$backgrounds = $item->getElementTextsByElementNameAndSetName( 'Background', 'Item Type Metadata');
 		foreach ($backgrounds as $background) {
 			$layers[ neatlinemaps_getLayerName($background->text) ] =
-			neatlinemaps_getServiceAddy($background->text);
+			array(neatlinemaps_getServiceAddy($background->text),neatlinemaps_getTitle($background->text));
 		}
 		return $layers;
 	}
@@ -237,6 +237,27 @@ function neatlinemaps_getLayerName($item)
 	}
 	if ($serviceaddy) {
 		return $serviceaddy;
+	}
+	else {
+		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
+	}
+
+}
+
+function neatlinemaps_getTitle($item)
+{
+	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
+	try {
+		$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+	}
+	catch (Omeka_Record_Exception $e) {
+	}
+
+	if ($titles) {
+		$title = $titles[0]->text;
+	}
+	if ($title) {
+		return $title;
 	}
 	else {
 		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;

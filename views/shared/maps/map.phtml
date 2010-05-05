@@ -14,9 +14,10 @@ echo js('maps/show/show');
 		}
 		?>Omeka.NeatlineMaps.backgroundlayers = new Array();<?php
 		foreach (array_keys($layers) as $layername) {
+			$layerinfo = $layers[$layername];
 		  	?>
 		  	Omeka.NeatlineMaps.backgroundlayers.push(
-				  	new OpenLayers.Layer.WMS('<?php echo $layername; ?>' , '<?php echo $layers[$layername];?>', {layers: '<?php echo $layername; ?>'})
+				  	new OpenLayers.Layer.WMS('<?php echo $layerinfo[1]; ?>' , '<?php echo $layerinfo[0];?>', {layers: '<?php echo $layername; ?>'})
 				  	);
 		  	<?php 
 	 	 } 	

@@ -244,5 +244,11 @@ function neatlinemaps_getLayerName($item)
 		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
 	}
 
+	function neatlinemaps_getFeaturesForItem($item) {
+		$limit = 9999;
+		$tagstring = NEATLINE_TAG_PREFIX . $item->id;
+		return get_db()->getTable('Item')->findBy(array('tags' => $tagstring), $limit);
+
+	}
 
 }

@@ -36,17 +36,6 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 	}
 
-
-	
-	private function getFeaturesForItem($item) {
-		$tagstring = NEATLINE_TAG_PREFIX . $item->id;
-		$featureitems = get_db()->getTable('Item')->findBy(array('tags' => $tagstring), $limit);
-		$features = array();
-		foreach ( $featureitems as $featureitem ) {
-			array_push($features,getWKTs($featureitem));
-		}
-	}
-
 	private function getWKTs($item) {
 
 	}

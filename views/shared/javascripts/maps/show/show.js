@@ -27,6 +27,10 @@ var init = function() {
 
 	map.addLayers( [ layer ]);
 
+	if (Omeka.NeatlineMaps.backgroundlayers) {
+		map.addLayers( Omeka.NeatlineMaps.backgroundlayers );
+	}
+	
 	bbox.transform(myproj, wgs84);
 	map.zoomToExtent(bbox);
 

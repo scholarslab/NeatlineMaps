@@ -242,10 +242,63 @@ function neatlinemaps_getLayerName($item)
 		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
 	}
 
-	function neatlinemaps_getFeaturesForItem($item) {
-		$limit = 9999;
-		$tagstring = NEATLINE_TAG_PREFIX . $item->id;
-		return get_db()->getTable('Item')->findBy(array('tags' => $tagstring), $limit);
-	}
+}
 
+function neatlinemaps_getFeaturesForItem($item) {
+	$features = array();
+	$limit = 9999;
+	$tagstring = NEATLINE_TAG_PREFIX . $item->id;
+	$featureitems = get_db()->getTable('Item')->findBy(array('tags' => $tagstring), $limit);
+	$featureids = array();
+	foreach ($featureitems as $featureitem) {
+		try {
+			$coverages = $featureitem->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
+		}
+		catch (Omeka_Record_Exception $e) {
+		}
+		$wkts = array();
+		foreach($coverages as $coverage) {
+			if ( neatlinemaps_isWKT($coverage->text) ) {
+				array_push($wkts, $coverage->text);
+			}
+		}
+		array_push($features,$wkts);
+	}
+	return $features;
+}
+
+function neatlinemaps_isWKT($i)
+{
+	$j = strtoupper( neatlinemaps_strstrb($i, '(') );
+	switch($j) {
+		case "POINT":
+			return true;
+			break;
+		case "LINESTRING":
+			return true;
+			break;
+		case "POLYGON":
+			return true;
+			break;
+		case "MULTIPOINT":
+			return true;
+			break;
+		case "MULTILINESTRING":
+			return true;
+			break;
+		case "MULTIPOLYGON":
+			return true;
+			break;
+		case "GEOMETRYCOLLECTION":
+			return true;
+			break;
+		case "MULTIPOINT":
+			return true;
+			break;
+	}
+	return false;
+}
+
+function neatlinemaps_strstrb($h,$n){
+	return array_shift(explode($n,$h,2));
 }

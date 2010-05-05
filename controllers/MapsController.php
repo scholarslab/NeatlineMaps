@@ -20,9 +20,6 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 		$this->view->params = neatlinemaps_assemble_params_for_map($item);
 
-		# now we retrieve any features from other Items that are tagged with prefix:id
-
-
 	}
 
 	/* drops back through to GeoServer to supply WMS directly */
@@ -33,10 +30,6 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$item = $this->findById($id,"Item");
 		$serviceaddy = neatlinemaps_getServiceAddy($item);
 		$this->view->serviceaddy = $serviceaddy;
-
-	}
-
-	private function getWKTs($item) {
 
 	}
 

@@ -26,6 +26,8 @@ add_plugin_hook('after_upload_file', 'load_geoserver_raster');
 add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 
 add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
+add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_background_widget");
+
 
 
 function neatlinemaps_install()
@@ -322,4 +324,30 @@ function neatlinemaps_isWKT($i)
 
 function neatlinemaps_strstrb($h,$n){
 	return array_shift(explode($n,$h,2));
+}
+
+function neatlinemaps_background_widget($html,$inputNameStem,$value,$options,$record,$element) {
+	$div = __v()->partial('widgets/background.phtml', array("inputNameStem" =>$inputNameStem, "value" => $value, "options" => $options, "record" => $record, "element" => $element));
+	return $div;
+}
+
+function neatline_getMapItemType() {
+	$types = get_db()->getTable("ItemType")->findBy(array("name" => "Historical map"));
+
+	/*	 we need to add the following workaround because Omeka's ItemType table lacks filtering right now
+	 the findBy above -should- take care of this for us, but it doesn't. we should be able to do this with a
+	 filtering closure, but PHP is confusion */
+	$tmp = array();
+	foreach ($types as $itemtype) {
+		if ($itemtype->name == 'Historical map') {
+			array_push($tmp, $itemtype);
+		}
+	}
+	$types = $tmp;
+
+	$type = "NO NEATLINEMAPS INSTALLED";
+	if (count($types) > 0) {
+		$type = reset($types)->id; // a PHP idiom is that reset() returns the first element of an assoc array
+	}
+	return $type;
 }

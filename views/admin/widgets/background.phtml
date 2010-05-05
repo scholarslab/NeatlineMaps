@@ -1,0 +1,12 @@
+<?php
+
+$items = get_items(array('type' => neatline_getMapItemType() ), 200);
+$itemnames = array();
+foreach ($items as $item) {
+	array_push($itemnames,item("Dublin Core", "Title", array(), $item));
+}
+$options = array_combine($itemnames,$itemnames);
+?>
+
+<div id="backgroundtext"><?php echo $this->formSelect( $inputNameStem . "[text]", $value, array('class'=>'select'), $options); ?>
+</div>

@@ -3,8 +3,11 @@ echo js('proj4js/proj4js-compressed');
 echo js('OpenLayers-2.8/lib/OpenLayers');
 echo js('maps/show/show');
 ?>
+<link rel="stylesheet" href="<?php echo css('neatline'); ?>" />
 
 <script type="text/javascript"><?php echo $params['proj4js'] ?></script>
+
+<div id="tmp" class="themap"></div>
 <script type="text/javascript">
 	
 //<!--
@@ -32,15 +35,8 @@ echo js('maps/show/show');
 			Omeka.NeatlineMaps = new Array();
 		}
 		mapdiv = "map" + Omeka.NeatlineMaps.length;
-		document.getElementById('tmp').id = mapdiv;		
+		document.getElementById('tmp').id = mapdiv;	
+		Event.observe(window, 'load', init );	
 //-->
 
-</script>
-
-<link rel="stylesheet" href="<?php echo css('neatline'); ?>" />
-
-<div id="tmp" class="themap"></div>
-
-<script text="text/javascript">
-	Event.observe(window, 'load', init );
 </script>

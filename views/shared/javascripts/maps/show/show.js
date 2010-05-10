@@ -1,10 +1,3 @@
-if (typeof (Omeka) == 'undefined') {
-	Omeka = new Object();
-}
-
-if (!Omeka.NeatlineMaps) {
-	Omeka.NeatlineMaps = new Object();
-}
 
 var init = function() {
 
@@ -12,7 +5,7 @@ var init = function() {
 	var myproj = new OpenLayers.Projection(srs);
 	// var baseproj = new OpenLayers.Projection("EPSG:900913");
 
-	map = new OpenLayers.Map("map", {
+	map = new OpenLayers.Map(mapdiv, {
 		'maxResolution' : 'auto',
 		'numZoomLevels' : 20,
 		'projection' : wgs84
@@ -27,10 +20,10 @@ var init = function() {
 
 	map.addLayers( [ layer ]);
 
-	if (Omeka.NeatlineMaps.backgroundlayers) {
-		map.addLayers( Omeka.NeatlineMaps.backgroundlayers );
+	if (backgroundlayers) {
+		map.addLayers( backgroundlayers );
 	}
-	
+	Omeka.NeatlineMaps.push(map);
 	bbox.transform(myproj, wgs84);
 	map.zoomToExtent(bbox);
 

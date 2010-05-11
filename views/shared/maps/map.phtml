@@ -4,10 +4,9 @@ echo js('maps/show/show');
 ?>
 <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"> </script>
 <link rel="stylesheet" href="<?php echo css('neatline'); ?>" />
-
 <script type="text/javascript"><?php echo $params['proj4js'] ?></script>
 
-<div id="tmp" class="themap"></div>
+<div id="NLtmp" class="themap"></div>
 <script type="text/javascript">
 		if (typeof (Omeka) == 'undefined') {
 			Omeka = new Object();
@@ -37,15 +36,10 @@ echo js('maps/show/show');
 	 	 } 	
 		?>
 		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);
-
 		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.length;
-		console.log("NLconfig.mapdiv:");
-		console.log(NLconfig.mapdiv);
-		document.getElementById('tmp').id = NLconfig.mapdiv;	
+		document.getElementById('NLtmp').id = NLconfig.mapdiv;	
 		init(NLconfig);
 		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
-		console.log("NLconfig:");
-		console.log(NLconfig);
 		delete(NLconfig);
 //-->
 

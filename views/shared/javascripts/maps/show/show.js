@@ -1,18 +1,18 @@
 
-var init = function() {
+var init = function(config) {
 
 	var wgs84 = new OpenLayers.Projection("EPSG:4326");
-	var myproj = new OpenLayers.Projection(srs);
+	var myproj = new OpenLayers.Projection(config.srs);
 	// var baseproj = new OpenLayers.Projection("EPSG:900913");
 
-	map = new OpenLayers.Map(mapdiv, {
+	var map = new OpenLayers.Map(config.mapdiv, {
 		'maxResolution' : 'auto',
 		'numZoomLevels' : 20,
 		'projection' : wgs84
 	});
 
-	var layer = new OpenLayers.Layer.WMS(layername, serviceaddy, {
-		'layers' : layername
+	var layer = new OpenLayers.Layer.WMS(config.layername, config.serviceaddy, {
+		'layers' : config.layername
 	}, {
 		'buffer' : 0,
 		'gutter' : 5
@@ -20,12 +20,12 @@ var init = function() {
 
 	map.addLayers( [ layer ]);
 
-	if (backgroundlayers) {
-		map.addLayers( backgroundlayers );
+	if (config.backgroundlayers) {
+		map.addLayers( config.backgroundlayers );
 	}
 	Omeka.NeatlineMaps.push(map);
-	bbox.transform(myproj, wgs84);
-	map.zoomToExtent(bbox);
+	config.bbox.transform(myproj, wgs84);
+	map.zoomToExtent(config.bbox);
 
 	/*
 	 * /* var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':

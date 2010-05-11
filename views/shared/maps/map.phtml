@@ -9,34 +9,40 @@ echo js('maps/show/show');
 
 <div id="tmp" class="themap"></div>
 <script type="text/javascript">
-	
+		if (typeof (Omeka) == 'undefined') {
+			Omeka = new Object();
+		}
+		
+		if (!Omeka.NeatlineMaps) {
+			Omeka.NeatlineMaps = new Array();
+		}
+
+		if (!Omeka.NeatlineMaps.history) {
+			Omeka.NeatlineMaps.history = new Array();
+		}
+		NLconfig = new Object();
 //<!--
 	<?php foreach ($params as $name => $value) {
-			echo "$name = '$value';"	;
+			echo 'tmp' . "$name = '$value';"	;
 			$layers = $params['layers'];
 		}
-		?>backgroundlayers = new Array();<?php
+		?>NLconfig.backgroundlayers = new Array();<?php
 		foreach (array_keys($layers) as $layername) {
 			$layerinfo = $layers[$layername];
 		  	?>
-		  	backgroundlayers.push(
+		  	NLconfig.backgroundlayers.push(
 				  	new OpenLayers.Layer.WMS('<?php echo $layerinfo[1]; ?>' , '<?php echo $layerinfo[0];?>', {layers: '<?php echo $layername; ?>'})
 				  	);
 		  	<?php 
 	 	 } 	
 		?>
-		bbox = new OpenLayers.Bounds(minx,miny,maxx,maxy);
+		NLconfig.bbox = new OpenLayers.Bounds(minx,miny,maxx,maxy);
 
-		if (typeof (Omeka) == 'undefined') {
-			Omeka = new Object();
-		}
-
-		if (!Omeka.NeatlineMaps) {
-			Omeka.NeatlineMaps = new Array();
-		}
-		mapdiv = "map" + Omeka.NeatlineMaps.length;
-		document.getElementById('tmp').id = mapdiv;	
-		Event.observe(window, 'load', init );	
+		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.length;
+		document.getElementById('tmp').id = NLconfig.mapdiv;	
+		init(NLconfig);
+		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
+		delete(NLconfig);
 //-->
 
 </script>

@@ -39,9 +39,13 @@ echo js('maps/show/show');
 		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);
 
 		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.length;
+		console.log("NLconfig.mapdiv:");
+		console.log(NLconfig.mapdiv);
 		document.getElementById('tmp').id = NLconfig.mapdiv;	
 		init(NLconfig);
 		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
+		console.log("NLconfig:");
+		console.log(NLconfig);
 		delete(NLconfig);
 //-->
 

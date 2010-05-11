@@ -23,7 +23,7 @@ echo js('maps/show/show');
 		NLconfig = new Object();
 //<!--
 	<?php foreach ($params as $name => $value) {
-			echo 'tmp' . "$name = '$value';"	;
+			echo 'NLconfig.' . "$name = '$value';"	;
 			$layers = $params['layers'];
 		}
 		?>NLconfig.backgroundlayers = new Array();<?php

@@ -1,5 +1,11 @@
+if (typeof (Omeka) == 'undefined') {
+	Omeka = new Object();
+}
 
-var init = function(config) {
+if (!Omeka.NeatlineMaps) {
+	Omeka.NeatlineMaps = new Array();
+}
+var Omeka.NeatlineMaps.createMap = function(event, config) {
 
 	var wgs84 = new OpenLayers.Projection("EPSG:4326");
 	var myproj = new OpenLayers.Projection(config.srs);
@@ -11,17 +17,18 @@ var init = function(config) {
 		'projection' : wgs84
 	});
 
-	var layer = new OpenLayers.Layer.WMS(config.layername, config.serviceaddy, {
-		'layers' : config.layername
-	}, {
-		'buffer' : 0,
-		'gutter' : 5
-	});
+	var layer = new OpenLayers.Layer.WMS(config.layername, config.serviceaddy,
+			{
+				'layers' : config.layername
+			}, {
+				'buffer' : 0,
+				'gutter' : 5
+			});
 
 	map.addLayers( [ layer ]);
 
 	if (config.backgroundlayers) {
-		map.addLayers( config.backgroundlayers );
+		map.addLayers(config.backgroundlayers);
 	}
 	Omeka.NeatlineMaps.push(map);
 	config.bbox.transform(myproj, wgs84);
@@ -36,7 +43,6 @@ var init = function(config) {
 	 * G_SATELLITE_MAP, 'sphericalMercator': true, 'maxExtent': new
 	 * OpenLayers.Bounds( -20037508.34, -20037508.34, 20037508.34, 20037508.34)
 	 * });
-	 * 
 	 *  // style the sketch fancy var sketchSymbolizers = { "Point": {
 	 * pointRadius: 4, graphicName: "square", fillColor: "white", fillOpacity:
 	 * 1, strokeWidth: 1, strokeOpacity: 1, strokeColor: "#333333" }, "Line": {

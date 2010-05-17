@@ -36,10 +36,10 @@ echo js('maps/show/show');
 	 	 } 	
 		?>
 		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);
-		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.length;
+		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
+		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.history.length;
 		document.getElementById('NLtmp').id = NLconfig.mapdiv;	
 		Event.observe(window, 'load', Omeka.NeatlineMaps.createMap.bindAsEventListener(this,NLconfig));
-		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
 		delete(NLconfig);
 //-->
 

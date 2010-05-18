@@ -5,6 +5,7 @@ if (typeof (Omeka) == 'undefined') {
 if (!Omeka.NeatlineMaps) {
 	Omeka.NeatlineMaps = new Array();
 }
+
 Omeka.NeatlineMaps.createMap = function(event, config) {
 
 	var wgs84 = new OpenLayers.Projection("EPSG:4326");

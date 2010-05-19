@@ -19,6 +19,7 @@
     margin:5px 0;
     padding:4px;
     width:auto;
+    float:left;
 }
 #mappanel div {
     cursor: pointer;

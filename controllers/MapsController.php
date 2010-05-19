@@ -22,9 +22,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 	}
 
-	/* drops back through to GeoServer to supply WMS directly */
-
-	public function wmsAction()
+	public function serviceaddyAction()
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
@@ -32,5 +30,16 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->view->serviceaddy = $serviceaddy;
 
 	}
+	
+	public function layernameAction()
+	{
+		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
+		$item = $this->findById($id,"Item");
+		$serviceaddy = neatlinemaps_getLayerName($item);
+		$this->view->layername = $layername;
+
+	}
+	
+
 
 }

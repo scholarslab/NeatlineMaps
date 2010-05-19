@@ -31,6 +31,46 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 	if (config.backgroundlayers) {
 		map.addLayers(config.backgroundlayers);
 	}
+	
+	var controls = {
+			"mousepos": new OpenLayers.Control.MousePosition(),
+			"scale": new OpenLayers.Control.Scale(),
+			"scaleline": new OpenLayers.Control.ScaleLine(),
+			"layerswitcher": new OpenLayers.Control.LayerSwitcher(),
+			"addlayer": new OpenLayers.Control.Button( {
+		        trigger : function() { addlayerdialog.dialog("open"); },
+		        displayClass : "olNewLayer",
+		        title: "Add new layer"
+		    })
+	};
+	
+	var panel = new OpenLayers.Control.Panel( {
+		div : document.getElementById('mappanel')
+	});
+	for ( var key in controls) {
+		panel.addControls(controls[key]);
+	}
+	
+	map.addControl(panel);
+	
+	var addlayerdialog = jQuery("#addlayerdialog").dialog( {
+		"autoOpen": false,
+		"draggable": true,
+		"height": 'auto',
+		"width": 500,
+		"title": "Add a Layer...",
+		"closeOnEscape": true,
+		"buttons": { "Add": 
+				function() { 
+					id = jQuery("#layerselect")[0].value;
+					jQuery.get("/maps/serviceaddy/" + id, function(serviceaddy){ 
+						jQuery.get("/maps/layername/" + id, function(layername) {
+							map.addLayers([new OpenLayers.Layer.WMS( layername, serviceaddy, {"layers": layername})]);
+						});
+					});
+					jQuery(this).dialog("close"); } }
+		});
+	
 	Omeka.NeatlineMaps.push(map);
 	config.bbox.transform(myproj, wgs84);
 	map.zoomToExtent(config.bbox);
@@ -67,15 +107,6 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 	 * "measurepartial": handleMeasurements }); map.addControl(control); }
 	 */
 
-	map.addControl(new OpenLayers.Control.MousePosition());
-	map.addControl(new OpenLayers.Control.Scale());
-	map.addControl(new OpenLayers.Control.ScaleLine());
-	map.addControl(new OpenLayers.Control.LayerSwitcher());
-	map.addControl(new OpenLayers.Control.Button( {
-        trigger : function() { addlayerdialog.dialog("open"); },
-        displayClass : "olNewLayer",
-        title: "Add new layer"
-    }));
 	var addlayerdialog = jQuery("#addlayerdialog").dialog( {
 		"autoOpen": false,
 		"draggable": true,

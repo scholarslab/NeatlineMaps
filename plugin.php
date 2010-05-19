@@ -331,7 +331,7 @@ function neatlinemaps_background_widget($html,$inputNameStem,$value,$options,$re
 	return $div;
 }
 
-function neatline_getMapItemType() {
+function neatlinemaps_getMapItemType() {
 	$types = get_db()->getTable("ItemType")->findBy(array("name" => "Historical map"));
 
 	/*	 we need to add the following workaround because Omeka's ItemType table lacks filtering right now

@@ -18,7 +18,7 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 		'projection' : wgs84
 	});
 
-	var layer = new OpenLayers.Layer.WMS(config.layername, config.serviceaddy,
+	var layer = new OpenLayers.Layer.WMS(config.layertitle, config.serviceaddy,
 			{
 				'layers' : config.layername
 			}, {

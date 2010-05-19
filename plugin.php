@@ -115,6 +115,7 @@ function neatlinemaps_widget() {
 function neatlinemaps_assemble_params_for_map($item) {
 	$params = array();
 
+	$params['layertitle'] = neatlinemaps_getTitle($item);
 	# now we need to retrieve the bounding box and projection ID
 	$params["serviceaddy"] = neatlinemaps_getServiceAddy($item) ;
 	$params["layername"] = neatlinemaps_getLayerName($item) ;

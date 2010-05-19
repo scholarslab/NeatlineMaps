@@ -71,6 +71,28 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 	map.addControl(new OpenLayers.Control.Scale());
 	map.addControl(new OpenLayers.Control.ScaleLine());
 	map.addControl(new OpenLayers.Control.LayerSwitcher());
+	map.addControl(new OpenLayers.Control.Button( {
+        trigger : function() { addlayerdialog.dialog("open"); },
+        displayClass : "olNewLayer",
+        title: "Add new layer"
+    }));
+	var addlayerdialog = jQuery("#addlayerdialog").dialog( {
+		"autoOpen": false,
+		"draggable": true,
+		"height": 'auto',
+		"width": 500,
+		"title": "Add a Layer...",
+		"closeOnEscape": true,
+		"buttons": { "Add": 
+				function() { 
+					id = jQuery("#layerselect")[0].value;
+					jQuery.get("/maps/serviceaddy/" + id, function(serviceaddy){ 
+						jQuery.get("/maps/layername/" + id, function(layername) {
+							map.addLayers([new OpenLayers.Layer.WMS( layername, serviceaddy, {"layers": layername})]);
+						});
+					});
+					jQuery(this).dialog("close"); } }
+		});
 
 	if (!this.isInitialized) {
 		this.isInitialized = true;

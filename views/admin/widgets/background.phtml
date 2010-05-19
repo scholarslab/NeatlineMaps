@@ -8,7 +8,7 @@ foreach ($items as $item) {
 	array_push($itemids,$item->id);
 	
 }
-$options = array_combine($itemnames,$itemids);
+$options = array_combine($itemids,$itemnames);
 ?>
 
 <div id="backgroundtext"><?php echo $this->formSelect( $inputNameStem . "[text]", $value, array('class'=>'select'), $options); ?>

@@ -32,11 +32,7 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 		map.addLayers(config.backgroundlayers);
 	}
 	
-	var controls = {
-			"mousepos": new OpenLayers.Control.MousePosition(),
-			"scale": new OpenLayers.Control.Scale(),
-			"scaleline": new OpenLayers.Control.ScaleLine(),
-			"layerswitcher": new OpenLayers.Control.LayerSwitcher(),
+	var panelcontrols = {
 			"addlayer": new OpenLayers.Control.Button( {
 		        trigger : function() { addlayerdialog.dialog("open"); },
 		        displayClass : "olNewLayer",
@@ -47,11 +43,17 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 	var panel = new OpenLayers.Control.Panel( {
 		div : document.getElementById('mappanel')
 	});
-	for ( var key in controls) {
+	for ( var key in panelcontrols) {
 		panel.addControls(controls[key]);
 	}
 	
-	map.addControl(panel);
+	map.addControls(	[
+	                	new OpenLayers.Control.MousePosition(),
+	                	new OpenLayers.Control.Scale(),
+	                	new OpenLayers.Control.ScaleLine(),
+	                	new OpenLayers.Control.LayerSwitcher()controls,
+	                	panel
+	                	]);
 	
 	var addlayerdialog = jQuery("#addlayerdialog").dialog( {
 		"autoOpen": false,
@@ -83,8 +85,7 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 	 * var gsat = new OpenLayers.Layer.Google("Google Satellite", { 'type':
 	 * G_SATELLITE_MAP, 'sphericalMercator': true, 'maxExtent': new
 	 * OpenLayers.Bounds( -20037508.34, -20037508.34, 20037508.34, 20037508.34)
-	 * });
-	 *  // style the sketch fancy var sketchSymbolizers = { "Point": {
+	 * }); // style the sketch fancy var sketchSymbolizers = { "Point": {
 	 * pointRadius: 4, graphicName: "square", fillColor: "white", fillOpacity:
 	 * 1, strokeWidth: 1, strokeOpacity: 1, strokeColor: "#333333" }, "Line": {
 	 * strokeWidth: 3, strokeOpacity: 1, strokeColor: "#666666",

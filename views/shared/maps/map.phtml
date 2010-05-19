@@ -7,6 +7,8 @@ echo js('maps/show/show');
 <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"> </script>
 <link rel="stylesheet" href="<?php echo css('neatline'); ?>" />
 <script type="text/javascript"><?php echo $params['proj4js'] ?></script>
+
+<div id="NLtmp" class="themap"></div>
 <div id="addlayerdialog">
 <div id="mappreview"></div>
 <?php
@@ -22,7 +24,6 @@ $options = array_combine($itemids,$itemnames);
 echo $this->formSelect("layerselect", reset($options), array('class'=>'select'), $options);
 ?>
 </div>
-<div id="NLtmp" class="themap"></div>
 <script type="text/javascript">
 		if (typeof (Omeka) == 'undefined') {
 			Omeka = new Object();

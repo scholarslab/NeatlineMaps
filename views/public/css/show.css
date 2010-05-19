@@ -8,10 +8,6 @@
     background-color:white
 }
 
-.hand-icon { background-image: url(img/panning-hand-off.png) 0 6px no-repeat !important; }
-.ruler-icon { background-image: url(img/measuring-stick-off.png) 0 6px no-repeat !important; }
-.area-icon { background-image: url(img/marker.png) 0 6px no-repeat !important; }
-
 #mapbutton {
     float:none;
     cursor:pointer;
@@ -92,8 +88,8 @@
     url("http://openparachute.files.wordpress.com/2007/06/feed-icon-24x24.png?w=24")
 ;
     background-repeat: no-repeat;
-}
-
-.olControlEditingToolbar .olNewLayerItemInactive {
     margin-right: 30px;
 }
+.hand-icon { background-image: url(img/panning-hand-off.png) 0 6px no-repeat !important; }
+.ruler-icon { background-image: url(img/measuring-stick-off.png) 0 6px no-repeat !important; }
+.area-icon { background-image: url(img/marker.png) 0 6px no-repeat !important; }

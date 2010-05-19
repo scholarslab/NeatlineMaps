@@ -64,10 +64,11 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 		"closeOnEscape": true,
 		"buttons": { "Add": 
 				function() { 
-					id = jQuery("#layerselect")[0].value;
+					var id = jQuery("#layerselect")[0].value;
 					jQuery.get("/maps/serviceaddy/" + id, function(serviceaddy){ 
 						jQuery.get("/maps/layername/" + id, function(layername) {
-							map.addLayers([new OpenLayers.Layer.WMS( layername, serviceaddy, {"layers": layername})]);
+							var label =jQuery("#layerselect option")[jQuery("#layerselect")[0].selectedIndex].label;
+							map.addLayers([new OpenLayers.Layer.WMS( label, serviceaddy, {"layers": layername})]);
 						});
 					});
 					jQuery(this).dialog("close"); } }

@@ -36,6 +36,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 ?>
 </div>
 <script type="text/javascript">
+		jQuery.noConflict();
 		if (typeof (Omeka) == 'undefined') {
 			Omeka = new Object();
 		}

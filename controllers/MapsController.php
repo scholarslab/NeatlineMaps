@@ -26,18 +26,14 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
-		$serviceaddy = neatlinemaps_getServiceAddy($item);
-		$this->view->serviceaddy = $serviceaddy;
-
+		$this->view->serviceaddy = neatlinemaps_getServiceAddy($item);
 	}
 	
 	public function layernameAction()
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		$item = $this->findById($id,"Item");
-		$serviceaddy = neatlinemaps_getLayerName($item);
-		$this->view->layername = $layername;
-
+		$this->view->layername = neatlinemaps_getLayerName($item);
 	}
 	
 

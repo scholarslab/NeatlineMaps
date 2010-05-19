@@ -51,7 +51,7 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 	                	new OpenLayers.Control.MousePosition(),
 	                	new OpenLayers.Control.Scale(),
 	                	new OpenLayers.Control.ScaleLine(),
-	                	new OpenLayers.Control.LayerSwitcher()controls,
+	                	new OpenLayers.Control.LayerSwitcher(),
 	                	panel
 	                	]);
 	

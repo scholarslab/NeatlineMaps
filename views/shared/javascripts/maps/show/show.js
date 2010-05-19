@@ -44,7 +44,7 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 		div : document.getElementById('mappanel')
 	});
 	for ( var key in panelcontrols) {
-		panel.addControls(controls[key]);
+		panel.addControls(panelcontrols[key]);
 	}
 	
 	map.addControls(	[

@@ -5,8 +5,7 @@ $itemnames = array();
 $itemids = array();
 foreach ($items as $item) {
 	array_push($itemnames,item("Dublin Core", "Title", array(), $item));
-	array_push($itemids,$item->id);
-	
+	array_push($itemids,$item->id);	
 }
 $options = array_combine($itemids,$itemnames);
 ?>

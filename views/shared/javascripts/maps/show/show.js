@@ -68,7 +68,7 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 					jQuery.get("/maps/serviceaddy/" + id, function(serviceaddy){ 
 						jQuery.get("/maps/layername/" + id, function(layername) {
 							var label =jQuery("#layerselect option")[jQuery("#layerselect")[0].selectedIndex].label;
-							map.addLayers([new OpenLayers.Layer.WMS( label, serviceaddy, {"layers": layername})]);
+							map.addLayer(new OpenLayers.Layer.WMS( label, serviceaddy, {"layers": layername}));
 						});
 					});
 					jQuery(this).dialog("close"); } }

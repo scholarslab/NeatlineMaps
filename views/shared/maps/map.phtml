@@ -49,8 +49,8 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 //<!--
 	<?php foreach ($params as $name => $value) {
 			echo 'NLconfig.' . "$name = '$value';"	;
-			$layers = $params['layers'];
 		}
+		
 		if ($params['dates']->date) { ?>
 		NLconfig.date = '<?php echo $params['dates']->date ; ?>';
 		<?php } if ($params['dates']->start) { ?>
@@ -59,6 +59,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		NLconfig.enddate = '<?php echo $params['dates']->end ; } ?>';
 
 		NLconfig.backgroundlayers = new Array();<?php
+		$layers = $params['layers'];
 		foreach (array_keys($layers) as $layername) {
 			$layerinfo = $layers[$layername];
 		  	?>

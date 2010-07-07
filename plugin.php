@@ -283,7 +283,7 @@ function neatlinemaps_getDates($item)
 	if ($coverages) {
 		$parsed = array();
 		foreach ($coverages as $coverage) {
-			if neatlinemaps_isDates($coverage->text) {
+			if (neatlinemaps_isDates($coverage->text) {
 				$dates = preg_split(';', $coverage->text);
 				foreach ($dates as $piece) {
 					$chunks = preg_split('=',$piece);

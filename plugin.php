@@ -29,10 +29,6 @@ add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
 add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_background_widget");
 
-$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
-$neatlinemaps_logger = new Zend_Log($writer);
-$neatlinemaps_logger->info("Initialized logger.");
-
 function neatlinemaps_install()
 {
 	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
@@ -234,7 +230,9 @@ function neatlinemaps_getServiceAddy($item)
 
 function neatlinemaps_getLayerName($item)
 {
-	global $neatlinemaps_logger;
+	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
+	$neatlinemaps_logger = new Zend_Log($writer);
+	
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	$neatlinemaps_logger->info("Item in getLayerName: " . print_r($item,false));
 	try {

@@ -234,7 +234,7 @@ function neatlinemaps_getLayerName($item)
 	$neatlinemaps_logger = new Zend_Log($writer);
 	
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
-	$neatlinemaps_logger->info("Item in getLayerName: " . print_r($item,false));
+	$neatlinemaps_logger->info("Item in getLayerName: " . print_r($item,true));
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}

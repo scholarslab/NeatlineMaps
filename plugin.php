@@ -20,6 +20,7 @@ define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreference.org/ref');
 define('NEATLINE_TAG_PREFIX','neatline:');
 
 add_plugin_hook('install', 'neatlinemaps_install');
+add_plugin_hook('initialize', 'neatlinemaps_init');
 add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
 add_plugin_hook('after_upload_file', 'load_geoserver_raster');
@@ -28,7 +29,10 @@ add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
 add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_background_widget");
 
-
+function neatlinemaps_init() {
+	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
+	$neatlinemaps_logger = new Zend_Log($writer);
+}
 
 function neatlinemaps_install()
 {
@@ -232,6 +236,7 @@ function neatlinemaps_getServiceAddy($item)
 function neatlinemaps_getLayerName($item)
 {
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
+	$neatlinemaps_logger->info("Item in getLayerName: " . print_r($item,false));
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}

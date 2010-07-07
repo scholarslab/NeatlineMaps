@@ -52,11 +52,11 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 			$layers = $params['layers'];
 		}
 		if ($params['dates']->date) { ?>
-		NLconfig.date = '<?php $params['dates']->date ?>';
+		NLconfig.date = '<?php echo $params['dates']->date ; ?>';
 		<?php } if ($params['dates']->start) { ?>
-		NLconfig.startdate = '<?php $params['dates']->start ?>';
+		NLconfig.startdate = '<?php echo $params['dates']->start ; ?>';
 		<?php } if ($params['dates']->end) { ?>
-		NLconfig.enddate = '<?php $params['dates']->end } ?>';
+		NLconfig.enddate = '<?php echo $params['dates']->end ; } ?>';
 
 		NLconfig.backgroundlayers = new Array();<?php
 		foreach (array_keys($layers) as $layername) {
@@ -65,11 +65,11 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		  	var layer = new OpenLayers.Layer.WMS('<?php echo $layerinfo['title']; ?>' , '<?php echo $layerinfo['serviceaddy'];?>', {layers: '<?php echo $layername; ?>'})
 			layer.Neatline = new Object();
 			<?php if ($layerinfo['dates']->date) { ?>
-			layer.Neatline.date = '<?php $layerinfo['dates']->date ?>';
+			layer.Neatline.date = '<?php echo $layerinfo['dates']->date ; ?>';
 			<?php } if ($layerinfo['dates']->start) { ?>
-			layer.Neatline.startdate = '<?php $layerinfo['dates']->start ?>';
+			layer.Neatline.startdate = '<?php echo $layerinfo['dates']->start ; ?>';
 			<?php } if ($layerinfo['dates']->end) { ?>
-			layer.Neatline.enddate = '<?php $layerinfo['dates']->end } ?>';
+			layer.Neatline.enddate = '<?php echo $layerinfo['dates']->end ; } ?>';
 		  	NLconfig.backgroundlayers.push(layer);
 		  	<?php 
 	 	 } 	

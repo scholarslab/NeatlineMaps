@@ -30,6 +30,7 @@ add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
 add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_background_widget");
 
 function neatlinemaps_init() {
+	global $neatlinemaps_logger;
 	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
 	$neatlinemaps_logger = new Zend_Log($writer);
 	$neatlinemaps_logger->info("Initialized logger.");

@@ -32,6 +32,7 @@ add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_
 function neatlinemaps_init() {
 	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
 	$neatlinemaps_logger = new Zend_Log($writer);
+	$neatlinemaps_logger->info("Initialized logger.");
 }
 
 function neatlinemaps_install()

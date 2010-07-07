@@ -20,7 +20,7 @@ define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreference.org/ref');
 define('NEATLINE_TAG_PREFIX','neatline:');
 
 add_plugin_hook('install', 'neatlinemaps_install');
-add_plugin_hook('initialize', 'neatlinemaps_init');
+//add_plugin_hook('initialize', 'neatlinemaps_init');
 add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
 add_plugin_hook('after_upload_file', 'load_geoserver_raster');
@@ -234,6 +234,7 @@ function neatlinemaps_getServiceAddy($item)
 
 function neatlinemaps_getLayerName($item)
 {
+	global $neatlinemaps_logger;
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	$neatlinemaps_logger->info("Item in getLayerName: " . print_r($item,false));
 	try {

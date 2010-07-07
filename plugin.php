@@ -298,7 +298,7 @@ function neatlinemaps_getDates($item)
 				}
 				return $parsed;
 			}
-			else if (neatlinemaps_isDate($coverage->text) {
+			else if (neatlinemaps_isDate($coverage->text)) {
 				$parsed['date'] = $caverage->text;
 				return $parsed;
 			}

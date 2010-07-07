@@ -151,8 +151,11 @@ function neatlinemaps_getBackgroundLayers($item) {
 	try {
 		$backgrounds = $item->getElementTextsByElementNameAndSetName( 'Background', 'Item Type Metadata');
 		foreach ($backgrounds as $background) {
-			$layers[ neatlinemaps_getLayerName($background->text) ] =
-			array(neatlinemaps_getServiceAddy($background->text),neatlinemaps_getTitle($background->text));
+			$id = $background->text;
+			$layers[ neatlinemaps_getLayerName($id) ] =
+			array('serviceaddy' => neatlinemaps_getServiceAddy($id),
+			'title' => neatlinemaps_getTitle($id),
+			'dates' => neatlinemaps_getDates($id));
 		}
 		return $layers;
 	}
@@ -266,6 +269,55 @@ function neatlinemaps_getTitle($item)
 		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
 	}
 
+}
+
+function neatlinemaps_getDates($item)
+{
+	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
+	try {
+		$coverages = $item->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
+	}
+	catch (Omeka_Record_Exception $e) {
+	}
+
+	if ($coverages) {
+		$parsed = array();
+		foreach ($coverages as $coverage) {
+			if neatlinemaps_isDates($coverage->text) {
+				$dates = preg_split(';', $coverage->text);
+				foreach ($dates as $piece) {
+					$chunks = preg_split('=',$piece);
+					switch ($chunks[0]) {
+						case 'start' :
+							$parsed['start'] = $chunks[1];
+							break;
+						case 'end' :
+							$parsed['end'] = $chunks[1];
+							break;
+					}
+				}
+				return $parsed;
+			}
+			else if (neatlinemaps_isDate($coverage->text) {
+				$parsed['date'] = $caverage->text;
+				return $parsed;
+			}
+		}
+	}
+	return NULL;
+}
+
+function neatlinemaps_isDate($text) {
+	try {
+		$date = new DateTime($text);
+		return true;
+	} catch (Exception $e) {
+		return false;
+	}
+}
+
+function neatlinemaps_isDates($text) {
+	return preg_match('/(start|end|[=;-T+\d])*/',$text);
 }
 
 function neatlinemaps_getFeaturesForItem($item) {

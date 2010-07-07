@@ -55,10 +55,15 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		foreach (array_keys($layers) as $layername) {
 			$layerinfo = $layers[$layername];
 		  	?>
-		  	NLconfig.backgroundlayers.push(
-				  	new OpenLayers.Layer.WMS('<?php echo $layerinfo[1]; ?>' , '<?php echo $layerinfo[0];?>', {layers: '<?php echo $layername; ?>'})
-				  	);
-		  	<?php 
+		  	var layer = new OpenLayers.Layer.WMS('<?php echo $layerinfo['title']; ?>' , '<?php echo $layerinfo['serviceaddy'];?>', {layers: '<?php echo $layername; ?>'})
+			layer.Neatline = new Object();
+			<?php if ($layerinfo['dates']->date) { ?>
+			layer.Neatline.date = '<?php $layerinfo['dates']->date ?>';
+			<?php } else { ?>
+			layer.Neatline.startdate = '<?php $layerinfo['dates']->start ?>';
+			layer.Neatline.enddate = '<?php $layerinfo['dates']->end ?>';
+		  	NLconfig.backgroundlayers.push(layer);
+		  	<?php }
 	 	 } 	
 		?>
 		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);

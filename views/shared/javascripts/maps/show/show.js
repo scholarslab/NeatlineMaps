@@ -25,7 +25,16 @@ Omeka.NeatlineMaps.createMap = function(event, config) {
 				'buffer' : 0,
 				'gutter' : 5
 			});
-
+	layer.Neatline = new Object();
+	if (config.date) {
+		layer.Neatline.date = config.date;
+	}
+	if (config.startdate) {
+		layer.Neatline.startdate = config.startdate;
+	}
+	if (config.enddate) {
+		layer.Neatline.enddate = config.enddate;
+	}
 	map.addLayers( [ layer ]);
 
 	if (config.backgroundlayers) {

@@ -51,7 +51,14 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 			echo 'NLconfig.' . "$name = '$value';"	;
 			$layers = $params['layers'];
 		}
-		?>NLconfig.backgroundlayers = new Array();<?php
+		if ($params['dates']->date) { ?>
+		NLconfig.date = '<?php $params['dates']->date ?>';
+		<?php } if ($params['dates']->start) { ?>
+		NLconfig.startdate = '<?php $params['dates']->start ?>';
+		<?php } if ($params['dates']->end) { ?>
+		NLconfig.enddate = '<?php $params['dates']->end } ?>';
+
+		NLconfig.backgroundlayers = new Array();<?php
 		foreach (array_keys($layers) as $layername) {
 			$layerinfo = $layers[$layername];
 		  	?>
@@ -59,11 +66,12 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 			layer.Neatline = new Object();
 			<?php if ($layerinfo['dates']->date) { ?>
 			layer.Neatline.date = '<?php $layerinfo['dates']->date ?>';
-			<?php } else { ?>
+			<?php } if ($layerinfo['dates']->start) { ?>
 			layer.Neatline.startdate = '<?php $layerinfo['dates']->start ?>';
-			layer.Neatline.enddate = '<?php $layerinfo['dates']->end ?>';
+			<?php } if ($layerinfo['dates']->end) { ?>
+			layer.Neatline.enddate = '<?php $layerinfo['dates']->end } ?>';
 		  	NLconfig.backgroundlayers.push(layer);
-		  	<?php }
+		  	<?php 
 	 	 } 	
 		?>
 		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);

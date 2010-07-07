@@ -48,7 +48,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		NLconfig = new Object();
 //<!--
 	<?php foreach ($params as $name => $value) {
-			echo 'NLconfig.' . "$name = '$value';"	;
+			echo 'NLconfig.' . "$name = '$value';\n"	;
 		}
 		
 		if ($params['dates']->date) { ?>

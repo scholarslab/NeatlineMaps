@@ -301,13 +301,13 @@ function neatlinemaps_getDates($item)
 							break;
 					}
 				}
-				$neatlinemaps_logger->info("Parsed: " . print_r($item,true));
+				$neatlinemaps_logger->info("Parsed: " . print_r($parsed,true));
 				return $parsed;
 					
 			}
 			else if (neatlinemaps_isDate($coverage->text)) {
 				$parsed['date'] = $caverage->text;
-				$neatlinemaps_logger->info("Parsed: " . print_r($item,true));
+				$neatlinemaps_logger->info("Parsed: " . print_r($parsed,true));
 				return $parsed;
 			}
 		}

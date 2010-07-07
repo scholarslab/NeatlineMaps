@@ -71,7 +71,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 			<?php } if ($layerinfo['dates']->start) { ?>
 			layer.Neatline.startdate = '<?php echo $layerinfo['dates']->start ; ?>';
 			<?php } if ($layerinfo['dates']->end) { ?>
-			layer.Neatline.enddate = '<?php echo $layerinfo['dates']->end ; } ?>';
+			layer.Neatline.enddate = '<?php echo $layerinfo['dates']->end ;  ?>'; <?php } ?>
 		  	NLconfig.backgroundlayers.push(layer);
 		  	<?php 
 	 	 } 	

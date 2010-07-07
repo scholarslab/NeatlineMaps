@@ -46,9 +46,9 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 			Omeka.NeatlineMaps.history = new Array();
 		}
 		NLconfig = new Object();
-//<!--
+
 	<?php foreach ($params as $name => $value) {
-			echo 'NLconfig.' . "$name = '$value';\n"	;
+			echo "NLconfig.$name = '$value';\n"	;
 		}
 		
 		if ($params['dates']->date) { ?>
@@ -58,7 +58,8 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		<?php } if ($params['dates']->end) { ?>
 		NLconfig.enddate = '<?php echo $params['dates']->end ; } ?>';
 
-		NLconfig.backgroundlayers = new Array();<?php
+		NLconfig.backgroundlayers = new Array();
+		<?php
 		$layers = $params['layers'];
 		foreach (array_keys($layers) as $layername) {
 			$layerinfo = $layers[$layername];

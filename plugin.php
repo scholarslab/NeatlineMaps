@@ -234,7 +234,7 @@ function neatlinemaps_getLayerName($item)
 	$neatlinemaps_logger = new Zend_Log($writer);
 	
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
-	$neatlinemaps_logger->info("Item in getLayerName: " . print_r($item,true));
+	//$neatlinemaps_logger->info("Item in getLayerName: " . print_r($item,true));
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}
@@ -287,6 +287,7 @@ function neatlinemaps_getDates($item)
 		$parsed = array();
 		foreach ($coverages as $coverage) {
 			if (neatlinemaps_isDates($coverage->text)) {
+				if (preg_match(';', $coverage->text)) {
 				$dates = preg_split(';', $coverage->text);
 				foreach ($dates as $piece) {
 					$chunks = preg_split('=',$piece);
@@ -300,6 +301,7 @@ function neatlinemaps_getDates($item)
 					}
 				}
 				return $parsed;
+			}
 			}
 			else if (neatlinemaps_isDate($coverage->text)) {
 				$parsed['date'] = $caverage->text;

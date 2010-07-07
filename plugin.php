@@ -230,11 +230,9 @@ function neatlinemaps_getServiceAddy($item)
 
 function neatlinemaps_getLayerName($item)
 {
-	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
-	$neatlinemaps_logger = new Zend_Log($writer);
 
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
-	//$neatlinemaps_logger->info("Item in getLayerName: " . print_r($item,true));
+	
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}
@@ -276,6 +274,9 @@ function neatlinemaps_getTitle($item)
 
 function neatlinemaps_getDates($item)
 {
+	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
+	$neatlinemaps_logger = new Zend_Log($writer);
+	
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	try {
 		$coverages = $item->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
@@ -300,11 +301,13 @@ function neatlinemaps_getDates($item)
 							break;
 					}
 				}
+				$neatlinemaps_logger->info("Parsed: " . print_r($item,true));
 				return $parsed;
 					
 			}
 			else if (neatlinemaps_isDate($coverage->text)) {
 				$parsed['date'] = $caverage->text;
+				$neatlinemaps_logger->info("Parsed: " . print_r($item,true));
 				return $parsed;
 			}
 		}

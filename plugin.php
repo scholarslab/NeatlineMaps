@@ -275,8 +275,8 @@ function neatlinemaps_getTitle($item)
 
 function neatlinemaps_getDates($item)
 {
-	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
-	$neatlinemaps_logger = new Zend_Log($writer);
+	//$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
+	//$neatlinemaps_logger = new Zend_Log($writer);
 	
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	try {
@@ -302,13 +302,13 @@ function neatlinemaps_getDates($item)
 							break;
 					}
 				}
-				$neatlinemaps_logger->info("Parsed: " . print_r($parsed,true));
+				//$neatlinemaps_logger->info("Parsed: " . print_r($parsed,true));
 				return $parsed;
 					
 			}
 			else if (neatlinemaps_isDate($coverage->text)) {
 				$parsed['date'] = $caverage->text;
-				$neatlinemaps_logger->info("Parsed: " . print_r($parsed,true));
+				//$neatlinemaps_logger->info("Parsed: " . print_r($parsed,true));
 				return $parsed;
 			}
 		}

@@ -25,9 +25,29 @@ add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
 add_plugin_hook('after_upload_file', 'load_geoserver_raster');
 add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
+add_plugin_hook('public_theme_header', 'neatlinemaps_header');
 
 add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
 add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_background_widget");
+
+function neatlinemaps_header()
+{
+	if(Zend_Controller_Front::getInstance()->getRequest()->getActionName() !== 'show') {
+		return;
+	}
+?>
+<!-- Neatline Maps Dependencies -->
+<link rel="stylesheet" href="<?php echo css('show'); ?>" />
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/overcast/jquery-ui.css" type="text/css" />
+<script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7/jquery-ui.min.js"></script>
+<?php 
+	echo js('proj4js/proj4js-compressed');
+	echo js('maps/show/show');
+	echo "<!-- End Neatline Maps Dependencies -->\n\n";
+}
+
 
 function neatlinemaps_install()
 {
@@ -87,7 +107,9 @@ function neatlinemaps_install()
 }
 
 function neatlinemaps_show_item_in_page($html,$item){
-	return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
+	if($item->getItemType()->name == "Historical map") {
+		return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
+	} else return $html;
 }
 
 function neatlinemaps_uninstall()

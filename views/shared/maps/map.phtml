@@ -1,18 +1,3 @@
-<script type="text/javascript"
-	src="http://openlayers.org/api/OpenLayers.js">Ê</script>
-<script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js">Ê</script>
-<script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7/jquery-ui.min.js">Ê</script>
-
-<?php 
-echo js('proj4js/proj4js-compressed');
-echo js('maps/show/show');
-?>
-
-<link rel="stylesheet" href="<?php echo css('show'); ?>" />
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/overcast/jquery-ui.css" type="text/css" />
-
 <script type="text/javascript"><?php echo $params['proj4js'] ?></script>
 
 <div id="NLtmp" class="themap"></div>
@@ -34,17 +19,6 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 </div>
 <script type="text/javascript">
 		jQuery.noConflict();
-		if (typeof (Omeka) == 'undefined') {
-			Omeka = new Object();
-		}
-		
-		if (!Omeka.NeatlineMaps) {
-			Omeka.NeatlineMaps = new Array();
-		}
-
-		if (!Omeka.NeatlineMaps.history) {
-			Omeka.NeatlineMaps.history = new Array();
-		}
 		NLconfig = new Object();
 
 	<?php foreach ($params as $name => $value) {
@@ -94,11 +68,12 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		  	<?php 
 	 	 } 	
 		?>
+
 		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);
 		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
 		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.history.length;
 		document.getElementById('NLtmp').id = NLconfig.mapdiv;	
-		Event.observe(window, 'load', Omeka.NeatlineMaps.createMap.bindAsEventListener(this,NLconfig));
+		Event.observe(window, 'dom:loaded', Omeka.NeatlineMaps.createMap.bindAsEventListener(this,NLconfig));
 		delete(NLconfig);
 //-->
 

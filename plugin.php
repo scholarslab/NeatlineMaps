@@ -310,7 +310,7 @@ function neatlinemaps_getDates($item)
 	if ($coverages) {
 		$parsed = array();
 		foreach ($coverages as $coverage) {
-			$datetext = str_replace(' ','',$caverage->text);
+			$datetext = str_replace(' ','',$coverage->text);
 			$neatlinemaps_logger->info("Datetext: " . $datetext);
 				
 			if (neatlinemaps_isDates($datetext)) {

@@ -43,26 +43,11 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 			<?php 
 			$dates = $layerinfo['dates'];
 			if ($dates['date']) { ?>
-			try {
-				layer.Neatline.date = new Date('<?php echo $dates['date'] ; ?>');
-			}
-			catch (err) {
 				layer.Neatline.date = '<?php echo $dates['date'] ; ?>';
-			}
 			<?php } if ($dates['start']) { ?>
-			try {
-				layer.Neatline.startdate = new Date('<?php echo $dates['start'] ; ?>');
-			}
-			catch (err) {
 				layer.Neatline.startdate = '<?php echo $dates['start'] ; ?>';
-			}
 			<?php } if ($dates['end']) { ?>
-			try {
-				layer.Neatline.enddate = new Date('<?php echo $dates['end'] ; ?>'); 
-			}
-			catch (err) {
 				layer.Neatline.enddate = '<?php echo $dates['end'] ; ?>';
-			}
 			<?php } ?>
 		  	NLconfig.backgroundlayers.push(layer);
 		  	<?php 

@@ -356,7 +356,7 @@ function neatlinemaps_isDate($text) {
 }
 
 function neatlinemaps_isDates($text) {
-	return preg_match('/^(start|end|[=;-T+\d])*$/',$text);
+	return preg_match('/^(start|end|=|;|-|T|+|\d)+$/',$text);
 }
 
 function neatlinemaps_getFeaturesForItem($item) {

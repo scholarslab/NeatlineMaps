@@ -322,13 +322,14 @@ function neatlinemaps_getDates($item)
 			$datetext = str_replace(' ','',$coverage->text);
 			$neatlinemaps_logger->info("Datetext: " . $datetext);
 			if (neatlinemaps_isDate($datetext)) {
+				$neatlinemaps_logger->info("It is a date coverage.");
 				$parsed['date'] = $datetext;
 				$neatlinemaps_logger->info("Parsed a date: " . print_r($parsed,true));
 				return $parsed;
 			}
 				
 			else if (neatlinemaps_isDates($datetext)) {
-
+				$neatlinemaps_logger->info("It is a dates coverage.");
 				$dates = preg_split('/;/', $datetext);
 				foreach ($dates as $piece) {
 					$chunks = preg_split('/=/',$piece);

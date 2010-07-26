@@ -342,12 +342,7 @@ function neatlinemaps_getDates($item)
 }
 
 function neatlinemaps_isDate($text) {
-	try {
-		$date = new DateTime($text);
-		return true;
-	} catch (Exception $e) {
-		return false;
-	}
+	return preg_match('/([-T+\d])*/',$text);
 }
 
 function neatlinemaps_isDates($text) {

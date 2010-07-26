@@ -35,14 +35,23 @@ function neatlinemaps_header()
 	if(Zend_Controller_Front::getInstance()->getRequest()->getActionName() !== 'show') {
 		return;
 	}
-?>
+	?>
 <!-- Neatline Maps Dependencies -->
-<link rel="stylesheet" href="<?php echo css('show'); ?>" />
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/overcast/jquery-ui.css" type="text/css" />
-<script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7/jquery-ui.min.js"></script>
-<?php 
+<link
+	rel="stylesheet" href="<?php echo css('show'); ?>" />
+<link
+	rel="stylesheet"
+	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/overcast/jquery-ui.css"
+	type="text/css" />
+<script
+	type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+<script
+	type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script
+	type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7/jquery-ui.min.js"></script>
+	<?php
 	echo js('proj4js/proj4js-compressed');
 	echo js('maps/show/show');
 	echo "<!-- End Neatline Maps Dependencies -->\n\n";
@@ -255,7 +264,7 @@ function neatlinemaps_getLayerName($item)
 {
 
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
-	
+
 	try {
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}
@@ -299,7 +308,7 @@ function neatlinemaps_getDates($item)
 {
 	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
 	$neatlinemaps_logger = new Zend_Log($writer);
-	
+
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	try {
 		$coverages = $item->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
@@ -312,8 +321,13 @@ function neatlinemaps_getDates($item)
 		foreach ($coverages as $coverage) {
 			$datetext = str_replace(' ','',$coverage->text);
 			$neatlinemaps_logger->info("Datetext: " . $datetext);
+			if (neatlinemaps_isDate($datetext)) {
+				$parsed['date'] = $datetext;
+				$neatlinemaps_logger->info("Parsed a date: " . print_r($parsed,true));
+				return $parsed;
+			}
 				
-			if (neatlinemaps_isDates($datetext)) {
+			else if (neatlinemaps_isDates($datetext)) {
 
 				$dates = preg_split('/;/', $datetext);
 				foreach ($dates as $piece) {
@@ -330,11 +344,6 @@ function neatlinemaps_getDates($item)
 				$neatlinemaps_logger->info("Parsed dates: " . print_r($parsed,true));
 				return $parsed;
 					
-			}
-			else if (neatlinemaps_isDate($datetext)) {
-				$parsed['date'] = $datetext;
-				$neatlinemaps_logger->info("Parsed a date: " . print_r($parsed,true));
-				return $parsed;
 			}
 		}
 	}

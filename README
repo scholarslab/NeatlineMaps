@@ -1,0 +1,7 @@
+Neatline Maps requires Geoserver in order to function. Here's how to get a basic version of Geoserver up and running on your server:
+
+- Download the Stable Binary(OS independent) Geoserver from Geoserver (http://geoserver.org/display/GEOS/Stable)
+- Unzip the file
+- From a terminal/command prompt, change into the geoserver directory
+- Start Geoserver with java -jar start.jar
+- Take a look at http://localhost:8080

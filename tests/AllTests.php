@@ -9,6 +9,8 @@
 
 define('NEATLINE_MAP_DIR', dirname(dirname(__FILE__)));
 
+require_once 'NeatlineMaps_IntegrationHelper.php';
+
 class NeatlineMap_AllTests extends PHPUnit_Framework_TestSuite
 {
     public static function suite()

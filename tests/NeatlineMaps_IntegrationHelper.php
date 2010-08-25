@@ -12,7 +12,7 @@ class NeatlineMaps_IntegrationHelper {
 
     public function setUpPlugin()
     {
-        $pluginHelper - new Omeka_Test_Helper_Plugin;
+        $pluginHelper = new Omeka_Test_Helper_Plugin;
         $this->_addPluginHooksAndFilters($pluginHelper->pluginBroker,
                 self::PLUGIN_NAME);
     }
@@ -33,6 +33,32 @@ class NeatlineMaps_IntegrationHelper {
         add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
         add_filter(array('Form','Item','Item Type Metadata','Background'),
             "neatlinemaps_background_widget");
+
+    }
+
+    public function createNewItem($isPublic = true, $title = 'Test Map',
+            $titleIsHtml = false)
+    {
+        // grab a map file from maps
+        $filename = '';
+
+        $item = insert_item(
+                array ('public' => $isPublic
+            ),
+                array (
+                'Dublin Core' => array (
+                    'Title' => array (
+                        array('text' => $title, 'html' => $titleIsHtml)
+                    )
+                )
+            ),
+                array (
+                'item_type_name' => 'Historical Map'
+            ),
+                array('file_transfer_type' => 'Filesystem', 'files' => $filename)
+        );
+        
+        return $item;
 
     }
 }

@@ -137,8 +137,10 @@ function neatlinemaps_routes($router)
 	DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
 }
 
-function neatlinemaps_widget() {
-	$item = get_item_by_id(item('ID'),"Item");
+function neatlinemaps_widget($item = null) {
+    if (!$item) {
+        $item = get_current_item();
+    }
 	echo __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
 }
 

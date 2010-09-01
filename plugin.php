@@ -20,7 +20,6 @@ define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreference.org/ref');
 define('NEATLINE_TAG_PREFIX','neatline:');
 
 add_plugin_hook('install', 'neatlinemaps_install');
-//add_plugin_hook('initialize', 'neatlinemaps_init');
 add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
 add_plugin_hook('after_upload_file', 'load_geoserver_raster');
@@ -32,10 +31,9 @@ add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_
 
 function neatlinemaps_header()
 {
-	if(Zend_Controller_Front::getInstance()->getRequest()->getActionName() !== 'show') {
-		return;
-	}
-	?>
+	switch (Zend_Controller_Front::getInstance()->getRequest()->getActionName() {
+		case "show" :
+		?>
 <!-- Neatline Maps Dependencies -->
 <link
 	rel="stylesheet" href="<?php echo css('show'); ?>" />
@@ -55,31 +53,30 @@ function neatlinemaps_header()
 	echo js('proj4js/proj4js-compressed');
 	echo js('maps/show/show');
 	echo "<!-- End Neatline Maps Dependencies -->\n\n";
+	break;
+default:
+	break;
+	}
 }
-
 
 function neatlinemaps_install()
 {
-	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
-	$logger = new Zend_Log($writer);
-
 	set_option('neatlinemaps_version', NEATLINEMAPS_PLUGIN_VERSION);
 
 	$geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/namespaces" ;
 	$client = new Zend_Http_Client($geoserver_config_addy);
 	$client->setAuth(NEATLINE_GEOSERVER_ADMINUSER, NEATLINE_GEOSERVER_ADMINPW);
-	$logger->info("Using namespace address: " . $geoserver_config_addy);
+	debug("Using namespace address: " . $geoserver_config_addy);
 	if ( !preg_match( NEATLINE_GEOSERVER_NAMESPACE_URL, $client->request(Zend_Http_Client::GET)->getBody() ) ) {
 		$namespace_json =
 	"{'namespace' : { 'prefix': '" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX . "', 'uri': '" . NEATLINE_GEOSERVER_NAMESPACE_URL . "'} }";
 		$response = $client->setRawData($namespace_json, 'text/json')->request(Zend_Http_Client::POST);
 		if ($response->isSuccessful()) {
-		 $logger->info("Neatline GeoServer namespace " . NEATLINE_GEOSERVER_NAMESPACE_PREFIX
+		 debug("Neatline GeoServer namespace " . NEATLINE_GEOSERVER_NAMESPACE_PREFIX
 		 . "(" . NEATLINE_GEOSERVER_NAMESPACE_URL . ")" . " added to GeoServer config.");
 		}
 		else {
-		 $logger->err("Failed to add Neatline/GeoServer namespace: check  Neatline config.");
-		 $logger->err("Returned error is:" . $response->getStatus() .
+		 debug("Failed to add Neatline/GeoServer namespace: returned error is:" . $response->getStatus() .
        ": " . $response->getMessage() . "\n");
 		}
 	}
@@ -111,6 +108,7 @@ function neatlinemaps_install()
               	$logger->info("Using Neatline itemtype ID: " . NEATLINEMAPS_ITEMTYPE);
               }
               catch (Exception $e) {
+              	debug("Failed to add Neatline Map item type: " . $e->getMessage() );
               }
 
 }
@@ -193,6 +191,7 @@ function neatlinemaps_getBackgroundLayers($item) {
 		return $layers;
 	}
 	catch (Omeka_Record_Exception $e) {
+		debug("Failed to get background layer info: " . $e->getMessage() );
 	}
 }
 
@@ -239,7 +238,7 @@ function load_geoserver_raster($file, $item)
 	$response = $client->request(Zend_Http_Client::PUT);
 	$logger->info("Geoserver's response: " . $response->getBody());
 
-	#unlink($zipfile);
+	unlink($zipfile);
 }
 
 function neatlinemaps_getServiceAddy($item)
@@ -249,6 +248,7 @@ function neatlinemaps_getServiceAddy($item)
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
 	}
 	catch (Omeka_Record_Exception $e) {
+		debug("Failed to get service address info: " . $e->getMessage() );
 	}
 
 	if ($serviceaddys) {
@@ -271,6 +271,7 @@ function neatlinemaps_getLayerName($item)
 		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}
 	catch (Omeka_Record_Exception $e) {
+		debug("Failed to get layer name info: " . $e->getMessage() );
 	}
 
 	if ($serviceaddys) {
@@ -292,6 +293,7 @@ function neatlinemaps_getTitle($item)
 		$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 	}
 	catch (Omeka_Record_Exception $e) {
+		debug("Failed to get title info: " . $e->getMessage() );
 	}
 
 	if ($titles) {
@@ -316,6 +318,7 @@ function neatlinemaps_getDates($item)
 		$coverages = $item->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
 	}
 	catch (Omeka_Record_Exception $e) {
+		debug("Failed to get dates info: " . $e->getMessage() );
 	}
 
 	if ($coverages) {

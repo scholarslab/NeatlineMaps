@@ -67,17 +67,17 @@ function neatlinemaps_install()
 	$geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/namespaces" ;
 	$client = new Zend_Http_Client($geoserver_config_addy);
 	$client->setAuth(NEATLINE_GEOSERVER_ADMINUSER, NEATLINE_GEOSERVER_ADMINPW);
-	debug("Using namespace address: " . $geoserver_config_addy);
+	debug("Neatline: Using namespace address: " . $geoserver_config_addy);
 	if ( !preg_match( NEATLINE_GEOSERVER_NAMESPACE_URL, $client->request(Zend_Http_Client::GET)->getBody() ) ) {
 		$namespace_json =
 	"{'namespace' : { 'prefix': '" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX . "', 'uri': '" . NEATLINE_GEOSERVER_NAMESPACE_URL . "'} }";
 		$response = $client->setRawData($namespace_json, 'text/json')->request(Zend_Http_Client::POST);
 		if ($response->isSuccessful()) {
-		 debug("Neatline GeoServer namespace " . NEATLINE_GEOSERVER_NAMESPACE_PREFIX
+		 debug("Neatline: GeoServer namespace " . NEATLINE_GEOSERVER_NAMESPACE_PREFIX
 		 . "(" . NEATLINE_GEOSERVER_NAMESPACE_URL . ")" . " added to GeoServer config.");
 		}
 		else {
-		 debug("Failed to add Neatline/GeoServer namespace: returned error is:" . $response->getStatus() .
+		 debug("Neatline: Failed to add Neatline/GeoServer namespace: returned error is:" . $response->getStatus() .
        ": " . $response->getMessage() . "\n");
 		}
 	}
@@ -106,10 +106,10 @@ function neatlinemaps_install()
               try {
               	$itemtype = insert_item_type($histmitemtype,$histmitemtypemetadata);
               	define("NEATLINEMAPS_ITEMTYPE",$itemtype->id);
-              	$logger->info("Using Neatline itemtype ID: " . NEATLINEMAPS_ITEMTYPE);
+              	debug("Neatline: Using Neatline itemtype ID: " . NEATLINEMAPS_ITEMTYPE);
               }
               catch (Exception $e) {
-              	debug("Failed to add Neatline Map item type: " . $e->getMessage() );
+              	debug("Neatline: Failed to add Neatline Map item type: " . $e->getMessage() );
               }
 
 }
@@ -192,7 +192,7 @@ function neatlinemaps_getBackgroundLayers($item) {
 		return $layers;
 	}
 	catch (Omeka_Record_Exception $e) {
-		debug("Failed to get background layer info: " . $e->getMessage() );
+		debug("Neatline: Failed to get background layer info: " . $e->getMessage() );
 	}
 }
 
@@ -207,7 +207,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	# we'll POST a ZIPfile to GeoServer's RESTful config interface
 	$zip = new ZipArchive();
 	$zipfilename = ARCHIVE_DIR . DIRECTORY_SEPARATOR . $file->archive_filename . ".zip";
-	debug("Zipfile: " . $zipfilename);
+	debug("Neatline: Zipfile: " . $zipfilename);
 	$zip->open($zipfilename, ZIPARCHIVE::CREATE);
 	$zip->addFile(ARCHIVE_DIR . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . $file->archive_filename, $file->archive_filename);
 	$zip->close();
@@ -216,7 +216,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	$coveragestore_addy = $geoserver_config_addy . "/coveragestores/" . $item->id;
 	$coverages_addy = $coveragestore_addy . "/" . "file.geotiff";
 	$coverage_addy = $coverages_addy . "?coverageName=" . $item->id;
-	debug("Coverage addy: " . $coverage_addy);
+	debug("Neatline: Coverage addy: " . $coverage_addy);
 	$adapter = new Zend_Http_Client_Adapter_Curl();
 	$client = new Zend_Http_Client($coverage_addy);
 	$client->setAuth(NEATLINE_GEOSERVER_ADMINUSER, NEATLINE_GEOSERVER_ADMINPW);
@@ -224,7 +224,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 
 	# now we attach up the Zipfile
 	$putFileSize   = filesize($zipfilename);
-	debug("Zipfile size: " . $putFileSize);
+	debug("Neatline: Zipfile size: " . $putFileSize);
 	$putFileHandle = fopen($zipfilename, "r");
 	$adapter->setConfig(array(
     'curloptions' => array(
@@ -234,7 +234,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	));
 	$client->setAdapter($adapter);
 	$response = $client->request(Zend_Http_Client::PUT);
-	debug("Geoserver's response: " . $response->getBody());
+	debug("Neatline: Geoserver's response: " . $response->getBody());
 
 	#unlink($zipfile);
 }
@@ -242,9 +242,10 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 function neatlinemaps_after_save_file($file) {
 	if ($file->getItem()->getItemType()->name != "Historical map") {
 		# then this is not a historical map
+		debug("Neatline: not a historical map");
 		return;
 	}
-	debug(print_r($file->getElementTextsByElementNameAndSetName('Omeka Image File','Exif Array'),true));
+	debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Omeka Image File','Exif Array'),true));
 	
 }
 

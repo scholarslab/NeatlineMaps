@@ -24,14 +24,6 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	{
 		$this->view->params = neatlinemaps_assemble_params_for_map($this->view->item);
 	}
-
-    public function showAction()
-    {
-        $id = (!$id) ? $this->getRequest()->getParam('id') : $id;
-        $item = $this->findById($id, "Item");
-
-        $this->view->params = neatlinemaps_assemble_params_for_map($item);
-    }
     
 	public function serviceaddyAction()
 	{

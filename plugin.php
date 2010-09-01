@@ -31,7 +31,7 @@ add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_
 
 function neatlinemaps_header()
 {
-	switch (Zend_Controller_Front::getInstance()->getRequest()->getActionName() {
+	switch (Zend_Controller_Front::getInstance()->getRequest()->getActionName()) {
 		case "show" :
 		?>
 <!-- Neatline Maps Dependencies -->

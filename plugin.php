@@ -22,7 +22,8 @@ define('NEATLINE_TAG_PREFIX','neatline:');
 add_plugin_hook('install', 'neatlinemaps_install');
 add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
-add_plugin_hook('after_upload_file', 'load_geoserver_raster');
+add_plugin_hook('after_upload_file', 'neatlinemaps_load_geoserver_raster');
+add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
 add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 add_plugin_hook('public_theme_header', 'neatlinemaps_header');
 
@@ -195,7 +196,7 @@ function neatlinemaps_getBackgroundLayers($item) {
 	}
 }
 
-function load_geoserver_raster($file, $item)
+function neatlinemaps_load_geoserver_raster($file, $item)
 {
 
 	if ($item->getItemType()->name != "Historical map") {
@@ -203,13 +204,10 @@ function load_geoserver_raster($file, $item)
 		return;
 	}
 
-	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
-	$logger = new Zend_Log($writer);
-
 	# we'll POST a ZIPfile to GeoServer's RESTful config interface
 	$zip = new ZipArchive();
 	$zipfilename = ARCHIVE_DIR . DIRECTORY_SEPARATOR . $file->archive_filename . ".zip";
-	$logger->info("Zipfile: " . $zipfilename);
+	debug("Zipfile: " . $zipfilename);
 	$zip->open($zipfilename, ZIPARCHIVE::CREATE);
 	$zip->addFile(ARCHIVE_DIR . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . $file->archive_filename, $file->archive_filename);
 	$zip->close();
@@ -218,7 +216,7 @@ function load_geoserver_raster($file, $item)
 	$coveragestore_addy = $geoserver_config_addy . "/coveragestores/" . $item->id;
 	$coverages_addy = $coveragestore_addy . "/" . "file.geotiff";
 	$coverage_addy = $coverages_addy . "?coverageName=" . $item->id;
-	$logger->info("Coverage addy: " . $coverage_addy);
+	debug("Coverage addy: " . $coverage_addy);
 	$adapter = new Zend_Http_Client_Adapter_Curl();
 	$client = new Zend_Http_Client($coverage_addy);
 	$client->setAuth(NEATLINE_GEOSERVER_ADMINUSER, NEATLINE_GEOSERVER_ADMINPW);
@@ -226,7 +224,7 @@ function load_geoserver_raster($file, $item)
 
 	# now we attach up the Zipfile
 	$putFileSize   = filesize($zipfilename);
-	$logger->info("Zipfile size: " . $putFileSize);
+	debug("Zipfile size: " . $putFileSize);
 	$putFileHandle = fopen($zipfilename, "r");
 	$adapter->setConfig(array(
     'curloptions' => array(
@@ -236,9 +234,13 @@ function load_geoserver_raster($file, $item)
 	));
 	$client->setAdapter($adapter);
 	$response = $client->request(Zend_Http_Client::PUT);
-	$logger->info("Geoserver's response: " . $response->getBody());
+	debug("Geoserver's response: " . $response->getBody());
 
 	unlink($zipfile);
+}
+
+function neatlinemaps_after_save_file($file) {
+	debug("Neatline Maps received: " . print_r($file,true));
 }
 
 function neatlinemaps_getServiceAddy($item)
@@ -310,9 +312,6 @@ function neatlinemaps_getTitle($item)
 
 function neatlinemaps_getDates($item)
 {
-	$writer = new Zend_Log_Writer_Stream(LOGS_DIR . DIRECTORY_SEPARATOR . "neatline.log");
-	$neatlinemaps_logger = new Zend_Log($writer);
-
 	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	try {
 		$coverages = $item->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
@@ -325,16 +324,16 @@ function neatlinemaps_getDates($item)
 		$parsed = array();
 		foreach ($coverages as $coverage) {
 			$datetext = str_replace(' ','',$coverage->text);
-			$neatlinemaps_logger->info("Datetext: " . $datetext);
+			debug("Datetext: " . $datetext);
 			if (neatlinemaps_isDate($datetext)) {
-				$neatlinemaps_logger->info("It is a date coverage.");
+				debug("It is a date coverage.");
 				$parsed['date'] = $datetext;
-				$neatlinemaps_logger->info("Parsed a date: " . print_r($parsed,true));
+				debug("Parsed a date: " . print_r($parsed,true));
 				return $parsed;
 			}
 				
 			else if (neatlinemaps_isDates($datetext)) {
-				$neatlinemaps_logger->info("It is a dates coverage.");
+				debug("It is a dates coverage.");
 				$dates = preg_split('/;/', $datetext);
 				foreach ($dates as $piece) {
 					$chunks = preg_split('/=/',$piece);
@@ -347,7 +346,7 @@ function neatlinemaps_getDates($item)
 							break;
 					}
 				}
-				$neatlinemaps_logger->info("Parsed dates: " . print_r($parsed,true));
+				debug("Parsed dates: " . print_r($parsed,true));
 				return $parsed;
 					
 			}

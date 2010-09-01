@@ -240,6 +240,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 }
 
 function neatlinemaps_after_save_file($file) {
+	debug("Neatline: neatlinemaps_after_save_file was called with file: " . print_r($file, true));
 	if ($file->getItem()->getItemType()->name != "Historical map") {
 		# then this is not a historical map
 		debug("Neatline: not a historical map");

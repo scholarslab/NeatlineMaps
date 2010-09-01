@@ -236,11 +236,11 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	$response = $client->request(Zend_Http_Client::PUT);
 	debug("Geoserver's response: " . $response->getBody());
 
-	unlink($zipfile);
+	#unlink($zipfile);
 }
 
 function neatlinemaps_after_save_file($file) {
-	if ($file->getItem->getItemType()->name != "Historical map") {
+	if ($file->getItem()->getItemType()->name != "Historical map") {
 		# then this is not a historical map
 		return;
 	}

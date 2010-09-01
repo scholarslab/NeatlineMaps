@@ -240,7 +240,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 }
 
 function neatlinemaps_after_save_file($file) {
-	debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Omeka Image File','Exif Array'),true));
+	debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File'),true));
 	if ($file->getItem()->getItemType()->name != "Historical map") {
 		# then this is not a historical map
 		debug("Neatline: not a historical map");

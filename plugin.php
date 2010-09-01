@@ -240,7 +240,12 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 }
 
 function neatlinemaps_after_save_file($file) {
-	debug("Neatline Maps received: " . print_r($file,true));
+	if ($file->getItem->getItemType()->name != "Historical map") {
+		# then this is not a historical map
+		return;
+	}
+	debug(print_r($file->getElementTextsByElementNameAndSetName('Omeka Image File','Exif Array'),true));
+	
 }
 
 function neatlinemaps_getServiceAddy($item)

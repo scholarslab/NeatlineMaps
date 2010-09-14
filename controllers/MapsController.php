@@ -16,23 +16,33 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
 	public function init()
 	{
-		$this->_modelClass = 'Item';
-		$this->view->item = $this->findById();
+		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
+		try {
+			$thing = $this->findById($id,"Item");
+		} catch (Omeka_Record_Exception $e) {
+			try {
+				$thing = $this->findById($id,"File");
+			}
+			catch (Omeka_Record_Exception $e) {
+				debug("Neatline: No such id as: " . $id . "?\nException: " . $e->getMessage());
+			}
+		}
+		$this->view->thing = $thing;
 	}
 
 	public function showAction()
 	{
-		$this->view->params = neatlinemaps_assemble_params_for_map($this->view->item);
+		$this->view->params = neatlinemaps_assemble_params_for_map($this->view->thing);
 	}
-    
+
 	public function serviceaddyAction()
 	{
-		$this->view->serviceaddy = neatlinemaps_getServiceAddy($this->view->item);
+		$this->view->serviceaddy = neatlinemaps_getServiceAddy($this->view->thing);
 	}
-	
+
 	public function layernameAction()
 	{
-		$this->view->layername = neatlinemaps_getLayerName($this->view->item);
+		$this->view->layername = neatlinemaps_getLayerName($this->view->thing);
 	}
 
 }

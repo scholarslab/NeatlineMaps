@@ -22,9 +22,9 @@ define('NEATLINE_TAG_PREFIX','neatline:');
 add_plugin_hook('install', 'neatlinemaps_install');
 add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
-add_plugin_hook('after_upload_file', 'neatlinemaps_load_geoserver_raster');
+//add_plugin_hook('after_upload_file', 'neatlinemaps_load_geoserver_raster');
 add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
-add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
+//add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 add_plugin_hook('public_theme_header', 'neatlinemaps_header');
 
 add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
@@ -143,15 +143,15 @@ function neatlinemaps_widget($item = null) {
 	echo __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
 }
 
-function neatlinemaps_assemble_params_for_map($item) {
+function neatlinemaps_assemble_params_for_map($thing) {
 	$params = array();
 
-	$params['layertitle'] = neatlinemaps_getTitle($item);
-	# now we need to retrieve the bounding box and projection ID
-	$params["serviceaddy"] = neatlinemaps_getServiceAddy($item) ;
-	$params["layername"] = neatlinemaps_getLayerName($item) ;
-	$params['dates'] = neatlinemaps_getDates($item);
+	$params['layertitle'] = neatlinemaps_getTitle($thing);
+	$params["serviceaddy"] = neatlinemaps_getServiceAddy($thing) ;
+	$params["layername"] = neatlinemaps_getLayerName($thing) ;
+	$params['dates'] = neatlinemaps_getDates($thing);
 
+	// now we need to retrieve the bounding box and projection ID
 	$capabilitiesrequest = $params["serviceaddy"] . "?request=GetCapabilities" ;
 	$client = new Zend_Http_Client($capabilitiesrequest);
 	$capabilities = new SimpleXMLElement( $client->request()->getBody() );
@@ -173,11 +173,11 @@ function neatlinemaps_assemble_params_for_map($item) {
 	# now we must retrieve information of any background layers that should accompany
 	# this map Item
 
-	$params["layers"] = neatlinemaps_getBackgroundLayers($item);
+	//$params["layers"] = neatlinemaps_getBackgroundLayers($item);
 
 	return $params;
 }
-
+/*
 function neatlinemaps_getBackgroundLayers($item) {
 	$layers = array();
 	try {
@@ -195,7 +195,7 @@ function neatlinemaps_getBackgroundLayers($item) {
 		debug("Neatline: Failed to get background layer info: " . $e->getMessage() );
 	}
 }
-
+*/
 function neatlinemaps_load_geoserver_raster($file, $item)
 {
 
@@ -240,25 +240,27 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 }
 
 function neatlinemaps_after_save_file($file) {
-	debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File'),true));
+	//debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File'),true));
 	if ($file->getItem()->getItemType()->name != "Historical map") {
 		# then this is not a historical map
 		debug("Neatline: not a historical map");
 		return;
 	}
-	
+	$exif = $file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File');
+	if (stripos(implode($exif),"geotiff")) {
+		neatlinemaps_load_geoserver_raster($file,$file->getItem());
+	}
 }
 
-function neatlinemaps_getServiceAddy($item)
+function neatlinemaps_getServiceAddy($thing)
 {
-	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	try {
-		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
+		$serviceaddys = $thing->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
 	}
 	catch (Omeka_Record_Exception $e) {
-		debug("Failed to get service address info: " . $e->getMessage() );
+		// presumably, this is not an item with an external WMS
+		debug("Neatline: Not an Item with an external WMS");
 	}
-
 	if ($serviceaddys) {
 		$serviceaddy = $serviceaddys[0]->text;
 	}
@@ -270,16 +272,14 @@ function neatlinemaps_getServiceAddy($item)
 	}
 }
 
-function neatlinemaps_getLayerName($item)
+function neatlinemaps_getLayerName($thing)
 {
-
-	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
-
 	try {
-		$serviceaddys = $item->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
+		$serviceaddys = $thing->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
 	}
 	catch (Omeka_Record_Exception $e) {
-		debug("Failed to get layer name info: " . $e->getMessage() );
+		// presumably, this is not an item with an external WMS
+		debug("Neatline: Not an Item with an external WMS");
 	}
 
 	if ($serviceaddys) {
@@ -289,16 +289,15 @@ function neatlinemaps_getLayerName($item)
 		return $serviceaddy;
 	}
 	else {
-		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
+		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $thing->id;
 	}
 
 }
 
-function neatlinemaps_getTitle($item)
+function neatlinemaps_getTitle($thing)
 {
-	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	try {
-		$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+		$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 	}
 	catch (Omeka_Record_Exception $e) {
 		debug("Failed to get title info: " . $e->getMessage() );
@@ -311,16 +310,15 @@ function neatlinemaps_getTitle($item)
 		return $title;
 	}
 	else {
-		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $item->id;
+		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $thing->id;
 	}
 
 }
 
-function neatlinemaps_getDates($item)
+function neatlinemaps_getDates($thing)
 {
-	$item = is_numeric($item) ? get_db()->gettable("Item")->find($item) : $item;
 	try {
-		$coverages = $item->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
+		$coverages = $thing->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
 	}
 	catch (Omeka_Record_Exception $e) {
 		debug("Failed to get dates info: " . $e->getMessage() );
@@ -330,16 +328,13 @@ function neatlinemaps_getDates($item)
 		$parsed = array();
 		foreach ($coverages as $coverage) {
 			$datetext = str_replace(' ','',$coverage->text);
-			debug("Datetext: " . $datetext);
 			if (neatlinemaps_isDate($datetext)) {
-				debug("It is a date coverage.");
 				$parsed['date'] = $datetext;
 				debug("Parsed a date: " . print_r($parsed,true));
 				return $parsed;
 			}
 				
 			else if (neatlinemaps_isDates($datetext)) {
-				debug("It is a dates coverage.");
 				$dates = preg_split('/;/', $datetext);
 				foreach ($dates as $piece) {
 					$chunks = preg_split('/=/',$piece);
@@ -352,9 +347,7 @@ function neatlinemaps_getDates($item)
 							break;
 					}
 				}
-				debug("Parsed dates: " . print_r($parsed,true));
-				return $parsed;
-					
+				return $parsed;	
 			}
 		}
 	}
@@ -368,7 +361,7 @@ function neatlinemaps_isDate($text) {
 function neatlinemaps_isDates($text) {
 	return preg_match('/^(start|end|[\=\;\-\T\+\d])+$/',$text);
 }
-
+/*
 function neatlinemaps_getFeaturesForItem($item) {
 	$features = array();
 	$limit = 9999;
@@ -391,6 +384,7 @@ function neatlinemaps_getFeaturesForItem($item) {
 	}
 	return $features;
 }
+*/
 
 function neatlinemaps_isWKT($i)
 {

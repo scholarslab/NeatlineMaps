@@ -219,7 +219,7 @@ function neatlinemaps_after_save_file($file) {
 	//debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File'),true));
 
 	$exif = $file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File');
-	if (stripos(implode($exif),"geotiff") !=== false) {
+	if (stripos(implode($exif),"geotiff") !== false) {
 		neatlinemaps_load_geoserver_raster($file,$file->getItem());
 	}
 }

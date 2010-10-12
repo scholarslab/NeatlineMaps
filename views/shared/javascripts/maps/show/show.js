@@ -126,7 +126,7 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	if (!this.isInitialized) {
 		this.isInitialized = true;
 	}
-	Omeka.NeatlineMaps.history.push(config);	
+	//Omeka.NeatlineMaps.history.push(config);	
 }
 /*
  * function toggleControl(element) { for(key in measureControls) { var control =

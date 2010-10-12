@@ -22,7 +22,6 @@ define('NEATLINE_TAG_PREFIX','neatline:');
 add_plugin_hook('install', 'neatlinemaps_install');
 add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
-//add_plugin_hook('after_upload_file', 'neatlinemaps_load_geoserver_raster');
 add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
 //add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 add_plugin_hook('public_theme_header', 'neatlinemaps_header');
@@ -181,11 +180,6 @@ function neatlinemaps_assemble_params_for_map($thing) {
 function neatlinemaps_load_geoserver_raster($file, $item)
 {
 
-	if ($item->getItemType()->name != "Historical map") {
-		# then this is not a historical map
-		return;
-	}
-
 	# we'll POST a ZIPfile to GeoServer's RESTful config interface
 	$zip = new ZipArchive();
 	$zipfilename = ARCHIVE_DIR . DIRECTORY_SEPARATOR . $file->archive_filename . ".zip";
@@ -195,9 +189,9 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	$zip->close();
 
 	$geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/workspaces/" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX;
-	$coveragestore_addy = $geoserver_config_addy . "/coveragestores/" . $item->id;
+	$coveragestore_addy = $geoserver_config_addy . "/coveragestores/" . $file->id;
 	$coverages_addy = $coveragestore_addy . "/" . "file.geotiff";
-	$coverage_addy = $coverages_addy . "?coverageName=" . $item->id;
+	$coverage_addy = $coverages_addy . "?coverageName=" . $file->id;
 	debug("Neatline: Coverage addy: " . $coverage_addy);
 	$adapter = new Zend_Http_Client_Adapter_Curl();
 	$client = new Zend_Http_Client($coverage_addy);
@@ -223,13 +217,9 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 
 function neatlinemaps_after_save_file($file) {
 	//debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File'),true));
-	if ($file->getItem()->getItemType()->name != "Historical map") {
-		# then this is not a historical map
-		debug("Neatline: not a historical map");
-		return;
-	}
+
 	$exif = $file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File');
-	if (stripos(implode($exif),"geotiff")) {
+	if (stripos(implode($exif),"geotiff") !=== false) {
 		neatlinemaps_load_geoserver_raster($file,$file->getItem());
 	}
 }

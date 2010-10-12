@@ -23,11 +23,13 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 
 <script type="text/javascript">
 		jQuery.noConflict();
-		NLconfig = new Object();
+		//NLconfig = new Object();
 	<?php 
+	/*
 		foreach ($params as $name => $value) {
 			echo "NLconfig.$name = '$value';\n"	;
-		}
+		}*/
+		?>NLConfig = <?php print json_encode($params);?>;<?php 
 		debug("Entering map.phtml with " . print_r($params,true));
 		$dates = $params['dates'];
 		if ($dates['date']) { ?>

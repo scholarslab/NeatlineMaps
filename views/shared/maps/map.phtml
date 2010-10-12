@@ -19,7 +19,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		jQuery.noConflict();
 
 		// insert our projection
-		<?php print $params['proj4js'];?>
+		<?php print $params['proj4js']; unset($params['proj4js']);?>
 		
 		NLconfig = <?php print json_encode($params) . ";\n";?>
 		NLconfig.mapnumber = Omeka.NeatlineMaps.history.length;

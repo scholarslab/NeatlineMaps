@@ -33,29 +33,6 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		<?php } if ($dates['end']) { ?>
 		NLconfig.enddate = '<?php echo $dates['end'] ;  ?>'; <?php } ?>
 
-		NLconfig.backgroundlayers = new Array();
-		
-		<?php
-		$layers = $params['layers'];
-		foreach (array_keys($layers) as $layername) {
-			$layerinfo = $layers[$layername];
-		  	?>
-		  	var layer = new OpenLayers.Layer.WMS('<?php echo $layerinfo['title']; ?>' , '<?php echo $layerinfo['serviceaddy'];?>', {layers: '<?php echo $layername; ?>'})
-			layer.Neatline = new Object();
-			<?php 
-			$dates = $layerinfo['dates'];
-			if ($dates['date']) { ?>
-				layer.Neatline.date = '<?php echo $dates['date'] ; ?>';
-			<?php } if ($dates['start']) { ?>
-				layer.Neatline.startdate = '<?php echo $dates['start'] ; ?>';
-			<?php } if ($dates['end']) { ?>
-				layer.Neatline.enddate = '<?php echo $dates['end'] ; ?>';
-			<?php } ?>
-		  	NLconfig.backgroundlayers.push(layer);
-		  	<?php 
-	 	 } 	
-		?>
-
 		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);
 		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
 		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.history.length;

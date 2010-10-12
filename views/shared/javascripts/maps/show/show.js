@@ -10,7 +10,7 @@ if(!Omeka.NeatlineMaps.history) {
 	Omeka.NeatlineMaps.history = new Array();
 }
 
-Omeka.NeatlineMaps.createMap = function(event, config) {
+Omeka.NeatlineMaps.createMap = function(config) {
 
 	var wgs84 = new OpenLayers.Projection("EPSG:4326");
 	var myproj = new OpenLayers.Projection(config.srs);

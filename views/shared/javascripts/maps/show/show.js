@@ -123,11 +123,9 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	 * "measurepartial": handleMeasurements }); map.addControl(control); }
 	 */
 	
-	Omeka.NeatlineMaps.history.push(config);
 	if (!this.isInitialized) {
 		this.isInitialized = true;
 	}
-	return true;
 }
 /*
  * function toggleControl(element) { for(key in measureControls) { var control =

@@ -122,11 +122,12 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	 * measureControls[key]; control.events.on({ "measure": handleMeasurements,
 	 * "measurepartial": handleMeasurements }); map.addControl(control); }
 	 */
-
+	
+	Omeka.NeatlineMaps.history.push(config);
 	if (!this.isInitialized) {
 		this.isInitialized = true;
 	}
-	Omeka.NeatlineMaps.history.push(config);	
+	return true;
 }
 /*
  * function toggleControl(element) { for(key in measureControls) { var control =

@@ -23,8 +23,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		
 		var NLconfig = <?php print json_encode($params) . ";\n";?>
 		NLconfig.mapdiv = "neatlinemap" + Omeka.NeatlineMaps.history.length;
-		Omeka.NeatlineMaps.history.push(NLconfig);
-		document.getElementById('NLtmp').id = NLconfig.mapdiv;	
+		document.getElementById('NLtmp').id = NLconfig.mapdiv;
 		jQuery(document).ready(function () { Omeka.NeatlineMaps.createMap(NLconfig) } );	
 		delete(NLconfig);
 //-->

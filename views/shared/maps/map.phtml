@@ -20,11 +20,11 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 
 		// insert our projection
 		<?php print $params['proj4js']; unset($params['proj4js']);?>
-		
-		var NLconfig = <?php print json_encode($params) . ";\n";?>
-		NLconfig.mapdiv = "neatlinemap" + Omeka.NeatlineMaps.history.length;
-		document.getElementById('NLtmp').id = NLconfig.mapdiv;
-		Omeka.NeatlineMaps.history.push(jQuery.extend(true, {}, NLconfig)); // clone off the config
-		jQuery(document).ready(function () { Omeka.NeatlineMaps.createMap(NLconfig)} );	
-		
+
+		mapdiv = "neatlinemap" + Omeka.NeatlineMaps.history.length;
+		document.getElementById('NLtmp').id = mapdiv;
+		Omeka.NeatlineMaps.history.push(
+				jQuery.extend(true, {"mapdiv": mapdiv}, <?php print json_encode($params);?>));
+		jQuery(document).ready(function () { Omeka.NeatlineMaps.createMap(Omeka.NeatlineMaps.history.slice(-1).[0])} );	
+		delete(mapdiv);
 </script>

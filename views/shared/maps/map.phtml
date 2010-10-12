@@ -20,8 +20,10 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 <script type="text/javascript">
 		jQuery.noConflict();
 		NLconfig = new Object();
-
-	<?php foreach ($params as $name => $value) {
+		NLconfig2 = 
+	<?php 
+		print json_encode($params); ?> ;<?php
+		foreach ($params as $name => $value) {
 			echo "NLconfig.$name = '$value';\n"	;
 		}
 		$dates = $params['dates'];

@@ -15,7 +15,8 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	var wgs84 = new OpenLayers.Projection("EPSG:4326");
 	var myproj = new OpenLayers.Projection(config.srs);
 	// var baseproj = new OpenLayers.Projection("EPSG:900913");
-
+	config.bbox = new OpenLayers.Bounds(config.minx,config.miny,config.maxx,config.maxy);
+	
 	var map = new OpenLayers.Map(config.mapdiv, {
 		'maxResolution' : 'auto',
 		'numZoomLevels' : 20,

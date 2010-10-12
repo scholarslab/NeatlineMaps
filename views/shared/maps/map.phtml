@@ -19,11 +19,9 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		jQuery.noConflict();
 		NLconfig = <?php print json_encode($params) . ";";?>
 		<?php print $params['proj4js'];?>
-		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);
 		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
-		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.history.length;
+		NLconfig.mapdiv = "neatlinemap" + Omeka.NeatlineMaps.history.length;
 		document.getElementById('NLtmp').id = NLconfig.mapdiv;	
-		//Event.observe(window, 'dom:loaded', Omeka.NeatlineMaps.createMap.bindAsEventListener(this,NLconfig));
 		jQuery(document).ready(function () { Omeka.NeatlineMaps.createMap(NLconfig) } );	
 		delete(NLconfig);
 //-->

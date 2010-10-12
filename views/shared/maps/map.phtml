@@ -25,6 +25,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		NLconfig.mapdiv = "neatlinemap" + Omeka.NeatlineMaps.history.length;
 		document.getElementById('NLtmp').id = NLconfig.mapdiv;
 		Omeka.NeatlineMaps.history.push(jQuery.extend(true, {}, NLconfig)); //clone off the config
-		jQuery(document).ready(function () { Omeka.NeatlineMaps.createMap(NLconfig)} );	
 		delete(NLconfig); // we don't clutter up the global namespace
+		jQuery(document).ready(function () { Omeka.NeatlineMaps.createMap(Omeka.NeatlineMaps.history.slice(-1)[0])} );	
+		
 </script>

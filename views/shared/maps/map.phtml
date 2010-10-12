@@ -1,6 +1,6 @@
 <div id="NLtmp" class="themap"></div>
 <div id="mappanel" class="olControlEditingToolbar"></div>
-<div id="addlayerdialog">
+<div id="addlayerdialog"></div>
 <div id="mappreview"></div>
 <?php
 $items = get_items(array('type' => neatlinemaps_getMapItemType() ), 200);
@@ -17,10 +17,14 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 
 <script type="text/javascript">
 		jQuery.noConflict();
-		NLconfig = <?php print json_encode($params) . ";";?>
+
+		// insert our projection
 		<?php print $params['proj4js'];?>
-		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
-		NLconfig.mapdiv = "neatlinemap" + Omeka.NeatlineMaps.history.length;
+		
+		NLconfig = <?php print json_encode($params) . ";";?>
+		NLconfig.mapnumber = Omeka.NeatlineMaps.history.length;
+		Omeka.NeatlineMaps.history[NLconfig.mapnumber] = NLconfig;
+		NLconfig.mapdiv = "neatlinemap" + NLconfig.mapnumber;
 		document.getElementById('NLtmp').id = NLconfig.mapdiv;	
 		jQuery(document).ready(function () { Omeka.NeatlineMaps.createMap(NLconfig) } );	
 		delete(NLconfig);

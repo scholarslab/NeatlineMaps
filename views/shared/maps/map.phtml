@@ -20,7 +20,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		jQuery.noConflict();
 		NLconfig = <?php print json_encode($params);?>;<?php 
 		debug("Entering map.phtml with " . print_r($params,true));
-		echo $params['proj4js'];
+		echo $params['proj4js'];?>
 		/*$dates = $params['dates'];
 		if ($dates['date']) { ?>
 		NLconfig.date = '<?php echo $dates['date'] ; ?>';

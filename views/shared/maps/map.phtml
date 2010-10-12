@@ -24,6 +24,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		foreach ($params as $name => $value) {
 			echo "NLconfig.$name = '$value';\n"	;
 		}
+		debug("Entering map.phtml with " . print_r($params,true));
 		$dates = $params['dates'];
 		if ($dates['date']) { ?>
 		NLconfig.date = '<?php echo $dates['date'] ; ?>';
@@ -33,6 +34,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		NLconfig.enddate = '<?php echo $dates['end'] ;  ?>'; <?php } ?>
 
 		NLconfig.backgroundlayers = new Array();
+		
 		<?php
 		$layers = $params['layers'];
 		foreach (array_keys($layers) as $layername) {

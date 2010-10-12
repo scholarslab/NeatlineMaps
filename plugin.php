@@ -157,11 +157,11 @@ function neatlinemaps_assemble_params_for_map($thing) {
 	$capabilities = new SimpleXMLElement( $client->request()->getBody() );
 	$tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='" . $params["layername"] . "']/BoundingBox");
 	$bb = $tmp[0];
-	$params["minx"] = $bb['minx'] ;
-	$params["maxx"] = $bb['maxx'] ;
-	$params["miny"] = $bb['miny'] ;
-	$params["maxy"] = $bb['maxy'] ;
-	$params["srs"] = $bb['SRS'] ;
+	$params["minx"] = (string)$bb['minx'] ;
+	$params["maxx"] = (string)$bb['maxx'] ;
+	$params["miny"] = (string)$bb['miny'] ;
+	$params["maxy"] = (string)$bb['maxy'] ;
+	$params["srs"] = (string)$bb['SRS'] ;
 
 	# now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
 	# transforms before the projection has been fetched.
@@ -177,25 +177,7 @@ function neatlinemaps_assemble_params_for_map($thing) {
 
 	return $params;
 }
-/*
-function neatlinemaps_getBackgroundLayers($item) {
-	$layers = array();
-	try {
-		$backgrounds = $item->getElementTextsByElementNameAndSetName( 'Background', 'Item Type Metadata');
-		foreach ($backgrounds as $background) {
-			$id = $background->text;
-			$layers[ neatlinemaps_getLayerName($id) ] =
-			array('serviceaddy' => neatlinemaps_getServiceAddy($id),
-			'title' => neatlinemaps_getTitle($id),
-			'dates' => neatlinemaps_getDates($id));
-		}
-		return $layers;
-	}
-	catch (Omeka_Record_Exception $e) {
-		debug("Neatline: Failed to get background layer info: " . $e->getMessage() );
-	}
-}
-*/
+
 function neatlinemaps_load_geoserver_raster($file, $item)
 {
 

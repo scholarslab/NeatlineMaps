@@ -29,7 +29,7 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 		foreach ($params as $name => $value) {
 			echo "NLconfig.$name = '$value';\n"	;
 		}*/
-		?>NLConfig = <?php print json_encode($params);?>;<?php 
+		?>NLConfig = <?php print json_encode($params,JSON_FORCE_OBJECT);?>;<?php 
 		debug("Entering map.phtml with " . print_r($params,true));
 		$dates = $params['dates'];
 		if ($dates['date']) { ?>

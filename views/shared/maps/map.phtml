@@ -1,5 +1,3 @@
-<script type="text/javascript"><?php echo $params['proj4js'] ?></script>
-
 <div id="NLtmp" class="themap"></div>
 <div id="mappanel" class="olControlEditingToolbar"></div>
 <div id="addlayerdialog">
@@ -20,22 +18,17 @@ echo $this->formSelect("layerselect", reset($options), array('class'=>'select'),
 
 <script type="text/javascript">
 		jQuery.noConflict();
-		//NLconfig = new Object();
-	<?php 
-	/*
-		foreach ($params as $name => $value) {
-			echo "NLconfig.$name = '$value';\n"	;
-		}*/
-		?>NLconfig = <?php print json_encode($params);?>;<?php 
+		NLconfig = <?php print json_encode($params);?>;<?php 
 		debug("Entering map.phtml with " . print_r($params,true));
-		$dates = $params['dates'];
+		echo $params['proj4js'];
+		/*$dates = $params['dates'];
 		if ($dates['date']) { ?>
 		NLconfig.date = '<?php echo $dates['date'] ; ?>';
 		<?php } if ($dates['start']) { ?>
 		NLconfig.startdate = '<?php echo $dates['start'] ; ?>';
 		<?php } if ($dates['end']) { ?>
 		NLconfig.enddate = '<?php echo $dates['end'] ;  ?>'; <?php } ?>
-
+*/
 		NLconfig.bbox = new OpenLayers.Bounds(NLconfig.minx,NLconfig.miny,NLconfig.maxx,NLconfig.maxy);
 		Omeka.NeatlineMaps.history[Omeka.NeatlineMaps.history.length] = NLconfig;
 		NLconfig.mapdiv = "map" + Omeka.NeatlineMaps.history.length;

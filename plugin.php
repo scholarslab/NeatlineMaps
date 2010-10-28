@@ -37,25 +37,14 @@ function neatlinemaps_header()
 <!-- Neatline Maps Dependencies -->
 <link
 	rel="stylesheet" href="<?php echo css('show'); ?>" />
-<link
-	rel="stylesheet"
-	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/overcast/jquery-ui.css"
-	type="text/css" />
 <script
 	type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
-<script
-	type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-<script
-	type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7/jquery-ui.min.js"></script>
 	<?php
 	echo js('proj4js/proj4js-compressed');
 	echo js('maps/show/show');
 	echo "<!-- End Neatline Maps Dependencies -->\n\n";
 	break;
 default:
-	break;
 	}
 }
 

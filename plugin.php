@@ -191,13 +191,11 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	
 	$adapter = new Zend_Http_Client_Adapter_Curl();
 	# now we attach up the Zipfile filehandle
-	$putFileSize   = filesize($zipfilename);
-	debug("Neatline: Zipfile size: " . $putFileSize);
-	$putFileHandle = fopen($zipfilename, "r");
+	# debug("Neatline: Zipfile size: " . $putFileSize);
 	$adapter->setConfig(array(
     'curloptions' => array(
-	CURLOPT_INFILESIZE => $putFileSize,
-	CURLOPT_INFILE => $putFileHandle
+	CURLOPT_INFILESIZE => filesize($zipfilename),
+	CURLOPT_INFILE => fopen($zipfilename, "r")
 	)
 	));
 	$client->setAdapter($adapter);

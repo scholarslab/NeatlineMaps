@@ -182,6 +182,8 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	$coveragestore_addy = $geoserver_config_addy . "/coveragestores/" . $file->id;
 	$coverages_addy = $coveragestore_addy . "/" . "file.geotiff";
 	# $coverage_addy = $coverages_addy . "?coverageName=" . $file->id;
+	$coverage_addy = $coverages_addy;
+	
 	debug("Neatline: Coverage addy: " . $coverage_addy);
 	
 	$client = new Zend_Http_Client($coverage_addy);

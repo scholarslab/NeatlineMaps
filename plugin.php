@@ -207,13 +207,13 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 function neatlinemaps_after_save_file($file) {
 	//debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File'),true));
 
-	$exif = $file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File');
-	if (stripos(implode($exif),"geotiff") !== false) {
-		debug("Neatline: found a GeoTIFF file");
-		neatlinemaps_load_geoserver_raster($file,$file->getItem());
+	$exif = $file->getElementTextsByElementNameAndSetName('Exif String','Omeka Image File');
+	if (stripos($exif,"geotiff") === false) {
+		debug("Neatline: not a GeoTIFF file");
 	}
 	else {
-		debug("Neatline: not a GeoTIFF file");
+		debug("Neatline: found a GeoTIFF file");
+		neatlinemaps_load_geoserver_raster($file,$file->getItem());
 	}
 }
 

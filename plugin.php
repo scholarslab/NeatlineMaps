@@ -170,6 +170,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 {
 
 	# we'll POST a ZIPfile to GeoServer's RESTful config interface
+	
 	$zip = new ZipArchive();
 	$zipfilename = ARCHIVE_DIR . DIRECTORY_SEPARATOR . $file->archive_filename . ".zip";
 	debug("Neatline: Zipfile: " . $zipfilename);
@@ -180,14 +181,15 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	$geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/workspaces/" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX;
 	$coveragestore_addy = $geoserver_config_addy . "/coveragestores/" . $file->id;
 	$coverages_addy = $coveragestore_addy . "/" . "file.geotiff";
-	$coverage_addy = $coverages_addy . "?coverageName=" . $file->id;
+	# $coverage_addy = $coverages_addy . "?coverageName=" . $file->id;
 	debug("Neatline: Coverage addy: " . $coverage_addy);
-	$adapter = new Zend_Http_Client_Adapter_Curl();
+	
 	$client = new Zend_Http_Client($coverage_addy);
 	$client->setAuth(NEATLINE_GEOSERVER_ADMINUSER, NEATLINE_GEOSERVER_ADMINPW);
 	$client->setHeaders('Content-type', 'application/zip');
-
-	# now we attach up the Zipfile
+	
+	$adapter = new Zend_Http_Client_Adapter_Curl();
+	# now we attach up the Zipfile filehandle
 	$putFileSize   = filesize($zipfilename);
 	debug("Neatline: Zipfile size: " . $putFileSize);
 	$putFileHandle = fopen($zipfilename, "r");
@@ -198,6 +200,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	)
 	));
 	$client->setAdapter($adapter);
+	
 	$response = $client->request(Zend_Http_Client::PUT);
 	debug("Neatline: Geoserver's response: " . $response->getBody());
 

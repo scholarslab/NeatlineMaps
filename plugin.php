@@ -209,7 +209,11 @@ function neatlinemaps_after_save_file($file) {
 
 	$exif = $file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File');
 	if (stripos(implode($exif),"geotiff") !== false) {
+		debug("Neatline: found a GeoTIFF file");
 		neatlinemaps_load_geoserver_raster($file,$file->getItem());
+	}
+	else {
+		debug("Neatline: not a GeoTIFF file");
 	}
 }
 

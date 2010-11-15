@@ -181,8 +181,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 	$geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/workspaces/" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX;
 	$coveragestore_addy = $geoserver_config_addy . "/coveragestores/" . $file->id;
 	$coverages_addy = $coveragestore_addy . "/" . "file.geotiff";
-	# $coverage_addy = $coverages_addy . "?coverageName=" . $file->id;
-	$coverage_addy = $coverages_addy;
+	$coverage_addy = $coverages_addy . "?coverageName=" . $file->id;
 	
 	debug("Neatline: Coverage addy: " . $coverage_addy);
 	

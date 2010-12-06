@@ -26,7 +26,7 @@ add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
 //add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 add_plugin_hook('public_theme_header', 'neatlinemaps_header');
 
-add_filter("show_item_in_page","neatlinemaps_show_item_in_page");
+add_filter("exhibit_builder_exhibit_display_item","neatlinemaps_show_item_in_page");
 add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_background_widget");
 
 function neatlinemaps_header()
@@ -44,6 +44,7 @@ function neatlinemaps_header()
 	<?php
 	echo js('proj4js/proj4js-compressed');
 	echo js('maps/show/show');
+	echo js('cloudmade');
 	echo "<!-- End Neatline Maps Dependencies -->\n\n";
 	break;
 default:
@@ -104,7 +105,7 @@ function neatlinemaps_install()
 
 }
 
-function neatlinemaps_show_item_in_page($html,$item){
+function neatlinemaps_show_item_in_page($html, $displayFilesOptions, $linkProperties, $item){
 	if($item->getItemType()->name == "Historical map") {
 		return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
 	} else return $html;

@@ -161,11 +161,6 @@ function neatlinemaps_assemble_params_for_map($thing) {
 	$client->setUri($proj4jsurl);
 	$params["proj4js"] = $client->request()->getBody();
 
-	# now we must retrieve information of any background layers that should accompany
-	# this map Item
-
-	//$params["layers"] = neatlinemaps_getBackgroundLayers($item);
-
 	return $params;
 }
 

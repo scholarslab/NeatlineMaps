@@ -19,11 +19,11 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
 		try {
 			$thing = $this->findById($id,"Item");
-		} catch (Omeka_Record_Exception $e) {
+		} catch (Exception $e) {
 			try {
 				$thing = $this->findById($id,"File");
 			}
-			catch (Omeka_Record_Exception $e) {
+			catch (Exception $e) {
 				debug("Neatline: No such id as: " . $id . "?\nException: " . $e->getMessage());
 			}
 		}

@@ -29,7 +29,7 @@ Omeka.NeatlineMaps.createMap = function(config) {
 				'layers' : config.layername
 			}, {
 				'buffer' : 0,
-				'gutter' : 5
+				'gutter' : 0
 			});
 	layer.Neatline = new Object();
 	if (config.date) {

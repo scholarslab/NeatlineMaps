@@ -11,7 +11,7 @@ if(!Omeka.NeatlineMaps.history) {
 }
 
 Omeka.NeatlineMaps.createMap = function(config) {
-	var jQuery = jQuery.noConflict();
+	var jq_neatlinemaps = jQuery.noConflict();
 
 	var wgs84 = new OpenLayers.Projection("EPSG:4326");
 	var myproj = new OpenLayers.Projection(config.srs);
@@ -79,14 +79,14 @@ Omeka.NeatlineMaps.createMap = function(config) {
 		"closeOnEscape": true,
 		"buttons": { "Add": 
 				function() { 
-					var id = jQuery("#layerselect")[0].value;
-					jQuery.get("/maps/serviceaddy/" + id, function(serviceaddy){ 
-						jQuery.get("/maps/layername/" + id, function(layername) {
-							var label = jQuery("#layerselect option")[jQuery("#layerselect")[0].selectedIndex].label;
+					var id = jq_neatlinemaps("#layerselect")[0].value;
+					jq_neatlinemaps.get("/maps/serviceaddy/" + id, function(serviceaddy){ 
+						jq_neatlinemaps.get("/maps/layername/" + id, function(layername) {
+							var label = jq_neatlinemaps("#layerselect option")[jq_neatlinemaps("#layerselect")[0].selectedIndex].label;
 							map.addLayer(new OpenLayers.Layer.WMS( label, serviceaddy, {"layers": layername}));
 						});
 					});
-					jQuery(this).dialog("close"); } }
+					jq_neatlinemaps(this).dialog("close"); } }
 		});
 	
 	Omeka.NeatlineMaps.push(map);

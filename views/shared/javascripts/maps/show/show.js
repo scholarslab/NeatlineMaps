@@ -70,7 +70,7 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	                	panel
 	                	]);
 	
-	var addlayerdialog = jQuery("#addlayerdialog").dialog( {
+	var addlayerdialog = jq_neatlinemaps("#addlayerdialog").dialog( {
 		"autoOpen": false,
 		"draggable": true,
 		"height": 'auto',

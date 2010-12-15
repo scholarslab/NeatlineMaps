@@ -1,3 +1,5 @@
+var jq_neatlinemaps = jQuery.noConflict();
+
 if (typeof (Omeka) == 'undefined') {
 	Omeka = new Object();
 }
@@ -11,7 +13,7 @@ if(!Omeka.NeatlineMaps.history) {
 }
 
 Omeka.NeatlineMaps.createMap = function(config) {
-	var jq_neatlinemaps = jQuery.noConflict();
+
 
 	var wgs84 = new OpenLayers.Projection("EPSG:4326");
 	var myproj = new OpenLayers.Projection(config.srs);

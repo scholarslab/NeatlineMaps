@@ -1,5 +1,5 @@
 <?php
 		foreach ($layers as $layer) {
-			echo $layer["Name"] . "\n";
+			echo print_r($layer["Name"],true) . "\n";
 		}
 ?>

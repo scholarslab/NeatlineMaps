@@ -17,21 +17,21 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	public function init()
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
-		$thing = 0;
 		$file = $this->findById($id,"File");
 		$is_historic_map = false;
 		$item = $this->findById($id,"Item");
-		if ($item && $item->getItemType() == neatlinemaps_getMapItemType() ) { 
-			$is_historic_map = true;
+		if ($item) {
+			if ($item->getItemType() == neatlinemaps_getMapItemType()) { 
+				$is_historic_map = true;
+			}	
 		}
 		if ($file && !$is_historic_map) {
-			$thing = $this->findById($id,"File");
+			$this->view->thing = $file;
 		}
 		else {
-			$thing = $this->findById($id,"Item");
+			$this->view->thing = $item;
 		}
-		debug("NeatlineMaps: Show Thing from Id is \n" . print_r($thing,false));
-		$this->view->thing = $thing;
+		debug("NeatlineMaps: Show Thing from Id is \n" . print_r($this->view->thing,false));
 	}
 
 	public function showAction()

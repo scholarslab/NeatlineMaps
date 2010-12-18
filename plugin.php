@@ -248,11 +248,11 @@ function neatlinemaps_getTitle($thing)
 	if (is_numeric($thing)) {
 		$id = $thing;
 		try {
-			$thing = get_db()->getTable("File")->find($id);
+			$object = get_db()->getTable("File")->find($id);
 			}
 		catch (Exception $e) {
 			try {
-				$thing = get_db()->getTable("Item")->find($id);
+				$object = get_db()->getTable("Item")->find($id);
 			}
 			catch (Exception $e) {
 				debug("Neatline: No such id as: " . $id . "\nException: " . $e->getMessage());
@@ -260,7 +260,7 @@ function neatlinemaps_getTitle($thing)
 		}
 	}
 	try {
-		$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+		$titles = $object->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 	}
 	catch (Omeka_Record_Exception $e) {
 		debug("Failed to get title info: " . $e->getMessage() );

@@ -27,7 +27,6 @@ add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
 add_plugin_hook('public_theme_header', 'neatlinemaps_header');
 
 add_filter("exhibit_builder_exhibit_display_item","neatlinemaps_show_item_in_page");
-add_filter(array('Form','Item','Item Type Metadata','Background'),"neatlinemaps_background_widget");
 
 function neatlinemaps_header()
 {
@@ -87,12 +86,7 @@ function neatlinemaps_install()
               array(
               'name'        => "Layername",
               'description' => "WMS Name of map", 
-              ),
-              array(
-              'name'        => "Background",
-              'description' => "ID of Map to use as background layer for this map", 
               )
-               
               );
               try {
               	$itemtype = insert_item_type($histmitemtype,$histmitemtypemetadata);

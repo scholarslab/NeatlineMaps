@@ -23,7 +23,6 @@ add_plugin_hook('install', 'neatlinemaps_install');
 add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
 add_plugin_hook('define_routes', 'neatlinemaps_routes');
 add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
-//add_plugin_hook('public_append_to_items_show', 'neatlinemaps_widget');
 add_plugin_hook('public_theme_header', 'neatlinemaps_header');
 
 add_filter("exhibit_builder_exhibit_display_item","neatlinemaps_show_item_in_page");
@@ -99,9 +98,9 @@ function neatlinemaps_install()
 
 }
 
-function neatlinemaps_show_item_in_page($html, $displayFilesOptions, $linkProperties, $item){
+function neatlinemaps_show_item_in_page($html, $displayFilesOptions, $linkProperties, $thing){
 	if($item->getItemType()->name == "Historical map") {
-		return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
+		return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($thing) ));
 	} else return $html;
 }
 
@@ -121,11 +120,11 @@ function neatlinemaps_routes($router)
 	DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
 }
 
-function neatlinemaps_widget($item = null) {
-    if (!$item) {
-        $item = get_current_item();
+function neatlinemaps_widget($thing = null) {
+    if (!$thing) {
+        $thing = get_current_item();
     }
-	echo __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($item) ));
+	echo __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($thing) ));
 }
 
 function neatlinemaps_assemble_params_for_map($thing) {
@@ -199,16 +198,7 @@ function neatlinemaps_load_geoserver_raster($file, $item)
 }
 
 function neatlinemaps_after_save_file($file) {
-	//debug("Neatline: EXIF data: " . print_r($file->getElementTextsByElementNameAndSetName('Exif Array','Omeka Image File'),true));
-
-	$exif = $file->getElementTextsByElementNameAndSetName('Exif String','Omeka Image File');
-	if (stripos($exif,"geotiff") === false) {
-		debug("Neatline: not a GeoTIFF file");
-	}
-	else {
-		debug("Neatline: found a GeoTIFF file");
-		neatlinemaps_load_geoserver_raster($file,$file->getItem());
-	}
+	neatlinemaps_load_geoserver_raster($file,$file->getItem());
 }
 
 function neatlinemaps_getServiceAddy($thing)
@@ -355,11 +345,6 @@ function neatlinemaps_isWKT($i)
 
 function neatlinemaps_strstrb($h,$n){
 	return array_shift(explode($n,$h,2));
-}
-
-function neatlinemaps_background_widget($html,$inputNameStem,$value,$options,$record,$element) {
-	$div = __v()->partial('widgets/background.phtml', array("inputNameStem" =>$inputNameStem, "value" => $value, "options" => $options, "record" => $record, "element" => $element));
-	return $div;
 }
 
 function neatlinemaps_getMapItemType() {

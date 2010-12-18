@@ -370,9 +370,14 @@ function neatlinemaps_getField($thing, $field, $set = "Dublin Core") {
 	 of that File or if the input is an id, then from a Record to which the input id
 	 refers or from from the parent of a File to which to the input ID
 	 refers, if the File lacks that field */
+	$fields = array();
 	if (!is_numeric($thing)) {
 		// assume we've been handed an object, presumably a Record 
-		$fields = $thing->getElementTextsByElementNameAndSetName( $field, $set);
+		try {
+			$fields = $thing->getElementTextsByElementNameAndSetName( $field, $set);
+		}
+		catch (Exception $e) {
+		}
 		if ( count($fields) > 0 ) {
 			$field =  $fields[0];
 			return $field->text;
@@ -408,7 +413,12 @@ function neatlinemaps_getField($thing, $field, $set = "Dublin Core") {
 		}
 		$file = get_db()->getTable("File")->find($thing);
 		if ($file && !$is_historic_map_item) {
-			$fields = $file->getElementTextsByElementNameAndSetName( $field, $set);
+			// we'll try the file
+			try {
+				$fields = $file->getElementTextsByElementNameAndSetName( $field, $set);
+			}
+			catch (Exception $e) {
+			}
 			if ( count($fields) > 0 ) {
 				$field =  $fields[0];
 				return $field->text;
@@ -444,4 +454,5 @@ function neatlinemaps_getField($thing, $field, $set = "Dublin Core") {
 			}
 		}
 	}
+	
 }

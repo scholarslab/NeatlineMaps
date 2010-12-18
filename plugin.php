@@ -89,7 +89,6 @@ function neatlinemaps_install()
               );
               try {
               	$itemtype = insert_item_type($histmitemtype,$histmitemtypemetadata);
-              	define("NEATLINEMAPS_ITEMTYPE",$itemtype->id);
               	debug("Neatline: Using Neatline itemtype ID: " . NEATLINEMAPS_ITEMTYPE);
               }
               catch (Exception $e) {

@@ -51,9 +51,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$client = new Zend_Http_Client($capabilitiesrequest);
 		$capabilities = new SimpleXMLElement( $client->request()->getBody() );	
 		$layers = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name]");
-		foreach ($layers as $layer) {
-			echo ($layer["Name"] . "\n");
-		}
+		$this->view->$layers;
 	}
 
 }

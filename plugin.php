@@ -382,6 +382,6 @@ function neatlinemaps_getLayerSelect() {
 		array_push($layernames,$layer->Name);
 	}
 	$options = array_combine($layernames,$layerstitles);
-	return $this->formSelect("layerselect", reset($options), array('class'=>'select'), $options);
+	return formSelect("layerselect", reset($options), array('class'=>'select'), $options);
 		
 } 

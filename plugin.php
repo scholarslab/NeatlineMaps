@@ -259,8 +259,8 @@ function neatlinemaps_getTitle($thing)
 	else {
 		// we've been handed an ID
 		// check whether it is an Item that is itself a Historical Map
-		$item = get_db()->getTable("Item")->find($thing)
-		if ($item && $item->getItemType() == neatlinemaps_getMapItemType()) {
+		$item = get_db()->getTable("Item")->find($thing);
+		if ( $item && $item->getItemType() == neatlinemaps_getMapItemType() ) {
 			try {
 					$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 				}
@@ -272,7 +272,7 @@ function neatlinemaps_getTitle($thing)
 			// we must now assume that it is a File ID
 			try {
 				$item = get_db()->getTable("File")->find($thing)->getItem();
-				debug("NeatlineMaps: and trying to get title from parent Item id " . $item->id);	
+				debug("NeatlineMaps: and trying to get title from File id " . $things . " with parent Item id " . $item->id);	
 				$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 			catch (Exception $e)

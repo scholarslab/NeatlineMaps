@@ -255,7 +255,15 @@ function neatlinemaps_getTitle($thing)
 			$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 		}
 		catch (Exception $e) {
+			// perhaps it's an Item id?
+			try {
+				$item = get_db()->getTable("Item")->find($thing);
+				$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+			}
+			catch (Exception $e)
+			{
 				debug("NeatlineMaps: " . $e->getMessage());
+			}
 		}
 	}
 	else {

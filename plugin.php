@@ -249,9 +249,9 @@ function neatlinemaps_getTitle($thing)
 	if (is_numeric($thing)) {
 		// assume that this is a file ID
 		debug("NeatlineMaps: trying to get title from File id " . $thing);	
-		$item = get_db()->getTable("File")->find($thing)->getItem();
-		debug("NeatlineMaps: and trying to get title from parent Item id " . $item->id);
 		try {
+			$item = get_db()->getTable("File")->find($thing)->getItem();
+			debug("NeatlineMaps: and trying to get title from parent Item id " . $item->id);	
 			$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 		}
 		catch (Exception $e) {

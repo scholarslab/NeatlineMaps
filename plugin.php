@@ -326,30 +326,6 @@ function neatlinemaps_isDate($text) {
 function neatlinemaps_isDates($text) {
 	return preg_match('/^(start|end|[\=\;\-\T\+\d])+$/',$text);
 }
-/*
-function neatlinemaps_getFeaturesForItem($item) {
-	$features = array();
-	$limit = 9999;
-	$tagstring = NEATLINE_TAG_PREFIX . $item->id;
-	$featureitems = get_db()->getTable('Item')->findBy(array('tags' => $tagstring), $limit);
-	$featureids = array();
-	foreach ($featureitems as $featureitem) {
-		try {
-			$coverages = $featureitem->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
-		}
-		catch (Omeka_Record_Exception $e) {
-		}
-		$wkts = array();
-		foreach($coverages as $coverage) {
-			if ( neatlinemaps_isWKT($coverage->text) ) {
-				array_push($wkts, $coverage->text);
-			}
-		}
-		array_push($features,$wkts);
-	}
-	return $features;
-}
-*/
 
 function neatlinemaps_isWKT($i)
 {

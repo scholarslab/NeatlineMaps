@@ -1,7 +1,8 @@
 <div>
 <?php
 		foreach ($layers as $layer) {
-			echo print_r($layer,true) . "\n";
+			echo "<span>" . $layer["Name"] . "</span>";
+			echo "<span>" . $layer["Title"] . "</span>";
 		}
 ?>
 </div>

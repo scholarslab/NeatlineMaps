@@ -203,16 +203,7 @@ function neatlinemaps_after_save_file($file) {
 
 function neatlinemaps_getServiceAddy($thing)
 {
-	try {
-		$serviceaddys = $thing->getElementTextsByElementNameAndSetName( 'Service Address', 'Item Type Metadata');
-	}
-	catch (Omeka_Record_Exception $e) {
-		// presumably, this is not an item with an external WMS
-		debug("Neatline: Not an Item with an external WMS");
-	}
-	if ($serviceaddys) {
-		$serviceaddy = $serviceaddys[0]->text;
-	}
+	$serviceaddy = neatline_getField($thing, 'Service Address', 'Item Type Metadata');
 	if ($serviceaddy) {
 		return $serviceaddy;
 	}
@@ -223,19 +214,9 @@ function neatlinemaps_getServiceAddy($thing)
 
 function neatlinemaps_getLayerName($thing)
 {
-	try {
-		$serviceaddys = $thing->getElementTextsByElementNameAndSetName( 'Layername', 'Item Type Metadata');
-	}
-	catch (Omeka_Record_Exception $e) {
-		// presumably, this is not an item with an external WMS
-		debug("Neatline: Not an Item with an external WMS");
-	}
-
-	if ($serviceaddys) {
-		$serviceaddy = $serviceaddys[0]->text;
-	}
-	if ($serviceaddy) {
-		return $serviceaddy;
+	$layername = neatline_getField($thing, 'Layername', 'Item Type Metadata');
+	if ($layername) {
+		return $layername;
 	}
 	else {
 		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $thing->id;
@@ -245,46 +226,7 @@ function neatlinemaps_getLayerName($thing)
 
 function neatlinemaps_getTitle($thing)
 {	
-	$titles = array();
-	if (!is_numeric($thing)) {
-		// we've been handed an object, presumably a Record 
-		try {
-			debug("NeatlineMaps: trying to get title from Thing id " . $thing->id);	
-			$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-		}
-		catch (Omeka_Record_Exception $e) {
-			debug("NeatlineMaps: Failed to get title info: " . $e->getMessage() );
-		}	
-	}
-	else {
-		// we've been handed an ID
-		// check whether it is an Item that is itself a Historical Map
-		$item = get_db()->getTable("Item")->find($thing);
-		if ( $item && $item->getItemType() == neatlinemaps_getMapItemType() ) {
-			try {
-					$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-				}
-			catch (Exception $e) {
-					debug("NeatlineMaps: " . $e->getMessage());
-				}
-		}
-		else {
-			// we must now assume that it is a File ID
-			try {
-				$item = get_db()->getTable("File")->find($thing)->getItem();
-				debug("NeatlineMaps: and trying to get title from File id " . $things . " with parent Item id " . $item->id);	
-				$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-			}
-			catch (Exception $e)
-				{
-					debug("NeatlineMaps: " . $e->getMessage());
-				}
-		}
-	}
-
-	if ($titles) {
-		$title = $titles[0]->text;
-	}
+	$title = neatline_getField($thing, "Title");
 	if ($title) {
 		return $title;
 	}
@@ -415,3 +357,74 @@ function neatlinemaps_getLayerSelect($view) {
 	return $view->formSelect("layerselect", reset($options), array('class'=>'select'), $options);
 		
 } 
+
+function neatlinemaps_getField($thing, $field, $set = "Dublin Core") {
+	// because NeatlineMaps allows Files or Items to represent maps, 
+	// and because Omeka doesn't use the same ID sequence for each, we
+	// often need to figure out what an ID means. this is our algorithm for the best
+	// guess
+	// it intends to return a $set field of some kind, either from an Item to which
+	// the input id refers or from the parent of a File to which to the input ID
+	// refers
+	if (!is_numeric($thing)) {
+		// assume we've been handed an object, presumably a Record 
+		$fields = $thing->getElementTextsByElementNameAndSetName( $field, $set);
+		if ( count($fields) > 0 ) {
+			$field =  $fields[0];
+			return $field->text;
+		}
+		else {
+			// it hadn't got its own DC field, so we check to see if it is a File
+			if ( $thing == get_db()->getTable("File")->find($thing) ){
+				$item = $thing->getItem();
+				$fields = $item->getElementTextsByElementNameAndSetName( $field, $set);
+				if ( count($fields) > 0 ) {
+					$field =  $fields[0];
+					return $field->text;
+				}
+				else {
+					// neither the File nor its Item have this field
+					return false;
+				}
+			}
+		}
+	}
+	else {
+		// we've been handed an ID
+		// check whether it is an Item 
+		$item = get_db()->getTable("Item")->find($thing);
+		if ( $item ) {
+			$fields = $item->getElementTextsByElementNameAndSetName( $field, $set);
+			if ( count($fields) > 0 ) {
+				$field =  $fields[0];
+				return $field->text;
+			}
+			else {
+				// it hasn't got this field
+				return false;
+			}
+		}
+		else {
+			// we must now assume that it is a File ID
+			$file = get_db()->getTable("File")->find($thing);
+			$fields = $file->getElementTextsByElementNameAndSetName( $field, $set);
+			if ( count($fields) > 0 ) {
+				$field =  $fields[0];
+				return $field->text;
+			}
+			else {
+				// we now try its parent Item
+				$item = $file->getItem();
+				$fields = $item->getElementTextsByElementNameAndSetName( $field, $set);
+				if ( count($fields) > 0 ) {
+					$field =  $fields[0];
+					return $field->text;
+				}
+				else {
+					// neither the File nor its Item have this field
+					return false;
+				}
+			}	
+		}
+	}
+}

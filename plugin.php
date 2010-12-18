@@ -248,14 +248,14 @@ function neatlinemaps_getTitle($thing)
 	if (is_numeric($thing)) {
 		$id = $thing;
 		try {
-			$thing = get_db()->getTable("File")->findById($id);
+			$thing = get_db()->getTable("File")->find($id);
 			}
 		catch (Exception $e) {
 			try {
-				$thing = get_db()->getTable("Item")->findById($id);
+				$thing = get_db()->getTable("Item")->find($id);
 			}
 			catch (Exception $e) {
-				debug("Neatline: No such id as: " . $id . "?\nException: " . $e->getMessage());
+				debug("Neatline: No such id as: " . $id . "\nException: " . $e->getMessage());
 			}
 		}
 	}

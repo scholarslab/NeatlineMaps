@@ -246,33 +246,39 @@ function neatlinemaps_getLayerName($thing)
 function neatlinemaps_getTitle($thing)
 {	
 	$titles = array();
-	if (is_numeric($thing)) {
-		// assume that this is a file ID
-		debug("NeatlineMaps: trying to get title from File id " . $thing);	
-		try {
-			$item = get_db()->getTable("File")->find($thing)->getItem();
-			debug("NeatlineMaps: and trying to get title from parent Item id " . $item->id);	
-			$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-		}
-		catch (Exception $e) {
-			// perhaps it's an Item id?
-			try {
-				$item = get_db()->getTable("Item")->find($thing);
-				$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-			}
-			catch (Exception $e)
-			{
-				debug("NeatlineMaps: " . $e->getMessage());
-			}
-		}
-	}
-	else {
+	if (!is_numeric($thing)) {
+		// we've been handed an object, presumably a Record 
 		try {
 			debug("NeatlineMaps: trying to get title from Thing id " . $thing->id);	
 			$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-			}
+		}
 		catch (Omeka_Record_Exception $e) {
-			debug("Failed to get title info: " . $e->getMessage() );
+			debug("NeatlineMaps: Failed to get title info: " . $e->getMessage() );
+		}	
+	}
+	else {
+		// we've been handed an ID
+		// check whether it is an Item that is itself a Historical Map
+		$item = get_db()->getTable("Item")->find($thing)
+		if ($item && $item->getItemType() == neatlinemaps_getMapItemType()) {
+			try {
+					$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+				}
+			catch (Exception $e) {
+					debug("NeatlineMaps: " . $e->getMessage());
+				}
+		}
+		else {
+			// we must now assume that it is a File ID
+			try {
+				$item = get_db()->getTable("File")->find($thing)->getItem();
+				debug("NeatlineMaps: and trying to get title from parent Item id " . $item->id);	
+				$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+			}
+			catch (Exception $e)
+				{
+					debug("NeatlineMaps: " . $e->getMessage());
+				}
 		}
 	}
 

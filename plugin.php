@@ -245,7 +245,6 @@ function neatlinemaps_getLayerName($thing)
 
 function neatlinemaps_getTitle($thing)
 {	
-	$titles = array();
 	if (is_numeric($thing)) {
 		$id = $thing;
 		try {
@@ -258,6 +257,14 @@ function neatlinemaps_getTitle($thing)
 			catch (Exception $e) {
 				debug("Neatline: No such id as: " . $id . "\nException: " . $e->getMessage());
 			}
+		}
+	}
+	else {
+		try {
+				$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+			}
+		catch (Omeka_Record_Exception $e) {
+			debug("Failed to get title info: " . $e->getMessage() );
 		}
 	}
 

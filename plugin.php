@@ -246,6 +246,7 @@ function neatlinemaps_getLayerName($thing)
 function neatlinemaps_getTitle($thing)
 {	
 	if (is_numeric($thing)) {
+		debug("NeatlineMaps: trying to get title with id " . $thing);
 		$id = $thing;
 		try {
 			$titles = get_db()->getTable("File")->find($id)->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');

@@ -3,20 +3,11 @@
 <div id="addlayerdialog"></div>
 <div id="mappreview"></div>
 <?php
-$items = get_items(array('type' => neatlinemaps_getMapItemType() ), 200);
-$itemnames = array();
-$itemids = array();
-foreach ($items as $item) {
-	array_push($itemnames,item("Dublin Core", "Title", array(), $item));
-	array_push($itemids,$item->id);
-}
-$options = array_combine($itemids,$itemnames);
-echo $this->formSelect("layerselect", reset($options), array('class'=>'select'), $options);
+echo neatlinemaps_getLayerSelect();
 ?>
 </div>
 
 <script type="text/javascript">
-		//jQuery.noConflict();
 
 		// insert our projection
 		<?php print $params['proj4js']; unset($params['proj4js']);?>

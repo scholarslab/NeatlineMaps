@@ -388,3 +388,21 @@ function neatlinemaps_getMapItemType() {
 	}
 	return $type;
 }
+
+function neatlinemaps_getLayerSelect() {
+	
+	$capabilitiesrequest = NEATLINE_GEOSERVER . "/wms?request=GetCapabilities" ;
+	$client = new Zend_Http_Client($capabilitiesrequest);
+	$capabilities = new SimpleXMLElement( $client->request()->getBody() );	
+	$this->view->layers = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name]");
+	
+	$layerstitles = array();
+	$layernames = array();
+	foreach ($layers as $layer) {
+		array_push($layerstitles,$layer->Title);
+		array_push($layernames,$layer->Name);
+	}
+	$options = array_combine($layernames,$layerstitles);
+	return $this->formSelect("layerselect", reset($options), array('class'=>'select'), $options);
+		
+} 

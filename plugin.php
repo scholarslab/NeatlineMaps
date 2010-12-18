@@ -153,8 +153,6 @@ function neatlinemaps_assemble_params_for_map($thing) {
 	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($params["srs"]),':','/') ."/proj4js/";
 	$client->setUri($proj4jsurl);
 	$params["proj4js"] = $client->request()->getBody();
-	
-	debug("NeatlineMaps: \$params: \n" . print_r($params,false));
 
 	return $params;
 }
@@ -228,7 +226,7 @@ function neatlinemaps_getLayerName($thing)
 
 function neatlinemaps_getTitle($thing)
 {	
-	$title = neatlinemaps_getField($thing, "Title");
+	$title = neatlinemaps_getField($thing, "Title", "Dublin Core");
 	if ($title) {
 		return $title;
 	}
@@ -360,7 +358,7 @@ function neatlinemaps_getLayerSelect($view) {
 		
 } 
 
-function neatlinemaps_getField($thing, $field, $set = "Dublin Core") {
+function neatlinemaps_getField($thing, $field, $set) {
 	/* because NeatlineMaps allows Files or Items to represent maps, 
 	 and because Omeka doesn't use the same ID sequence for each,
 	 (which means we may have collisions) we

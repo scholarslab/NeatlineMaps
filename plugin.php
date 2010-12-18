@@ -359,13 +359,17 @@ function neatlinemaps_getLayerSelect($view) {
 } 
 
 function neatlinemaps_getField($thing, $field, $set = "Dublin Core") {
-	// because NeatlineMaps allows Files or Items to represent maps, 
-	// and because Omeka doesn't use the same ID sequence for each, we
-	// often need to figure out what an ID means. this is our algorithm for the best
-	// guess
-	// it intends to return a $set field of some kind, either from an Item to which
-	// the input id refers or from the parent of a File to which to the input ID
-	// refers
+	/* because NeatlineMaps allows Files or Items to represent maps, 
+	 and because Omeka doesn't use the same ID sequence for each,
+	 (which means we may have collisions) we
+	 often need to figure out what request for a field means.
+	 this is our algorithm for a best
+	 guess. it accepts a Record or ID and the field and field set.
+	 it intends to return that field from some source, either from the input Record
+	 or if the input Record is a File which lacks that record, from the Item parent
+	 of that File or if the input is an id, then from a Record to which the input id
+	 refers or from from the parent of a File to which to the input ID
+	 refers, if the File lacks that field */
 	if (!is_numeric($thing)) {
 		// assume we've been handed an object, presumably a Record 
 		$fields = $thing->getElementTextsByElementNameAndSetName( $field, $set);
@@ -391,22 +395,19 @@ function neatlinemaps_getField($thing, $field, $set = "Dublin Core") {
 	}
 	else {
 		// we've been handed an ID
-		// check whether it is an Item 
+		// check whether it is an File and double check--
+		// if there's a Historic Map Item with this ID
+		// we'd rather use that, because there are fewer of them
+		// so that is likely what was wanted
+		$is_historic_map_item = false;
 		$item = get_db()->getTable("Item")->find($thing);
-		if ( $item ) {
-			$fields = $item->getElementTextsByElementNameAndSetName( $field, $set);
-			if ( count($fields) > 0 ) {
-				$field =  $fields[0];
-				return $field->text;
-			}
-			else {
-				// it hasn't got this field
-				return false;
+		if ($item) {
+			if ($item->getItemType() == neatlinemaps_getMapItemType()) {
+				$is_historic_map_item = true;	
 			}
 		}
-		else {
-			// we must now assume that it is a File ID
-			$file = get_db()->getTable("File")->find($thing);
+		$file = get_db()->getTable("File")->find($thing);
+		if ($file && !$is_historic_map_item) {
 			$fields = $file->getElementTextsByElementNameAndSetName( $field, $set);
 			if ( count($fields) > 0 ) {
 				$field =  $fields[0];
@@ -424,7 +425,23 @@ function neatlinemaps_getField($thing, $field, $set = "Dublin Core") {
 					// neither the File nor its Item have this field
 					return false;
 				}
-			}	
+			}
+		}
+		else {
+			// it's not a File or there exists a Historical Map Item
+			// with this ID, so we assume that it's an Item
+			$item = get_db()->getTable("Item")->find($thing);
+			if ( $item ) {
+				$fields = $item->getElementTextsByElementNameAndSetName( $field, $set);
+				if ( count($fields) > 0 ) {
+					$field =  $fields[0];
+					return $field->text;
+				}
+				else {
+					// it hasn't got this field
+					return false;
+				}
+			}
 		}
 	}
 }

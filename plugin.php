@@ -249,10 +249,14 @@ function neatlinemaps_getTitle($thing)
 		debug("NeatlineMaps: trying to get title with id " . $thing);
 		$id = $thing;
 		try {
+			$file = get_db()->getTable("File")->find($id);
+			debug("NeatlineMaps: trying to get title from File " . print_r($file,true));
 			$titles = get_db()->getTable("File")->find($id)->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 		catch (Exception $e) {
 			try {
+				$item = get_db()->getTable("Item")->find($id);
+				debug("NeatlineMaps: trying to get title from Item " . print_r($item,true));
 				$titles = get_db()->getTable("Item")->find($id)->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 			catch (Exception $e) {
@@ -262,6 +266,7 @@ function neatlinemaps_getTitle($thing)
 	}
 	else {
 		try {
+				debug("NeatlineMaps: trying to get title from Thing " . print_r($thing,true));	
 				$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 		catch (Omeka_Record_Exception $e) {

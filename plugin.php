@@ -368,7 +368,7 @@ function neatlinemaps_getMapItemType() {
 	return $type;
 }
 
-function neatlinemaps_getLayerSelect() {
+function neatlinemaps_getLayerSelect($view) {
 	
 	$capabilitiesrequest = NEATLINE_GEOSERVER . "/wms?request=GetCapabilities" ;
 	$client = new Zend_Http_Client($capabilitiesrequest);
@@ -382,6 +382,6 @@ function neatlinemaps_getLayerSelect() {
 		array_push($layernames,$layer->Name);
 	}
 	$options = array_combine($layernames,$layerstitles);
-	return formSelect("layerselect", reset($options), array('class'=>'select'), $options);
+	return $view->formSelect("layerselect", reset($options), array('class'=>'select'), $options);
 		
 } 

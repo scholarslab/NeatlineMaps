@@ -5,9 +5,3 @@
 		}
 ?>
 </div>
-<hr/>
-<div>
-<?php 
-echo print_r($layers,true) . "\n";
-?>
-</div>

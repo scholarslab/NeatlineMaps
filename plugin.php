@@ -98,7 +98,7 @@ function neatlinemaps_install()
 }
 
 function neatlinemaps_show_item_in_page($html, $displayFilesOptions, $linkProperties, $thing){
-	if($item->getItemType()->name == "Historical map") {
+	if($thing->getItemType()->name == "Historical map") {
 		return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($thing) ));
 	} else return $html;
 }

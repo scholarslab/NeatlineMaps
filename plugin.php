@@ -203,7 +203,7 @@ function neatlinemaps_after_save_file($file) {
 
 function neatlinemaps_getServiceAddy($thing)
 {
-	$serviceaddy = neatline_getField($thing, 'Service Address', 'Item Type Metadata');
+	$serviceaddy = neatlinemaps_getField($thing, 'Service Address', 'Item Type Metadata');
 	if ($serviceaddy) {
 		return $serviceaddy;
 	}
@@ -214,7 +214,7 @@ function neatlinemaps_getServiceAddy($thing)
 
 function neatlinemaps_getLayerName($thing)
 {
-	$layername = neatline_getField($thing, 'Layername', 'Item Type Metadata');
+	$layername = neatlinemaps_getField($thing, 'Layername', 'Item Type Metadata');
 	if ($layername) {
 		return $layername;
 	}
@@ -226,7 +226,7 @@ function neatlinemaps_getLayerName($thing)
 
 function neatlinemaps_getTitle($thing)
 {	
-	$title = neatline_getField($thing, "Title");
+	$title = neatlinemaps_getField($thing, "Title");
 	if ($title) {
 		return $title;
 	}

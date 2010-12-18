@@ -260,7 +260,7 @@ function neatlinemaps_getTitle($thing)
 	}
 	else {
 		try {
-			debug("NeatlineMaps: trying to get title from Thing " . print_r($thing,true));	
+			debug("NeatlineMaps: trying to get title from Thing id " . $thing->id);	
 			$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 		catch (Omeka_Record_Exception $e) {

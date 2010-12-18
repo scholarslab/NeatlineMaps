@@ -253,16 +253,15 @@ function neatlinemaps_getTitle($thing)
 		debug("NeatlineMaps: and trying to get title from parent Item id " . $item->id);
 		try {
 			$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-			}
+		}
 		catch (Exception $e) {
 				debug("NeatlineMaps: " . $e->getMessage());
-			}
 		}
 	}
 	else {
 		try {
-				debug("NeatlineMaps: trying to get title from Thing " . print_r($thing,true));	
-				$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+			debug("NeatlineMaps: trying to get title from Thing " . print_r($thing,true));	
+			$titles = $thing->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 		catch (Omeka_Record_Exception $e) {
 			debug("Failed to get title info: " . $e->getMessage() );

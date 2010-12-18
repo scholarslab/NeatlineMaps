@@ -373,7 +373,7 @@ function neatlinemaps_getLayerSelect() {
 	$capabilitiesrequest = NEATLINE_GEOSERVER . "/wms?request=GetCapabilities" ;
 	$client = new Zend_Http_Client($capabilitiesrequest);
 	$capabilities = new SimpleXMLElement( $client->request()->getBody() );	
-	$this->view->layers = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name]");
+	$layers = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name]");
 	
 	$layerstitles = array();
 	$layernames = array();

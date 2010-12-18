@@ -245,22 +245,17 @@ function neatlinemaps_getLayerName($thing)
 
 function neatlinemaps_getTitle($thing)
 {	
+	$titles = array();
 	if (is_numeric($thing)) {
-		debug("NeatlineMaps: trying to get title with id " . $thing);
-		$id = $thing;
+		// assume that this is a file ID
+		debug("NeatlineMaps: trying to get title from File id " . $thing);	
+		$item = get_db()->getTable("File")->find($thing)->getItem();
+		debug("NeatlineMaps: and trying to get title from parent Item id " . $item->id);
 		try {
-			$file = get_db()->getTable("File")->find($id);
-			debug("NeatlineMaps: trying to get title from File " . print_r($file,true));
-			$titles = get_db()->getTable("File")->find($id)->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
+			$titles = $item->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 		catch (Exception $e) {
-			try {
-				$item = get_db()->getTable("Item")->find($id);
-				debug("NeatlineMaps: trying to get title from Item " . print_r($item,true));
-				$titles = get_db()->getTable("Item")->find($id)->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-			}
-			catch (Exception $e) {
-				debug("Neatline: No such id as: " . $id . "\nException: " . $e->getMessage());
+				debug("NeatlineMaps: " . $e->getMessage());
 			}
 		}
 	}

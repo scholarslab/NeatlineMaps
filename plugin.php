@@ -351,7 +351,7 @@ function neatlinemaps_getLayerSelect($view) {
 	$layernames = array();
 	foreach ($layers as $layer) {
 		array_push($layerstitles,neatlinemaps_getTitle(str_replace(NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ':','',$layer->Name)));
-		array_push($layernames,$layer->Name);
+		array_push($layernames,str_replace(NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ':','',$layer->Name));
 	}
 	$options = array_combine($layernames,$layerstitles);
 	return $view->formSelect("layerselect", reset($options), array('class'=>'select'), $options);

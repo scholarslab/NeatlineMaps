@@ -154,7 +154,7 @@ function neatlinemaps_assemble_params_for_map($thing) {
 	$client->setUri($proj4jsurl);
 	$params["proj4js"] = $client->request()->getBody();
 	
-	debug("NeatlineMaps: $params: \n" . print_r($params,false);
+	debug("NeatlineMaps: \$params: \n" . print_r($params,false);
 
 	return $params;
 }

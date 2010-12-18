@@ -246,12 +246,13 @@ function neatlinemaps_getLayerName($thing)
 function neatlinemaps_getTitle($thing)
 {	
 	if (is_numeric($thing)) {
+		$id = $thing;
 		try {
-			$thing = get_db()->getTable("File")->findById($thing);
+			$thing = get_db()->getTable("File")->findById($id);
 			}
 		catch (Exception $e) {
 			try {
-				$thing = get_db()->getTable("Item")->findById($thing);
+				$thing = get_db()->getTable("Item")->findById($id);
 			}
 			catch (Exception $e) {
 				debug("Neatline: No such id as: " . $id . "?\nException: " . $e->getMessage());

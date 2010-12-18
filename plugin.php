@@ -245,25 +245,20 @@ function neatlinemaps_getLayerName($thing)
 
 function neatlinemaps_getTitle($thing)
 {	
+	$titles = array();
 	if (is_numeric($thing)) {
 		$id = $thing;
 		try {
-			$object = get_db()->getTable("File")->find($id);
+			$titles = get_db()->getTable("File")->find($id)->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 		catch (Exception $e) {
 			try {
-				$object = get_db()->getTable("Item")->find($id);
+				$titles = get_db()->getTable("Item")->find($id)->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
 			}
 			catch (Exception $e) {
 				debug("Neatline: No such id as: " . $id . "\nException: " . $e->getMessage());
 			}
 		}
-	}
-	try {
-		$titles = $object->getElementTextsByElementNameAndSetName( 'Title', 'Dublin Core');
-	}
-	catch (Omeka_Record_Exception $e) {
-		debug("Failed to get title info: " . $e->getMessage() );
 	}
 
 	if ($titles) {

@@ -17,15 +17,18 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 	public function init()
 	{
 		$id = (!$id) ? $this->getRequest()->getParam('id') : $id;
-		try {
+		$thing = 0;
+		$file = $this->findById($id,"File");
+		$is_historic_map = false;
+		$item = $this->findById($id,"Item");
+		if ($item && $item->getItemType() == neatlinemaps_getMapItemType() ) { 
+			$is_historic_map = true;
+		}
+		if ($file && !$is_historic_map) {
+			$thing = $this->findById($id,"File");
+		}
+		else {
 			$thing = $this->findById($id,"Item");
-		} catch (Exception $e) {
-			try {
-				$thing = $this->findById($id,"File");
-			}
-			catch (Exception $e) {
-				debug("Neatline: No such id as: " . $id . "?\nException: " . $e->getMessage());
-			}
 		}
 		$this->view->thing = $thing;
 	}

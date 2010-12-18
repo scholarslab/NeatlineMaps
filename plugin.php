@@ -120,7 +120,7 @@ function neatlinemaps_routes($router)
 	DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
 }
 
-function neatlinemaps_widget($thing = null) {
+function neatlinemaps_widget($thing) {
     if (!$thing) {
         $thing = get_current_item();
     }

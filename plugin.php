@@ -153,6 +153,8 @@ function neatlinemaps_assemble_params_for_map($thing) {
 	$proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($params["srs"]),':','/') ."/proj4js/";
 	$client->setUri($proj4jsurl);
 	$params["proj4js"] = $client->request()->getBody();
+	
+	debug("NeatlineMaps: $params: \n" . print_r($params,false);
 
 	return $params;
 }

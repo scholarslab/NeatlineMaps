@@ -31,7 +31,6 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		else {
 			$this->view->thing = $item;
 		}
-		debug("NeatlineMaps: Show Thing from Id is \n" . print_r($this->view->thing,false));
 	}
 
 	public function showAction()

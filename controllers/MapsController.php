@@ -45,12 +45,4 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 		$this->view->layername = neatlinemaps_getLayerName($this->view->thing);
 	}
 	
-	public function layersAction()
-	{
-		$capabilitiesrequest = NEATLINE_GEOSERVER . "/wms?request=GetCapabilities" ;
-		$client = new Zend_Http_Client($capabilitiesrequest);
-		$capabilities = new SimpleXMLElement( $client->request()->getBody() );	
-		$this->view->layers = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name]");
-	}
-
 }

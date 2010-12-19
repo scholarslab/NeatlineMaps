@@ -12,10 +12,10 @@ if(!Omeka.NeatlineMaps.history) {
 	Omeka.NeatlineMaps.history = new Array();
 }
 
+Omeka.NeatlineMaps.wgs84 = new OpenLayers.Projection("EPSG:4326");
+
 Omeka.NeatlineMaps.createMap = function(config) {
 
-
-	var wgs84 = new OpenLayers.Projection("EPSG:4326");
 	var myproj = new OpenLayers.Projection(config.srs);
 	// var baseproj = new OpenLayers.Projection("EPSG:900913");
 	config.bbox = new OpenLayers.Bounds(config.minx,config.miny,config.maxx,config.maxy);
@@ -23,7 +23,7 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	var map = new OpenLayers.Map(config.mapdiv, {
 		'maxResolution' : 'auto',
 		'numZoomLevels' : 20,
-		'projection' : wgs84
+		'projection' : Omeka.NeatlineMaps.wgs84
 	});
 
 	var layer = new OpenLayers.Layer.WMS(config.layertitle, config.serviceaddy,
@@ -92,7 +92,7 @@ Omeka.NeatlineMaps.createMap = function(config) {
 		});
 	
 	Omeka.NeatlineMaps.push(map);
-	config.bbox.transform(myproj, wgs84);
+	config.bbox.transform(myproj, Omeka.NeatlineMaps.wgs84);
 	map.zoomToExtent(config.bbox);
 
 	/*

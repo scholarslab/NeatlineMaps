@@ -94,7 +94,7 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	Omeka.NeatlineMaps.push(map);
 	config.bbox.transform(myproj, Omeka.NeatlineMaps.wgs84);
 	map.zoomToExtent(config.bbox);
-
+	console.log("Emitting Omeka.NeatlineMaps.mapcreated");
 	jq_neatlinemaps(config.mapdiv).trigger("Omeka.NeatlineMaps.mapcreated",[config.mapdiv]);
 	
 	/*

@@ -95,6 +95,8 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	config.bbox.transform(myproj, Omeka.NeatlineMaps.wgs84);
 	map.zoomToExtent(config.bbox);
 
+	jq_neatlinemaps(config.mapdiv).trigger("Omeka.NeatlineMaps.mapcreated",[config.mapdiv]);
+	
 	/*
 	 * /* var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':
 	 * 'BC9A493B41014CAABB98F0471D759707', 'styleId': 9202, 'sphericalMercator':
@@ -126,9 +128,6 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	 * "measurepartial": handleMeasurements }); map.addControl(control); }
 	 */
 	
-	if (!this.isInitialized) {
-		this.isInitialized = true;
-	}
 }
 /*
  * function toggleControl(element) { for(key in measureControls) { var control =

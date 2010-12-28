@@ -36,9 +36,9 @@ function neatlinemaps_header()
 <link rel="stylesheet" href="<?php echo css('show'); ?>" />
 <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
-<script type="text/javascript">
+<!--   <script type="text/javascript">
     jQuery = jQuery.noConflict();
-</script>
+</script> -->
 	<?php
 	echo js('proj4js/proj4js-compressed');
 	echo js('maps/show/show');

@@ -1,7 +1,14 @@
-var jq_neatlinemaps = jQuery.noConflict();
-
 if (typeof (Omeka) == 'undefined') {
 	Omeka = new Object();
+}
+
+if (Omeka.Neatline) { 
+	if (!Omeka.Neatline.jQuery) {
+		Omeka.Neatline.jQuery = jQuery.noConflict();
+}
+else {
+	Omeka.Neatline = new Object();
+	Omeka.Neatline.jQuery = jQuery.noConflict();
 }
 
 if (!Omeka.NeatlineMaps) {
@@ -72,7 +79,7 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	                	panel
 	                	]);
 	
-	var addlayerdialog = jq_neatlinemaps("#addlayerdialog").dialog( {
+	var addlayerdialog = Omeka.Neatline.jQuery("#addlayerdialog").dialog( {
 		"autoOpen": false,
 		"draggable": true,
 		"height": 'auto',
@@ -81,21 +88,21 @@ Omeka.NeatlineMaps.createMap = function(config) {
 		"closeOnEscape": true,
 		"buttons": { "Add": 
 				function() { 
-					var id = jq_neatlinemaps("#layerselect")[0].value;
-					jq_neatlinemaps.get("/maps/serviceaddy/" + id, function(serviceaddy){ 
-						jq_neatlinemaps.get("/maps/layername/" + id, function(layername) {
-							var label = jq_neatlinemaps("#layerselect option")[jq_neatlinemaps("#layerselect")[0].selectedIndex].label;
+					var id = Omeka.Neatline.jQuery("#layerselect")[0].value;
+					Omeka.Neatline.jQuery.get("/maps/serviceaddy/" + id, function(serviceaddy){ 
+						Omeka.Neatline.jQuery.get("/maps/layername/" + id, function(layername) {
+							var label = Omeka.Neatline.jQuery("#layerselect option")[Omeka.Neatline.jQuery("#layerselect")[0].selectedIndex].label;
 							map.addLayer(new OpenLayers.Layer.WMS( label, serviceaddy, {"layers": layername}));
 						});
 					});
-					jq_neatlinemaps(this).dialog("close"); } }
+					Omeka.Neatline.jQuery(this).dialog("close"); } }
 		});
 	
 	Omeka.NeatlineMaps.push(map);
 	config.bbox.transform(myproj, Omeka.NeatlineMaps.wgs84);
 	map.zoomToExtent(config.bbox);
 	console.log("Emitting Omeka.NeatlineMaps.mapcreated");
-	jq_neatlinemaps(config.mapdiv).trigger("Omeka.NeatlineMaps.mapcreated");
+	Omeka.Neatline.jQuery(config.mapdiv).trigger("Omeka.NeatlineMaps.mapcreated");
 	
 	/*
 	 * /* var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':

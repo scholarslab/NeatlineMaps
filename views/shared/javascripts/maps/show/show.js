@@ -95,7 +95,7 @@ Omeka.NeatlineMaps.createMap = function(config) {
 	config.bbox.transform(myproj, Omeka.NeatlineMaps.wgs84);
 	map.zoomToExtent(config.bbox);
 	console.log("Emitting Omeka.NeatlineMaps.mapcreated");
-	jq_neatlinemaps(config.mapdiv).trigger("Omeka.NeatlineMaps.mapcreated",[config.mapdiv]);
+	jq_neatlinemaps(config.mapdiv).trigger("Omeka.NeatlineMaps.mapcreated");
 	
 	/*
 	 * /* var base = new OpenLayers.Layer.CloudMade("CloudMade", { 'key':

@@ -42,7 +42,7 @@ function neatlinemaps_header()
 	<?php
 	echo js('proj4js/proj4js-compressed');
 	echo js('maps/show/show');
-	echo js('cloudmade');
+	//echo js('cloudmade');
 	echo "<!-- End Neatline Maps Dependencies -->\n\n";
 	break;
 default:

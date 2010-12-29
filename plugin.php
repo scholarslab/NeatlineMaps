@@ -16,7 +16,7 @@ define('NEATLINE_GEOSERVER_NAMESPACE_PREFIX', 'neatline');
 define('NEATLINE_GEOSERVER_NAMESPACE_URL', 'http://www.neatline.org');
 define('NEATLINE_GEOSERVER_ADMINUSER', 'admin');
 define('NEATLINE_GEOSERVER_ADMINPW', 'geoserver');
-define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreference.org/ref');
+define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreferences.org/ref');
 define('NEATLINE_TAG_PREFIX','neatline:');
 
 add_plugin_hook('install', 'neatlinemaps_install');

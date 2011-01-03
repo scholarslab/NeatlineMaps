@@ -40,6 +40,7 @@ function neatlinemaps_header()
     jQuery = jQuery.noConflict();
 </script> -->
 	<?php
+	echo js('ba-debug.min');
 	echo js('proj4js/proj4js-compressed');
 	echo js('maps/show/show');
 	//echo js('cloudmade');

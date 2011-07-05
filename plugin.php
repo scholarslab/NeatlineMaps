@@ -8,8 +8,8 @@
 
 require_once 'Curl.php';
 
-define('NEATLINEMAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));
-define('NEATLINEMAPS_PLUGIN_DIR', dirname(__FILE__));
+define('NEATLINE_MAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));
+define('NEATLINE_MAPS_PLUGIN_DIR', dirname(__FILE__));
 
 define('NEATLINE_GEOSERVER', 'http://aleph.lib.virginia.edu:8080/geoserver');
 define('NEATLINE_GEOSERVER_NAMESPACE_PREFIX', 'neatline');
@@ -25,7 +25,7 @@ add_plugin_hook('define_routes', 'neatlinemaps_routes');
 add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
 add_plugin_hook('public_theme_header', 'neatlinemaps_header');
 
-add_filter("exhibit_builder_exhibit_display_item","neatlinemaps_show_item_in_page");
+add_filter('exhibit_builder_exhibit_display_item','neatlinemaps_show_item_in_page');
 
 function neatlinemaps_header()
 {

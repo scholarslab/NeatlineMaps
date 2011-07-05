@@ -7,6 +7,7 @@
  **/
 
 require_once 'Curl.php';
+require_once '/NeatlineMaps.php';
 
 define('NEATLINE_MAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));
 define('NEATLINE_MAPS_PLUGIN_DIR', dirname(__FILE__));
@@ -19,13 +20,21 @@ define('NEATLINE_GEOSERVER_ADMINPW', 'geoserver');
 define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreferences.org/ref');
 define('NEATLINE_TAG_PREFIX','neatline:');
 
-add_plugin_hook('install', 'neatlinemaps_install');
-add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
-add_plugin_hook('define_routes', 'neatlinemaps_routes');
-add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
-add_plugin_hook('public_theme_header', 'neatlinemaps_header');
+// add_plugin_hook('install', 'neatlinemaps_install');
+// add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
+// add_plugin_hook('define_routes', 'neatlinemaps_routes');
+// add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
+// add_plugin_hook('public_theme_header', 'neatlinemaps_header');
 
-add_filter('exhibit_builder_exhibit_display_item','neatlinemaps_show_item_in_page');
+// add_filter('exhibit_builder_exhibit_display_item','neatlinemaps_show_item_in_page');
+
+new NeatlineMaps;
+
+
+
+
+
+
 
 function neatlinemaps_header()
 {

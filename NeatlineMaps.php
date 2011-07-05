@@ -35,14 +35,14 @@ class NeatlineMaps
         'install',
         'uninstall',
         'define_routes',
+        'config_form',
         'config',
-        'congig_form'
-        // Other hooks.
+        'after_save_file',
+        'public_theme_header'
     );
 
     private static $_filters = array(
-        'admin_navigation_main'
-        // Other filters.
+        'exhibit_builder_exhibit_display_item'
     );
 
     private $_db;
@@ -78,6 +78,10 @@ class NeatlineMaps
         }
 
     }
+
+    /**
+     * Hook callbacks:
+     */
 
     /**
      * Install.
@@ -181,20 +185,42 @@ class NeatlineMaps
     }
 
     /**
-     * Add link to main admin menu bar.
+     * Load the geoserver raster on file save.
      *
-     * @param array $tabs This is an array of label => URI pairs.
-     *
-     * @return array The tabs array passed in with the new link.
+     * @return void
      */
-    public function adminNavigationMain($tabs)
+    public function afterSaveFile()
     {
 
-        // if (has_permission('ThePlugin_ActionSuite', 'index')) {
-        //     $tabs['The Plugin'] = uri('the-plugin/defaultaction');
-        // }
 
-        return $tabs;
+
+    }
+
+    /**
+     * Include GeoServer JavaScript dependencies.
+     *
+     * @return void
+     */
+    public function publicThemeHeader()
+    {
+
+
+
+    }
+
+    /**
+     * Filter callbacks:
+     */
+
+    /**
+     * Render the map.
+     *
+     * @return void
+     */
+    public function exhibitBuilderExhibitDisplayItem()
+    {
+
+
 
     }
 

@@ -35,9 +35,9 @@ class NeatlineMaps
         'install',
         'define_routes',
         'config_form',
-        'config'
-        // 'after_save_file',
-        // 'public_theme_header'
+        'config',
+        'after_save_file',
+        'public_theme_header'
     );
 
     private static $_filters = array(
@@ -209,7 +209,7 @@ class NeatlineMaps
      *
      * @return void
      */
-    public function afterSaveFile()
+    public function afterSaveFile($file)
     {
 
 

@@ -1,32 +1,38 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * @version $Id$
- * @copyright
- * @package neatline
- **/
+ * Ignition file. Just instantiates the NeatlineMaps class, which does all work.
+ *
+ * PHP version 5
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+ * applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+ * OF ANY KIND, either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ *
+ * @package     omeka
+ * @subpackage  neatlinemaps
+ * @author      Scholars' Lab <>
+ * @author      Bethany Nowviskie <bethany@virginia.edu>
+ * @author      Adam Soroka <ajs6f@virginia.edu>
+ * @author      David McClure <david.mcclure@virginia.edu>
+ * @copyright   2010 The Board and Visitors of the University of Virginia
+ * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
+ * @version     $Id$
+ */
+?>
+
+<?php
 
 require_once 'Curl.php';
 require_once 'NeatlineMaps.php';
 
 define('NEATLINE_MAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));
 define('NEATLINE_MAPS_PLUGIN_DIR', dirname(__FILE__));
-
-define('NEATLINE_GEOSERVER', 'http://aleph.lib.virginia.edu:8080/geoserver');
-define('NEATLINE_GEOSERVER_NAMESPACE_PREFIX', 'neatline');
-define('NEATLINE_GEOSERVER_NAMESPACE_URL', 'http://www.neatline.org');
-define('NEATLINE_GEOSERVER_ADMINUSER', 'admin');
-define('NEATLINE_GEOSERVER_ADMINPW', 'geoserver');
-define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreferences.org/ref');
-define('NEATLINE_TAG_PREFIX','neatline:');
-
-// add_plugin_hook('install', 'neatlinemaps_install');
-// add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
-// add_plugin_hook('define_routes', 'neatlinemaps_routes');
-// add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
-// add_plugin_hook('public_theme_header', 'neatlinemaps_header');
-
-// add_filter('exhibit_builder_exhibit_display_item','neatlinemaps_show_item_in_page');
 
 new NeatlineMaps;
 
@@ -35,6 +41,23 @@ new NeatlineMaps;
 
 
 
+
+
+// define('NEATLINE_GEOSERVER', 'http://aleph.lib.virginia.edu:8080/geoserver');
+// define('NEATLINE_GEOSERVER_NAMESPACE_PREFIX', 'neatline');
+// define('NEATLINE_GEOSERVER_NAMESPACE_URL', 'http://www.neatline.org');
+// define('NEATLINE_GEOSERVER_ADMINUSER', 'admin');
+// define('NEATLINE_GEOSERVER_ADMINPW', 'geoserver');
+// define('NEATLINE_SPATIAL_REFERENCE_SERVICE','http://spatialreferences.org/ref');
+// define('NEATLINE_TAG_PREFIX','neatline:');
+
+// add_plugin_hook('install', 'neatlinemaps_install');
+// add_plugin_hook('uninstall', 'neatlinemaps_uninstall');
+// add_plugin_hook('define_routes', 'neatlinemaps_routes');
+// add_plugin_hook('after_save_file', 'neatlinemaps_after_save_file');
+// add_plugin_hook('public_theme_header', 'neatlinemaps_header');
+
+// add_filter('exhibit_builder_exhibit_display_item','neatlinemaps_show_item_in_page');
 
 function neatlinemaps_header()
 {
@@ -113,21 +136,21 @@ function neatlinemaps_show_item_in_page($html, $displayFilesOptions, $linkProper
 	return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($thing) ));
 }
 
-function neatlinemaps_uninstall()
-{
-	delete_option('neatlinemaps_plugin_version');
-}
+// function neatlinemaps_uninstall()
+// {
+//   delete_option('neatlinemaps_plugin_version');
+// }
 
 /**
  * Add the routes from routes.ini in this plugin folder.
  *
  * @return void
  **/
-function neatlinemaps_routes($router)
-{
-	$router->addConfig(new Zend_Config_Ini(NEATLINEMAPS_PLUGIN_DIR .
-	DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
-}
+// function neatlinemaps_routes($router)
+// {
+//   $router->addConfig(new Zend_Config_Ini(NEATLINEMAPS_PLUGIN_DIR .
+//   DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
+// }
 
 function neatlinemaps_widget($thing) {
     if (!$thing) {

@@ -7,7 +7,7 @@
  **/
 
 require_once 'Curl.php';
-require_once '/NeatlineMaps.php';
+require_once 'NeatlineMaps.php';
 
 define('NEATLINE_MAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));
 define('NEATLINE_MAPS_PLUGIN_DIR', dirname(__FILE__));
@@ -28,7 +28,7 @@ define('NEATLINE_TAG_PREFIX','neatline:');
 
 // add_filter('exhibit_builder_exhibit_display_item','neatlinemaps_show_item_in_page');
 
-new NeatlineMaps;
+// new NeatlineMaps;
 
 
 

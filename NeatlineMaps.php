@@ -32,13 +32,12 @@ class NeatlineMaps
 {
 
     private static $_hooks = array(
-        'install',
-        'uninstall',
-        'define_routes',
-        'config_form',
-        'config',
-        'after_save_file',
-        'public_theme_header'
+        'install'
+        // 'define_routes',
+        // 'config_form',
+        // 'config',
+        // 'after_save_file',
+        // 'public_theme_header'
     );
 
     private static $_filters = array(
@@ -91,33 +90,25 @@ class NeatlineMaps
     public function install()
     {
 
-        $db = get_db();
+        // add neatline/geoserver namespace
+        // add 'historic map' item type
 
-        // $db->query("
-        //     CREATE TABLE IF NOT EXISTS `$db->ThePlugintable` (
-        //         `id` int(10) unsigned NOT NULL auto_increment,
-        //         `int_field` int(10) unsigned,
-        //         `text_field` tinytext collate utf8_unicode_ci,
-        //         PRIMARY KEY  (`id`)
-        //     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-        //     ");
+        $historicMapItemType = array(
+            'name' => 'Historical Map',
+            'description' => 'Historical map with accompanying WMS service.'
+        );
 
-        // set_option('a_plugin_option', 'the_plugin_option');
-
-    }
-
-    /**
-     * Uninstall.
-     *
-     * @return void
-     */
-    public function uninstall()
-    {
-
-        $db = get_db();
-
-        // $db->query("DROP TABLE IF EXISTS `$db->ThePluginTable`");
-        // $db->query("DROP TABLE IF EXISTS `$db->ThePluginTable`");
+        $historicMapItemTypeMetadata =
+            array(
+                array(
+                    'name' => 'Service Address',
+                    'description' => 'The address of the map\'s WMS server.'
+                ),
+                array(
+                    'name' => 'Layer Name',
+                    'description' => 'The WMS name of the map.'
+                )
+            );
 
     }
 

@@ -32,10 +32,10 @@ class NeatlineMaps
 {
 
     private static $_hooks = array(
-        'install'
+        'install',
         // 'define_routes',
-        // 'config_form',
-        // 'config',
+        'config_form',
+        'config'
         // 'after_save_file',
         // 'public_theme_header'
     );
@@ -172,7 +172,13 @@ class NeatlineMaps
     public function config()
     {
 
-        // set_option('the_plugin_the_option', $_POST['the_input_name']);
+        set_option('neatlinemaps_geoserver_url', $_POST['neatlinemaps_geoserver_url']);
+        set_option('neatlinemaps_geoserver_namespace_prefix', $_POST['neatlinemaps_geoserver_namespace_prefix']);
+        set_option('neatlinemaps_geoserver_namespace_url', $_POST['neatlinemaps_geoserver_namespace_url']);
+        set_option('neatlinemaps_geoserver_namespace_user', $_POST['neatlinemaps_geoserver_namespace_user']);
+        set_option('neatlinemaps_geoserver_namespace_password', $_POST['neatlinemaps_geoserver_namespace_password']);
+        set_option('neatlinemaps_geoserver_spatial_reference_service', $_POST['neatlinemaps_geoserver_spatial_reference_service']);
+        set_option('neatlinemaps_geoserver_tag_prefix', $_POST['neatlinemaps_geoserver_tag_prefix']);
 
     }
 

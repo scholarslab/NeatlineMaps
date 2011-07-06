@@ -172,13 +172,56 @@ class NeatlineMaps
     public function config()
     {
 
-        set_option('neatlinemaps_geoserver_url', $_POST['neatlinemaps_geoserver_url']);
-        set_option('neatlinemaps_geoserver_namespace_prefix', $_POST['neatlinemaps_geoserver_namespace_prefix']);
-        set_option('neatlinemaps_geoserver_namespace_url', $_POST['neatlinemaps_geoserver_namespace_url']);
-        set_option('neatlinemaps_geoserver_namespace_user', $_POST['neatlinemaps_geoserver_namespace_user']);
-        set_option('neatlinemaps_geoserver_namespace_password', $_POST['neatlinemaps_geoserver_namespace_password']);
-        set_option('neatlinemaps_geoserver_spatial_reference_service', $_POST['neatlinemaps_geoserver_spatial_reference_service']);
-        set_option('neatlinemaps_geoserver_tag_prefix', $_POST['neatlinemaps_geoserver_tag_prefix']);
+        $geoserver_url = $_POST['neatlinemaps_geoserver_url'];
+        $geoserver_namespace_prefix = $_POST['neatlinemaps_geoserver_namespace_prefix'];
+        $geoserver_namespace_url = $_POST['neatlinemaps_geoserver_namespace_url'];
+        $geoserver_user = $_POST['neatlinemaps_geoserver_user'];
+        $geoserver_password = $_POST['neatlinemaps_geoserver_password'];
+        $geoserver_spatial_reference_service = $_POST['neatlinemaps_geoserver_spatial_reference_service'];
+        $geoserver_tag_prefix = $_POST['neatlinemaps_geoserver_spatial_reference_service'];
+
+        set_option('neatlinemaps_geoserver_url',
+            $geoserver_url);
+
+        set_option('neatlinemaps_geoserver_namespace_prefix',
+            $geoserver_namespace_prefix);
+
+        set_option('neatlinemaps_geoserver_namespace_url',
+            $geoserver_namespace_url);
+
+        set_option('neatlinemaps_geoserver_user',
+            $geoserver_user);
+
+        set_option('neatlinemaps_geoserver_password',
+            $geoserver_password);
+
+        set_option('neatlinemaps_geoserver_spatial_reference_service',
+            $geoserver_spatial_reference_service);
+
+        set_option('neatlinemaps_geoserver_tag_prefix',
+            $geoserver_tag_prefix);
+
+        $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
+        $client = new Zend_Http_Client($geoServerConfigurationAddress);
+        $client->setAuth($geoserver_user, $geoserver_password);
+
+        if (!preg_match(
+                $geoserver_url . '/rest/namespaces/' . $geoserver_namespace_prefix . '.html',
+                $client->request(Zend_Http_Client::GET)->getBody()
+        )) {
+
+            $namespaceJSON = "
+                {
+                    'namespace': {
+                        'prefix': '" . $geoserver_namespace_prefix . "',
+                        'uri': '" . $geoserver_namespace_url . "'
+                    }
+                }
+            ";
+
+            $response = $client->setRawData($namespaceJSON, 'text/json')->request(Zend_Http_Client::POST);
+
+        }
 
     }
 

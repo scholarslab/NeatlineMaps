@@ -42,13 +42,13 @@
 </div>
 
 <div class="field">
-    <label for="neatlinemaps_geoserver_namespace_user">Geoserver User:</label>
-    <input name="neatlinemaps_geoserver_namespace_user" id="neatlinemaps_geoserver_namespace_user" value="<?php echo get_option('neatlinemaps_geoserver_namespace_user'); ?>" size="40" />
+    <label for="neatlinemaps_geoserver_user">Geoserver User:</label>
+    <input name="neatlinemaps_geoserver_user" id="neatlinemaps_geoserver_user" value="<?php echo get_option('neatlinemaps_geoserver_user'); ?>" size="40" />
 </div>
 
 <div class="field">
-    <label for="neatlinemaps_geoserver_namespace_password">Geoserver Password:</label>
-    <input name="neatlinemaps_geoserver_namespace_password" id="neatlinemaps_geoserver_namespace_password" value="<?php echo get_option('neatlinemaps_geoserver_namespace_password'); ?>" size="40" />
+    <label for="neatlinemaps_geoserver_password">Geoserver Password:</label>
+    <input name="neatlinemaps_geoserver_password" id="neatlinemaps_geoserver_password" value="<?php echo get_option('neatlinemaps_geoserver_password'); ?>" size="40" />
 </div>
 
 <div class="field">

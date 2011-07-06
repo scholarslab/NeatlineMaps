@@ -33,7 +33,7 @@ class NeatlineMaps
 
     private static $_hooks = array(
         'install',
-        // 'define_routes',
+        'define_routes',
         'config_form',
         'config'
         // 'after_save_file',
@@ -125,30 +125,6 @@ class NeatlineMaps
 
         $router->addConfig(new Zend_Config_Ini(FEDORA_CONNECTOR_PLUGIN_DIR .
             DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
-
-    }
-
-    /**
-     * Establish access privilges.
-     *
-     * @param Omeka_Acl $acl The ACL instance controlling the access list.
-     *
-     * @return void
-     */
-    public function defineAcl($acl)
-    {
-
-        // if (version_compare(OMEKA_VERSION, '2.0-dev', '<')) {
-        //     $serversResource = new Omeka_Acl_Resource('ThePlugin_ActionSuite');
-        // } else {
-        //     $serversResource = new Zend_Acl_Resource('ThePlugin_ActionSuite');
-        // }
-
-        // $acl->add($serversResource);
-        // $acl->add($datastreamsResource);
-
-        // $acl->allow('super', 'ThePlugin_ActionSuite');
-        // $acl->allow('super', 'ThePlugin_ActionSuite');
 
     }
 

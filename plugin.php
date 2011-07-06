@@ -59,55 +59,55 @@ default:
 	}
 }
 
-function neatlinemaps_install()
-{
-	set_option('neatlinemaps_version', NEATLINEMAPS_PLUGIN_VERSION);
+// function neatlinemaps_install()
+// {
+//   set_option('neatlinemaps_version', NEATLINEMAPS_PLUGIN_VERSION);
 
-	$geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/namespaces" ;
-	$client = new Zend_Http_Client($geoserver_config_addy);
-	$client->setAuth(NEATLINE_GEOSERVER_ADMINUSER, NEATLINE_GEOSERVER_ADMINPW);
-	debug("Neatline: Using namespace address: " . $geoserver_config_addy);
-	if ( !preg_match( NEATLINE_GEOSERVER_NAMESPACE_URL, $client->request(Zend_Http_Client::GET)->getBody() ) ) {
-		$namespace_json =
-	"{'namespace' : { 'prefix': '" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX . "', 'uri': '" . NEATLINE_GEOSERVER_NAMESPACE_URL . "'} }";
-		$response = $client->setRawData($namespace_json, 'text/json')->request(Zend_Http_Client::POST);
-		if ($response->isSuccessful()) {
-		 debug("Neatline: GeoServer namespace " . NEATLINE_GEOSERVER_NAMESPACE_PREFIX
-		 . "(" . NEATLINE_GEOSERVER_NAMESPACE_URL . ")" . " added to GeoServer config.");
-		}
-		else {
-		 debug("Neatline: Failed to add Neatline/GeoServer namespace: returned error is:" . $response->getStatus() .
-       ": " . $response->getMessage() . "\n");
-		}
-	}
+//   $geoserver_config_addy = NEATLINE_GEOSERVER . "/rest/namespaces" ;
+//   $client = new Zend_Http_Client($geoserver_config_addy);
+//   $client->setAuth(NEATLINE_GEOSERVER_ADMINUSER, NEATLINE_GEOSERVER_ADMINPW);
+//   debug("Neatline: Using namespace address: " . $geoserver_config_addy);
+//   if ( !preg_match( NEATLINE_GEOSERVER_NAMESPACE_URL, $client->request(Zend_Http_Client::GET)->getBody() ) ) {
+//     $namespace_json =
+//   "{'namespace' : { 'prefix': '" . NEATLINE_GEOSERVER_NAMESPACE_PREFIX . "', 'uri': '" . NEATLINE_GEOSERVER_NAMESPACE_URL . "'} }";
+//     $response = $client->setRawData($namespace_json, 'text/json')->request(Zend_Http_Client::POST);
+//     if ($response->isSuccessful()) {
+//      debug("Neatline: GeoServer namespace " . NEATLINE_GEOSERVER_NAMESPACE_PREFIX
+//      . "(" . NEATLINE_GEOSERVER_NAMESPACE_URL . ")" . " added to GeoServer config.");
+//     }
+//     else {
+//      debug("Neatline: Failed to add Neatline/GeoServer namespace: returned error is:" . $response->getStatus() .
+//        ": " . $response->getMessage() . "\n");
+//     }
+//   }
 
-	# now we add 'Historic Map' item type
-	$histmitemtype = array(
-     'name'       => "Historical map", 
-      'description' => "Historical map with accompanying WMS service"
-      );
+//   # now we add 'Historic Map' item type
+//   $histmitemtype = array(
+//      'name'       => "Historical map", 
+//       'description' => "Historical map with accompanying WMS service"
+//       );
 
-      $histmitemtypemetadata =array(
-          array(
-              'name'        => "Service Address", 
-              'description' => "Address of WMS server at which this map is to found"             
-          ),
-          array(
-              'name'        => "Layername",
-              'description' => "WMS Name of map", 
-          )
-      );
+//       $histmitemtypemetadata =array(
+//           array(
+//               'name'        => "Service Address", 
+//               'description' => "Address of WMS server at which this map is to found"             
+//           ),
+//           array(
+//               'name'        => "Layername",
+//               'description' => "WMS Name of map", 
+//           )
+//       );
 
       
-              try {
-              	$itemtype = insert_item_type($histmitemtype,$histmitemtypemetadata);
-              	debug("Neatline: Using Neatline itemtype ID: " . NEATLINEMAPS_ITEMTYPE);
-              }
-              catch (Exception $e) {
-              	debug("Neatline: Failed to add Neatline Map item type: " . $e->getMessage() );
-              }
+//               try {
+//                 $itemtype = insert_item_type($histmitemtype,$histmitemtypemetadata);
+//                 debug("Neatline: Using Neatline itemtype ID: " . NEATLINEMAPS_ITEMTYPE);
+//               }
+//               catch (Exception $e) {
+//                 debug("Neatline: Failed to add Neatline Map item type: " . $e->getMessage() );
+//               }
 
-}
+// }
 
 function neatlinemaps_show_item_in_page($html, $displayFilesOptions, $linkProperties, $thing){
 	return __v()->partial('maps/map.phtml',array("params" => neatlinemaps_assemble_params_for_map($thing) ));

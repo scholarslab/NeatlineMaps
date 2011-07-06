@@ -91,7 +91,6 @@ class NeatlineMaps
     {
 
         // add neatline/geoserver namespace
-        // add 'historic map' item type
 
         $historicMapItemType = array(
             'name' => 'Historical Map',
@@ -109,6 +108,8 @@ class NeatlineMaps
                     'description' => 'The WMS name of the map.'
                 )
             );
+
+        insert_item_type($historicMapItemType, $historicMapItemTypeMetadata);
 
     }
 

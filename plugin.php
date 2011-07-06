@@ -28,7 +28,7 @@ define('NEATLINE_TAG_PREFIX','neatline:');
 
 // add_filter('exhibit_builder_exhibit_display_item','neatlinemaps_show_item_in_page');
 
-// new NeatlineMaps;
+new NeatlineMaps;
 
 
 
@@ -88,15 +88,17 @@ function neatlinemaps_install()
       );
 
       $histmitemtypemetadata =array(
-      array(
+          array(
               'name'        => "Service Address", 
               'description' => "Address of WMS server at which this map is to found"             
-              ),
-              array(
+          ),
+          array(
               'name'        => "Layername",
               'description' => "WMS Name of map", 
-              )
-              );
+          )
+      );
+
+      
               try {
               	$itemtype = insert_item_type($histmitemtype,$histmitemtypemetadata);
               	debug("Neatline: Using Neatline itemtype ID: " . NEATLINEMAPS_ITEMTYPE);

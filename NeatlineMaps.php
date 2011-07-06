@@ -165,7 +165,7 @@ class NeatlineMaps
     }
 
     /**
-     * Save the config form.
+     * Save the config form, add the new namespace to GeoServer if necessary.
      *
      * @return void
      */
@@ -201,15 +201,18 @@ class NeatlineMaps
         set_option('neatlinemaps_geoserver_tag_prefix',
             $geoserver_tag_prefix);
 
+        // Set up curl to dial out to GeoServer.
         $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
         $client = new Zend_Http_Client($geoServerConfigurationAddress);
         $client->setAuth($geoserver_user, $geoserver_password);
 
+        // Does the namespace already exist?
         if (!preg_match(
                 $geoserver_url . '/rest/namespaces/' . $geoserver_namespace_prefix . '.html',
                 $client->request(Zend_Http_Client::GET)->getBody()
         )) {
 
+            // If not, create it.
             $namespaceJSON = "
                 {
                     'namespace': {

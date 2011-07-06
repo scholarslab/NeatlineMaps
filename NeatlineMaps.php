@@ -224,7 +224,11 @@ class NeatlineMaps
     public function publicThemeHeader()
     {
 
+        $request = Zend_Controller_Front::getInstance()->getRequest();
 
+        if ($request->getModuleName == 'neatline-maps' && $request->getActionName == 'show') {
+            _doJsAndCss();
+        }
 
     }
 

@@ -33,6 +33,7 @@ require_once 'NeatlineMaps.php';
 
 define('NEATLINE_MAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));
 define('NEATLINE_MAPS_PLUGIN_DIR', dirname(__FILE__));
+define('NEATLINE_MAPS_MAP_ITEM_TYPE_NAME', 'Historical Map');
 
 new NeatlineMaps;
 

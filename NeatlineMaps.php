@@ -90,10 +90,8 @@ class NeatlineMaps
     public function install()
     {
 
-        // add neatline/geoserver namespace
-
         $historicMapItemType = array(
-            'name' => 'Historical Map',
+            'name' => NEATLINE_MAPS_MAP_ITEM_TYPE_NAME,
             'description' => 'Historical map with accompanying WMS service.'
         );
 

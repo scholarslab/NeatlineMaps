@@ -179,14 +179,17 @@ class NeatlineMaps
 
         // Set up curl to dial out to GeoServer.
         $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
+        $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_namespace_prefix;
         $client = new Zend_Http_Client($geoServerConfigurationAddress);
+        $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
         $client->setAuth($geoserver_user, $geoserver_password);
+        $clientCheckNamespace->setAuth($geoserver_user, $geoserver_password);
 
         // Does the namespace already exist?
-        if (!preg_match(
-                $geoserver_url . '/rest/namespaces/' . $geoserver_namespace_prefix . '.html',
-                $client->request(Zend_Http_Client::GET)->getBody()
-        )) {
+        if (strpos(
+                $clientCheckNamespace->request(Zend_Http_Client::GET)->getBody(),
+                'No such namespace:'
+        ) !== false) {
 
             // If not, create it.
             $namespaceJSON = "
@@ -198,7 +201,9 @@ class NeatlineMaps
                 }
             ";
 
-            $response = $client->setRawData($namespaceJSON, 'text/json')->request(Zend_Http_Client::POST);
+            $response = $client->setRawData($namespaceJSON, 'application/json')->request(Zend_Http_Client::POST);
+            echo $response->getStatus();
+            echo $response->getMessage();
 
         }
 

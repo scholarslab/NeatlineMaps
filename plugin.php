@@ -121,7 +121,7 @@ default:
 //           )
 //       );
 
-      
+
 //               try {
 //                 $itemtype = insert_item_type($histmitemtype,$histmitemtypemetadata);
 //                 debug("Neatline: Using Neatline itemtype ID: " . NEATLINEMAPS_ITEMTYPE);

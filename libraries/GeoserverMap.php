@@ -151,7 +151,7 @@ class GeoserverMap
      *
      * @return string 'date' if the text is a single date;
      * @return string 'dates' if the text is a date range;
-     * @return string 'notdate' if the text is not a date.
+     * @return boolean false if the text is not a date.
      */
     private function _parseDate($string) {
 

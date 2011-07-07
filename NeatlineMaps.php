@@ -154,7 +154,7 @@ class NeatlineMaps
         $geoserver_user = $_POST['neatlinemaps_geoserver_user'];
         $geoserver_password = $_POST['neatlinemaps_geoserver_password'];
         $geoserver_spatial_reference_service = $_POST['neatlinemaps_geoserver_spatial_reference_service'];
-        $geoserver_tag_prefix = $_POST['neatlinemaps_geoserver_spatial_reference_service'];
+        $geoserver_tag_prefix = $_POST['neatlinemaps_geoserver_tag_prefix'];
 
         set_option('neatlinemaps_geoserver_url',
             $geoserver_url);

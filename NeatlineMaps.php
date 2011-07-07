@@ -212,13 +212,13 @@ class NeatlineMaps
             //     }
             // ';
 
-            // $namespaceXML = '
-            //     <namespace><name>' . $geoserver_namespace_prefix . '</name></namespace>
-            // ';
+            $namespaceXML = '
+                <namespace><prefix>' . $geoserver_namespace_prefix . '</prefix></namespace>
+            ';
 
             // Namespace add is NOT working. Always get HTTP500 'Internal Server Error.' What gives?
 
-            $response = $client->setRawData($namespaceJSON, 'application/xml')->request(Zend_Http_Client::POST);
+            $response = $client->setRawData($namespaceXML, 'application/xml')->request(Zend_Http_Client::POST);
 
         }
 

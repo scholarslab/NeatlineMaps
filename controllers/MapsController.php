@@ -39,7 +39,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     public function showAction()
     {
 
-        echo 'test';
+
 
     }
 

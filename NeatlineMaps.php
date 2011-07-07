@@ -123,7 +123,7 @@ class NeatlineMaps
     public function defineRoutes($router)
     {
 
-        $router->addConfig(new Zend_Config_Ini(FEDORA_CONNECTOR_PLUGIN_DIR .
+        $router->addConfig(new Zend_Config_Ini(NEATLINE_MAPS_PLUGIN_DIR .
             DIRECTORY_SEPARATOR . 'routes.ini', 'routes'));
 
     }
@@ -180,8 +180,10 @@ class NeatlineMaps
         // Set up curl to dial out to GeoServer.
         $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
         $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_namespace_prefix;
+
         $client = new Zend_Http_Client($geoServerConfigurationAddress);
         $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
+
         $client->setAuth($geoserver_user, $geoserver_password);
         $clientCheckNamespace->setAuth($geoserver_user, $geoserver_password);
 
@@ -212,9 +214,9 @@ class NeatlineMaps
             //     }
             // ';
 
-            $namespaceXML = '
-                <namespace><prefix>' . $geoserver_namespace_prefix . '</prefix></namespace>
-            ';
+            // $namespaceXML = '
+            //     <namespace><prefix>' . $geoserver_namespace_prefix . '</prefix></namespace>
+            // ';
 
             // Namespace add is NOT working. Always get HTTP500 'Internal Server Error.' What gives?
 
@@ -247,7 +249,7 @@ class NeatlineMaps
         $request = Zend_Controller_Front::getInstance()->getRequest();
 
         if ($request->getModuleName == 'neatline-maps' && $request->getActionName == 'show') {
-            _doJsAndCss();
+            _doHeaderJsAndCss();
         }
 
     }

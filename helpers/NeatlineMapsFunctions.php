@@ -33,7 +33,7 @@
  *
  * @return void.
  */
-function _doJsAndCss()
+function _doHeaderJsAndCss()
 {
 
     ?>

@@ -192,18 +192,33 @@ class NeatlineMaps
         ) !== false) {
 
             // If not, create it.
-            $namespaceJSON = "
-                {
-                    'namespace': {
-                        'prefix': '" . $geoserver_namespace_prefix . "',
-                        'uri': '" . $geoserver_namespace_url . "'
-                    }
-                }
-            ";
+            // $namespaceJSON = '
+            //     {
+            //         "namespaces": {
+            //             "namespace": [{
+            //                 "prefix": "' . $geoserver_namespace_prefix . '",
+            //                 "uri": "' . $geoserver_namespace_url . '"
+            //             }]
+            //         }
+            //     }
+            // ';
 
-            $response = $client->setRawData($namespaceJSON, 'application/json')->request(Zend_Http_Client::POST);
-            echo $response->getStatus();
-            echo $response->getMessage();
+            // $namespaceJSON = '
+            //     {
+            //         "namespace": {
+            //             "prefix": "' . $geoserver_namespace_prefix . '",
+            //             "uri": "' . $geoserver_namespace_url . '"
+            //         }
+            //     }
+            // ';
+
+            // $namespaceXML = '
+            //     <namespace><name>' . $geoserver_namespace_prefix . '</name></namespace>
+            // ';
+
+            // Namespace add is NOT working. Always get HTTP500 'Internal Server Error.' What gives?
+
+            $response = $client->setRawData($namespaceJSON, 'application/xml')->request(Zend_Http_Client::POST);
 
         }
 

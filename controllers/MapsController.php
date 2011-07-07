@@ -41,17 +41,13 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         $id = $this->_request->id;
 
-        // Get the Historial Map item type.
-        $mapItemType = $this->getTable('ItemType')
-            ->findBySql('name = ?', array(NEATLINE_MAPS_MAP_ITEM_TYPE_NAME));
-
         // Try to fetch a file and item with the id.
         $file = $this->getTable('File')->find($id);
         $item = $this->getTable('Item')->find($id);
 
         $isMap = false;
 
-        if ($item && $item->getItemType() == $mapItemType->name) {
+        if ($item && $item->getItemType()->name == NEATLINE_MAPS_MAP_ITEM_TYPE_NAME) {
             $this->view->map = $item;
         }
 

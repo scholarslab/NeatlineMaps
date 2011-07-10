@@ -2,7 +2,8 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * Prep the map.
+ * Abstract class for map prep. Concrete classes define the _getField() method,
+ * which determines the process for getting fields for a map type (item, file).
  *
  * PHP version 5
  *
@@ -28,7 +29,10 @@
 
 <?php
 
-class GeoserverMap
+require_once 'GeoserverMap_Item.php';
+require_once 'GeoserverMap_File.php';
+
+abstract class GeoserverMap_Abstract
 {
 
     /**
@@ -153,7 +157,7 @@ class GeoserverMap
      * @return string 'dates' if the text is a date range;
      * @return boolean false if the text is not a date.
      */
-    private function _parseDate($string) {
+    protected function _parseDate($string) {
 
         // Good grief.
         $result = preg_match('/^([\+-]?\d{4}(?!\d{2}\b))
@@ -170,15 +174,11 @@ class GeoserverMap
     }
 
     /**
-     * 
+     * Fetch fields for the map.
      *
-     * @return 
+     * @return $field The field.
      */
-    private function _getField() {
-
-
-
-    }
+    abstract function _getField($field, $set);
 
 }
 

@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * Maps controller.
+ * Concrete class for maps of Item type.
  *
  * PHP version 5
  *
@@ -28,47 +28,22 @@
 
 <?php
 
-class NeatlineMaps_MapsController extends Omeka_Controller_Action
+class GeoserverMap_Item extends GeoserverMap_Abstract
 {
 
     /**
-     * Get params, figure out item type.
+     * Fetch fields for the map.
      *
-     * @return void
+     * @return $field The field.
      */
-    public function init()
+    public function _getField($field, $set)
     {
 
-        $id = $this->_request->id;
 
-        // Try to fetch a file and item with the id.
-        $file = $this->getTable('File')->find($id);
-        $item = $this->getTable('Item')->find($id);
-
-        if ($item && $item->getItemType()->name == NEATLINE_MAPS_MAP_ITEM_TYPE_NAME) {
-            $this->view->map = $item;
-        }
-
-        else if ($file) {
-            $this->view->map = $file;
-        }
-
-    }
-
-    /**
-     * Show the map.
-     *
-     * @return void
-     */
-    public function showAction()
-    {
-
-        $this->view->map_params = new GeoserverMap($this->view->map);
 
     }
 
 }
-
 
 /*
  * Local variables:

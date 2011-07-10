@@ -28,12 +28,13 @@
 
 <?php
 
-require_once 'Curl.php';
-require_once 'NeatlineMaps.php';
-
 define('NEATLINE_MAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));
 define('NEATLINE_MAPS_PLUGIN_DIR', dirname(__FILE__));
 define('NEATLINE_MAPS_MAP_ITEM_TYPE_NAME', 'Historical Map');
+
+require_once 'NeatlineMaps.php';
+require_once 'Curl.php';
+require_once 'GeoserverMap_Abstract.php';
 
 new NeatlineMaps;
 
@@ -234,87 +235,90 @@ function neatlinemaps_after_save_file($file) {
 	neatlinemaps_load_geoserver_raster($file,$file->getItem());
 }
 
-function neatlinemaps_getServiceAddy($thing)
-{
-	$serviceaddy = neatlinemaps_getField($thing, 'Service Address', 'Item Type Metadata');
-	if ($serviceaddy) {
-		return $serviceaddy;
-	}
-	else {
-		return NEATLINE_GEOSERVER . "/wms";
-	}
-}
+// function neatlinemaps_getServiceAddy($thing)
+// {
+//   $serviceaddy = neatlinemaps_getField($thing, 'Service Address', 'Item Type Metadata');
+//   if ($serviceaddy) {
+//     return $serviceaddy;
+//   }
+//   else {
+//     return NEATLINE_GEOSERVER . "/wms";
+//   }
+// }
 
-function neatlinemaps_getLayerName($thing)
-{
-	$layername = neatlinemaps_getField($thing, 'Layername', 'Item Type Metadata');
-	if ($layername) {
-		return $layername;
-	}
-	else {
-		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $thing->id;
-	}
+// function neatlinemaps_getLayerName($thing)
+// {
+//   $layername = neatlinemaps_getField($thing, 'Layername', 'Item Type Metadata');
+//   if ($layername) {
+//     return $layername;
+//   }
+//   else {
+//     return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $thing->id;
+//   }
 
-}
+// }
 
-function neatlinemaps_getTitle($thing)
-{	
-	$title = neatlinemaps_getField($thing, "Title", "Dublin Core");
-	if ($title) {
-		return $title;
-	}
-	else {
-		return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $thing->id;
-	}
+// function neatlinemaps_getTitle($thing)
+// {	
+//   $title = neatlinemaps_getField($thing, "Title", "Dublin Core");
+//   if ($title) {
+//     return $title;
+//   }
+//   else {
+//     return NEATLINE_GEOSERVER_NAMESPACE_PREFIX . ":" . $thing->id;
+//   }
 
-}
+// }
 
-function neatlinemaps_getDates($thing)
-{
-	try {
-		$coverages = $thing->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
-	}
-	catch (Omeka_Record_Exception $e) {
-		debug("Failed to get dates info: " . $e->getMessage() );
-	}
+// function neatlinemaps_getDates($thing)
+// {
+//   try {
+//     $coverages = $thing->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
+//   }
+//   catch (Omeka_Record_Exception $e) {
+//     debug("Failed to get dates info: " . $e->getMessage() );
+//   }
 
-	if ($coverages) {
-		$parsed = array();
-		foreach ($coverages as $coverage) {
-			$datetext = str_replace(' ','',$coverage->text);
-			if (neatlinemaps_isDate($datetext)) {
-				$parsed['date'] = $datetext;
-				debug("Parsed a date: " . print_r($parsed,true));
-				return $parsed;
-			}
+//   if ($coverages) {
+//     $parsed = array();
+
+//     foreach ($coverages as $coverage) {
+
+//       $datetext = str_replace(' ','',$coverage->text);
+
+//       if (neatlinemaps_isDate($datetext)) {
+//         $parsed['date'] = $datetext;
+//         debug("Parsed a date: " . print_r($parsed,true));
+//         return $parsed;
+//       }
 				
-			else if (neatlinemaps_isDates($datetext)) {
-				$dates = preg_split('/;/', $datetext);
-				foreach ($dates as $piece) {
-					$chunks = preg_split('/=/',$piece);
-					switch ($chunks[0]) {
-						case 'start' :
-							$parsed['start'] = $chunks[1];
-							break;
-						case 'end' :
-							$parsed['end'] = $chunks[1];
-							break;
-					}
-				}
-				return $parsed;	
-			}
-		}
-	}
-	return NULL;
-}
+//       else if (neatlinemaps_isDates($datetext)) {
+//         $dates = preg_split('/;/', $datetext);
+//         foreach ($dates as $piece) {
+//           $chunks = preg_split('/=/',$piece);
+//           switch ($chunks[0]) {
+//             case 'start' :
+//               $parsed['start'] = $chunks[1];
+//               break;
+//             case 'end' :
+//               $parsed['end'] = $chunks[1];
+//               break;
+//           }
+//         }
+//         return $parsed;	
+//       }
+//     }
+//   }
+//   return NULL;
+// }
 
-function neatlinemaps_isDate($text) {
-	return preg_match('/^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/',$text);
-}
+// function neatlinemaps_isDate($text) {
+//   return preg_match('/^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/',$text);
+// }
 
-function neatlinemaps_isDates($text) {
-	return preg_match('/^(start|end|[\=\;\-\T\+\d])+$/',$text);
-}
+// function neatlinemaps_isDates($text) {
+//   return preg_match('/^(start|end|[\=\;\-\T\+\d])+$/',$text);
+// }
 
 function neatlinemaps_isWKT($i)
 {
@@ -352,26 +356,26 @@ function neatlinemaps_strstrb($h,$n){
 	return array_shift(explode($n,$h,2));
 }
 
-function neatlinemaps_getMapItemType() {
-	$types = get_db()->getTable("ItemType")->findBy(array("name" => "Historical map"));
+// function neatlinemaps_getMapItemType() {
+//   $types = get_db()->getTable("ItemType")->findBy(array("name" => "Historical map"));
 
-	/*	 we need to add the following workaround because Omeka's ItemType table lacks filtering right now
-	 the findBy above -should- take care of this for us, but it doesn't. we should be able to do this with a
-	 filtering closure, but PHP is confusion */
-	$tmp = array();
-	foreach ($types as $itemtype) {
-		if ($itemtype->name == 'Historical map') {
-			array_push($tmp, $itemtype);
-		}
-	}
-	$types = $tmp;
+//   [>	 we need to add the following workaround because Omeka's ItemType table lacks filtering right now
+//    the findBy above -should- take care of this for us, but it doesn't. we should be able to do this with a
+//    filtering closure, but PHP is confusion */
+//   $tmp = array();
+//   foreach ($types as $itemtype) {
+//     if ($itemtype->name == 'Historical map') {
+//       array_push($tmp, $itemtype);
+//     }
+//   }
+//   $types = $tmp;
 
-	$type = "NO NEATLINEMAPS INSTALLED";
-	if (count($types) > 0) {
-		$type = reset($types)->id; // a PHP idiom is that reset() returns the first element of an assoc array
-	}
-	return $type;
-}
+//   $type = "NO NEATLINEMAPS INSTALLED";
+//   if (count($types) > 0) {
+//     $type = reset($types)->id; // a PHP idiom is that reset() returns the first element of an assoc array
+//   }
+//   return $type;
+// }
 
 function neatlinemaps_getLayerSelect($view) {
 	
@@ -392,7 +396,7 @@ function neatlinemaps_getLayerSelect($view) {
 } 
 
 function neatlinemaps_getField($thing, $field, $set) {
-	/* because NeatlineMaps allows Files or Items to represent maps, 
+	/* because NeatlineMaps allows Files or Items to represent maps,
 	 and because Omeka doesn't use the same ID sequence for each,
 	 (which means we may have collisions) we
 	 often need to figure out what request for a field means.

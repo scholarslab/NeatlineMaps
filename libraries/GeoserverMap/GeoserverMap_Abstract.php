@@ -52,35 +52,7 @@ abstract class GeoserverMap_Abstract
         $this->layerName = $this->_getLayerName('Layername', 'Item Type Metadata');
         $this->dates = $this->_getDates();
 
-        $capabilitiesURL = $this->serviceAddress . '?request=GetCapabilities';
-        $xml = new DomDocument();
-        $xml->loadXML($capabilitiesURL);
 
-        $xpath = new DOMXPath($xml);
-        $xpath->registerNameSpace('gis', 'http://www.opengis.net/wms');
-        $query = '/gis:WMS_Capabilities/gis:Capability//gis:Layer[gis:Name="' . $this->layerName . '"]/gis:BoundingBox';
-        $capabilities = $xpath->query($query);
-
-	// // now we need to retrieve the bounding box and projection ID
-	// $capabilitiesrequest = $params["serviceaddy"] . "?request=GetCapabilities" ;
-	// $client = new Zend_Http_Client($capabilitiesrequest);
-	// $capabilities = new SimpleXMLElement( $client->request()->getBody() );
-	// $tmp = $capabilities->xpath("/WMT_MS_Capabilities/Capability//Layer[Name='" . $params["layername"] . "']/BoundingBox");
-	// $bb = $tmp[0];
-	// $params["minx"] = (string)$bb['minx'] ;
-	// $params["maxx"] = (string)$bb['maxx'] ;
-	// $params["miny"] = (string)$bb['miny'] ;
-	// $params["maxy"] = (string)$bb['maxy'] ;
-	// $params["srs"] = (string)$bb['SRS'] ;
-
-	// # now we procure the Proj4js form of the projection to avoid confusion with the webpage trying to do
-	// # transforms before the projection has been fetched.
-	// $client->resetParameters();
-	// $proj4jsurl = NEATLINE_SPATIAL_REFERENCE_SERVICE . "/" . strtr(strtolower($params["srs"]),':','/') ."/proj4js/";
-	// $client->setUri($proj4jsurl);
-	// $params["proj4js"] = $client->request()->getBody();
-
-	// return $params;
 
     }
 

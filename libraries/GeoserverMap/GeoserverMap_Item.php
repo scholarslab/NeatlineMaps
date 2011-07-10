@@ -34,13 +34,22 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
     /**
      * Fetch fields for the map.
      *
+     * @param string $field The field.
+     * @param string $set The set.
+     *
      * @return $field The field.
      */
     public function _getField($field, $set)
     {
 
-        $fields = $this->map->getElementTextsByElementNameAndSetName($field, $set);
-        return count($fields) > 0 ? $fields[0]->text : false; // Can we just do if (!$fields) here?
+        $fields = array();
+
+        try {
+            $fields = $this->map->getElementTextsByElementNameAndSetName($field, $set);
+        } catch (Exception $e) {
+        }
+
+        return count($fields) > 0 ? $fields[0]->text : false;
 
     }
 

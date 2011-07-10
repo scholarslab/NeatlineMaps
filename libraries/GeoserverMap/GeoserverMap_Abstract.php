@@ -61,10 +61,10 @@ abstract class GeoserverMap_Abstract
      */
     protected function _getMapTitle() {
 
-        $title = $this->getField('Title', 'Dubin Core');
+        $title = $this->_getField('Title', 'Dublin Core');
 
         return $title ? $title :
-            get_option('$geoserver_namespace_prefix') . ':' . $this->map->id;
+            get_option('neatlinemaps_geoserver_namespace_prefix') . ':' . $this->map->id;
 
     }
 
@@ -75,7 +75,7 @@ abstract class GeoserverMap_Abstract
      */
     protected function _getServiceAddress() {
 
-        $address = $this->getField('Service Address', 'Item Type Metadata');
+        $address = $this->_getField('Service Address', 'Item Type Metadata');
 
         return $address ? $address :
             get_option('neatlinemaps_geoserver_url') . '/wms';
@@ -89,10 +89,10 @@ abstract class GeoserverMap_Abstract
      */
     protected function _getLayerName() {
 
-        $layername = $this->getField('Layername', 'Item Type Metadata');
+        $layername = $this->_getField('Layername', 'Item Type Metadata');
 
         return $layername ? $layername :
-            get_option('$geoserver_namespace_prefix') . ':' . $this->map->id;
+            get_option('neatlinemaps_geoserver_namespace_prefix') . ':' . $this->map->id;
 
     }
 

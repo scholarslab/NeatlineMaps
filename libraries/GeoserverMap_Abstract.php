@@ -47,21 +47,21 @@ abstract class GeoserverMap_Abstract
 
         $this->map = $map;
 
-        $this->layerTitle = $this->_getLayerTitle();
+        $this->mapTitle = $this->_getMapTitle();
         $this->serviceAddress = $this->_getServiceAddress();
-        $this->layerName = $this->_getLayerName();
+        $this->layerName = $this->_getLayerName('Layername', 'Item Type Metadata');
         $this->dates = $this->_getDates();
 
     }
 
     /**
-     * Get the layer title.
+     * Get the title of the map.
      *
      * @return string $title The title.
      */
-    protected function _getLaterTitle() {
+    protected function _getMapTitle() {
 
-        $title = $this->getField(); // populate parameters here.
+        $title = $this->getField('Title', 'Dubin Core');
 
         return $title ? $title :
             get_option('$geoserver_namespace_prefix') . ':' . $this->map->id;
@@ -75,7 +75,7 @@ abstract class GeoserverMap_Abstract
      */
     protected function _getServiceAddress() {
 
-        $address = $this->getField(); // populate parameters here.
+        $address = $this->getField('Service Address', 'Item Type Metadata');
 
         return $address ? $address :
             get_option('neatlinemaps_geoserver_url') . '/wms';
@@ -83,13 +83,13 @@ abstract class GeoserverMap_Abstract
     }
 
     /**
-     * 
+     * Get the name of the layer.
      *
-     * @return 
+     * @return $layername The layer name.
      */
     protected function _getLayerName() {
 
-        $layername = $this->getField(); // populate parameters here.
+        $layername = $this->getField('Layername', 'Item Type Metadata');
 
         return $layername ? $layername :
             get_option('$geoserver_namespace_prefix') . ':' . $this->map->id;

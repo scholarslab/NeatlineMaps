@@ -33,8 +33,8 @@ define('NEATLINE_MAPS_PLUGIN_DIR', dirname(__FILE__));
 define('NEATLINE_MAPS_MAP_ITEM_TYPE_NAME', 'Historical Map');
 
 require_once 'NeatlineMaps.php';
-require_once 'Curl.php';
-require_once 'GeoserverMap_Abstract.php';
+require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/Curl.php';
+require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/GeoserverMap_Abstract.php';
 
 new NeatlineMaps;
 

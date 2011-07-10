@@ -39,7 +39,8 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
     public function _getField($field, $set)
     {
 
-
+        $fields = $this->map->getElementTextsByElementNameAndSetName($field, $set);
+        return count($fields) > 0 ? $fields[0]->text : false; // Can we just do if (!$fields) here?
 
     }
 

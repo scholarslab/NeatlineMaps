@@ -39,21 +39,14 @@ function _doHeaderJsAndCss()
     ?>
 
     <!-- Neatline Maps Dependencies -->
-    <link rel="stylesheet" href="<?php echo css('show'); ?>" />
-    <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
-
-    <!--
-    <script type="text/javascript">
-        jQuery = jQuery.noConflict();
-    </script>
-    -->
 
     <?php
-        echo js('ba-debug.min');
-        echo js('proj4js/proj4js-compressed');
+        queue_css('leaflet', null, null, 'javascripts/leaflet/dist');
+    ?>
+
+    <?php
+        echo js('leaflet/dist/leaflet');
         echo js('maps/show/show');
-        //echo js('cloudmade');
     ?>
 
     <!-- End Neatline Maps Dependencies -->

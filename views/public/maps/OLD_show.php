@@ -2,7 +2,7 @@
 
 <body>
 
-<?php 
+<?php
 
 echo $this->partial('maps/map.phtml', array( 'params' => $params ));
 

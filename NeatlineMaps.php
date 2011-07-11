@@ -246,7 +246,7 @@ class NeatlineMaps
 
         $request = Zend_Controller_Front::getInstance()->getRequest();
 
-        if ($request->getModuleName == 'neatline-maps' && $request->getActionName == 'show') {
+        if ($request->getModuleName() == 'neatline-maps' && $request->getActionName() == 'show') {
             _doHeaderJsAndCss();
         }
 

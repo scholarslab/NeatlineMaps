@@ -99,11 +99,13 @@ class NeatlineMaps
             array(
                 array(
                     'name' => 'Service Address',
-                    'description' => 'The address of the map\'s WMS server.'
+                    'description' => 'The address of the map\'s WMS server.',
+                    'data_type' => 'Tiny Text'
                 ),
                 array(
                     'name' => 'Layer Name',
-                    'description' => 'The WMS name of the map.'
+                    'description' => 'The WMS name of the map.',
+                    'data_type' => 'Tiny Text'
                 )
             );
 
@@ -157,11 +159,70 @@ class NeatlineMaps
         set_option('neatlinemaps_geoserver_url',
             $geoserver_url);
 
+        set_option('neatlinemaps_geoserver_namespace_prefix',
+            $geoserver_namespace_prefix);
+
+        set_option('neatlinemaps_geoserver_namespace_url',
+            $geoserver_namespace_url);
+
         set_option('neatlinemaps_geoserver_user',
             $geoserver_user);
 
         set_option('neatlinemaps_geoserver_password',
             $geoserver_password);
+
+        set_option('neatlinemaps_geoserver_spatial_reference_service',
+            $geoserver_spatial_reference_service);
+
+        set_option('neatlinemaps_geoserver_tag_prefix',
+            $geoserver_tag_prefix);
+
+        // Set up curl to dial out to GeoServer.
+        $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
+        $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_namespace_prefix;
+
+        $client = new Zend_Http_Client($geoServerConfigurationAddress);
+        $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
+
+        $client->setAuth($geoserver_user, $geoserver_password);
+        $clientCheckNamespace->setAuth($geoserver_user, $geoserver_password);
+
+        // Does the namespace already exist?
+        if (strpos(
+                $clientCheckNamespace->request(Zend_Http_Client::GET)->getBody(),
+                'No such namespace:'
+        ) !== false) {
+
+            // If not, create it.
+            // $namespaceJSON = '
+            //     {
+            //         "namespaces": {
+            //             "namespace": [{
+            //                 "prefix": "' . $geoserver_namespace_prefix . '",
+            //                 "uri": "' . $geoserver_namespace_url . '"
+            //             }]
+            //         }
+            //     }
+            // ';
+
+            // $namespaceJSON = '
+            //     {
+            //         "namespace": {
+            //             "prefix": "' . $geoserver_namespace_prefix . '",
+            //             "uri": "' . $geoserver_namespace_url . '"
+            //         }
+            //     }
+            // ';
+
+            // $namespaceXML = '
+            //     <namespace><prefix>' . $geoserver_namespace_prefix . '</prefix></namespace>
+            // ';
+
+            // Namespace add is NOT working. Always get HTTP500 'Internal Server Error.' What gives?
+
+            $response = $client->setRawData($namespaceXML, 'application/xml')->request(Zend_Http_Client::POST);
+
+        }
 
     }
 

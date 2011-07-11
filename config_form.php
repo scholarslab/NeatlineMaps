@@ -32,6 +32,21 @@
 </div>
 
 <div class="field">
+    <label for="neatlinemaps_geoserver_namespace_url">Geoserver Namespace URL:</label>
+    <input name="neatlinemaps_geoserver_namespace_url" id="neatlinemaps_geoserver_namespace_url" value="<?php echo get_option('neatlinemaps_geoserver_namespace_url'); ?>" size="60" />
+</div>
+
+<div class="field">
+    <label for="neatlinemaps_geoserver_spatial_reference_service">Spatial Reference Service:</label>
+    <input name="neatlinemaps_geoserver_spatial_reference_service" id="neatlinemaps_geoserver_spatial_reference_service" value="<?php echo get_option('neatlinemaps_geoserver_spatial_reference_service'); ?>" size="60" />
+</div>
+
+<div class="field">
+    <label for="neatlinemaps_geoserver_namespace_prefix">Geoserver Namespace Prefix:</label>
+    <input name="neatlinemaps_geoserver_namespace_prefix" id="neatlinemaps_geoserver_namespace_prefix" value="<?php echo get_option('neatlinemaps_geoserver_namespace_prefix'); ?>" size="20" />
+</div>
+
+<div class="field">
     <label for="neatlinemaps_geoserver_user">Geoserver User:</label>
     <input name="neatlinemaps_geoserver_user" id="neatlinemaps_geoserver_user" value="<?php echo get_option('neatlinemaps_geoserver_user'); ?>" size="20" />
 </div>
@@ -39,6 +54,11 @@
 <div class="field">
     <label for="neatlinemaps_geoserver_password">Geoserver Password:</label>
     <input name="neatlinemaps_geoserver_password" id="neatlinemaps_geoserver_password" value="<?php echo get_option('neatlinemaps_geoserver_password'); ?>" size="20" />
+</div>
+
+<div class="field">
+    <label for="neatlinemaps_geoserver_tag_prefix">Tag Prefix:</label>
+    <input name="neatlinemaps_geoserver_tag_prefix" id="neatlinemaps_geoserver_tag_prefix" value="<?php echo get_option('neatlinemaps_geoserver_tag_prefix'); ?>" size="20" />
 </div>
 
 <?php

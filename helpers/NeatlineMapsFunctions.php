@@ -29,6 +29,18 @@
 <?php
 
 /**
+ * Do the Item tab form.
+ *
+ * @return void.
+ */
+function _doItemForm($item)
+{
+
+    return 'test';
+
+}
+
+/**
  * Include the GeoServer .js and .css dependencies in the public theme header.
  *
  * @return void.

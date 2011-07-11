@@ -41,6 +41,7 @@ class NeatlineMaps
     );
 
     private static $_filters = array(
+        'admin_items_form_tabs',
         'exhibit_builder_exhibit_display_item'
     );
 
@@ -257,6 +258,23 @@ class NeatlineMaps
     /**
      * Filter callbacks:
      */
+
+    /**
+     * Add Neatline Maps tab to the Items interface.
+     *
+     * @param array $tabs An array mapping tab name to HTML for that tab.
+     *
+     * @return array The $tabs array updated with the Neatline Maps tab.
+     */
+    public function adminItemsFormTabs($tabs)
+    {
+
+        $item = get_current_item();
+        $tabs['Neatline Maps'] = _doItemForm($item);
+
+        return $tabs;
+
+    }
 
     /**
      * Render the map.

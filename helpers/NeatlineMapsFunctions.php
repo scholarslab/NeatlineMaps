@@ -45,8 +45,8 @@ function _doHeaderJsAndCss()
     ?>
 
     <?php
-        echo js('leaflet/dist/leaflet');
-        echo js('maps/show/show');
+        queue_js('leaflet/dist/leaflet');
+        queue_js('maps/show/show');
     ?>
 
     <!-- End Neatline Maps Dependencies -->

@@ -44,8 +44,9 @@ function _doHeaderJsAndCss()
         queue_css('leaflet', null, null, 'javascripts/leaflet/dist');
     ?>
 
+    <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
+
     <?php
-        queue_js('leaflet/dist/leaflet');
         queue_js('maps/show/show');
     ?>
 

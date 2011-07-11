@@ -47,12 +47,14 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         if ($item && $item->getItemType()->name == NEATLINE_MAPS_MAP_ITEM_TYPE_NAME) {
             $this->view->map = $item;
-            $this->view->map_params = new GeoserverMap_Item($item);
+            $geoserverMap = new GeoserverMap_Item($item);
+            $this->view->map_params = $geoserverMap->getParams();
         }
 
         else if ($file) {
             $this->view->map = $file;
-            $this->view->map_params = new GeoserverMap_File($file);
+            $geoserverMap = new GeoserverMap_File($file);
+            $this->view->map_params = $geoserverMap->getParams();
         }
 
     }

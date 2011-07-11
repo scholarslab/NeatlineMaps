@@ -2,7 +2,7 @@
 
 <div id="primary">
 
-    <?php //echo $this->partial('maps/map.php', array('map_params' => $map_params)); ?>
+    <?php echo $this->partial('maps/map.php', array('map_params' => $map_params)); ?>
 
 </div>
 

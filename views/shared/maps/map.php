@@ -16,6 +16,8 @@ echo neatlinemaps_getLayerSelect($this);
 		document.getElementById('NLtmp').id = mapdiv;
 		Omeka.NeatlineMaps.history.push(
 				jQuery.extend(true, {"mapdiv": mapdiv}, <?php print json_encode($map_params);?>));
+
 		jQuery(document).ready(function () { Omeka.NeatlineMaps.createMap(Omeka.NeatlineMaps.history.slice(-1)[0])} );	
 		delete(mapdiv);
+
 </script>

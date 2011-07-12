@@ -27,6 +27,11 @@
     </tbody>
     </table>
     </div>
+
+<?php else: ?>
+
+<p style="font-size: 1em; color: gray;">There are no maps for the item. Add some!</p>
+
 <?php endif; ?>
 
 <h3>Add New Maps:</h3>

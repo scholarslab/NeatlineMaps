@@ -10,8 +10,8 @@
             </tr>
         </thead>
         <tbody>
-    <?php foreach( $maps as $map ):
-        $file = $map->getFile(); ?>
+    <?php foreach( $maps as $map ): ?>
+        <?php $file = $map->getFile(); ?>
         <tr>
             <td><?php echo link_to($file, 'show', html_escape($file->original_filename), array()); ?></td>
             <td class="file-link">

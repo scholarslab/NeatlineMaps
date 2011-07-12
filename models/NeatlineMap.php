@@ -42,7 +42,10 @@ class NeatlineMap extends Omeka_record
     public function getFile()
     {
 
-        return $this->getTable('File')->findBySql('f.id = ?', array($this->file_id));
+        // Is there really no more concise way to fetch a single record?
+        $fileTable = $this->getTable('File');
+        $select = $fileTable->getSelect()->where('f.id = ' . $this->file_id);
+        return $fileTable->fetchObject($select);
 
     }
 

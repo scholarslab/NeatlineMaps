@@ -91,6 +91,16 @@ class NeatlineMaps
     public function install()
     {
 
+        $db = get_db();
+        $db->query("
+            CREATE TABLE IF NOT EXISTS `$db->NeatlineMap` (
+                `id` int(10) unsigned NOT NULL auto_increment,
+                `item_id` int(10) unsigned,
+                `file_id` int(10) unsigned,
+                PRIMARY KEY  (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+            ");
+
         $historicMapItemType = array(
             'name' => NEATLINE_MAPS_MAP_ITEM_TYPE_NAME,
             'description' => 'Historical map with accompanying WMS service.'

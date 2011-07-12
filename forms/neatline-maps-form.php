@@ -18,7 +18,7 @@
                 <?php echo link_to($file, 'edit', 'Edit', array('class'=>'edit')); ?>
             </td>
             <td class="delete-link">
-                <?php echo checkbox(array('name'=>'delete_maps[]'),false,$file->id); ?>
+                <?php echo checkbox(array('name'=>'delete_maps[]'),false,$map->id); ?>
             </td>
         </tr>
 

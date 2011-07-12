@@ -39,7 +39,7 @@ class NeatlineMaps
         'after_save_file',
         'public_theme_header',
         'admin_theme_header',
-        'after_save_form_item'
+        'after_save_form_record'
     );
 
     private static $_filters = array(
@@ -288,10 +288,23 @@ class NeatlineMaps
      *
      * @return void
      */
-    public function afterSaveFormItem()
+    public function afterSaveFormRecord($record, $post)
     {
 
+        // Try to add the new maps to geoserver.
+        // Delete maps marked for deletion.
 
+        $db = get_db();
+
+        // Do deletes.
+        foreach ($post['delete_maps'] as $id) {
+
+            $neatlineMap = $db->getTable('NeatlineMap')->find($id);
+            $file = $neatlineMap->getFile();
+            $neatlineMap->delete();
+            $file->delete();
+
+        }
 
     }
 
@@ -317,7 +330,7 @@ class NeatlineMaps
     }
 
     /**
-     * Render the map.
+     * Render the map on Exhibit pages.
      *
      * @return void
      */

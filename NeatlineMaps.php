@@ -137,7 +137,7 @@ class NeatlineMaps
     public function configForm()
     {
 
-        include 'config_form.php';
+        include 'forms/config-form.php';
 
     }
 

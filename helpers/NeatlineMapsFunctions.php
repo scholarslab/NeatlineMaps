@@ -36,6 +36,15 @@
 function _doItemForm($item)
 {
 
+    $db = get_db();
+    $maps = $db->getTable('NeatlineMap')->getMapsByItem($item);
+
+    ob_start();
+
+    include NEATLINE_MAPS_PLUGIN_DIR . '/forms/neatline-maps-form.php';
+
+    return ob_get_clean();
+
     // $db = get_db();
     // $select = $db->getTable('FedoraConnectorDatastream')->select()
     //     ->from(array('d' => $db->prefix . 'fedora_connector_datastreams'))
@@ -46,7 +55,7 @@ function _doItemForm($item)
 
     // $datastreams = $db->getTable('FedoraConnectorDatastream')->fetchObjects($select);
 
-    $form = '';
+    // $form = '';
 
     // if ($maps) {
     //     // show existing map files
@@ -61,11 +70,11 @@ function _doItemForm($item)
     //         <td>' . $datastream->metadata_stream . '</td>
     //         <td><a href="' . uri('/fedora-connector/datastreams/' . $datastream->datastream_id . '/import') . '"><strong>Import</strong></a></td>
     //         </tr>';
-    // }
+        // }
     // $form .= '</table>';
     // $form .= '<p><strong><a href="' . uri('/fedora-connector/datastreams/create/item/' . $item->id . '/pid') . '">Add another datastream -></a></strong></p>';
 
-    return $form;
+    // return $form;
 
 }
 

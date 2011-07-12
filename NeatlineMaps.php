@@ -37,7 +37,8 @@ class NeatlineMaps
         'config_form',
         'config',
         'after_save_file',
-        'public_theme_header'
+        'public_theme_header',
+        'admin_theme_header'
     );
 
     private static $_filters = array(

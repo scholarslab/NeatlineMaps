@@ -292,9 +292,11 @@ class NeatlineMaps
     {
 
         // Try to add the new maps to geoserver.
-        // Delete maps marked for deletion.
+        foreach ($post['maps'] as $map) {
 
-        $db = get_db();
+            // how to add the files here?
+
+        }
 
         // Do deletes.
         foreach ($post['delete_maps'] as $id) {

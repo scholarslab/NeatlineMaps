@@ -37,7 +37,9 @@ class NeatlineMaps
         'config_form',
         'config',
         'after_save_file',
-        'public_theme_header'
+        'public_theme_header',
+        'admin_theme_header',
+        'after_save_form_item'
     );
 
     private static $_filters = array(
@@ -262,6 +264,34 @@ class NeatlineMaps
         if ($request->getModuleName() == 'neatline-maps' && $request->getActionName() == 'show') {
             _doHeaderJsAndCss();
         }
+
+    }
+
+    /**
+     * Include the javascript for the add-files functionality in the maps item tab.
+     *
+     * @return void
+     */
+    public function adminThemeHeader()
+    {
+
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+
+        if ($request->getModuleName() == 'default' && $request->getActionName() == 'edit') {
+            _doAdminHeaderJsAndCss();
+        }
+
+    }
+
+    /**
+     * Save the new map files.
+     *
+     * @return void
+     */
+    public function afterSaveFormItem()
+    {
+
+
 
     }
 

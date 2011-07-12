@@ -18,7 +18,7 @@
                 <?php echo link_to($file, 'edit', 'Edit', array('class'=>'edit')); ?>
             </td>
             <td class="delete-link">
-                <?php echo checkbox(array('name'=>'delete_files[]'),false,$file->id); ?>
+                <?php echo checkbox(array('name'=>'delete_maps[]'),false,$file->id); ?>
             </td>
         </tr>
 
@@ -29,25 +29,57 @@
     </div>
 <?php endif; ?>
 
-<h3>Add New Maps</h3>
+<h3>Add New Maps:</h3>
 
-<div id="add-more-files">
-<label for="add_num_files">Find a File</label>
+<div id="add-more-maps">
+<label for="add_num_maps">Find a File</label>
     <div class="files">
-    <?php $numFiles = (int)@$_REQUEST['add_num_files'] or $numFiles = 1; ?>
+    <?php $numFiles = (int)@$_REQUEST['add_num_maps'] or $numFiles = 1; ?>
     <?php 
-    echo text(array('name'=>'add_num_files','size'=>2),$numFiles);
-    echo submit('add_more_files', 'Add this many files'); 
+    echo text(array('name'=>'add_num_maps','size'=>2),$numFiles);
+    echo submit('add_more_maps', 'Add this many maps'); 
     ?>
     </div>
 </div>
 
-<div class="field" id="file-inputs">
+<div class="field" id="map-inputs">
     <label>Find a File</label>
 
     <?php for($i=0;$i<$numFiles;$i++): ?>
-    <div class="files inputs">
-        <input name="file[<?php echo $i; ?>]" id="file-<?php echo $i; ?>" type="file" class="fileinput" />
+    <div class="maps inputs">
+        <input name="map[<?php echo $i; ?>]" id="file-<?php echo $i; ?>" type="file" class="fileinput" />
     </div>
     <?php endfor; ?>
 </div>
+
+    <script>
+
+    /**
+     * Allow adding an arbitrary number of file input elements to the items form so that
+     * more than one file can be uploaded at once.
+     */
+    Omeka.Items.enableAddMaps = function () {
+        var filesDiv = jQuery('#map-inputs .maps').first();
+        var filesDivWrap = jQuery('#map-inputs');
+
+        var link = jQuery('<a href="#" id="add-map" class="add-map">Add Another Map</a>');
+        link.click(function (event) {
+            event.preventDefault();
+            var inputs = filesDiv.find('input');
+            var inputCount = inputs.length;
+            var fileHtml = '<div id="mapinput' + inputCount + '" class="mapinput"><input name="map[' + inputCount + ']" id="map[' + inputCount + ']" type="file" class="mapinput" /></div>';
+            jQuery(fileHtml).insertAfter(inputs.last()).hide().slideDown(200, function () {
+                // Extra show fixes IE bug.
+                jQuery(this).show();
+            });
+        });
+
+        jQuery('#add-more-maps').html('');
+        filesDivWrap.append(link);
+    };
+
+    jQuery(window).load(function () {
+        Omeka.Items.enableAddMaps();
+    });
+
+    </script>

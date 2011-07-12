@@ -267,6 +267,22 @@ class NeatlineMaps
     }
 
     /**
+     * Include the javascript for the add-files functionality in the maps item tab.
+     *
+     * @return void
+     */
+    public function adminThemeHeader()
+    {
+
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+
+        if ($request->getModuleName() == 'default' && $request->getActionName() == 'edit') {
+            _doAdminHeaderJsAndCss();
+        }
+
+    }
+
+    /**
      * Filter callbacks:
      */
 

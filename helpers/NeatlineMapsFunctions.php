@@ -40,41 +40,8 @@ function _doItemForm($item)
     $maps = $db->getTable('NeatlineMap')->getMapsByItem($item);
 
     ob_start();
-
     include NEATLINE_MAPS_PLUGIN_DIR . '/forms/neatline-maps-form.php';
-
     return ob_get_clean();
-
-    // $db = get_db();
-    // $select = $db->getTable('FedoraConnectorDatastream')->select()
-    //     ->from(array('d' => $db->prefix . 'fedora_connector_datastreams'))
-    //     ->joinLeft(array('s' => $db->prefix . 'fedora_connector_servers'), 'd.server_id = s.id')
-    //     ->columns(array('server_name' => 's.name', 'datastream_id' => 'd.id', 'parent_item' =>
-    //         "(SELECT text from `$db->ElementText` WHERE record_id = d.item_id AND element_id = 50 LIMIT 1)"))
-    //     ->where('d.item_id = ' . $item->id);
-
-    // $datastreams = $db->getTable('FedoraConnectorDatastream')->fetchObjects($select);
-
-    // $form = '';
-
-    // if ($maps) {
-    //     // show existing map files
-    // }
-
-    // $form .= '<table><thead><th>Datastream</th><th>PID</th><th>Server</th><th>Metadata Format</th><th>Actions</th>';
-    // foreach ($datastreams as $datastream) {
-    //     $form .= '<tr>
-    //         <td><strong>' . $datastream->getNode()->getAttribute('label') . '</strong></td>
-    //         <td>' . $datastream->pid . '</td>
-    //         <td><a href="' . uri('/fedora-connector/servers/edit/' . $datastream->server_id) . '">' . $datastream->server_name . '</a></td>
-    //         <td>' . $datastream->metadata_stream . '</td>
-    //         <td><a href="' . uri('/fedora-connector/datastreams/' . $datastream->datastream_id . '/import') . '"><strong>Import</strong></a></td>
-    //         </tr>';
-        // }
-    // $form .= '</table>';
-    // $form .= '<p><strong><a href="' . uri('/fedora-connector/datastreams/create/item/' . $item->id . '/pid') . '">Add another datastream -></a></strong></p>';
-
-    // return $form;
 
 }
 
@@ -99,6 +66,26 @@ function _doHeaderJsAndCss()
     <?php
         queue_js('maps/show/show');
     ?>
+
+    <!-- End Neatline Maps Dependencies -->
+
+    <?php
+
+}
+
+/**
+ * Include the GeoServer .js and .css dependencies in the public theme header.
+ *
+ * @return void.
+ */
+function _doAdminHeaderJsAndCss()
+{
+
+    ?>
+
+    <!-- Neatline Maps Dependencies -->
+
+    <link rel="stylesheet" href="<?php echo css('neatline-maps-admin'); ?>" />
 
     <!-- End Neatline Maps Dependencies -->
 

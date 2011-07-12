@@ -1,1 +1,15 @@
+#map-inputs a {
+    float: left;
+    display: block;
+    font-size: 1.2em;
+    margin-left: 132px;
+    margin-top: 6px;
+}
 
+.add-map {
+    background-image: url("../../../../../application/views/scripts/images/silk-icons/disk_multiple.png");
+    background-position: 12px 50%;
+    background-repeat: no-repeat;
+    padding-left: 32px;
+    text-decoration: none;
+}

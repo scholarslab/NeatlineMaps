@@ -57,6 +57,7 @@ class NeatlineMaps
     public function __construct()
     {
 
+        $this->_db = get_db();
         self::addHooksAndFilters();
 
     }
@@ -88,16 +89,14 @@ class NeatlineMaps
     /**
      * Install.
      *
-     * @return void
+     * @return void.
      */
     public function install()
     {
 
-        $db = get_db();
-        $db->query("
-            CREATE TABLE IF NOT EXISTS `$db->NeatlineMap` (
+        $this->_db->query("
+            CREATE TABLE IF NOT EXISTS `$this->_db->NeatlineMap` (
                 `id` int(10) unsigned NOT NULL auto_increment,
-                `item_id` int(10) unsigned,
                 `file_id` int(10) unsigned,
                 PRIMARY KEY  (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
@@ -301,7 +300,7 @@ class NeatlineMaps
         // Do deletes.
         foreach ($post['delete_maps'] as $id) {
 
-            $neatlineMap = $db->getTable('NeatlineMap')->find($id);
+            $neatlineMap = $this->_db->getTable('NeatlineMap')->find($id);
             $file = $neatlineMap->getFile();
             $neatlineMap->delete();
             $file->delete();

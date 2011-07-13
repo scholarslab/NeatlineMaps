@@ -212,8 +212,6 @@ class NeatlineMaps
         $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
         $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_namespace_prefix;
 
-        $controller = Zend_Controller_Front::getInstance();
-
         $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
         $clientCheckNamespace->setAuth($geoserver_user, $geoserver_password);
 
@@ -243,28 +241,31 @@ class NeatlineMaps
 
             $successCode = 201;
             $buffer = curl_exec($ch);
-            $info = curl_getinfo($ch);
 
-            if ($info['http_code'] != $successCode) {
+            // How to thread in custom error/success flashes to the front controller here?
 
-                if ($startingNamespacePrefix == null) { // This is the first save...
-                    $msgStr = 'There was an error - the namespace \'' .
-                        $geoserver_namespace_prefix . '\' was not added.';
-                    $controller->flashError($msgStr);
-                }
+            // $info = curl_getinfo($ch);
 
-                else if ($startingNamespacePrefix) {
-                    $msgStr = 'There was an error - the new namespace \'' .
-                        $geoserver_namespace_prefix . '\' was not added.';
-                    $controller->flashError($msgStr);
-                }
+            // if ($info['http_code'] != $successCode) {
 
-            } else {
+            //     if ($startingNamespacePrefix == null) { // This is the first save...
+            //         $msgStr = 'There was an error - the namespace \'' .
+            //             $geoserver_namespace_prefix . '\' was not added.';
+            //         $controller->flashError($msgStr);
+            //     }
 
-                $msgStr = 'New namespace ' . $geoserver_namespace_prefix . ' successfully added.';
-                $controller->flashSuccess($mstStr);
+            //     else if ($startingNamespacePrefix) {
+            //         $msgStr = 'There was an error - the new namespace \'' .
+            //             $geoserver_namespace_prefix . '\' was not added.';
+            //         $controller->flashError($msgStr);
+            //     }
 
-            }
+            // } else {
+
+            //     $msgStr = 'New namespace ' . $geoserver_namespace_prefix . ' successfully added.';
+            //     $controller->flashSuccess($mstStr);
+
+            // }
 
         }
 

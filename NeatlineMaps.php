@@ -99,6 +99,7 @@ class NeatlineMaps
             CREATE TABLE IF NOT EXISTS `$db->NeatlineMap` (
                 `id` int(10) unsigned NOT NULL auto_increment,
                 `file_id` int(10) unsigned,
+                `item_id` int(10) unsigned,
                 PRIMARY KEY  (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");
@@ -307,7 +308,15 @@ class NeatlineMaps
         // Try to add the new maps to geoserver.
         foreach ($post['maps'] as $map) {
 
-            // how to add the files here?
+            if (!empty($_FILES['map'])) {
+
+                // dial out to geoserver here to see if it's a map.
+
+                if (true) { // if geoserver accepts the file... True now for testing purposes.
+                    $files = insert_files_for_item($this, 'Upload', 'file', array('ignoreNoFile'=>true));
+                }
+
+            }
 
         }
 

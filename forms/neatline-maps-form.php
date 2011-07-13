@@ -48,7 +48,7 @@
 </div>
 
 <div class="field" id="map-inputs">
-    <label>Find a File</label>
+    <label>Find a Map File</label>
 
     <?php for($i=0;$i<$numFiles;$i++): ?>
     <div class="maps inputs">

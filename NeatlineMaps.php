@@ -310,15 +310,22 @@ class NeatlineMaps
     {
 
         // Try to add the new maps to geoserver.
-        foreach ($post['maps'] as $map) {
+        if (!empty($_FILES['map'])) {
 
-            if (!empty($_FILES['map'])) {
+            // dial out to geoserver here to see if it's a map.
 
-                // dial out to geoserver here to see if it's a map.
+            if (true) { // if geoserver accepts the file...
 
-                if (true) { // if geoserver accepts the file... True now for testing purposes.
-                    $files = insert_files_for_item($this, 'Upload', 'file', array('ignoreNoFile'=>true));
-                }
+                $file = insert_files_for_item(
+                    $record,
+                    'Upload',
+                    'map',
+                    array('ignoreNoFile'=>true));
+
+                $neatlineMap = new NeatlineMap();
+                $neatlineMap->item_id = $record->id;
+                $neatlineMap->file_id = $file[0]->id;
+                $neatlineMap->save();
 
             }
 
@@ -329,6 +336,7 @@ class NeatlineMaps
 
             $neatlineMap = $this->_db->getTable('NeatlineMap')->find($id);
             $file = $neatlineMap->getFile();
+
             $neatlineMap->delete();
             $file->delete();
 

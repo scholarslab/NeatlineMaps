@@ -338,25 +338,45 @@ class NeatlineMaps
 
             // Does GeoServer recognize the file as a map?
             $zip = new ZipArchive();
-            $zipfilename = ARCHIVE_DIR . '/' . $file->archive_filename . '.zip';
-            $zip->open($zipfilename, ZIPARCHIVE::CREATE);
+            $zipFileName = ARCHIVE_DIR . '/' . $file->archive_filename . '.zip';
+            $zip->open($zipFileName, ZIPARCHIVE::CREATE);
             $zip->addFile(ARCHIVE_DIR . '/files/' . $file->archive_filename, $file->archive_filename);
             $zip->close();
 
-            // do the rest...
+            $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
+                get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file[0]->id .
+                '/file.geotiff?coverageName=' . $file[0]->id;
 
-            // if ([>geoserveracceptsthefile<]) { // if geoserver accepts the file...
+            $client = new Zend_Http_Client($coverageAddress);
+            $client->setAuth(get_option('neatlinemaps_geoserver_user'),
+                get_option('neatlinemaps_geoserver_password'));
+            $client->setHeaders('Content-type', 'application/zip');
 
-            //     $neatlineMap = new NeatlineMap();
-            //     $neatlineMap->item_id = $record->id;
-            //     $neatlineMap->file_id = $file[0]->id;
-            //     $neatlineMap->save();
+            $adapter = new Zend_Http_Client_Adapter_Curl();
+            $adapter->setConfig(
+                array(
+                    'curloptions' => array(
+                        CURLOPT_INFILESIZE => filesize($zipFileName),
+                        CURLOPT_INFILE => fopen($zipFileName, "r")
+                    )
+                )
+            );
 
-            // }
+            $client->setAdapter($adapter);
+            $response = $client->request(Zend_Http_Client::PUT);
 
-            // else {
-            //     $file->delete();
-            // }
+            if ($response->isSuccessful()) { // if geoserver accepts the file...
+
+                $neatlineMap = new NeatlineMap();
+                $neatlineMap->item_id = $record->id;
+                $neatlineMap->file_id = $file[0]->id;
+                $neatlineMap->save();
+
+            }
+
+            else {
+                $file->delete();
+            }
 
         }
 

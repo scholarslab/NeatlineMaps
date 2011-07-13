@@ -247,13 +247,15 @@ class NeatlineMaps
 
             if ($info['http_code'] != $successCode) {
 
-                if ($startingNamespacePrefix == null) { // This is the first save of the configuration form...
-                    $msgStr = 'There was an error - the namespace \'' . $geoserver_namespace_prefix . '\' was not added.';
+                if ($startingNamespacePrefix == null) { // This is the first save...
+                    $msgStr = 'There was an error - the namespace \'' .
+                        $geoserver_namespace_prefix . '\' was not added.';
                     $controller->flashError($msgStr);
                 }
 
                 else if ($startingNamespacePrefix) {
-                    $msgStr = 'There was an error - the new namespace \'' . $geoserver_namespace_prefix . '\' was not added.';
+                    $msgStr = 'There was an error - the new namespace \'' .
+                        $geoserver_namespace_prefix . '\' was not added.';
                     $controller->flashError($msgStr);
                 }
 

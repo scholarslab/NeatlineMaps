@@ -175,6 +175,7 @@ class NeatlineMaps
     public function config()
     {
 
+        // Get the form.
         $geoserver_url = $_POST['neatlinemaps_geoserver_url'];
         $geoserver_namespace_prefix = $_POST['neatlinemaps_geoserver_namespace_prefix'];
         $geoserver_namespace_url = $_POST['neatlinemaps_geoserver_namespace_url'];
@@ -183,6 +184,9 @@ class NeatlineMaps
         $geoserver_spatial_reference_service = $_POST['neatlinemaps_geoserver_spatial_reference_service'];
         $geoserver_tag_prefix = $_POST['neatlinemaps_geoserver_tag_prefix'];
 
+        $startingNamespacePrefix = get_option('neatlinemaps_geoserver_namespace_prefix');
+
+        // Set options.
         set_option('neatlinemaps_geoserver_url',
             $geoserver_url);
 
@@ -208,10 +212,9 @@ class NeatlineMaps
         $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
         $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_namespace_prefix;
 
-        $client = new Zend_Http_Client($geoServerConfigurationAddress);
-        $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
+        $controller = Zend_Controller_Front::getInstance();
 
-        $client->setAuth($geoserver_user, $geoserver_password);
+        $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
         $clientCheckNamespace->setAuth($geoserver_user, $geoserver_password);
 
         // Does the namespace already exist?
@@ -220,34 +223,46 @@ class NeatlineMaps
                 'No such namespace:'
         ) !== false) {
 
-            // If not, create it.
-            // $namespaceJSON = '
-            //     {
-            //         "namespaces": {
-            //             "namespace": [{
-            //                 "prefix": "' . $geoserver_namespace_prefix . '",
-            //                 "uri": "' . $geoserver_namespace_url . '"
-            //             }]
-            //         }
-            //     }
-            // ';
+            $namespaceJSON = '
+                {
+                    "namespace": {
+                        "prefix": "' . $geoserver_namespace_prefix . '",
+                        "uri": "' . $geoserver_namespace_url . '"
+                    }
+                }
+            ';
 
-            // $namespaceJSON = '
-            //     {
-            //         "namespace": {
-            //             "prefix": "' . $geoserver_namespace_prefix . '",
-            //             "uri": "' . $geoserver_namespace_url . '"
-            //         }
-            //     }
-            // ';
+            $ch = curl_init($geoServerConfigurationAddress);
+            curl_setopt($ch, CURLOPT_POST, True);
 
-            // $namespaceXML = '
-            //     <namespace><prefix>' . $geoserver_namespace_prefix . '</prefix></namespace>
-            // ';
+            $authString = $geoserver_user . ':' . $geoserver_password;
+            curl_setopt($ch, CURLOPT_USERPWD, $authString);
 
-            // Namespace add is NOT working. Always get HTTP500 'Internal Server Error.' What gives?
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $namespaceJSON);
 
-            $response = $client->setRawData($namespaceXML, 'application/xml')->request(Zend_Http_Client::POST);
+            $successCode = 201;
+            $buffer = curl_exec($ch);
+            $info = curl_getinfo($ch);
+
+            if ($info['http_code'] != $successCode) {
+
+                if ($startingNamespacePrefix == null) { // This is the first save of the configuration form...
+                    $msgStr = 'There was an error - the namespace \'' . $geoserver_namespace_prefix . '\' was not added.';
+                    $controller->flashError($msgStr);
+                }
+
+                else if ($startingNamespacePrefix) {
+                    $msgStr = 'There was an error - the new namespace \'' . $geoserver_namespace_prefix . '\' was not added.';
+                    $controller->flashError($msgStr);
+                }
+
+            } else {
+
+                $msgStr = 'New namespace ' . $geoserver_namespace_prefix . ' successfully added.';
+                $controller->flashSuccess($mstStr);
+
+            }
 
         }
 

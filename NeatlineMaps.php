@@ -330,22 +330,33 @@ class NeatlineMaps
         // Try to add the new maps to geoserver.
         if (!empty($_FILES['map'])) {
 
-            // dial out to geoserver here to see if it's a map.
+            $file = insert_files_for_item(
+                $record,
+                'Upload',
+                'map',
+                array('ignoreNoFile'=>true));
 
-            if (true) { // if geoserver accepts the file...
+            // Does GeoServer recognize the file as a map?
+            $zip = new ZipArchive();
+            $zipfilename = ARCHIVE_DIR . '/' . $file->archive_filename . '.zip';
+            $zip->open($zipfilename, ZIPARCHIVE::CREATE);
+            $zip->addFile(ARCHIVE_DIR . '/files/' . $file->archive_filename, $file->archive_filename);
+            $zip->close();
 
-                $file = insert_files_for_item(
-                    $record,
-                    'Upload',
-                    'map',
-                    array('ignoreNoFile'=>true));
+            // do the rest...
 
-                $neatlineMap = new NeatlineMap();
-                $neatlineMap->item_id = $record->id;
-                $neatlineMap->file_id = $file[0]->id;
-                $neatlineMap->save();
+            // if ([>geoserveracceptsthefile<]) { // if geoserver accepts the file...
 
-            }
+            //     $neatlineMap = new NeatlineMap();
+            //     $neatlineMap->item_id = $record->id;
+            //     $neatlineMap->file_id = $file[0]->id;
+            //     $neatlineMap->save();
+
+            // }
+
+            // else {
+            //     $file->delete();
+            // }
 
         }
 

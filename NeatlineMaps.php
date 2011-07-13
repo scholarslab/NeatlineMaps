@@ -33,6 +33,7 @@ class NeatlineMaps
 
     private static $_hooks = array(
         'install',
+        'uninstall',
         'define_routes',
         'config_form',
         'config',
@@ -46,8 +47,6 @@ class NeatlineMaps
         'admin_items_form_tabs',
         'exhibit_builder_exhibit_display_item'
     );
-
-    private $_db;
 
     /**
      * Invoke addHooksAndFilters().
@@ -87,15 +86,17 @@ class NeatlineMaps
      */
 
     /**
-     * Install.
+     * Install. Create _neatline_maps table, add new item type.
      *
      * @return void.
      */
     public function install()
     {
 
-        $this->_db->query("
-            CREATE TABLE IF NOT EXISTS `$this->_db->NeatlineMap` (
+        $db = $this->_db;
+
+        $db->query("
+            CREATE TABLE IF NOT EXISTS `$db->NeatlineMap` (
                 `id` int(10) unsigned NOT NULL auto_increment,
                 `file_id` int(10) unsigned,
                 PRIMARY KEY  (`id`)
@@ -122,6 +123,19 @@ class NeatlineMaps
             );
 
         insert_item_type($historicMapItemType, $historicMapItemTypeMetadata);
+
+    }
+
+    /**
+     * Uninstall. Drop the _neatline_maps table.
+     *
+     * @return void.
+     */
+    public function uninstall()
+    {
+
+        $db = $this->_db;
+        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMap`");
 
     }
 

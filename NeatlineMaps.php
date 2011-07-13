@@ -291,8 +291,12 @@ class NeatlineMaps
 
         $request = Zend_Controller_Front::getInstance()->getRequest();
 
-        if ($request->getModuleName() == 'default' && $request->getActionName() == 'edit') {
+        if ($request->getModuleName() == 'default' &&
+            ($request->getActionName() == 'edit') ||
+            ($request->getActionName() == 'add')) {
+
             _doAdminHeaderJsAndCss();
+
         }
 
     }

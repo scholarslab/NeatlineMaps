@@ -328,51 +328,55 @@ class NeatlineMaps
     {
 
         // Try to add the new maps to geoserver.
-        if (!empty($_FILES['map'])) {
+        if (isset($_FILES['map'])) {
 
-            $file = insert_files_for_item(
+            $files = insert_files_for_item(
                 $record,
                 'Upload',
                 'map',
                 array('ignoreNoFile'=>true));
 
-            // Does GeoServer recognize the file as a map?
-            $zip = new ZipArchive();
-            $zipFileName = ARCHIVE_DIR . '/' . $file[0]->original_filename . '.zip';
-            $zip->open($zipFileName, ZIPARCHIVE::CREATE);
-            $zip->addFile(ARCHIVE_DIR . '/files/' . $file[0]->archive_filename, $file[0]->original_filename);
-            $zip->close();
+            foreach ($files as $file) {
 
-            $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
-                get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file[0]->original_filename .
-                '/file.geotiff';
+                // Does GeoServer recognize the file as a map?
+                $zip = new ZipArchive();
+                $zipFileName = ARCHIVE_DIR . '/' . $file->original_filename . '.zip';
+                $zip->open($zipFileName, ZIPARCHIVE::CREATE);
+                $zip->addFile(ARCHIVE_DIR . '/files/' . $file->archive_filename, $file->original_filename);
+                $zip->close();
 
-            $ch = curl_init($coverageAddress);
-            curl_setopt($ch, CURLOPT_PUT, True);
+                $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
+                    get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file->original_filename .
+                    '/file.geotiff';
 
-            $authString = get_option('neatlinemaps_geoserver_user') . ':' . get_option('neatlinemaps_geoserver_password');
-            curl_setopt($ch, CURLOPT_USERPWD, $authString);
+                $ch = curl_init($coverageAddress);
+                curl_setopt($ch, CURLOPT_PUT, True);
 
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/zip'));
-            curl_setopt($ch, CURLOPT_INFILESIZE, filesize($zipFileName));
-            curl_setopt($ch, CURLOPT_INFILE, fopen($zipFileName, "r"));
-            curl_setopt($ch, CURLOPT_PUTFIELDS, $zipFileName);
+                $authString = get_option('neatlinemaps_geoserver_user') . ':' . get_option('neatlinemaps_geoserver_password');
+                curl_setopt($ch, CURLOPT_USERPWD, $authString);
 
-            $successCode = 200;
-            $buffer = curl_exec($ch);
-            $info = curl_getinfo($ch);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/zip'));
+                curl_setopt($ch, CURLOPT_INFILESIZE, filesize($zipFileName));
+                curl_setopt($ch, CURLOPT_INFILE, fopen($zipFileName, "r"));
+                curl_setopt($ch, CURLOPT_PUTFIELDS, $zipFileName);
 
-            if ($info['http_code'] == $successCode) { // if geoserver accepts the file...
+                $successCode = 201;
+                $buffer = curl_exec($ch);
+                $info = curl_getinfo($ch);
 
-                $neatlineMap = new NeatlineMap();
-                $neatlineMap->item_id = $record->id;
-                $neatlineMap->file_id = $file[0]->id;
-                $neatlineMap->save();
+                if ($info['http_code'] == $successCode) { // if geoserver accepts the file...
 
-            }
+                    $neatlineMap = new NeatlineMap();
+                    $neatlineMap->item_id = $record->id;
+                    $neatlineMap->file_id = $file->id;
+                    $neatlineMap->save();
 
-            else {
-                $file->delete();
+                }
+
+                else {
+                    $file->delete();
+                }
+
             }
 
         }

@@ -390,6 +390,17 @@ class NeatlineMaps
             $neatlineMap->delete();
             $file->delete();
 
+            // $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
+            //     get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file->original_filename;
+
+            // $ch = curl_init($coverageAddress);
+            // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+
+            // $authString = get_option('neatlinemaps_geoserver_user') . ':' . get_option('neatlinemaps_geoserver_password');
+            // curl_setopt($ch, CURLOPT_USERPWD, $authString);
+
+            // $buffer = curl_exec($ch);
+
         }
 
         // Check to see if any of the marked-for-deletion files in the normal Files tab

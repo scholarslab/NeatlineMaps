@@ -338,13 +338,13 @@ class NeatlineMaps
 
             // Does GeoServer recognize the file as a map?
             $zip = new ZipArchive();
-            $zipFileName = ARCHIVE_DIR . '/' . $file->archive_filename . '.zip';
+            $zipFileName = ARCHIVE_DIR . '/' . $file[0]->archive_filename . '.zip';
             $zip->open($zipFileName, ZIPARCHIVE::CREATE);
-            $zip->addFile(ARCHIVE_DIR . '/files/' . $file->archive_filename, $file->archive_filename);
+            $zip->addFile(ARCHIVE_DIR . '/files/' . $file[0]->archive_filename, $file[0]->archive_filename);
             $zip->close();
 
             $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
-                get_option('neatlinemaps_geoserver_namespace_prefix') . '/datastores/' . $file[0]->original_filename .
+                get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file[0]->original_filename .
                 '/file.geotiff';
 
             // $client = new Zend_Http_Client($coverageAddress);
@@ -368,7 +368,7 @@ class NeatlineMaps
             $ch = curl_init($coverageAddress);
             curl_setopt($ch, CURLOPT_PUT, True);
 
-            $authString = $geoserver_user . ':' . $geoserver_password;
+            $authString = get_option('neatlinemaps_geoserver_user') . ':' . get_option('neatlinemaps_geoserver_password');
             curl_setopt($ch, CURLOPT_USERPWD, $authString);
 
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/zip'));

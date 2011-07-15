@@ -344,28 +344,43 @@ class NeatlineMaps
             $zip->close();
 
             $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
-                get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file[0]->id .
-                '/file.geotiff?coverageName=' . $file[0]->id;
+                get_option('neatlinemaps_geoserver_namespace_prefix') . '/datastores/' . $file[0]->original_filename .
+                '/file.geotiff';
 
-            $client = new Zend_Http_Client($coverageAddress);
-            $client->setAuth(get_option('neatlinemaps_geoserver_user'),
-                get_option('neatlinemaps_geoserver_password'));
-            $client->setHeaders('Content-type', 'application/zip');
+            // $client = new Zend_Http_Client($coverageAddress);
+            // $client->setAuth(get_option('neatlinemaps_geoserver_user'),
+            //     get_option('neatlinemaps_geoserver_password'));
+            // $client->setHeaders('Content-type', 'application/zip');
 
-            $adapter = new Zend_Http_Client_Adapter_Curl();
-            $adapter->setConfig(
-                array(
-                    'curloptions' => array(
-                        CURLOPT_INFILESIZE => filesize($zipFileName),
-                        CURLOPT_INFILE => fopen($zipFileName, "r")
-                    )
-                )
-            );
+            // $adapter = new Zend_Http_Client_Adapter_Curl();
+            // $adapter->setConfig(
+            //     array(
+            //         'curloptions' => array(
+            //             CURLOPT_INFILESIZE => filesize($zipFileName),
+            //             CURLOPT_INFILE => fopen($zipFileName, "r")
+            //         )
+            //     )
+            // );
 
-            $client->setAdapter($adapter);
-            $response = $client->request(Zend_Http_Client::PUT);
+            // $client->setAdapter($adapter);
+            // $response = $client->request(Zend_Http_Client::PUT);
 
-            if ($response->isSuccessful()) { // if geoserver accepts the file...
+            $ch = curl_init($coverageAddress);
+            curl_setopt($ch, CURLOPT_PUT, True);
+
+            $authString = $geoserver_user . ':' . $geoserver_password;
+            curl_setopt($ch, CURLOPT_USERPWD, $authString);
+
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/zip'));
+            curl_setopt($ch, CURLOPT_INFILESIZE, filesize($zipFileName));
+            curl_setopt($ch, CURLOPT_INFILE, fopen($zipFileName, "r"));
+            curl_setopt($ch, CURLOPT_PUTFIELDS, $zipFileName);
+
+            $successCode = 200;
+            $buffer = curl_exec($ch);
+            $info = curl_getinfo($ch);
+
+            if ($info['http_code'] == $successCode) { // if geoserver accepts the file...
 
                 $neatlineMap = new NeatlineMap();
                 $neatlineMap->item_id = $record->id;
@@ -388,6 +403,15 @@ class NeatlineMaps
 
             $neatlineMap->delete();
             $file->delete();
+
+        }
+
+        // Check to see if any of the marked-for-deletion files in the normal Files tab
+        // is also a map, and if so, delete the record in _neatline_maps.
+        foreach ($post['delete_files'] as $id) {
+
+            $neatlineMap = $this->_db->getTable('NeatlineMap')->find($id);
+            $neatlineMap->delete();
 
         }
 

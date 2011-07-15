@@ -338,32 +338,14 @@ class NeatlineMaps
 
             // Does GeoServer recognize the file as a map?
             $zip = new ZipArchive();
-            $zipFileName = ARCHIVE_DIR . '/' . $file[0]->archive_filename . '.zip';
+            $zipFileName = ARCHIVE_DIR . '/' . $file[0]->original_filename . '.zip';
             $zip->open($zipFileName, ZIPARCHIVE::CREATE);
-            $zip->addFile(ARCHIVE_DIR . '/files/' . $file[0]->archive_filename, $file[0]->archive_filename);
+            $zip->addFile(ARCHIVE_DIR . '/files/' . $file[0]->archive_filename, $file[0]->original_filename);
             $zip->close();
 
             $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
                 get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file[0]->original_filename .
                 '/file.geotiff';
-
-            // $client = new Zend_Http_Client($coverageAddress);
-            // $client->setAuth(get_option('neatlinemaps_geoserver_user'),
-            //     get_option('neatlinemaps_geoserver_password'));
-            // $client->setHeaders('Content-type', 'application/zip');
-
-            // $adapter = new Zend_Http_Client_Adapter_Curl();
-            // $adapter->setConfig(
-            //     array(
-            //         'curloptions' => array(
-            //             CURLOPT_INFILESIZE => filesize($zipFileName),
-            //             CURLOPT_INFILE => fopen($zipFileName, "r")
-            //         )
-            //     )
-            // );
-
-            // $client->setAdapter($adapter);
-            // $response = $client->request(Zend_Http_Client::PUT);
 
             $ch = curl_init($coverageAddress);
             curl_setopt($ch, CURLOPT_PUT, True);
@@ -396,7 +378,7 @@ class NeatlineMaps
         }
 
         // Do deletes.
-        foreach ($post['delete_maps'] as $id) {
+        foreach ($post['delete_maps'] as $key => $id) {
 
             $neatlineMap = $this->_db->getTable('NeatlineMap')->find($id);
             $file = $neatlineMap->getFile();
@@ -408,10 +390,13 @@ class NeatlineMaps
 
         // Check to see if any of the marked-for-deletion files in the normal Files tab
         // is also a map, and if so, delete the record in _neatline_maps.
-        foreach ($post['delete_files'] as $id) {
+        foreach ($post['delete_files'] as $key => $id) {
 
-            $neatlineMap = $this->_db->getTable('NeatlineMap')->find($id);
-            $neatlineMap->delete();
+            $neatlineMap = $this->_db->getTable('NeatlineMap')->findBySql('file_id = ?', array($id));
+
+            if ($neatlineMap[0]) {
+                $neatlineMap[0]->delete();
+            }
 
         }
 

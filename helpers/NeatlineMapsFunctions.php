@@ -92,3 +92,43 @@ function _doAdminHeaderJsAndCss()
     <?php
 
 }
+
+/**
+ * Post a file to GeoServer and see if it accepts it as a valid geotiff.
+ *
+ * @param Omeka_record $file The file to send.
+ *
+ * @return boolean True if GeoServer accepts the file.
+ */
+function _putFileToGeoServer($file)
+{
+
+    // Does GeoServer recognize the file as a map?
+    $zip = new ZipArchive();
+    $zipFileName = ARCHIVE_DIR . '/' . $file->original_filename . '.zip';
+    $zip->open($zipFileName, ZIPARCHIVE::CREATE);
+    $zip->addFile(ARCHIVE_DIR . '/files/' . $file->archive_filename, $file->original_filename);
+    $zip->close();
+
+    $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
+        get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file->original_filename .
+        '/file.geotiff';
+
+    $ch = curl_init($coverageAddress);
+    curl_setopt($ch, CURLOPT_PUT, True);
+
+    $authString = get_option('neatlinemaps_geoserver_user') . ':' . get_option('neatlinemaps_geoserver_password');
+    curl_setopt($ch, CURLOPT_USERPWD, $authString);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/zip'));
+    curl_setopt($ch, CURLOPT_INFILESIZE, filesize($zipFileName));
+    curl_setopt($ch, CURLOPT_INFILE, fopen($zipFileName, "r"));
+    curl_setopt($ch, CURLOPT_PUTFIELDS, $zipFileName);
+
+    $successCode = 201;
+    $buffer = curl_exec($ch);
+    $info = curl_getinfo($ch);
+
+    return ($info['http_code'] == $successCode);
+
+}

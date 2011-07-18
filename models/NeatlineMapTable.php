@@ -34,7 +34,7 @@ class NeatlineMapTable extends Omeka_Db_Table
     /**
      * Get all maps associated with an item.
      *
-     * @param Omeka_Db_Record $item The item;
+     * @param Omeka_Db_Record $item The item.
      *
      * @return array of Omeka_Db_Record objects The maps.
      */
@@ -42,6 +42,21 @@ class NeatlineMapTable extends Omeka_Db_Table
     {
 
         return $this->findBySql('item_id = ?', array($item->id));
+
+    }
+
+    /**
+     * See whether there is a NeatlineMaps record for a given file.
+     *
+     * @param Omeka_record $file The file.
+     *
+     * @return boolean True if there is a NeatlineMaps record associated
+     * with the file.
+     */
+    public function hasNeatlineMap($file)
+    {
+
+        return (count($this->findBySql('file_id = ?', array($file->id))) > 0);
 
     }
 

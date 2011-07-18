@@ -107,7 +107,7 @@ class NeatlineMaps
 
         $historicMapItemType = array(
             'name' => NEATLINE_MAPS_MAP_ITEM_TYPE_NAME,
-            'description' => 'Historical map with accompanying WMS service.'
+            'description' => 'Historical map with WMS service.'
         );
 
         $historicMapItemTypeMetadata =

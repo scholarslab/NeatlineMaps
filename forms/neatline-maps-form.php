@@ -13,7 +13,7 @@
     <?php foreach( $maps as $map ): ?>
         <?php $file = $map->getFile(); ?>
         <tr>
-            <td><?php echo link_to($file, 'show', html_escape($file->original_filename), array()); ?></td>
+            <td><a href="<?php echo uri('maps/show/' . $map->id); ?>"><?php echo $file->original_filename; ?></a></td>
             <td class="file-link">
                 <?php echo link_to($file, 'edit', 'Edit', array('class'=>'edit')); ?>
             </td>

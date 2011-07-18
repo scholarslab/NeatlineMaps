@@ -113,13 +113,13 @@ class NeatlineMaps
         $historicMapItemTypeMetadata =
             array(
                 array(
-                    'name' => 'Service Address',
-                    'description' => 'The address of the map\'s WMS server.',
+                    'name' => 'Namespace',
+                    'description' => 'The namespace that contains the map\'s layers.',
                     'data_type' => 'Tiny Text'
                 ),
                 array(
-                    'name' => 'Layer Name',
-                    'description' => 'The WMS name of the map.',
+                    'name' => 'Namespace URL',
+                    'description' => 'The URL associated with the map\'s namespace.',
                     'data_type' => 'Tiny Text'
                 )
             );
@@ -178,24 +178,15 @@ class NeatlineMaps
 
         // Get the form.
         $geoserver_url = $_POST['neatlinemaps_geoserver_url'];
-        $geoserver_namespace_prefix = $_POST['neatlinemaps_geoserver_namespace_prefix'];
-        $geoserver_namespace_url = $_POST['neatlinemaps_geoserver_namespace_url'];
         $geoserver_user = $_POST['neatlinemaps_geoserver_user'];
         $geoserver_password = $_POST['neatlinemaps_geoserver_password'];
         $geoserver_spatial_reference_service = $_POST['neatlinemaps_geoserver_spatial_reference_service'];
-        $geoserver_tag_prefix = $_POST['neatlinemaps_geoserver_tag_prefix'];
 
         $startingNamespacePrefix = get_option('neatlinemaps_geoserver_namespace_prefix');
 
         // Set options.
         set_option('neatlinemaps_geoserver_url',
             $geoserver_url);
-
-        set_option('neatlinemaps_geoserver_namespace_prefix',
-            $geoserver_namespace_prefix);
-
-        set_option('neatlinemaps_geoserver_namespace_url',
-            $geoserver_namespace_url);
 
         set_option('neatlinemaps_geoserver_user',
             $geoserver_user);
@@ -205,18 +196,6 @@ class NeatlineMaps
 
         set_option('neatlinemaps_geoserver_spatial_reference_service',
             $geoserver_spatial_reference_service);
-
-        set_option('neatlinemaps_geoserver_tag_prefix',
-            $geoserver_tag_prefix);
-
-        // Create the namespace on GeoServer.
-        _createGeoServerNamespace(
-            $geoserver_url,
-            $geoserver_namespace_prefix,
-            $geoserver_user,
-            $geoserver_password,
-            $geoserver_namespace_prefix,
-            $geoserver_namespace_url);
 
     }
 

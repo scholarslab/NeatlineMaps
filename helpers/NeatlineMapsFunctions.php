@@ -101,7 +101,6 @@ function _createGeoServerNamespace(
             $geoserver_namespace_prefix,
             $geoserver_user,
             $geoserver_password,
-            $geoserver_namespace_prefix,
             $geoserver_namespace_url)
 {
 

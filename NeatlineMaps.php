@@ -232,10 +232,7 @@ class NeatlineMaps
 
             if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
                 $item = $file->getItem();
-                $neatlineMap = new NeatlineMap();
-                $neatlineMap->item_id = $item->id;
-                $neatlineMap->file_id = $file->id;
-                $neatlineMap->save();
+                $this->_db->getTable('NeatlineMap')->addNewMap($item, $file);
             }
 
         }
@@ -302,10 +299,7 @@ class NeatlineMaps
                 if (!$this->_db->getTable('NeatlineMap')->fileHasNeatlineMap($file)) {
 
                     if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
-                        $neatlineMap = new NeatlineMap();
-                        $neatlineMap->item_id = $record->id;
-                        $neatlineMap->file_id = $file->id;
-                        $neatlineMap->save();
+                        $this->_db->getTable('NeatlineMap')->addNewMap($item, $file);
                     }
 
                     else {
@@ -356,8 +350,8 @@ class NeatlineMaps
         // Does the item have at least one map file attached to it?
         if ($this->_db->getTable('NeatlineMap')->itemHasNeatlineMap($item)) {
 
-            $map = $this->_db->getTable('NeatlineMap')->getMapByItem($item);
-            $geoserverMap = new GeoserverMap_Item($map);
+            // $map = $this->_db->getTable('NeatlineMap')->getMapByItem($item);
+            // $geoserverMap = new GeoserverMap_Item($map);
 
         }
 

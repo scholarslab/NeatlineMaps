@@ -228,7 +228,7 @@ class NeatlineMaps
     public function afterSaveFile($file)
     {
 
-        if (!$this->_db->getTable('NeatlineMap')->hasNeatlineMap($file)) {
+        if (!$this->_db->getTable('NeatlineMap')->fileHasNeatlineMap($file)) {
 
             if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
                 $item = $file->getItem();
@@ -252,7 +252,9 @@ class NeatlineMaps
 
         $request = Zend_Controller_Front::getInstance()->getRequest();
 
-        if ($request->getModuleName() == 'neatline-maps' && $request->getActionName() == 'show') {
+        // Is there a way to hone in on the items module, more specifically
+        // than using 'default' here?
+        if ($request->getModuleName() == 'default' && $request->getActionName() == 'show') {
             _doHeaderJsAndCss();
         }
 
@@ -297,7 +299,7 @@ class NeatlineMaps
 
             foreach ($files as $file) {
 
-                if (!$this->_db->getTable('NeatlineMap')->hasNeatlineMap($file)) {
+                if (!$this->_db->getTable('NeatlineMap')->fileHasNeatlineMap($file)) {
 
                     if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
                         $neatlineMap = new NeatlineMap();
@@ -349,9 +351,17 @@ class NeatlineMaps
     public function publicAppendToItemsShow()
     {
 
-        // get each of the files
-        // build the rest address for the WMS feed
-        // thread each of the layers into the js
+        $item = get_current_item();
+
+        // Does the item have at least one map file attached to it?
+        if ($this->_db->getTable('NeatlineMap')->itemHasNeatlineMap($item)) {
+
+            echo __v()->partial('maps/map.php', array(
+                'wmsAddress' => _getWmsAddress(),
+                'layers' => $this->_db->getTable('NeatlineMap')->getCommaDelimitedLayers($item)
+            ));
+
+        }
 
     }
 

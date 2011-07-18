@@ -42,10 +42,25 @@ class NeatlineMap extends Omeka_record
     public function getFile()
     {
 
-        // Is there really no more concise way to fetch a single record?
+        // Is there really not more concise way to fetch a single record,
+        // without having to do array indexing on the far side?
+
         $fileTable = $this->getTable('File');
         $select = $fileTable->getSelect()->where('f.id = ' . $this->file_id);
         return $fileTable->fetchObject($select);
+
+    }
+
+    /**
+     * Get the name slug of the file, without the extension.
+     *
+     * @return string The name slug.
+     */
+    public function getLayerName()
+    {
+
+        $nameParts = explode('.', $this->getFile()->original_filename);
+        return $nameParts[0];
 
     }
 

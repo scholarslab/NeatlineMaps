@@ -51,7 +51,7 @@ abstract class GeoserverMap_Abstract
     }
 
     /**
-     * Get the title of the map.
+     * Fire off get parameter functions.
      *
      * @return string $title The title.
      */

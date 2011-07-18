@@ -116,7 +116,7 @@ default:
 //       $histmitemtypemetadata =array(
 //           array(
 //               'name'        => "Service Address", 
-//               'description' => "Address of WMS server at which this map is to found"             
+//               'description' => "Address of WMS server at which this map is to found"
 //           ),
 //           array(
 //               'name'        => "Layername",

@@ -53,10 +53,48 @@ class NeatlineMapTable extends Omeka_Db_Table
      * @return boolean True if there is a NeatlineMaps record associated
      * with the file.
      */
-    public function hasNeatlineMap($file)
+    public function fileHasNeatlineMap($file)
     {
 
         return (count($this->findBySql('file_id = ?', array($file->id))) > 0);
+
+    }
+
+    /**
+     * See whether there is a NeatlineMaps record for a given item.
+     *
+     * @param Omeka_record $item The item.
+     *
+     * @return boolean True if there is a NeatlineMaps record associated
+     * with the item.
+     */
+    public function itemHasNeatlineMap($item)
+    {
+
+        return (count($this->findBySql('item_id = ?', array($item->id))) > 0);
+
+    }
+
+    /**
+     * Get a comma-delimited list of the layer names for the OpenLayers JavaScript.
+     *
+     * @param Omeka_record $item The item.
+     *
+     * @return string $list The comma-delimited list.
+     */
+    public function getCommaDelimitedLayers($item)
+    {
+
+        $list = array();
+        $neatlineMaps = $this->findBySql('item_id = ?', array($item->id));
+
+        foreach ($neatlineMaps as $map) {
+
+            $list[] = get_option('neatlinemaps_geoserver_namespace_prefix') . ':' . $map->getLayerName();
+
+        }
+
+        return implode(',', $list);
 
     }
 

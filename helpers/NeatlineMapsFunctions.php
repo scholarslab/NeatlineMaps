@@ -63,10 +63,6 @@ function _doHeaderJsAndCss()
 
     <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
 
-    <?php
-        queue_js('maps/show/show');
-    ?>
-
     <!-- End Neatline Maps Dependencies -->
 
     <?php
@@ -184,5 +180,18 @@ function _putFileToGeoServer($file)
     $info = curl_getinfo($ch);
 
     return ($info['http_code'] == $successCode);
+
+}
+
+/**
+ * Build the main WMS address for the JavaScript.
+ *
+ * @return string The url.
+ */
+function _getWmsAddress()
+{
+
+    return get_option('neatlinemaps_geoserver_url') . '/' .
+        get_option('neatlinemaps_geoserver_namespace_prefix') . '/wms';
 
 }

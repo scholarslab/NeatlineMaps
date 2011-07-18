@@ -1,8 +1,8 @@
 <!-- The inline styling on this element is for development purposes only.
 This should be decoupled from the plugin code and contained fully in the theme. -->
 
-<!-- <div id="map"></div> -->
 <div id="map" style="width: 800px; height: 512px;"></div>
+<!-- <div id="map"></div> -->
 
 <script>
 
@@ -14,13 +14,13 @@ jQuery(document).ready(function() {
     map = new OpenLayers.Map('map');
 
     var base = new OpenLayers.Layer.WMS('OpenLayers WMS',
-        'http://lat.lib.virginia.edu:8080/geoserver2/Falmouth/wms',
-        {layers: 'Falmouth:F_likelybuilds'}
+        '<?php echo $wmsAddress; ?>',
+        {layers: '<?php echo $layers; ?>'}
     );
 
     map.addLayer(base);
 
-    map.zoomToExtent(new OpenLayers.Bounds(-77.659, 18.49, -77.65, 18.497));
+    map.zoomToExtent(new OpenLayers.Bounds(-78.138, 40.97, -77.986, 41.132));
 
 });
 

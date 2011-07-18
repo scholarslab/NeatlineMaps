@@ -356,10 +356,14 @@ class NeatlineMaps
         // Does the item have at least one map file attached to it?
         if ($this->_db->getTable('NeatlineMap')->itemHasNeatlineMap($item)) {
 
-            echo __v()->partial('maps/map.php', array(
-                'wmsAddress' => _getWmsAddress(),
-                'layers' => $this->_db->getTable('NeatlineMap')->getCommaDelimitedLayers($item)
-            ));
+            // echo __v()->partial('maps/map.php', array(
+            //     'wmsAddress' => _getWmsAddress(),
+            //     'layers' => $this->_db->getTable('NeatlineMap')->getCommaDelimitedLayers($item)
+            // ));
+
+            $map = $this->_db->getTable('NeatlineMap')->getMapByItem($item);
+            $geoserverMap = new GeoserverMap_Item($map);
+            $geoserverMap->display();
 
         }
 

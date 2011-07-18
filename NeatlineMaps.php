@@ -390,6 +390,10 @@ class NeatlineMaps
             $neatlineMap->delete();
             $file->delete();
 
+            // Is it necessary to delete the coverage stores on GeoServer when the corresponding
+            // file(s) get deleted in Omeka? This code attempts to do that, but doesn't work, and
+            // it appears from online documentation that it may be a bit difficult to do this remotely.
+
             // $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
             //     get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file->original_filename;
 

@@ -48,47 +48,63 @@ abstract class GeoserverMap_Abstract
         // Set the map.
         $this->map = $map;
 
+        // Build out parameters.
+        $this->getParams();
+
+        // Display the may.
+        $this->display();
+
     }
 
     /**
      * Fire off get parameter functions.
      *
-     * @return string $title The title.
+     * @return void.
      */
     public function getParams() {
 
         // Fire off class methods to get parameters.
         $this->mapTitle = $this->_getMapTitle();
-        $this->serviceAddress = $this->_getServiceAddress();
-        $this->layerName = $this->_getLayerName('Layername', 'Item Type Metadata');
-        $this->dates = $this->_getDates();
+        $this->wmsAddress = _getWmsAddress();
+        $this->layers = _getLayers();
+        $this->boundingBox = _getBoundingBox();
 
-        // Get the capabilities XML, scrub out namespace for xpath query.
-        $capabilitiesURL = $this->serviceAddress . '?request=GetCapabilities';
-        $client = new Zend_Http_Client($capabilitiesURL);
-        $body = str_replace('xmlns', 'ns', $client->request()->getBody());
+        // // Get the capabilities XML, scrub out namespace for xpath query.
+        // $capabilitiesURL = $this->serviceAddress . '?request=GetCapabilities';
+        // $client = new Zend_Http_Client($capabilitiesURL);
+        // $body = str_replace('xmlns', 'ns', $client->request()->getBody());
 
-        // Query for the bounding box.
-        $capabilities = new SimpleXMLElement($body);
-        $nodes = $capabilities->xpath('/WMS_Capabilities/Capability//Layer[Name="' .
-            $this->layerName . '"]/BoundingBox');
-        $boundingBox = $nodes[0];
+        // // Query for the bounding box.
+        // $capabilities = new SimpleXMLElement($body);
+        // $nodes = $capabilities->xpath('/WMS_Capabilities/Capability//Layer[Name="' .
+        //     $this->layerName . '"]/BoundingBox');
+        // $boundingBox = $nodes[0];
 
-        // Pluck out attributes.
-        $params['minx'] = (string)$boundingBox['minx'];
-        $params['maxx'] = (string)$boundingBox['maxx'];
-        $params['miny'] = (string)$boundingBox['miny'];
-        $params['maxy'] = (string)$boundingBox['maxy'];
-        $params['crs'] = (string)$boundingBox['CRS'];
+        // // Pluck out attributes.
+        // $params['minx'] = (string)$boundingBox['minx'];
+        // $params['maxx'] = (string)$boundingBox['maxx'];
+        // $params['miny'] = (string)$boundingBox['miny'];
+        // $params['maxy'] = (string)$boundingBox['maxy'];
+        // $params['crs'] = (string)$boundingBox['CRS'];
 
-        // Get the the proj4js params.
-        $client->resetParameters();
-        $proj4jsURL = get_option('neatlinemaps_geoserver_spatial_reference_service') . '/' .
-            str_replace(':', '/', strtolower($params['crs'])) . '/proj4js/';
-        $client->setUri($proj4jsURL);
-        $params['proj4js'] = $client->request()->getBody();
+        // // Get the the proj4js params.
+        // $client->resetParameters();
+        // $proj4jsURL = get_option('neatlinemaps_geoserver_spatial_reference_service') . '/' .
+        //     str_replace(':', '/', strtolower($params['crs'])) . '/proj4js/';
+        // $client->setUri($proj4jsURL);
+        // $params['proj4js'] = $client->request()->getBody();
 
-        return $params;
+    }
+
+    protected function display()
+    {
+
+        echo __v()->partial('maps/map.php', array(
+            'mapTitle' => $this->mapTitle,
+            'wmsAddress' => $this->wmsAddress,
+            'layers' => $this->layers,
+            'boundingBox' => $this->boundingBox
+        ));
 
     }
 
@@ -97,126 +113,21 @@ abstract class GeoserverMap_Abstract
      *
      * @return string $title The title.
      */
-    protected function _getMapTitle() {
-
-        $title = $this->_getField('Title', 'Dublin Core');
-
-        return $title ? $title :
-            get_option('neatlinemaps_geoserver_namespace_prefix') . ':' . $this->map->id;
-
-    }
+    abstract function _getMapTitle();
 
     /**
-     * Get the service address of the server.
+     * Get the string for the 'layers' parameter in the OpenLayers initialization.
      *
-     * @return string $address The address.
+     * @return string $layers The layers.
      */
-    protected function _getServiceAddress() {
-
-        $address = $this->_getField('Service Address', 'Item Type Metadata');
-
-        return $address ? $address :
-            get_option('neatlinemaps_geoserver_url') . '/wms';
-
-    }
+    abstract function _getLayers();
 
     /**
-     * Get the name of the layer.
+     * Get the parameters for the starting bounding box.
      *
-     * @return $layername The layer name.
+     * @return array $boundngBox The four-part array.
      */
-    protected function _getLayerName() {
-
-        $layername = $this->_getField('Layer Name', 'Item Type Metadata');
-
-        return $layername ? $layername :
-            get_option('neatlinemaps_geoserver_namespace_prefix') . ':' . $this->map->id;
-
-    }
-
-    /**
-     * Get dates for the map.
-     *
-     * @return $dates The parsed dates array.
-     */
-    protected function _getDates() {
-
-        $coverages = $this->map
-            ->getElementTextsByElementNameAndSetName( 'Coverage', 'Dublin Core');
-
-        $dates = null;
-
-        // Ugly. But how to condense?
-        if ($coverages) {
-
-            $dates = array();
-            foreach ($coverages as $coverage) {
-
-                $text = str_replace(' ', '', $coverage->text);
-
-                if ($this->_parseDate($text) == 'date') {
-                    $dates['date'] = $text;
-                }
-
-                else if ($this->_parseDate($text) == 'dates') {
-
-                    $dates = explode(';', $text);
-                    foreach ($dates as $chunk) {
-
-                        $chunk = explode('=', $chunk);
-                        switch ($chunk[0]) {
-                            case 'start':
-                                $dates['start'] == $chunk[1];
-                            break;
-                            case 'end':
-                                $dates['end'] == $chunk[1];
-                            break;
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return $dates;
-
-    }
-
-    /**
-     * Parse a coverage text element and see if it is a date,
-     * a date range, or not a date.
-     *
-     * @param string $string The text to evaluate.
-     *
-     * @return string 'date' if the text is a single date;
-     * @return string 'dates' if the text is a date range;
-     * @return boolean false if the text is not a date.
-     */
-    protected function _parseDate($string) {
-
-        // Good grief.
-        $result = preg_match('/^([\+-]?\d{4}(?!\d{2}\b))
-            ((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))
-            ?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}
-            |3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)
-            ([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):
-            ?([0-5]\d)?)?)?)?$/', $string) ? 'date' : false;
-
-        $result = preg_match('/^(start|end|[\=\;\-\T\+\d])+$/', $string) ? 'dates' : false;
-
-        return $result;
-
-    }
-
-    /**
-     * Fetch fields for the map.
-     *
-     * @return $field The field.
-     */
-    abstract function _getField($field, $set);
+    abstract function _getBoundingBox();
 
 }
 

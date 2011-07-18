@@ -264,6 +264,8 @@ class NeatlineMaps
     public function afterSaveFormRecord($record, $post)
     {
 
+        // CHECK FOR CHANGES TO ITEM TYPE METADATA, DO NAMESPACE CHECK/ADD.
+
         // Try to add the new maps to GeoServer.
         if (isset($_FILES['map'])) {
 

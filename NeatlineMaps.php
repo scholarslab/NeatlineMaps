@@ -40,7 +40,8 @@ class NeatlineMaps
         'after_save_file',
         'public_theme_header',
         'admin_theme_header',
-        'after_save_form_record'
+        'after_save_form_record',
+        'public_append_to_items_show'
     );
 
     private static $_filters = array(
@@ -227,8 +228,7 @@ class NeatlineMaps
     public function afterSaveFile($file)
     {
 
-        $db = $this->_db;
-        if (!$db->getTable('NeatlineMap')->hasNeatlineMap($file)) {
+        if (!$this->_db->getTable('NeatlineMap')->hasNeatlineMap($file)) {
 
             if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
                 $item = $file->getItem();
@@ -334,6 +334,20 @@ class NeatlineMaps
             }
 
         }
+
+    }
+
+    /**
+     * Show the map layers on the item page.
+     *
+     * @return void
+     */
+    public function publicAppendToItemsShow()
+    {
+
+        // get each of the files
+        // build the rest address for the WMS feed
+        // thread each of the layers into the js
 
     }
 

@@ -208,66 +208,14 @@ class NeatlineMaps
         set_option('neatlinemaps_geoserver_tag_prefix',
             $geoserver_tag_prefix);
 
-        // Set up curl to dial out to GeoServer.
-        $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
-        $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_namespace_prefix;
-
-        $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
-        $clientCheckNamespace->setAuth($geoserver_user, $geoserver_password);
-
-        // Does the namespace already exist?
-        if (strpos(
-                $clientCheckNamespace->request(Zend_Http_Client::GET)->getBody(),
-                'No such namespace:'
-        ) !== false) {
-
-            $namespaceJSON = '
-                {
-                    "namespace": {
-                        "prefix": "' . $geoserver_namespace_prefix . '",
-                        "uri": "' . $geoserver_namespace_url . '"
-                    }
-                }
-            ';
-
-            $ch = curl_init($geoServerConfigurationAddress);
-            curl_setopt($ch, CURLOPT_POST, True);
-
-            $authString = $geoserver_user . ':' . $geoserver_password;
-            curl_setopt($ch, CURLOPT_USERPWD, $authString);
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $namespaceJSON);
-
-            $successCode = 201;
-            $buffer = curl_exec($ch);
-
-            // How to thread in custom error/success flashes to the front controller here?
-
-            // $info = curl_getinfo($ch);
-
-            // if ($info['http_code'] != $successCode) {
-
-            //     if ($startingNamespacePrefix == null) { // This is the first save...
-            //         $msgStr = 'There was an error - the namespace \'' .
-            //             $geoserver_namespace_prefix . '\' was not added.';
-            //         $controller->flashError($msgStr);
-            //     }
-
-            //     else if ($startingNamespacePrefix) {
-            //         $msgStr = 'There was an error - the new namespace \'' .
-            //             $geoserver_namespace_prefix . '\' was not added.';
-            //         $controller->flashError($msgStr);
-            //     }
-
-            // } else {
-
-            //     $msgStr = 'New namespace ' . $geoserver_namespace_prefix . ' successfully added.';
-            //     $controller->flashSuccess($mstStr);
-
-            // }
-
-        }
+        // Create the namespace on GeoServer.
+        _createGeoServerNamespace(
+            $geoserver_url,
+            $geoserver_namespace_prefix,
+            $geoserver_user,
+            $geoserver_password,
+            $geoserver_namespace_prefix,
+            $geoserver_namespace_url);
 
     }
 

@@ -94,6 +94,60 @@ function _doAdminHeaderJsAndCss()
 }
 
 /**
+ * Create a new GeoServer namespace.
+ *
+ * @param Omeka_record $file The file to send.
+ *
+ * @return boolean True if GeoServer accepts the file.
+ */
+function _createGeoServerNamespace(
+            $geoserver_url,
+            $geoserver_namespace_prefix,
+            $geoserver_user,
+            $geoserver_password,
+            $geoserver_namespace_prefix,
+            $geoserver_namespace_url)
+{
+
+    // Set up curl to dial out to GeoServer.
+    $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
+    $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_namespace_prefix;
+
+    $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
+    $clientCheckNamespace->setAuth($geoserver_user, $geoserver_password);
+
+    // Does the namespace already exist?
+    if (strpos(
+            $clientCheckNamespace->request(Zend_Http_Client::GET)->getBody(),
+            'No such namespace:'
+    ) !== false) {
+
+        $namespaceJSON = '
+            {
+                "namespace": {
+                    "prefix": "' . $geoserver_namespace_prefix . '",
+                    "uri": "' . $geoserver_namespace_url . '"
+                }
+            }
+        ';
+
+        $ch = curl_init($geoServerConfigurationAddress);
+        curl_setopt($ch, CURLOPT_POST, True);
+
+        $authString = $geoserver_user . ':' . $geoserver_password;
+        curl_setopt($ch, CURLOPT_USERPWD, $authString);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $namespaceJSON);
+
+        $successCode = 201;
+        $buffer = curl_exec($ch);
+
+    }
+
+}
+
+/**
  * Post a file to GeoServer and see if it accepts it as a valid geotiff.
  *
  * @param Omeka_record $file The file to send.

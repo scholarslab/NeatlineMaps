@@ -297,15 +297,19 @@ class NeatlineMaps
 
             foreach ($files as $file) {
 
-                if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
-                    $neatlineMap = new NeatlineMap();
-                    $neatlineMap->item_id = $record->id;
-                    $neatlineMap->file_id = $file->id;
-                    $neatlineMap->save();
-                }
+                if (!$this->_db->getTable('NeatlineMap')->hasNeatlineMap($file)) {
 
-                else {
-                    $file->delete();
+                    if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
+                        $neatlineMap = new NeatlineMap();
+                        $neatlineMap->item_id = $record->id;
+                        $neatlineMap->file_id = $file->id;
+                        $neatlineMap->save();
+                    }
+
+                    else {
+                        $file->delete();
+                    }
+
                 }
 
             }

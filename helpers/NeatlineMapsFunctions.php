@@ -194,10 +194,13 @@ function _putFileToGeoServer($file, $item)
  *
  * @return string The url.
  */
-function _getWmsAddress()
+function _getWmsAddress($item)
 {
 
+    $namespace = $item->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
+    $namespace = $namespace[0]->text;
+
     return get_option('neatlinemaps_geoserver_url') . '/' .
-        get_option('neatlinemaps_geoserver_namespace_prefix') . '/wms';
+        $namespace . '/wms';
 
 }

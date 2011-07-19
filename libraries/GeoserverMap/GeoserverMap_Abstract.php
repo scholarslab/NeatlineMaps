@@ -2,8 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * Abstract class for map prep. Concrete classes define the _getField() method,
- * which determines the process for getting fields for a map type (item, file).
+ * Abstract class to prepare the map for rendering.
  *
  * PHP version 5
  *
@@ -29,11 +28,38 @@
 
 <?php
 
-require_once 'GeoserverMap_Item.php';
-require_once 'GeoserverMap_File.php';
+require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/GeoserverMap/GeoserverMap_Item.php';
 
 abstract class GeoserverMap_Abstract
 {
+
+    /**
+     * Get the service address the map.
+     *
+     * @return string $title The address.
+     */
+    abstract function _getWmsAddress();
+
+    /**
+     * Get the title of the map.
+     *
+     * @return string $title The title.
+     */
+    abstract function _getMapTitle();
+
+    /**
+     * Get the string for the 'layers' parameter in the OpenLayers initialization.
+     *
+     * @return string $layers The layers.
+     */
+    abstract function _getLayers();
+
+    /**
+     * Get the parameters for the starting bounding box.
+     *
+     * @return array $boundngBox The four-part array.
+     */
+    abstract function _getBoundingBox();
 
     /**
      * Set map, fire prep methods.
@@ -57,14 +83,14 @@ abstract class GeoserverMap_Abstract
     }
 
     /**
-     * Fire off get parameter functions.
+     * Fire off getter functions, build the params for OpenLayers.
      *
      * @return void.
      */
     public function getParams() {
 
         // Fire off class methods to get parameters.
-        $this->wmsAddress = _getWmsAddress();
+        $this->wmsAddress = $this->_getWmsAddress();
         $this->mapTitle = $this->_getMapTitle();
         $this->layers = $this->_getLayers();
         $this->boundingBox = $this->_getBoundingBox();
@@ -93,27 +119,6 @@ abstract class GeoserverMap_Abstract
         ));
 
     }
-
-    /**
-     * Get the title of the map.
-     *
-     * @return string $title The title.
-     */
-    abstract function _getMapTitle();
-
-    /**
-     * Get the string for the 'layers' parameter in the OpenLayers initialization.
-     *
-     * @return string $layers The layers.
-     */
-    abstract function _getLayers();
-
-    /**
-     * Get the parameters for the starting bounding box.
-     *
-     * @return array $boundngBox The four-part array.
-     */
-    abstract function _getBoundingBox();
 
 }
 

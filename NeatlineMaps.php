@@ -352,6 +352,7 @@ class NeatlineMaps
         // Does the item have at least one map file attached to it?
         if ($this->_db->getTable('NeatlineMap')->itemHasNeatlineMap($item)) {
 
+            // If so, construct the map class, which takes care of the preparation and rendering.
             $geoserverMap = new GeoserverMap_Item($item);
 
         }

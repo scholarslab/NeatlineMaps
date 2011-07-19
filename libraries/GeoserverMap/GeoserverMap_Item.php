@@ -32,6 +32,17 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
 {
 
     /**
+     * Get the service address the map.
+     *
+     * @return string $title The address.
+     */
+    public function _getWmsAddress() {
+
+        return _getWmsAddress($this->map);
+
+    }
+
+    /**
      * Fetch fields for the map.
      *
      * @return string $title The title.
@@ -81,6 +92,8 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
     public function _getBoundingBox()
     {
 
+        $boundingBox = array('minx' => null, 'miny' => null, 'maxx' => null, 'maxy' => null);
+
         // Get the capabilities XML, scrub out namespace for xpath query.
         $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
         $client = new Zend_Http_Client($capabilitiesURL);
@@ -88,27 +101,28 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
 
         // Query for the bounding box.
         $capabilities = new SimpleXMLElement($body);
-        $boundingBoxes = $capabilities->xpath('/WMS_Capabilities/Capability//Layer/BoundingBox');
+        // $boundingBoxes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="BoundingBox"]');
 
-        $boundingBox = $boundingBoxes[0]
-        $boundingBoxes = array_slice($boundingBoxes, 1);
+        $westBoundLongitudes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="EX_GeographicBoundingBox"]/*[local-name()="westBoundLongitude"]');
+        $minxes = array();
+        foreach ($westBoundLongitudes as $minx) { $minxes[] = (float) $minx[0]; }
+        $boundingBox['minx'] = min($minxes);
 
-        foreach ($boundingBoxes as $box) {
+        $southBoundLatitudes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="EX_GeographicBoundingBox"]/*[local-name()="southBoundLatitude"]');
+        $minys = array();
+        foreach ($southBoundLatitudes as $miny) { $minys[] = (float) $miny[0]; }
+        $boundingBox['miny'] = min($minys);
 
-            if ($box['minx'] < $boundingBox['minx']) {
-                $boundingBox['minx'] = $box['minx'];
-            }
-            if ($box['maxx'] > $boundingBox['maxx']) {
-                $boundingBox['maxx'] = $box['maxx'];
-            }
-            if ($box['miny'] < $boundingBox['miny']) {
-                $boundingBox['miny'] = $box['miny'];
-            }
-            if ($box['maxy'] > $boundingBox['maxy']) {
-                $boundingBox['maxx'] = $box['maxy'];
-            }
+        $eastBoundLongitudes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="EX_GeographicBoundingBox"]/*[local-name()="eastBoundLongitude"]');
+        $maxxes = array();
+        foreach ($eastBoundLongitudes as $maxx) { $maxxes[] = (float) $maxx[0]; }
+        $boundingBox['maxx'] = max($maxxes);
 
-        }
+        $northBoundLatitudes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="EX_GeographicBoundingBox"]/*[local-name()="northBoundLatitude"]');
+        $maxys = array();
+        foreach ($northBoundLatitudes as $maxy) { $maxys[] = (float) $maxy[0]; }
+        $boundingBox['maxy'] = max($maxys);
+
 
         return implode(',', array(
             $boundingBox['minx'],

@@ -40,7 +40,7 @@ class NeatlineMaps
         'after_save_file',
         'public_theme_header',
         'admin_theme_header',
-        'after_save_form_record',
+        'after_save_form_item',
         'public_append_to_items_show'
     );
 
@@ -261,21 +261,30 @@ class NeatlineMaps
      *
      * @return void
      */
-    public function afterSaveFormRecord($record, $post)
+    public function afterSaveFormItem($record, $post)
     {
 
-        // if ($record->getItemType() == NEATLINE_MAPS_MAP_ITEM_TYPE_NAME) {
+        $itemType = $this->_db->getTable('ItemType')->find($record->item_type_id);
 
-            // Dial out to check the namespace if necessary.
+        // If the saved record is a Historical Map...
+        if ($itemType->name == NEATLINE_MAPS_MAP_ITEM_TYPE_NAME) {
+
+            $namespace = $record->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
+            $namespace = $namespace[0]->text;
+
+            $namespaceURL = $record->getElementTextsByElementNameAndSetName('Namespace URL', 'Item Type Metadata');
+            $namespaceURL = $namespaceURL[0]->text;
+
+            // ...then dial out to see whether the defined namespace needs to be added.
             _createGeoServerNamespace(
                 get_option('neatlinemaps_geoserver_url'),
-                $record->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata'),
+                $namespace,
                 get_option('neatlinemaps_geoserver_user'),
                 get_option('neatlinemaps_geoserver_password'),
-                $record->getElementTextsByElementNameAndSetName('Namespace URL', 'Item Type Metadata')
+                $namespaceURL
             );
 
-        // }
+        }
 
         // Try to add the new maps to GeoServer.
         if (isset($_FILES['map'])) {

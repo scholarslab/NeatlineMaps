@@ -209,7 +209,7 @@ class NeatlineMaps
 
         if (!$this->_db->getTable('NeatlineMap')->fileHasNeatlineMap($file)) {
 
-            if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
+            if (_putFileToGeoServer($file, $file->getItem())) { // if GeoServer accepts the file...
                 $item = $file->getItem();
                 $this->_db->getTable('NeatlineMap')->addNewMap($item, $file);
             }
@@ -286,7 +286,7 @@ class NeatlineMaps
 
         }
 
-        // Try to add the new maps to GeoServer.
+        // Were map files posted from the form?
         if (isset($_FILES['map'])) {
 
             $files = insert_files_for_item(
@@ -295,11 +295,12 @@ class NeatlineMaps
                 'map',
                 array('ignoreNoFile'=>true));
 
+            // Throw each of the files at GeoServer and see if it accepts them.
             foreach ($files as $file) {
 
                 if (!$this->_db->getTable('NeatlineMap')->fileHasNeatlineMap($file)) {
 
-                    if (_putFileToGeoServer($file)) { // if GeoServer accepts the file...
+                    if (_putFileToGeoServer($file, $record)) { // if GeoServer accepts the file...
                         $this->_db->getTable('NeatlineMap')->addNewMap($item, $file);
                     }
 

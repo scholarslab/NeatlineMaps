@@ -153,8 +153,11 @@ function _createGeoServerNamespace(
  *
  * @return boolean True if GeoServer accepts the file.
  */
-function _putFileToGeoServer($file)
+function _putFileToGeoServer($file, $item)
 {
+
+    $namespace = $item->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
+    $namespace = $namespace[0]->text;
 
     // Does GeoServer recognize the file as a map?
     $zip = new ZipArchive();
@@ -164,7 +167,7 @@ function _putFileToGeoServer($file)
     $zip->close();
 
     $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
-        get_option('neatlinemaps_geoserver_namespace_prefix') . '/coveragestores/' . $file->original_filename .
+        $namespace . '/coveragestores/' . $file->original_filename .
         '/file.geotiff';
 
     $ch = curl_init($coverageAddress);

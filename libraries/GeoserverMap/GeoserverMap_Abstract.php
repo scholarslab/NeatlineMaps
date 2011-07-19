@@ -64,28 +64,14 @@ abstract class GeoserverMap_Abstract
     public function getParams() {
 
         // Fire off class methods to get parameters.
+        $this->wmsAddress = _getWmsAddress();
         $this->mapTitle = $this->_getMapTitle();
         $this->layers = $this->_getLayers();
         $this->boundingBox = $this->_getBoundingBox();
-        $this->wmsAddress = _getWmsAddress();
 
-        // // Get the capabilities XML, scrub out namespace for xpath query.
-        // $capabilitiesURL = $this->serviceAddress . '?request=GetCapabilities';
-        // $client = new Zend_Http_Client($capabilitiesURL);
-        // $body = str_replace('xmlns', 'ns', $client->request()->getBody());
 
-        // // Query for the bounding box.
-        // $capabilities = new SimpleXMLElement($body);
-        // $nodes = $capabilities->xpath('/WMS_Capabilities/Capability//Layer[Name="' .
-        //     $this->layerName . '"]/BoundingBox');
-        // $boundingBox = $nodes[0];
 
-        // // Pluck out attributes.
-        // $params['minx'] = (string)$boundingBox['minx'];
-        // $params['maxx'] = (string)$boundingBox['maxx'];
-        // $params['miny'] = (string)$boundingBox['miny'];
-        // $params['maxy'] = (string)$boundingBox['maxy'];
-        // $params['crs'] = (string)$boundingBox['CRS'];
+        // What to do with this?
 
         // // Get the the proj4js params.
         // $client->resetParameters();

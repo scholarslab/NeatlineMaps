@@ -53,7 +53,7 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
     {
 
         $layers = array();
-        $files = $this->map->getFiles();
+        $files = get_db()->getTable('NeatlineMap')->getMapFilesByItem($this->map);
 
         $namespace = $this->map->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
         $namespace = $namespace[0]->text;
@@ -66,6 +66,55 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
         }
 
         return implode(',', $layers);
+
+    }
+
+    /**
+     * Calculate a bounding box based on the individual bounding boxes for each of the layers
+     * that will show all layers at once. This is more difficult than just choosing the box for
+     * the first layer, but it makes it possible to puts dozens of layers on a map without having
+     * to worry about viewport chaos.
+     *
+     * @return array $boundngBox The constructed string, formatted according to the requirements
+     * of the OpenLayers.Bounds constructor.
+     */
+    public function _getBoundingBox()
+    {
+
+        // Get the capabilities XML, scrub out namespace for xpath query.
+        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
+        $client = new Zend_Http_Client($capabilitiesURL);
+        $body = str_replace('xmlns', 'ns', $client->request()->getBody());
+
+        // Query for the bounding box.
+        $capabilities = new SimpleXMLElement($body);
+        $boundingBoxes = $capabilities->xpath('/WMS_Capabilities/Capability//Layer/BoundingBox');
+
+        $boundingBox = $boundingBoxes[0]
+        $boundingBoxes = array_slice($boundingBoxes, 1);
+
+        foreach ($boundingBoxes as $box) {
+
+            if ($box['minx'] < $boundingBox['minx']) {
+                $boundingBox['minx'] = $box['minx'];
+            }
+            if ($box['maxx'] > $boundingBox['maxx']) {
+                $boundingBox['maxx'] = $box['maxx'];
+            }
+            if ($box['miny'] < $boundingBox['miny']) {
+                $boundingBox['miny'] = $box['miny'];
+            }
+            if ($box['maxy'] > $boundingBox['maxy']) {
+                $boundingBox['maxx'] = $box['maxy'];
+            }
+
+        }
+
+        return implode(',', array(
+            $boundingBox['minx'],
+            $boundingBox['miny'],
+            $boundingBox['maxx'],
+            $boundingBox['maxy']));
 
     }
 

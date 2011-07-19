@@ -1,3 +1,5 @@
+<div id="map-title"><?php echo $mapTitle; ?></div>
+
 <!-- The inline styling on this element is for development purposes only.
 This should be decoupled from the plugin code and contained fully in the theme. -->
 
@@ -20,7 +22,7 @@ jQuery(document).ready(function() {
 
     map.addLayer(base);
 
-    map.zoomToExtent(new OpenLayers.Bounds(-78.138, 40.97, -77.986, 41.132));
+    map.zoomToExtent(new OpenLayers.Bounds(<?php echo $boundingBox; ?>));
 
 });
 

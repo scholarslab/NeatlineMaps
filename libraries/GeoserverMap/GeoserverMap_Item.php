@@ -34,22 +34,38 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
     /**
      * Fetch fields for the map.
      *
-     * @param string $field The field.
-     * @param string $set The set.
-     *
-     * @return $field The field.
+     * @return string $title The title.
      */
-    public function _getField($field, $set)
+    public function _getMapTitle()
     {
 
-        $fields = array();
+        $name = $this->map->getElementTextsByElementNameAndSetName('Title', 'Dublin Core');
+        return $name[0]->text;
 
-        try {
-            $fields = $this->map->getElementTextsByElementNameAndSetName($field, $set);
-        } catch (Exception $e) {
+    }
+
+    /**
+     * Build the layers string for the OpenLayers JavaScript invocation.
+     *
+     * @return string $layers The constructed string.
+     */
+    public function _getLayers()
+    {
+
+        $layers = array();
+        $files = $this->map->getFiles();
+
+        $namespace = $this->map->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
+        $namespace = $namespace[0]->text;
+
+        foreach ($files as $file) {
+
+            $fileName = explode('.', $file->original_filename);
+            $layers[] = $namespace . ':' . $fileName[0];
+
         }
 
-        return count($fields) > 0 ? $fields[0]->text : false;
+        return implode(',', $layers);
 
     }
 

@@ -65,9 +65,9 @@ abstract class GeoserverMap_Abstract
 
         // Fire off class methods to get parameters.
         $this->mapTitle = $this->_getMapTitle();
+        $this->layers = $this->_getLayers();
+        $this->boundingBox = $this->_getBoundingBox();
         $this->wmsAddress = _getWmsAddress();
-        $this->layers = _getLayers();
-        $this->boundingBox = _getBoundingBox();
 
         // // Get the capabilities XML, scrub out namespace for xpath query.
         // $capabilitiesURL = $this->serviceAddress . '?request=GetCapabilities';

@@ -264,14 +264,18 @@ class NeatlineMaps
     public function afterSaveFormRecord($record, $post)
     {
 
-        // Dial out to check the namespace if necessary.
-        _createGeoServerNamespace(
-            get_option('neatlinemaps_geoserver_url'),
-            $record->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata'),
-            get_option('neatlinemaps_geoserver_user'),
-            get_option('neatlinemaps_geoserver_password'),
-            $record->getElementTextsByElementNameAndSetName('Namespace URL', 'Item Type Metadata')
-        );
+        // if ($record->getItemType() == NEATLINE_MAPS_MAP_ITEM_TYPE_NAME) {
+
+            // Dial out to check the namespace if necessary.
+            _createGeoServerNamespace(
+                get_option('neatlinemaps_geoserver_url'),
+                $record->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata'),
+                get_option('neatlinemaps_geoserver_user'),
+                get_option('neatlinemaps_geoserver_password'),
+                $record->getElementTextsByElementNameAndSetName('Namespace URL', 'Item Type Metadata')
+            );
+
+        // }
 
         // Try to add the new maps to GeoServer.
         if (isset($_FILES['map'])) {

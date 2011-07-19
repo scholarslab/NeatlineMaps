@@ -92,7 +92,11 @@ function _doAdminHeaderJsAndCss()
 /**
  * Create a new GeoServer namespace.
  *
- * @param Omeka_record $file The file to send.
+ * @param string $geoserver_url The location of the GeoServer.
+ * @param string $geoserver_namespace_prefix The name of the namespace.
+ * @param string $geoserver_user The admin username.
+ * @param string $geoserver_password The admin password.
+ * @param string $geoserver_namespace_url The URL attached to the namespace.
  *
  * @return boolean True if GeoServer accepts the file.
  */

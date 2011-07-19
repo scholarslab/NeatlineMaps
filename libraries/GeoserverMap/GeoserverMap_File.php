@@ -32,11 +32,52 @@ class GeoserverMap_File extends GeoserverMap_Abstract
 {
 
     /**
+     * Get the service address the map.
+     *
+     * @return string $title The address.
+     */
+    public function _getWmsAddress() {
+
+        return _getWmsAddress($this->getItem());
+
+    }
+
+    /**
      * Fetch fields for the map.
      *
-     * @return $field The field.
+     * @return string $title The title.
      */
-    public function _getField($field, $set)
+    public function _getMapTitle()
+    {
+
+        $fileName = explode('.', $file->original_filename);
+        return $fileName[0];
+
+    }
+
+    /**
+     * Build the layers string for the OpenLayers JavaScript invocation.
+     *
+     * @return string $layers The constructed string.
+     */
+    public function _getLayers()
+    {
+
+        $fileName = explode('.', $file->original_filename);
+        return $namespace . ':' . $fileName[0];
+
+    }
+
+    /**
+     * Calculate a bounding box based on the individual bounding boxes for each of the layers
+     * that will show all layers at once. This is more difficult than just choosing the box for
+     * the first layer, but it makes it possible to puts dozens of layers on a map without having
+     * to worry about viewport chaos.
+     *
+     * @return array $boundngBox The constructed string, formatted according to the requirements
+     * of the OpenLayers.Bounds constructor.
+     */
+    public function _getBoundingBox()
     {
 
 

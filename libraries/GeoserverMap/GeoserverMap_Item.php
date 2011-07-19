@@ -99,36 +99,53 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
         $client = new Zend_Http_Client($capabilitiesURL);
         $body = str_replace('xmlns', 'ns', $client->request()->getBody());
 
-        // Query for the bounding box.
+        // Query for the layers.
         $capabilities = new SimpleXMLElement($body);
-        // $boundingBoxes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="BoundingBox"]');
+        $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
 
-        $westBoundLongitudes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="EX_GeographicBoundingBox"]/*[local-name()="westBoundLongitude"]');
+        $layersArray = array();
+        $activeLayers = array();
+
+        // Get the maps/files associated with the item, pull out the base filenames.
+        $files = get_db()->getTable('NeatlineMap')->getMapFilesByItem($this->map);
+        foreach ($files as $file) {
+            $fileName = explode('.', $file->original_filename);
+            $layersArray[] = $fileName[0];
+        }
+
+        // Query for names, filter out layers without an Omeka map file.
+        foreach ($layers as $layer) {
+            if (in_array($layer->Title, $layersArray)) {
+                $activeLayers[] = $layer;
+            }
+        }
+
         $minxes = array();
-        foreach ($westBoundLongitudes as $minx) { $minxes[] = (float) $minx[0]; }
-        $boundingBox['minx'] = min($minxes);
-
-        $southBoundLatitudes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="EX_GeographicBoundingBox"]/*[local-name()="southBoundLatitude"]');
         $minys = array();
-        foreach ($southBoundLatitudes as $miny) { $minys[] = (float) $miny[0]; }
-        $boundingBox['miny'] = min($minys);
-
-        $eastBoundLongitudes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="EX_GeographicBoundingBox"]/*[local-name()="eastBoundLongitude"]');
         $maxxes = array();
-        foreach ($eastBoundLongitudes as $maxx) { $maxxes[] = (float) $maxx[0]; }
-        $boundingBox['maxx'] = max($maxxes);
-
-        $northBoundLatitudes = $capabilities->xpath('//*[local-name()="Layer"]/*[local-name()="EX_GeographicBoundingBox"]/*[local-name()="northBoundLatitude"]');
         $maxys = array();
-        foreach ($northBoundLatitudes as $maxy) { $maxys[] = (float) $maxy[0]; }
-        $boundingBox['maxy'] = max($maxys);
 
+        foreach ($activeLayers as $layer) {
+
+            $westBoundLongitude = $layer->EX_GeographicBoundingBox->westBoundLongitude;
+            $southBoundLatitude = $layer->EX_GeographicBoundingBox->southBoundLatitude;
+            $eastBoundLongitude = $layer->EX_GeographicBoundingBox->eastBoundLongitude;
+            $northBoundLatitude = $layer->EX_GeographicBoundingBox->northBoundLatitude;
+
+            $minxes[] = (float) $westBoundLongitude;
+            $minys[] = (float) $southBoundLatitude;
+            $maxxes[] = (float) $eastBoundLongitude;
+            $maxys[] = (float) $northBoundLatitude;
+
+        }
+
+        // print_r($layers);
 
         return implode(',', array(
-            $boundingBox['minx'],
-            $boundingBox['miny'],
-            $boundingBox['maxx'],
-            $boundingBox['maxy']));
+            min($minxes),
+            min($minys),
+            max($maxxes),
+            max($maxys)));
 
     }
 

@@ -374,7 +374,7 @@ class NeatlineMaps
     public function adminNavigationMain($tabs)
     {
 
-        $tabs['Neatline Maps'] = uri('neatline-maps/browse');
+        $tabs['Neatline Maps'] = uri('neatline-maps');
         return $tabs;
 
     }

@@ -98,7 +98,7 @@ class NeatlineMaps
         $db = $this->_db;
 
         $db->query("
-            CREATE TABLE IF NOT EXISTS `$db->NeatlineMap` (
+            CREATE TABLE IF NOT EXISTS `$db->NeatlinemapsMap` (
                 `id` int(10) unsigned NOT NULL auto_increment,
                 `file_id` int(10) unsigned,
                 `item_id` int(10) unsigned,
@@ -374,7 +374,7 @@ class NeatlineMaps
     public function adminNavigationMain($tabs)
     {
 
-        $tabs['Neatline Maps'] = uri('neatline-maps');
+        $tabs['Neatline Maps'] = uri('neatline-maps/maps');
         return $tabs;
 
     }

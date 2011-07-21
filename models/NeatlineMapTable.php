@@ -32,6 +32,35 @@ class NeatlineMapTable extends Omeka_Db_Table
 {
 
     /**
+     * Returns maps for the main admin listing.
+     *
+     * @param string $order The constructed SQL order clause.
+     * @param string $page The page.
+     *
+     * @return object The maps.
+     */
+    public function getMaps($page = null, $order = null)
+    {
+
+        $db = get_db();
+        $select = $this->select()
+            ->from(array('m' => $db->prefix . 'neatline_maps'))
+            ->joinLeft(array('i' => $db->prefix . 'items'), 'm.item_id = i.id')
+            ->columns(array('server_name' => 's.name', 'datastream_id' => 'd.id', 'parent_item' =>
+                "(SELECT text from `$db->ElementText` WHERE record_id = d.item_id AND element_id = 50 LIMIT 1)"));
+
+        if (isset($page)) {
+            $select->limitPage($page, get_option('per_page_admin'));
+        }
+        if (isset($order)) {
+            $select->order($order);
+        }
+
+        return $this->fetchObjects($select);
+
+    }
+
+    /**
      * Inserts a new map.
      *
      * @param Omeka_record $item The parent item.

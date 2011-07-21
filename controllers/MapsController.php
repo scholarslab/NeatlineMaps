@@ -39,7 +39,18 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     public function browseAction()
     {
 
+        $sort_field = $this->_request->getParam('sort_field');
+        $sort_dir = $this->_request->getParam('sort_dir');
 
+        // Get the datastreams.
+        $page = $this->_request->page;
+        $order = _doColumnSortProcessing($sort_field, $sort_dir);
+        $maps = $this->getTable('NeatlineMap')->getMaps($page, $order);
+
+        $this->view->maps = $maps;
+        $this->view->current_page = $page;
+        $this->view->total_results = $this->getTable('NeatlineMap')->count();
+        $this->view->results_per_page = get_option('per_page_admin');
 
     }
 

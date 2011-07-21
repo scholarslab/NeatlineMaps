@@ -1,14 +1,14 @@
-<?php echo $this->partial('datastreams/admin-header.php', array('subtitle' => 'Datastreams')); ?>
+<?php echo $this->partial('maps/admin-header.php', array('subtitle' => 'Maps')); ?>
 
 <div id="primary">
 
-    <p id="add-item" class="add-button"><a class="add" href="<?php echo html_escape(uri('fedora-connector/datastreams/create')); ?>">Add Datastreams</a></p>
+    <p id="add-item" class="add-button"><a class="add" href="<?php echo html_escape(uri('fedora-connector/datastreams/create')); ?>">Add Map</a></p>
 
     <?php echo flash(); ?>
 
-    <?php if (count($datastreams) == 0): ?>
+    <?php if (count($maps) == 0): ?>
 
-        <p>There are no datastreams yet.</p>
+        <p>There are no maps yet.</p>
 
     <?php else: ?>
 
@@ -16,12 +16,9 @@
                 <thead>
                     <tr>
                         <?php browse_headings(array(
-                            'Datastream' => 'datastream',
-                            'PID' => 'pid',
-                            'Mime Type' => 'mime_type',
+                            'Map' => 'map_name',
+                            'Namespace' => 'pid',
                             'Item' => 'parent_item',
-                            'Server' => 'server_name',
-                            // 'Object Metadata' => 'metadata_stream',
                             'Preview' => null,
                             'Actions' => null
                         )); ?>

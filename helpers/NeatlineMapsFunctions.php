@@ -37,7 +37,7 @@ function _doItemForm($item)
 {
 
     $db = get_db();
-    $maps = $db->getTable('NeatlineMap')->getMapsByItem($item);
+    $maps = $db->getTable('NeatlineMapsMap')->getMapsByItem($item);
 
     ob_start();
     include NEATLINE_MAPS_PLUGIN_DIR . '/forms/neatline-maps-form.php';

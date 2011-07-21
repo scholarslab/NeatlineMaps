@@ -28,7 +28,7 @@
 
 <?php
 
-class NeatlineMap extends Omeka_record
+class NeatlineMapsMap extends Omeka_record
 {
 
     public $file_id;

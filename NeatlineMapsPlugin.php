@@ -28,7 +28,7 @@
 
 <?php
 
-class NeatlineMaps
+class NeatlineMapsPlugin
 {
 
     private static $_hooks = array(
@@ -98,10 +98,11 @@ class NeatlineMaps
         $db = $this->_db;
 
         $db->query("
-            CREATE TABLE IF NOT EXISTS `$db->NeatlinemapsMap` (
+            CREATE TABLE IF NOT EXISTS `$db->NeatlineMapsMap` (
                 `id` int(10) unsigned NOT NULL auto_increment,
                 `file_id` int(10) unsigned,
                 `item_id` int(10) unsigned,
+                `name` tinytext collate utf8_unicode_ci,
                 PRIMARY KEY  (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");
@@ -114,12 +115,12 @@ class NeatlineMaps
         $historicMapItemTypeMetadata =
             array(
                 array(
-                    'name' => 'Namespace',
+                    'name' => NEATLINE_MAPS_NAMESPACE_FIELD_NAME,
                     'description' => 'The namespace that contains the map\'s layers.',
                     'data_type' => 'Tiny Text'
                 ),
                 array(
-                    'name' => 'Namespace URL',
+                    'name' => NEATLINE_MAPS_NAMESPACE_URL_FIELD_NAME,
                     'description' => 'The URL associated with the map\'s namespace.',
                     'data_type' => 'Tiny Text'
                 )
@@ -138,7 +139,7 @@ class NeatlineMaps
     {
 
         $db = $this->_db;
-        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMap`");
+        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsMap`");
 
     }
 
@@ -208,11 +209,11 @@ class NeatlineMaps
     public function afterSaveFile($file)
     {
 
-        if (!$this->_db->getTable('NeatlineMap')->fileHasNeatlineMap($file)) {
+        if (!$this->_db->getTable('NeatlineMapsMap')->fileHasNeatlineMap($file)) {
 
             if (_putFileToGeoServer($file, $file->getItem())) { // if GeoServer accepts the file...
                 $item = $file->getItem();
-                $this->_db->getTable('NeatlineMap')->addNewMap($item, $file);
+                $this->_db->getTable('NeatlineMapsMap')->addNewMap($item, $file);
             }
 
         }
@@ -299,10 +300,10 @@ class NeatlineMaps
             // Throw each of the files at GeoServer and see if it accepts them.
             foreach ($files as $file) {
 
-                if (!$this->_db->getTable('NeatlineMap')->fileHasNeatlineMap($file)) {
+                if (!$this->_db->getTable('NeatlineMapsMap')->fileHasNeatlineMap($file)) {
 
                     if (_putFileToGeoServer($file, $record)) { // if GeoServer accepts the file...
-                        $this->_db->getTable('NeatlineMap')->addNewMap($item, $file);
+                        $this->_db->getTable('NeatlineMapsMap')->addNewMap($item, $file);
                     }
 
                     else {
@@ -318,7 +319,7 @@ class NeatlineMaps
         // Do deletes.
         foreach ($post['delete_maps'] as $key => $id) {
 
-            $neatlineMap = $this->_db->getTable('NeatlineMap')->find($id);
+            $neatlineMap = $this->_db->getTable('NeatlineMapsMap')->find($id);
             $file = $neatlineMap->getFile();
 
             $neatlineMap->delete();
@@ -330,7 +331,7 @@ class NeatlineMaps
         // is also a map, and if so, delete the record in _neatline_maps.
         foreach ($post['delete_files'] as $key => $id) {
 
-            $neatlineMap = $this->_db->getTable('NeatlineMap')->findBySql('file_id = ?', array($id));
+            $neatlineMap = $this->_db->getTable('NeatlineMapsMap')->findBySql('file_id = ?', array($id));
 
             if ($neatlineMap[0]) {
                 $neatlineMap[0]->delete();
@@ -351,7 +352,7 @@ class NeatlineMaps
         $item = get_current_item();
 
         // Does the item have at least one map file attached to it?
-        if ($this->_db->getTable('NeatlineMap')->itemHasNeatlineMap($item)) {
+        if ($this->_db->getTable('NeatlineMapsMap')->itemHasNeatlineMap($item)) {
 
             // If so, construct the map class, which takes care of the preparation and rendering.
             $geoserverMap = new GeoserverMap_Item($item);

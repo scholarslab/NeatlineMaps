@@ -28,7 +28,7 @@
 
 <?php
 
-class NeatlineMapTable extends Omeka_Db_Table
+class NeatlineMapsMapTable extends Omeka_Db_Table
 {
 
     /**
@@ -43,11 +43,25 @@ class NeatlineMapTable extends Omeka_Db_Table
     {
 
         $db = get_db();
+
+        // Chaotic query constructs, so as to be able to do column sorting without undue hassle.
+        // Is there a better way to do this?
+
+        $namespaceElement = $this->getTable('Element')->fetchObject(
+            $this->getTable('Element')
+                ->getSelect()->where('e.name = "' . NEATLINE_MAPS_NAMESPACE_FIELD_NAME . '"')
+            );
+
         $select = $this->select()
-            ->from(array('m' => $db->prefix . 'neatline_maps'))
+            ->from(array('m' => $db->prefix . 'neatline_maps_maps'))
             ->joinLeft(array('i' => $db->prefix . 'items'), 'm.item_id = i.id')
-            ->columns(array('server_name' => 's.name', 'datastream_id' => 'd.id', 'parent_item' =>
-                "(SELECT text from `$db->ElementText` WHERE record_id = d.item_id AND element_id = 50 LIMIT 1)"));
+            ->joinLeft(array('f' => $db->prefix . 'files'), 'm.file_id = f.id')
+            ->columns(array(
+                'map_id' => 'm.id',
+                'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)",
+                'namespace' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = " . $namespaceElement->id . " LIMIT 1)"
+            )
+        );
 
         if (isset($page)) {
             $select->limitPage($page, get_option('per_page_admin'));
@@ -71,7 +85,7 @@ class NeatlineMapTable extends Omeka_Db_Table
     public function addNewMap($item, $file)
     {
 
-        $neatlineMap = new NeatlineMap();
+        $neatlineMap = new NeatlineMapsMap();
         $neatlineMap->item_id = $item->id;
         $neatlineMap->file_id = $file->id;
         $neatlineMap->save();

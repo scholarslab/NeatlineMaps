@@ -16,8 +16,8 @@
                 <thead>
                     <tr>
                         <?php browse_headings(array(
-                            'Map' => 'map_name',
-                            'Namespace' => 'pid',
+                            'Map' => 'name',
+                            'Namespace' => 'namespace',
                             'Item' => 'parent_item',
                             'Preview' => null,
                             'Actions' => null
@@ -25,18 +25,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($datastreams as $datastream): ?>
+                    <?php foreach ($maps as $map): ?>
                         <tr>
                             <td width="220">
-                                <strong><a href="<?php echo $datastream->getUrl(); ?>"><?php echo $datastream->getNode()->getAttribute('label'); ?></a></strong>
+                                <strong><?php echo $map->name; ?></strong>
                                 <br />
-                                <span style="color: gray; font-size: 0.8em">id: <?php echo $datastream->datastream; ?></span>
-                                <br />
-                                <span style="color: gray; font-size: 0.8em">format: <?php echo $datastream->metadata_stream; ?></span>
+                                <span style="color: gray; font-size: 0.8em"><a href="<?php echo uri('files/show/' . $map->getFile()->id); ?>">View File Record</a></span>
                             </td>
-                            <td width="100" class="fedora-td-small"><?php echo $datastream->pid; ?></td>
-                            <td width="80" class="fedora-td-small"><?php echo $datastream->mime_type; ?></td>
-                            <td class="fedora-td-small"><a href="<?php echo public_uri('items/show/' . $datastream->item_id); ?>"><?php echo $datastream->parent_item; ?></a></td>
+                            <td width="100" class="fedora-td-small"><?php echo $map->namespace; ?></td>
+                            <td class="fedora-td-small"><a href="<?php echo uri('items/show/' . $map->item_id); ?>"><?php echo $map->parent_item; ?></a></td>
                             <td class="fedora-td-small"><a href="<?php echo uri('fedora-connector/servers/edit/' . $datastream->server_id); ?>"><?php echo $datastream->server_name; ?></a></td>
                             <!-- <td><?php echo $datastream->metadata_stream; ?></td> -->
                             <td style="text-align: center;"><?php echo $datastream->renderPreview(); ?></td>

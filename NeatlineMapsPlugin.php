@@ -45,6 +45,7 @@ class NeatlineMaps
     );
 
     private static $_filters = array(
+        'admin_navigation_main',
         'admin_items_form_tabs',
         'exhibit_builder_exhibit_display_item'
     );
@@ -361,7 +362,22 @@ class NeatlineMaps
 
     /**
      * Filter callbacks:
+     *
+
+    /**
+     * Add link to main admin menu bar.
+     *
+     * @param array $tabs This is an array of label => URI pairs.
+     *
+     * @return array The tabs array with the Neatline Maps tab.
      */
+    public function adminNavigationMain($tabs)
+    {
+
+        $tabs['Neatline Maps'] = uri('neatline-maps/browse');
+        return $tabs;
+
+    }
 
     /**
      * Add Neatline Maps tab to the Items interface.

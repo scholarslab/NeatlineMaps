@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * Admin controller.
+ * Maps controller.
  *
  * PHP version 5
  *
@@ -32,14 +32,30 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 {
 
     /**
-     * Show maps.
+     * Show the map.
      *
      * @return void
      */
-    public function browseAction()
+    public function showAction()
     {
 
+        $id = $this->_request->id;
 
+        // Try to fetch a file and item with the id.
+        $file = $this->getTable('File')->find($id);
+        $item = $this->getTable('Item')->find($id);
+
+        if ($item && $item->getItemType()->name == NEATLINE_MAPS_MAP_ITEM_TYPE_NAME) {
+            $this->view->map = $item;
+            $geoserverMap = new GeoserverMap_Item($item);
+            $this->view->map_params = $geoserverMap->getParams();
+        }
+
+        else if ($file) {
+            $this->view->map = $file;
+            $geoserverMap = new GeoserverMap_File($file);
+            $this->view->map_params = $geoserverMap->getParams();
+        }
 
     }
 

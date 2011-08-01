@@ -27,11 +27,11 @@
                 <tbody>
                     <?php foreach ($servers as $server): ?>
                         <tr>
-                            <td width="100" class="fedora-td-small"><?php // echo $server->name; ?></td>
+                            <td width="100" class="fedora-td-small"><a href="<?php echo uri('neatline-maps/servers/edit/' . $server->id); ?>"><strong><?php echo $server->name; ?></strong></a></td>
+                            <td width="100" class="fedora-td-small"><a href="<?php echo $server->url; ?>"><?php echo $server->url; ?></a></td>
                             <td width="100" class="fedora-td-small"><?php // echo $server->url; ?></td>
                             <td width="100" class="fedora-td-small"><?php // echo $server->url; ?></td>
-                            <td width="100" class="fedora-td-small"><?php // echo $server->url; ?></td>
-                            <td width="100" class="fedora-td-small"><?php // echo $server->url; ?></td>
+                            <td width="100" class="fedora-td-small"><?php echo $this->partial('servers/servers-actions.php', array('id' => $server->id)); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

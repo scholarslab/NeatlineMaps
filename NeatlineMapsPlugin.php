@@ -275,8 +275,12 @@ class NeatlineMapsPlugin
             ($request->getActionName() == 'edit') ||
             ($request->getActionName() == 'add')) {
 
-            _doAdminHeaderJsAndCss();
+            _doItemAdminHeaderJsAndCss();
 
+        }
+
+        if ($request->getModuleName() == 'neatline-maps') {
+            _doTabAdminHeaderJsAndCss();
         }
 
     }

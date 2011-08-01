@@ -1,0 +1,134 @@
+.zend_form dd {
+	margin-bottom: 20px;
+}
+
+.fedora-preview {
+	max-width: 80px;
+}
+
+#edit_submit-element, #delete_submit-element {
+    display: inline;
+}
+
+#edit_submit-element input, #delete_submit-element input {
+    clear: none;
+    margin-left: 10px;
+}
+
+#delete_submit-element input {
+    background-color: #800;
+    border: 1px solid #800;
+}
+
+#delete_submit-label, #edit_submit-label, #item_id-label, #pid_submit-label {
+    display: none;
+}
+
+/* #pid-label label {*/
+/*     width: 50px;*/
+/* }*/
+
+.add-button {
+    margin-top: 1em;
+}
+
+.fedora-inline-button {
+    font-size: 0.8em;
+    margin: 0 !important;
+    border: none !important;
+}
+
+form.fedora-inline-form {
+    margin: 0.4em 0.6em 0 0;
+    padding: 0;
+    /* float: left;*/
+}
+
+form.fedora-inline-form-servers {
+    margin: 0.4em 0.6em 0 0;
+    padding: 0;
+    float: left;
+}
+
+.fedora-delete {
+    background-color: #800 !important;
+    border-color: #800 !important;
+}
+
+.fedora-reset-link {
+    float: right;
+}
+
+h2.fedora-select-item {
+    margin-left: 8px; 
+    float: left;
+}
+
+dd#datastreams-element label {
+    clear: both;
+}
+
+dd#metadataformat-element select {
+    display: block;
+    clear: both;
+}
+
+p.fedora-connector-search-reset {
+    clear: both;
+    float: right;
+    margin: -12px 3px 0 0;
+    font-size: 1em;
+    position: relative;
+}
+
+.fedora-connector-datastreams-form label {
+    width: 400px;
+}
+
+h1.fedora-nowrap {
+    white-space: nowrap;
+}
+
+.fedora-td-small {
+    font-size: 0.9em;
+}
+
+table.fedora td {
+    vertical-align: middle;
+}
+
+.fedora-explanation {
+    font-size: 11px;
+    color: #767676;
+}
+
+ul.fedora-explanation {
+    list-style: disc;
+    margin: 0 0 1em 3em;
+}
+
+hr.fedora-divider {
+    height: 1px;
+    border: 0;
+    background-color: #bcbcbc;
+    margin: 0 0 1em 0;
+}
+
+div.fedora-defaults-field {
+    margin: 0 0 2em 0;
+}
+
+div.fedora-defaults-field select {
+    display: block;
+    margin: 0.5em 0 1em 0;
+}
+
+div.fedora-defaults-add-if-empty {
+    margin: 1em 0 0 0;
+}
+
+div.fedora-defaults-add-if-empty span {
+    position: relative;
+    top: -3px;
+    vertical-align: middle;
+}

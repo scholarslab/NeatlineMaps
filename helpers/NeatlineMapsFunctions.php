@@ -74,7 +74,7 @@ function _doHeaderJsAndCss()
  *
  * @return void.
  */
-function _doAdminHeaderJsAndCss()
+function _doItemAdminHeaderJsAndCss()
 {
 
     ?>
@@ -82,6 +82,26 @@ function _doAdminHeaderJsAndCss()
     <!-- Neatline Maps Dependencies -->
 
     <link rel="stylesheet" href="<?php echo css('neatline-maps-admin'); ?>" />
+
+    <!-- End Neatline Maps Dependencies -->
+
+    <?php
+
+}
+
+/**
+ * Include the custom css for the admin tab.
+ *
+ * @return void.
+ */
+function _doTabAdminHeaderJsAndCss()
+{
+
+    ?>
+
+    <!-- Neatline Maps Dependencies -->
+
+    <link rel="stylesheet" href="<?php echo css('neatline_maps_main'); ?>" />
 
     <!-- End Neatline Maps Dependencies -->
 

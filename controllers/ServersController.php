@@ -45,12 +45,12 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
         // Get the servers.
         $page = $this->_request->page;
         $order = _doColumnSortProcessing($sort_field, $sort_dir);
-        $maps = $this->getTable('NeatlineMapsMap')->getMaps($page, $order);
+        $servers = $this->getTable('NeatlineMapsServer')->getServers($page, $order);
 
-        $this->view->maps = $maps;
+        $this->view->servers = $servers;
 
         $this->view->current_page = $page;
-        $this->view->total_results = $this->getTable('NeatlineMapsMap')->count();
+        $this->view->total_results = $this->getTable('NeatlineMapsServer')->count();
         $this->view->results_per_page = get_option('per_page_admin');
 
     }

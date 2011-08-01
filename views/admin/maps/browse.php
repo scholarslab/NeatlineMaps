@@ -17,6 +17,7 @@
                     <tr>
                         <?php browse_headings(array(
                             'Map' => 'name',
+                            'Server' => 'server',
                             'Namespace' => 'namespace',
                             'Item' => 'parent_item',
                             'Preview' => null,
@@ -32,6 +33,7 @@
                                 <br />
                                 <span style="color: gray; font-size: 0.8em"><a href="<?php echo uri('files/show/' . $map->getFile()->id); ?>">View File Record</a></span>
                             </td>
+                            <td width="100" class="fedora-td-small"><?php // echo $map->namespace; ?></td>
                             <td width="100" class="fedora-td-small"><?php echo $map->namespace; ?></td>
                             <td class="fedora-td-small"><a href="<?php echo uri('items/show/' . $map->item_id); ?>"><?php echo $map->parent_item; ?></a></td>
                             <td class="fedora-td-small"><a href="<?php echo uri('fedora-connector/servers/edit/' . $datastream->server_id); ?>"><?php echo $datastream->server_name; ?></a></td>

@@ -107,6 +107,27 @@ class NeatlineMapsPlugin
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");
 
+        $db->query("
+            CREATE TABLE IF NOT EXISTS `$db->NeatlineMapsServer` (
+                `id` int(10) unsigned NOT NULL auto_increment,
+                `name` tinytext collate utf8_unicode_ci,
+                `url` tinytext collate utf8_unicode_ci,
+                `username` tinytext collate utf8_unicode_ci,
+                `password` tinytext collate utf8_unicode_ci,
+                PRIMARY KEY  (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+            ");
+
+        $db->query("
+            CREATE TABLE IF NOT EXISTS `$db->NeatlineMapsNamespace` (
+                `id` int(10) unsigned NOT NULL auto_increment,
+                `server_id` int(10) unsigned,
+                `name` tinytext collate utf8_unicode_ci,
+                `url` tinytext collate utf8_unicode_ci,
+                PRIMARY KEY  (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+            ");
+
         $historicMapItemType = array(
             'name' => NEATLINE_MAPS_MAP_ITEM_TYPE_NAME,
             'description' => 'Historical map with WMS service.'
@@ -140,6 +161,8 @@ class NeatlineMapsPlugin
 
         $db = $this->_db;
         $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsMap`");
+        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsServer`");
+        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsNamespace`");
 
     }
 

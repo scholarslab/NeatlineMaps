@@ -28,11 +28,11 @@
 
 <?php
 
-class NeatlineMaps_MapsController extends Omeka_Controller_Action
+class NeatlineMaps_ServersController extends Omeka_Controller_Action
 {
 
     /**
-     * Show maps.
+     * Show servers.
      *
      * @return void
      */
@@ -42,7 +42,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $sort_field = $this->_request->getParam('sort_field');
         $sort_dir = $this->_request->getParam('sort_dir');
 
-        // Get the maps.
+        // Get the servers.
         $page = $this->_request->page;
         $order = _doColumnSortProcessing($sort_field, $sort_dir);
         $maps = $this->getTable('NeatlineMapsMap')->getMaps($page, $order);

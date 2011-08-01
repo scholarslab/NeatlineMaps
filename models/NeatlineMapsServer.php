@@ -36,6 +36,30 @@ class NeatlineMapsServer extends Omeka_record
     public $username;
     public $password;
 
+    /**
+     * Checks to see if the server is online.
+     *
+     * @return boolean True if the server is online.
+     */
+    public function isOnline()
+    {
+
+        $ch = curl_init($this->url . '/rest/namespaces');
+        // curl_setopt($ch, CURLOPT_GET, True);
+
+        $authString = $this->username . ':' . $this->password;
+        curl_setopt($ch, CURLOPT_USERPWD, $authString);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/xml'));
+
+        $successCode = 200;
+        $buffer = curl_exec($ch);
+        $info = curl_getinfo($ch);
+
+        return ($info['http_code'] == $successCode);
+
+    }
+
 }
 
 /*

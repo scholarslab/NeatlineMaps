@@ -139,8 +139,6 @@ class GeoserverMap_Item extends GeoserverMap_Abstract
 
         }
 
-        // print_r($layers);
-
         return implode(',', array(
             min($minxes),
             min($minys),

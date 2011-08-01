@@ -18,6 +18,8 @@
                         <?php browse_headings(array(
                             'Name' => 'name',
                             'URL' => 'server',
+                            'Status' => null,
+                            'Version' => null,
                             'Actions' => null
                         )); ?>
                     </tr>
@@ -26,6 +28,9 @@
                     <?php foreach ($servers as $server): ?>
                         <tr>
                             <td width="100" class="fedora-td-small"><?php // echo $server->name; ?></td>
+                            <td width="100" class="fedora-td-small"><?php // echo $server->url; ?></td>
+                            <td width="100" class="fedora-td-small"><?php // echo $server->url; ?></td>
+                            <td width="100" class="fedora-td-small"><?php // echo $server->url; ?></td>
                             <td width="100" class="fedora-td-small"><?php // echo $server->url; ?></td>
                         </tr>
                     <?php endforeach; ?>

@@ -28,7 +28,15 @@
                         <tr>
                             <td width="100"><a href="<?php echo uri('neatline-maps/servers/edit/' . $server->id); ?>"><strong><?php echo $server->name; ?></strong></a></td>
                             <td width="100"><a href="<?php echo $server->url; ?>"><?php echo $server->url; ?></a></td>
-                            <td width="100"><?php // echo $server->url; ?></td>
+                            <td width="100">
+                            <?php
+                                if ($server->isOnline()) {
+                                    echo '<span style="font-size: 0.8em; color: green;">Online</span>';
+                                } else {
+                                    echo '<span style="font-size: 0.8em; color: red;">Offline</span>';
+                                }
+                            ?>
+                            </td>
                             <td width="100"><?php echo $this->partial('servers/servers-actions.php', array('id' => $server->id)); ?></td>
                         </tr>
                     <?php endforeach; ?>

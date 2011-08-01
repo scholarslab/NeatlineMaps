@@ -51,6 +51,7 @@ class NeatlineMapsServer extends Omeka_record
         curl_setopt($ch, CURLOPT_USERPWD, $authString);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/xml'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
         $successCode = 200;
         $buffer = curl_exec($ch);

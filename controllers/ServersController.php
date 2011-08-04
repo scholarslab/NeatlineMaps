@@ -55,6 +55,228 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
 
     }
 
+    /**
+     * Show form to add new server.
+     *
+     * @return void
+     */
+    public function createAction()
+    {
+
+        $form = $this->_doServerForm();
+        $this->view->form = $form;
+
+    }
+
+    /**
+     * Add new server.
+     *
+     * @return void
+     */
+    public function insertAction()
+    {
+
+        // Get the data, instantiate validator.
+        $data = $this->_request->getPost();
+        $form = $this->_doServerForm();
+
+        // Are all the fields filled out?
+        if ($form->isValid($data)) {
+
+            // Create server, process success.
+            if ($this->getTable('NeatlineMapsServer')->createServer($data)) {
+                $this->flashSuccess('Server created.');
+                $this->redirect->goto('browse');
+            } else {
+                $this->flashError('Error: The server was not created');
+                $this->redirect->goto('browse');
+            }
+
+        }
+
+        else {
+
+            $this->flashError('Enter a name, URL, username, and password.');
+            $this->_redirect('neatline-maps/servers/create');
+
+        }
+
+    }
+
+    /**
+     * Show form to edit existing server.
+     *
+     * @return void
+     */
+    public function editAction()
+    {
+
+        $id = $this->_request->id;
+        $server = $this->getTable('NeatlineMapsServer')->find($id);
+
+        // Get the form.
+        $form = $this->_doServerForm('edit', $id);
+
+        // Fill it with the data.
+        $form->populate(array(
+            'name' => $server->name,
+            'url' => $server->url,
+            'username' => $server->username,
+            'password' => $server->password
+        ));
+
+        $this->view->form = $form;
+        $this->view->server = $server;
+
+    }
+
+    /**
+     * Process edit form - delete or save.
+     *
+     * @return void
+     */
+    public function updateAction()
+    {
+
+        // Get the data, instantiate validator.
+        $data = $this->_request->getPost();
+        $form = $this->_doServerForm();
+
+        // If delete was hit, do the delete.
+        if (isset($data['delete_submit'])) {
+            $this->_redirect('neatline-maps/servers/delete/' . $data['id']);
+            exit();
+        }
+
+        // Are all the fields filled out?
+        if ($form->isValid($data)) {
+
+            // If save was hit, do save.
+            if (isset($data['edit_submit'])) {
+
+                if ($this->getTable('NeatlineMapsServer')->saveServer($data)) {
+
+                    $this->flashSuccess('Information for server ' . $data['name'] . ' saved');
+                    $this->redirect->goto('browse');
+
+                } else {
+
+                    $this->flashError('Error: Information for server ' . $data['name'] . ' not saved');
+                    $this->redirect->goto('browse');
+
+                }
+
+            }
+
+        }
+
+        else {
+
+            $this->flashError('The server must have a name, URL, username, and password.');
+            $this->_redirect('neatline-maps/servers/edit/' . $data['id']);
+
+        }
+
+    }
+
+    /**
+     * Confirm delete, do delete.
+     *
+     * @return void
+     */
+    public function deleteAction()
+    {
+
+        $id = $this->_request->id;
+        $server = $this->getTable('NeatlineMapsServer')->find($id);
+        $post = $this->_request->getPost();
+
+        if (isset($post['deleteconfirm_submit'])) {
+
+            if ($this->getTable('NeatlineMapsServer')->deleteServer($id)) {
+                $this->flashSuccess('Server ' . $server->name . ' deleted');
+                $this->redirect->goto('browse');
+            } else {
+                $this->flashError('Error: Server ' . $server->name . ' was not deleted');
+                $this->redirect->goto('browse');
+            }
+
+        }
+
+        $this->view->name = $server->name;
+
+    }
+
+    /**
+     * Build the form for server add/edit.
+     *
+     * @param $mode 'create' or 'edit.'
+     * @param $server_id The id of the server for hidden input in edit case.
+     *
+     * @return void
+     */
+    protected function _doServerForm($mode = 'create', $server_id = null)
+    {
+
+        $form = new Zend_Form();
+
+        $name = new Zend_Form_Element_Text('name');
+        $name->setRequired(true)
+            ->setLabel('Name:')
+            ->setAttrib('size', 55);
+
+        $url = new Zend_Form_Element_Text('url');
+        $url->setRequired(true)
+            ->setLabel('URL:')
+            ->setAttrib('size', 55);
+
+        $username = new Zend_Form_Element_Text('username');
+        $username->setRequired(true)
+            ->setLabel('Username:')
+            ->setAttrib('size', 55);
+
+        $password = new Zend_Form_Element_Text('password');
+        $password->setRequired(true)
+            ->setLabel('Password:')
+            ->setAttrib('size', 55);
+
+        $form->addElement($name);
+        $form->addElement($url);
+        $form->addElement($username);
+        $form->addElement($password);
+
+        if ($mode == 'create') {
+
+            $submit = new Zend_Form_Element_Submit('create_submit');
+            $submit->setLabel('Create');
+
+            $form->addElement($submit);
+            $form->setAction('insert')->setMethod('post');
+
+        }
+
+        else if ($mode == 'edit') {
+
+            $id = new Zend_Form_Element_Hidden('id');
+            $id->setValue($server_id);
+
+            $submit = new Zend_Form_Element_Submit('edit_submit');
+            $submit->setLabel('Save');
+
+            $delete = new Zend_Form_Element_Submit('delete_submit');
+            $delete->setLabel('Delete');
+
+            $form->addElement($id);
+            $form->addElement($submit);
+            $form->addElement($delete);
+            $form->setAction('update')->setMethod('post');
+
+        }
+
+        return $form;
+
+    }
+
 }
 
 

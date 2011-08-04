@@ -57,6 +57,62 @@ class NeatlineMapsServerTable extends Omeka_Db_Table
 
     }
 
+    /**
+     * Save server information.
+     *
+     * @param array $data The field data posted from the form.
+     *
+     * @return boolean True if save succeeds.
+     */
+    public function saveServer($data)
+    {
+
+        $server = $this->find($data['id']);
+        $server->name = $data['name'];
+        $server->url = $data['url'];
+        $server->username = $data['username'];
+        $server->password = $data['password'];
+
+        return $server->save() ? true : false;
+
+    }
+
+    /**
+     * Create a new server.
+     *
+     * @param array $data The field data posted from the form.
+     *
+     * @return boolean True if insert succeeds.
+     */
+    public function createServer($data)
+    {
+
+        $server = new NeatlineMapsServer;
+        $server->name = $data['name'];
+        $server->url = $data['url'];
+        $server->username = $data['username'];
+        $server->password = $data['password'];
+
+        return $server->save() ? true : false;
+
+    }
+
+    /**
+     * Delete server by id.
+     *
+     * @param string $id The id of the server to delete.
+     *
+     * @return boolean True if delete succeeds.
+     */
+    public function deleteServer($id)
+    {
+
+        $server = $this->find($id);
+        $server->delete();
+        return true;
+
+    }
+
 }
 
 /*

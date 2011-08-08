@@ -236,7 +236,8 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
         $password = new Zend_Form_Element_Password('password');
         $password->setRequired(true)
             ->setLabel('Password:')
-            ->setAttrib('size', 55);
+            ->setAttrib('size', 55)
+            ->setRenderPassword(true);
 
         $form->addElement($name);
         $form->addElement($url);

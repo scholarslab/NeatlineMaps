@@ -6,7 +6,7 @@
 
     <h2>Add a Server:</h2>
 
-    <?php echo $this->form; ?>
+    <?php echo $form; ?>
 
 </div>
 

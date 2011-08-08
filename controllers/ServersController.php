@@ -63,41 +63,39 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
     public function createAction()
     {
 
-        $form = $this->_doServerForm();
-        $this->view->form = $form;
+        if ($this->_request->isPost()) {
 
-    }
+            // Get the data, instantiate validator.
+            $data = $this->_request->getPost();
+            $form = $this->_doServerForm();
 
-    /**
-     * Add new server.
-     *
-     * @return void
-     */
-    public function insertAction()
-    {
+            // Are all the fields filled out?
+            if ($form->isValid($data)) {
 
-        // Get the data, instantiate validator.
-        $data = $this->_request->getPost();
-        $form = $this->_doServerForm();
+                // Create server, process success.
+                if ($this->getTable('NeatlineMapsServer')->createServer($data)) {
+                    $this->flashSuccess('Server created.');
+                    $this->redirect->goto('browse');
+                } else {
+                    $this->flashError('Error: The server was not created');
+                    $this->redirect->goto('browse');
+                }
 
-        // Are all the fields filled out?
-        if ($form->isValid($data)) {
+            }
 
-            // Create server, process success.
-            if ($this->getTable('NeatlineMapsServer')->createServer($data)) {
-                $this->flashSuccess('Server created.');
-                $this->redirect->goto('browse');
-            } else {
-                $this->flashError('Error: The server was not created');
-                $this->redirect->goto('browse');
+            else {
+
+                $form->populate($data);
+                $this->view->form = $form;
+
             }
 
         }
 
         else {
 
-            $this->flashError('Enter a name, URL, username, and password.');
-            $this->_redirect('neatline-maps/servers/create');
+            $form = $this->_doServerForm();
+            $this->view->form = $form;
 
         }
 
@@ -251,7 +249,7 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
             $submit->setLabel('Create');
 
             $form->addElement($submit);
-            $form->setAction('insert')->setMethod('post');
+            $form->setAction('create')->setMethod('post');
 
         }
 

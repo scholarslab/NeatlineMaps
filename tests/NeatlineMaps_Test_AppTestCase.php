@@ -61,16 +61,19 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
     }
 
-    // public function _createFileCollection($name)
-    // {
+    public function _createServer($name, $url, $username, $password)
+    {
 
-    //     $collection = new BagitFileCollection;
-    //     $collection->name = $name;
-    //     $collection->save();
+        $server = new NeatlineMapsServer;
+        $server->name = $name;
+        $server->url = $url;
+        $server->username = $username;
+        $server->password = $password;
+        $server->save();
 
-    //     return $collection;
+        return $server;
 
-    // }
+    }
 
     // public function _createFileCollections($number)
     // {

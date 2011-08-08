@@ -79,7 +79,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
      *
      * @return void.
      */
-    public function testAddServerFormCorrection()
+    public function testAddServerFail()
     {
 
         // Test that the validation rejects the submission unless all
@@ -132,6 +132,8 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         );
 
         $this->dispatch('neatline-maps/servers/create');
+        $this->assertRedirectTo('/neatline-maps/servers/browse');
+
         $serverCount = $this->serversTable->count();
         $server = $this->serversTable->find(1);
 
@@ -146,10 +148,94 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Why does this not work?
         // $this->assertAction('browse');
 
+        $this->resetRequest()->resetResponse();
+
         // For now, since the tests don't follow the redirect..
         $this->dispatch('neatline-maps/servers');
-        $this->assertQueryContentContains('strong', 'Test Server');
+        $this->assertQueryContentContains('td a strong', 'Test Server');
+        $this->assertQueryContentContains('td a', 'http://www.geoserver.com/test');
+        $this->assertQueryContentContains('td span', 'Offline');
 
+    }
+
+    /**
+     * Test server edit field population.
+     *
+     * @return void.
+     */
+    public function testServerEditFieldPopulate()
+    {
+
+        // Create a server.
+        $server = $this->helper->_createServer(
+            'Test Server',
+            'http://www.geoserver.com/test',
+            'test',
+            'test'
+        );
+
+        // Test the edit page.
+        $this->dispatch('neatline-maps/servers/edit/' . $server->id);
+        $this->assertModule('neatline-maps');
+        $this->assertController('servers');
+        $this->assertAction('edit');
+        $this->assertResponseCode(200);
+
+        // Test to confirm that form fields are populating.
+        $this->assertXpath('//input[@id="name"][@value="Test Server"]');
+        $this->assertXpath('//input[@id="url"][@value="http://www.geoserver.com/test"]');
+        $this->assertXpath('//input[@id="username"][@value="test"]');
+        $this->assertXpath('//input[@id="password"][@value="test"]');
+
+        $this->assertQueryContentContains('h2', 'Edit Server "Test Server"');
+
+    }
+
+    /**
+     * Test for correct form correction on failed server edit attempt.
+     *
+     * @return void.
+     */
+    public function testServerEditFail()
+    {
+
+        // Create a server.
+        $server = $this->helper->_createServer(
+            'Test Server',
+            'http://www.geoserver.com/test',
+            'test',
+            'test'
+        );
+
+        // Test that the validation rejects the submission unless all
+        // of the fields are filled out.
+        $this->request->setMethod('POST')
+            ->setPost(array(
+                'name' => '',
+                'url' => '',
+                'username' => '',
+                'password' => '',
+                'id' => 1
+            )
+        );
+
+        // Test that the form posts back to the same view function.
+        $this->dispatch('neatline-maps/servers/update');
+        $this->assertModule('neatline-maps');
+        $this->assertController('servers');
+        $this->assertAction('update');
+        // $this->assertResponseCode(201);
+
+        $this->assertQueryCount('ul.errors', 4);
+
+        $this->assertQueryContentContains('dd#name-element ul.errors li',
+            'Value is required and can\'t be empty');
+        $this->assertQueryContentContains('dd#url-element ul.errors li',
+            'Value is required and can\'t be empty');
+        $this->assertQueryContentContains('dd#username-element ul.errors li',
+            'Value is required and can\'t be empty');
+        $this->assertQueryContentContains('dd#password-element ul.errors li',
+            'Value is required and can\'t be empty');
 
     }
 

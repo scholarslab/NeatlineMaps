@@ -17,7 +17,7 @@
                     <tr>
                         <?php browse_headings(array(
                             'Name' => 'name',
-                            'URL' => 'server',
+                            'URL' => 'url',
                             'Status' => null,
                             'Actions' => null
                         )); ?>

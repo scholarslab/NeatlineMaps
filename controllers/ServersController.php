@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * Admin controller.
+ * Servers controller.
  *
  * PHP version 5
  *
@@ -235,7 +235,7 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
             ->setLabel('Username:')
             ->setAttrib('size', 55);
 
-        $password = new Zend_Form_Element_Text('password');
+        $password = new Zend_Form_Element_Password('password');
         $password->setRequired(true)
             ->setLabel('Password:')
             ->setAttrib('size', 55);

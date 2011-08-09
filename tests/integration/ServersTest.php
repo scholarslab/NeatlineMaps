@@ -114,6 +114,52 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
     }
 
     /**
+     * Test that the add server flow automatically scrubs off trailing slashes
+     * at the end of the server URL.
+     *
+     * @return void.
+     */
+    public function testAddServerTrailingUrlSlashScrub()
+    {
+
+        // Enter valid data, with a trailing slash on the URL.
+        $this->request->setMethod('POST')
+            ->setPost(array(
+                'name' => 'Test Server',
+                'url' => 'http://www.geoserver.com/test/',
+                'username' => 'test',
+                'password' => 'test'
+            )
+        );
+
+        $this->dispatch('neatline-maps/servers/create');
+        $this->assertRedirectTo('/neatline-maps/servers/browse');
+
+        $serverCount = $this->serversTable->count();
+        $server = $this->serversTable->find(1);
+
+        // Test that the server was created.
+        $this->assertEquals($serverCount, 1);
+        $this->assertEquals($server->name, 'Test Server');
+        $this->assertEquals($server->url, 'http://www.geoserver.com/test');
+        $this->assertEquals($server->username, 'test');
+        $this->assertEquals($server->password, 'test');
+
+        // Test redirect back to browse.
+        // Why does this not work?
+        // $this->assertAction('browse');
+
+        $this->resetRequest()->resetResponse();
+
+        // For now, since the tests don't follow the redirect..
+        $this->dispatch('neatline-maps/servers');
+        $this->assertQueryContentContains('td a strong', 'Test Server');
+        $this->assertQueryContentContains('td a', 'http://www.geoserver.com/test');
+        $this->assertQueryContentContains('td span', 'Offline or inaccessible');
+
+    }
+
+    /**
      * Test for successful server add.
      *
      * @return void.

@@ -28,6 +28,8 @@
 
 <?php
 
+require_once NEATLINE_MAPS_PLUGIN_DIR . '/helpers/validators/NamespaceName.php';
+
 class NeatlineMaps_NamespacesController extends Omeka_Controller_Action
 {
 

@@ -72,13 +72,23 @@ class NeatlineMaps_NamespacesController extends Omeka_Controller_Action
             // Are all the fields filled out?
             if ($form->isValid($data)) {
 
+                $namespaceStatus = $this->getTable('NeatlineMapsNamespace')->createNamespace($data);
+
                 // Create server, process success.
-                if ($this->getTable('NeatlineMapsNamespace')->createNamespace($data)) {
-                    $this->flashSuccess('Namespace created.');
+                if ($namespaceStatus == 'added') {
+
+                    $this->flashSuccess('Namespace created on GeoServer and registered in Neatline.');
                     $this->redirect->goto('browse');
-                } else {
-                    $this->flashError('Error: The namespace was not created');
+
+                } else if ($namespaceStatus == 'registered') {
+
+                    $this->flashSuccess('Namespace registered in Neatline');
                     $this->redirect->goto('browse');
+
+                } else if ($namespaceStatus == 'updated') {
+
+
+
                 }
 
             }
@@ -281,7 +291,7 @@ class NeatlineMaps_NamespacesController extends Omeka_Controller_Action
             ->setLabel('Name:')
             ->setAttrib('size', 55);
 
-        $server = new Zend_Form_Element_Select('metadataformat');
+        $server = new Zend_Form_Element_Select('server');
         $server->setLabel('Server:');
         $servers = $this->getTable('NeatlineMapsServer')->getServers();
 

@@ -60,12 +60,102 @@ class NeatlineMapsNamespaceTable extends Omeka_Db_Table
      *
      * @param array $data The field data posted from the form.
      *
-     * @return coolean True if the create succees.
+     * @return string - 'added' if the namespace did not already exist
+     * and was added, 'registered' if the namespace exists.
      */
     public function createNamespace($data)
     {
 
+        $server = $this->getTable('NeatlineMapsServer')->find($data['server']);
 
+        // Set up curl to dial out to GeoServer.
+        $geoServerConfigurationAddress = $server->url . '/rest/namespaces';
+        $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $data['name'];
+
+        $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
+        $clientCheckNamespace->setAuth($server->username, $server->password);
+
+        $responseBody = $clientCheckNamespace->request(Zend_Http_Client::GET)->getBody();
+
+        // Does the namespace not exist and need to be added?
+        if (strpos($responseBody, 'No such namespace:') !== false) {
+
+            $namespaceJSON = '
+                {
+                    "namespace": {
+                        "prefix": "' . $data['name'] . '",
+                        "uri": "' . $data['url'] . '"
+                    }
+                }
+            ';
+
+            $ch = curl_init($geoServerConfigurationAddress);
+            curl_setopt($ch, CURLOPT_POST, True);
+
+            $authString = $server->username . ':' . $server->password;
+            curl_setopt($ch, CURLOPT_USERPWD, $authString);
+
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $namespaceJSON);
+
+            $successCode = 201;
+            $buffer = curl_exec($ch);
+
+            $namespaceStatus = 'added';
+
+        }
+
+        // If the namespace already exists, does it need to be updated?
+        else {
+
+            // Query for the existing uri.
+            $body = new SimpleXMLElement($responseBody);
+            $uri = $body->xpath('//*[local-name()="uri"]');
+
+            // Does the existing URI match the posted one?
+            if ($uri[0]->nodeValue == $data['url']) {
+
+                $namespaceStatus = 'registered';
+
+            }
+
+            else {
+
+                $namespaceJSON = '
+                    {
+                        "namespace": {
+                            "prefix": "' . $data['name'] . '",
+                            "uri": "' . $data['url'] . '"
+                        }
+                    }
+                ';
+
+                $ch = curl_init($geoServerConfigurationAddress);
+                curl_setopt($ch, CURLOPT_POST, True);
+
+                $authString = $server->username . ':' . $server->password;
+                curl_setopt($ch, CURLOPT_USERPWD, $authString);
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $namespaceJSON);
+
+                $successCode = 201;
+                $buffer = curl_exec($ch);
+
+                $namespaceStatus = 'updated';
+
+            }
+
+        }
+
+        // Create the Omeka record of the namespace.
+        $namespace = new NeatlineMapsNamespace;
+        $namespace->name = $data['name'];
+        $namespace->url = $data['url'];
+        $namespace->server_id = $data['server'];
+        $namespace->save();
+
+        return $namespaceStatus;
 
     }
 

@@ -154,7 +154,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->dispatch('neatline-maps/servers');
         $this->assertQueryContentContains('td a strong', 'Test Server');
         $this->assertQueryContentContains('td a', 'http://www.geoserver.com/test');
-        $this->assertQueryContentContains('td span', 'Offline');
+        $this->assertQueryContentContains('td span', 'Offline or inaccessible');
 
     }
 
@@ -236,6 +236,76 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
             'Value is required and can\'t be empty');
         $this->assertQueryContentContains('dd#password-element ul.errors li',
             'Value is required and can\'t be empty');
+
+    }
+
+    /**
+     * Test for successfull server edit.
+     *
+     * @return void.
+     */
+    public function testServerEditSucceed()
+    {
+
+        // Create a server.
+        $server = $this->helper->_createServer(
+            'Test Server',
+            'http://www.geoserver.com/test',
+            'test',
+            'test'
+        );
+
+        $serverCount = $this->serversTable->count();
+        $server = $this->serversTable->find(1);
+
+        // Test that the server was created.
+        $this->assertEquals($serverCount, 1);
+        $this->assertEquals($server->name, 'Test Server');
+        $this->assertEquals($server->url, 'http://www.geoserver.com/test');
+        $this->assertEquals($server->username, 'test');
+        $this->assertEquals($server->password, 'test');
+
+        // Test that the validation rejects the submission unless all
+        // of the fields are filled out.
+        $this->request->setMethod('POST')
+            ->setPost(array(
+                'name' => 'New Server Name',
+                'url' => 'http://www.newurl.url',
+                'username' => 'differentpass',
+                'password' => 'differentpass',
+                'id' => 1,
+                'edit_submit' => 'Save'
+            )
+        );
+
+        // Test that the form posts back to the same view function.
+        $this->dispatch('neatline-maps/servers/edit/' . $server->id);
+        $this->assertModule('neatline-maps');
+        $this->assertController('servers');
+        $this->assertAction('edit');
+        $this->assertRedirectTo('/neatline-maps/servers/browse');
+
+        $serverCount = $this->serversTable->count();
+        $server = $this->serversTable->find(1);
+
+        // Test that the server was created.
+        $this->assertEquals($serverCount, 1);
+        $this->assertEquals($server->name, 'New Server Name');
+        $this->assertEquals($server->url, 'http://www.newurl.url');
+        $this->assertEquals($server->username, 'differentpass');
+        $this->assertEquals($server->password, 'differentpass');
+
+        // Test redirect back to browse.
+        // Why does this not work?
+        // $this->assertAction('browse');
+
+        $this->resetRequest()->resetResponse();
+
+        // For now, since the tests don't follow the redirect..
+        $this->dispatch('neatline-maps/servers');
+        $this->assertQueryContentContains('td a strong', 'New Server Name');
+        $this->assertQueryContentContains('td a', 'http://www.newurl.url');
+        $this->assertQueryContentContains('td span', 'Offline or inaccessible');
 
     }
 

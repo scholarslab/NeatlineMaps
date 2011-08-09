@@ -33,7 +33,7 @@
                                 if ($server->isOnline()) {
                                     echo '<span style="font-size: 0.8em; color: green;">Online</span>';
                                 } else {
-                                    echo '<span style="font-size: 0.8em; color: red;">Offline</span>';
+                                    echo '<span style="font-size: 0.8em; color: red;">Offline or inaccessible</span>';
                                 }
                             ?>
                             </td>

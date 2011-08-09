@@ -43,9 +43,7 @@ class NeatlineMapsNamespace extends Omeka_record
     public function getServer()
     {
 
-        $this->getTable('NeatlineMapsServer')->fetchObject(
-            $this->getTable('NeatlineMapsServer')->findBySql('id = ?', array($this->server_id))
-        );
+        return $this->getTable('NeatlineMapsServer')->find($this->server_id);
 
     }
 

@@ -215,16 +215,16 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
                 'url' => '',
                 'username' => '',
                 'password' => '',
-                'id' => 1
+                'id' => 1,
+                'edit_submit' => 'Save'
             )
         );
 
         // Test that the form posts back to the same view function.
-        $this->dispatch('neatline-maps/servers/update');
+        $this->dispatch('neatline-maps/servers/edit/' . $server->id);
         $this->assertModule('neatline-maps');
         $this->assertController('servers');
-        $this->assertAction('update');
-        // $this->assertResponseCode(201);
+        $this->assertAction('edit');
 
         $this->assertQueryCount('ul.errors', 4);
 

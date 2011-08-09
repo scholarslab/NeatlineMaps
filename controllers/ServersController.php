@@ -146,7 +146,11 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
             else {
 
                 $form->populate($data);
+                $id = $this->_request->id;
+                $server = $this->getTable('NeatlineMapsServer')->find($id);
+
                 $this->view->form = $form;
+                $this->view->server = $server;
 
             }
 

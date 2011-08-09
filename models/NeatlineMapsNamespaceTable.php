@@ -160,6 +160,22 @@ class NeatlineMapsNamespaceTable extends Omeka_Db_Table
     }
 
     /**
+     * Check to see if there is already a namespace associated with
+     * a given server with a given name.
+     *
+     * @param string $name The name to check for.
+     * @param integer $server_id The id of the server.
+     *
+     * @return boolean True if the name is a duplicate.
+     */
+    public function caseSensitiveDuplicate($name, $server_id)
+    {
+
+
+
+    }
+
+    /**
      * Save server information.
      *
      * @param array $data The field data posted from the form.

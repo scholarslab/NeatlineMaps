@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * Record class for NeatlineMaps Server.
+ * Record class for NeatlineMaps Namespace.
  *
  * PHP version 5
  *
@@ -28,36 +28,24 @@
 
 <?php
 
-class NeatlineMapsServer extends Omeka_record
+class NeatlineMapsNamespace extends Omeka_record
 {
 
+    public $server_id;
     public $name;
     public $url;
-    public $username;
-    public $password;
 
     /**
-     * Checks to see if the server is online.
+     * Returns the namespace's parent server item.
      *
      * @return boolean True if the server is online.
      */
-    public function isOnline()
+    public function getServer()
     {
 
-        $ch = curl_init($this->url . '/rest/namespaces');
-        // curl_setopt($ch, CURLOPT_GET, True);
-
-        $authString = $this->username . ':' . $this->password;
-        curl_setopt($ch, CURLOPT_USERPWD, $authString);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/xml'));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-
-        $successCode = 200;
-        $buffer = curl_exec($ch);
-        $info = curl_getinfo($ch);
-
-        return ($info['http_code'] == $successCode);
+        $this->getTable('NeatlineMapsServer')->fetchObject(
+            $this->getTable('NeatlineMapsServer')->findBySql('id = ?', array($this->server_id))
+        );
 
     }
 

@@ -19,7 +19,6 @@
                             'Name' => 'name',
                             'Server' => 'server',
                             'URL' => 'url',
-                            'Status' => null,
                             'Actions' => null
                         )); ?>
                     </tr>

@@ -56,6 +56,20 @@ class NeatlineMapsNamespaceTable extends Omeka_Db_Table
     }
 
     /**
+     * Create a new namespace in GeoServer and Omeka.
+     *
+     * @param array $data The field data posted from the form.
+     *
+     * @return coolean True if the create succees.
+     */
+    public function createNamespace($data)
+    {
+
+
+
+    }
+
+    /**
      * Save server information.
      *
      * @param array $data The field data posted from the form.

@@ -280,7 +280,11 @@ class NeatlineMaps_NamespacesController extends Omeka_Controller_Action
 
         // Add each of the servers as an option.
         foreach ($servers as $server_object) {
-            $server->addMultiOption($server_object->id, $server_object->name);
+
+            if ($server_object->isOnline()) {
+                $server->addMultiOption($server_object->id, $server_object->name);
+            }
+
         }
 
         $url = new Zend_Form_Element_Text('url');

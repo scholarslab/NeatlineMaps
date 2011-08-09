@@ -68,10 +68,10 @@ dd#datastreams-element label {
     clear: both;
 }
 
-dd#metadataformat-element select {
-    display: block;
-    clear: both;
-}
+/* dd#metadataformat-element select {*/
+/*     display: block;*/
+/*     clear: both;*/
+/* }*/
 
 p.fedora-connector-search-reset {
     clear: both;
@@ -131,4 +131,8 @@ div.fedora-defaults-add-if-empty span {
     position: relative;
     top: -3px;
     vertical-align: middle;
+}
+
+span.small-link {
+    font-size: 0.8em;
 }

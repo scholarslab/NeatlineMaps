@@ -56,50 +56,50 @@ class NeatlineMaps_NamespacesController extends Omeka_Controller_Action
     }
 
     /**
-     * Show form to add new server.
+     * Show and process form to add new namespace.
      *
      * @return void
      */
-    // public function createAction()
-    // {
+    public function createAction()
+    {
 
-    //     if ($this->_request->isPost()) {
+        if ($this->_request->isPost()) {
 
-    //         // Get the data, instantiate validator.
-    //         $data = $this->_request->getPost();
-    //         $form = $this->_doServerForm();
+            // Get the data, instantiate validator.
+            $data = $this->_request->getPost();
+            $form = $this->_doNamespaceForm();
 
-    //         // Are all the fields filled out?
-    //         if ($form->isValid($data)) {
+            // Are all the fields filled out?
+            if ($form->isValid($data)) {
 
-    //             // Create server, process success.
-    //             if ($this->getTable('NeatlineMapsServer')->createServer($data)) {
-    //                 $this->flashSuccess('Server created.');
-    //                 $this->redirect->goto('browse');
-    //             } else {
-    //                 $this->flashError('Error: The server was not created');
-    //                 $this->redirect->goto('browse');
-    //             }
+                // Create server, process success.
+                if ($this->getTable('NeatlineMapsNamespace')->createNamespace($data)) {
+                    $this->flashSuccess('Namespace created.');
+                    $this->redirect->goto('browse');
+                } else {
+                    $this->flashError('Error: The namespace was not created');
+                    $this->redirect->goto('browse');
+                }
 
-    //         }
+            }
 
-    //         else {
+            else {
 
-    //             $form->populate($data);
-    //             $this->view->form = $form;
+                $form->populate($data);
+                $this->view->form = $form;
 
-    //         }
+            }
 
-    //     }
+        }
 
-    //     else {
+        else {
 
-    //         $form = $this->_doServerForm();
-    //         $this->view->form = $form;
+            $form = $this->_doNamespaceForm();
+            $this->view->form = $form;
 
-    //     }
+        }
 
-    // }
+    }
 
     /**
      * Show form to edit existing server.
@@ -264,68 +264,65 @@ class NeatlineMaps_NamespacesController extends Omeka_Controller_Action
      *
      * @return void
      */
-    // protected function _doServerForm($mode = 'create', $server_id = null)
-    // {
+    protected function _doNamespaceForm($mode = 'create', $namespace_id = null)
+    {
 
-    //     $form = new Zend_Form();
+        $form = new Zend_Form();
 
-    //     $name = new Zend_Form_Element_Text('name');
-    //     $name->setRequired(true)
-    //         ->setLabel('Name:')
-    //         ->setAttrib('size', 55);
+        $name = new Zend_Form_Element_Text('name');
+        $name->setRequired(true)
+            ->setLabel('Name:')
+            ->setAttrib('size', 55);
 
-    //     $url = new Zend_Form_Element_Text('url');
-    //     $url->setRequired(true)
-    //         ->setLabel('URL:')
-    //         ->setAttrib('size', 55);
+        $server = new Zend_Form_Element_Select('metadataformat');
+        $server->setLabel('Server:');
+        $servers = $this->getTable('NeatlineMapsServer')->getServers();
 
-    //     $username = new Zend_Form_Element_Text('username');
-    //     $username->setRequired(true)
-    //         ->setLabel('Username:')
-    //         ->setAttrib('size', 55);
+        // Add each of the servers as an option.
+        foreach ($servers as $server_object) {
+            $server->addMultiOption($server_object->id, $server_object->name);
+        }
 
-    //     $password = new Zend_Form_Element_Password('password');
-    //     $password->setRequired(true)
-    //         ->setLabel('Password:')
-    //         ->setAttrib('size', 55)
-    //         ->setRenderPassword(true);
+        $url = new Zend_Form_Element_Text('url');
+        $url->setRequired(true)
+            ->setLabel('URL:')
+            ->setAttrib('size', 55);
 
-    //     $form->addElement($name);
-    //     $form->addElement($url);
-    //     $form->addElement($username);
-    //     $form->addElement($password);
+        $form->addElement($name);
+        $form->addElement($url);
+        $form->addElement($server);
 
-    //     if ($mode == 'create') {
+        if ($mode == 'create') {
 
-    //         $submit = new Zend_Form_Element_Submit('create_submit');
-    //         $submit->setLabel('Create');
+            $submit = new Zend_Form_Element_Submit('create_submit');
+            $submit->setLabel('Create');
 
-    //         $form->addElement($submit);
-    //         $form->setAction('create')->setMethod('post');
+            $form->addElement($submit);
+            $form->setAction('create')->setMethod('post');
 
-    //     }
+        }
 
-    //     else if ($mode == 'edit') {
+        else if ($mode == 'edit') {
 
-    //         $id = new Zend_Form_Element_Hidden('id');
-    //         $id->setValue($server_id);
+            $id = new Zend_Form_Element_Hidden('id');
+            $id->setValue($namespace_id);
 
-    //         $submit = new Zend_Form_Element_Submit('edit_submit');
-    //         $submit->setLabel('Save');
+            $submit = new Zend_Form_Element_Submit('edit_submit');
+            $submit->setLabel('Save');
 
-    //         $delete = new Zend_Form_Element_Submit('delete_submit');
-    //         $delete->setLabel('Delete');
+            $delete = new Zend_Form_Element_Submit('delete_submit');
+            $delete->setLabel('Delete');
 
-    //         $form->addElement($id);
-    //         $form->addElement($submit);
-    //         $form->addElement($delete);
-    //         $form->setAction('')->setMethod('post');
+            $form->addElement($id);
+            $form->addElement($submit);
+            $form->addElement($delete);
+            $form->setAction('')->setMethod('post');
 
-    //     }
+        }
 
-    //     return $form;
+        return $form;
 
-    // }
+    }
 
 }
 

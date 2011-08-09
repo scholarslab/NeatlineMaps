@@ -26,7 +26,7 @@
                 <tbody>
                     <?php foreach ($servers as $server): ?>
                         <tr>
-                            <td width="100"><a href="<?php echo uri('neatline-maps/servers/edit/' . $server->id); ?>"><strong><?php echo $server->name; ?></strong></a></td>
+                            <td width="100"><a href=""><strong><?php echo $server->name; ?></strong></a></td>
                             <td width="100"><a href="<?php echo $server->url; ?>"><?php echo $server->url; ?></a></td>
                             <td width="100">
                             <?php

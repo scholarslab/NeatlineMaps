@@ -94,8 +94,15 @@ class NeatlineMaps_NamespacesController extends Omeka_Controller_Action
 
         else {
 
-            $form = $this->_doNamespaceForm();
-            $this->view->form = $form;
+            if (count($this->getTable('NeatlineMapsServer')->getServers()) > 0) {
+                $form = $this->_doNamespaceForm();
+                $this->view->form = $form;
+            }
+
+            else {
+                $this->flashError('Before you can create a namespace, you have to add a server.');
+                $this->_redirect('/neatline-maps/servers/create');
+            }
 
         }
 

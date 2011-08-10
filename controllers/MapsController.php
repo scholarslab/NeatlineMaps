@@ -88,10 +88,30 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     public function getserverAction()
     {
 
-        $item_id = $this->_request->getParam('item_id');
+        $post = $this->_request->getPost();
 
-        $this->view->item = $item;
-        $this->view->form = $this->_doServerForm($item_id);
+        if (isset($post['submitted'])) {
+
+            $item_id = $this->_request->getParam('item_id');
+            $item = _getSingleItem($item_id);
+            $form = $this->_doServerForm($item_id);
+
+            $this->view->item = $item;
+            $this->view->form = $form->populate($post);
+
+            echo 'validation fail.';
+
+        }
+
+        else {
+
+            $item_id = $this->_request->getParam('item_id');
+            $item = _getSingleItem($item_id);
+
+            $this->view->item = $item;
+            $this->view->form = $this->_doServerForm($item_id);
+
+        }
 
     }
 
@@ -106,8 +126,22 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $item_id = $this->_request->getParam('item_id');
         $item = _getSingleItem($item_id);
 
-        $this->view->item = $item;
-        $this->view->form = $this->_doServerForm($item_id);
+        $post = $this->_request->getPost();
+        $form = $this->_doServerForm($item_id);
+
+        if ($form->isValid($post)) {
+
+            // Show namespace form.
+            $this->view->item = $item;
+            $this->view->form = $this->_doNamespaceForm($item_id);
+
+        }
+
+        else {
+
+            $this->_forward('getserver', 'maps', 'neatline-maps');
+
+        }
 
     }
 
@@ -342,6 +376,57 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         $form = new Zend_Form();
         $form->setAction('getnamespace')->getMethod('post');
+
+        $name = new Zend_Form_Element_Text('name');
+        $name->setRequired(true)
+            ->setLabel('Name:')
+            ->setAttrib('size', 55);
+
+        $server = new Zend_Form_Element_Select('server');
+        $server->setLabel('Server:');
+        $servers = $this->getTable('NeatlineMapsServer')->getServers();
+
+        // Add each of the servers as an option.
+        foreach ($servers as $server_object) {
+
+            if ($server_object->isOnline()) {
+                $server->addMultiOption($server_object->id, $server_object->name);
+            }
+
+        }
+
+        $submit = new Zend_Form_Element_Submit('select_namespace');
+        $submit->setLabel('Continue');
+
+        $item = new Zend_Form_Element_Hidden('item_id');
+        $item->setValue($item_id);
+
+        $submitted = new Zend_Form_Element_Hidden('submitted');
+        $submitted->setValue('true');
+
+        $form->addElement($name);
+        $form->addElement($server);
+        $form->addElement($submit);
+        $form->addElement($item);
+        $form->addElement($submitted);
+
+        return $form;
+
+    }
+
+    /**
+     * Build the form for server add/edit.
+     *
+     * @param $mode 'create' or 'edit.'
+     * @param $server_id The id of the server for hidden input in edit case.
+     *
+     * @return void
+     */
+    protected function _doNamespaceForm($item_id)
+    {
+
+        $form = new Zend_Form();
+        $form->setAction('addmap')->getMethod('post');
 
         $name = new Zend_Form_Element_Text('name');
         $name->setRequired(true)

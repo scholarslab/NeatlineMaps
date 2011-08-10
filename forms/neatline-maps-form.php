@@ -57,34 +57,34 @@
     <?php endfor; ?>
 </div>
 
-    <script>
+<script>
 
-    /**
-     * Allow adding an arbitrary number of file input elements to the items form so that
-     * more than one file can be uploaded at once.
-     */
-    Omeka.Items.enableAddMaps = function () {
-        var filesDiv = jQuery('#map-inputs .maps').first();
-        var filesDivWrap = jQuery('#map-inputs');
+/**
+ * Allow adding an arbitrary number of file input elements to the items form so that
+ * more than one file can be uploaded at once.
+ */
+Omeka.Items.enableAddMaps = function () {
+    var filesDiv = jQuery('#map-inputs .maps').first();
+    var filesDivWrap = jQuery('#map-inputs');
 
-        var link = jQuery('<a href="#" id="add-map" class="add-map">Add Another Map</a>');
-        link.click(function (event) {
-            event.preventDefault();
-            var inputs = filesDiv.find('input');
-            var inputCount = inputs.length;
-            var fileHtml = '<div id="mapinput' + inputCount + '" class="mapinput"><input name="map[' + inputCount + ']" id="map[' + inputCount + ']" type="file" class="mapinput" /></div>';
-            jQuery(fileHtml).insertAfter(inputs.last()).hide().slideDown(200, function () {
-                // Extra show fixes IE bug.
-                jQuery(this).show();
-            });
+    var link = jQuery('<a href="#" id="add-map" class="add-map">Add Another Map</a>');
+    link.click(function (event) {
+        event.preventDefault();
+        var inputs = filesDiv.find('input');
+        var inputCount = inputs.length;
+        var fileHtml = '<div id="mapinput' + inputCount + '" class="mapinput"><input name="map[' + inputCount + ']" id="map[' + inputCount + ']" type="file" class="mapinput" /></div>';
+        jQuery(fileHtml).insertAfter(inputs.last()).hide().slideDown(200, function () {
+            // Extra show fixes IE bug.
+            jQuery(this).show();
         });
-
-        jQuery('#add-more-maps').html('');
-        filesDivWrap.append(link);
-    };
-
-    jQuery(window).load(function () {
-        Omeka.Items.enableAddMaps();
     });
 
-    </script>
+    jQuery('#add-more-maps').html('');
+    filesDivWrap.append(link);
+};
+
+jQuery(window).load(function () {
+    Omeka.Items.enableAddMaps();
+});
+
+</script>

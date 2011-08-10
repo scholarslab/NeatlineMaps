@@ -30,6 +30,28 @@
     margin-top: 12px;
 }
 
+.neatline-maps-getfiles #map-inputs a {
+    float: left;
+    display: block;
+    font-size: 1.2em;
+    margin-left: 189px;
+    margin-top: 12px;
+}
+
+dt label {
+    font-family: 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+div.field {
+    border-bottom: none !important;
+}
+
+.neatline-maps-getfiles div.maps {
+    float: left;
+}
+
 .add-map {
     background-image: url("../../../../../application/views/scripts/images/silk-icons/disk_multiple.png");
     background-position: 12px 50%;

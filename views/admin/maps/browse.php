@@ -2,7 +2,7 @@
 
 <div id="primary">
 
-    <p id="add-item" class="add-button"><a class="add" href="<?php echo html_escape(uri('fedora-connector/datastreams/create')); ?>">Add Map</a></p>
+    <p id="add-item" class="add-button"><a class="add" href="<?php echo html_escape(uri('neatline-maps/maps/create')); ?>">Add Map</a></p>
 
     <?php echo flash(); ?>
 

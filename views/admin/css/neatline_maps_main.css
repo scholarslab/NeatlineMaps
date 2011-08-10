@@ -39,9 +39,8 @@
 }
 
 form.fedora-inline-form {
-    margin: 0.4em 0.6em 0 0;
     padding: 0;
-    /* float: left;*/
+    float: left;
 }
 
 form.fedora-inline-form-servers {
@@ -135,4 +134,10 @@ div.fedora-defaults-add-if-empty span {
 
 span.small-link {
     font-size: 0.8em;
+}
+
+input.create-new-item {
+    margin: 0 !important;
+    background-color: #C50 !important;
+    border-color: #C50 !important;
 }

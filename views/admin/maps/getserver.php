@@ -6,7 +6,7 @@
 
     <h2>Step 1: Enter a name for the map and select the server:</h2>
 
-    <?php echo $this->form; ?>
+    <?php echo $form; ?>
 
 </div>
 

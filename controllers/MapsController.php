@@ -101,12 +101,13 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
             $item_id = $this->_request->getParam('item_id');
             $item = _getSingleItem($item_id);
+
             $form = $this->_doServerForm($item_id);
+            $form->isValid($post);
+            $form->populate($post);
 
             $this->view->item = $item;
-            $this->view->form = $form->populate($post);
-
-            echo 'validation fail.';
+            $this->view->form = $form;
 
         }
 
@@ -429,20 +430,17 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
      *
      * @return void
      */
-    protected function _doNamespaceForm($item_id)
+    protected function _doNamespaceForm($item_id, $server_id)
     {
+
+        $server = $this->getTable('NeatlineMapsServer')->find($server_id);
 
         $form = new Zend_Form();
         $form->setAction('addmap')->getMethod('post');
 
-        $name = new Zend_Form_Element_Text('name');
-        $name->setRequired(true)
-            ->setLabel('Name:')
-            ->setAttrib('size', 55);
-
-        $server = new Zend_Form_Element_Select('server');
-        $server->setLabel('Server:');
-        $servers = $this->getTable('NeatlineMapsServer')->getServers();
+        $namespace = new Zend_Form_Element_Select('existing_namespace');
+        $namespace->setLabel('Select an existing namespace:');
+        $namespaces = $server->getNamespaces();
 
         // Add each of the servers as an option.
         foreach ($servers as $server_object) {

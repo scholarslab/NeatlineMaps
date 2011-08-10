@@ -13,7 +13,7 @@
             <h2>Select an existing item or create a new item for the map:</h2>
 
                 <form action="<?php echo uri('/neatline-maps/maps/create/item/' . $id); ?>" method="post" class="fedora-inline-form">
-                  <input type="submit" value="Create a new item" class="create-new-item">
+                  <input type="submit" value="Create a new item for the map" class="create-new-item">
                 </form>
 
             <table>

@@ -141,7 +141,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
             // Show namespace form.
             $this->view->item = $item;
-            $this->view->form = $this->_doNamespaceForm($item_id);
+            $this->view->form = $this->_doNamespaceForm($item_id, $post['server']);
 
         }
 
@@ -439,26 +439,23 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $form->setAction('addmap')->getMethod('post');
 
         $namespace = new Zend_Form_Element_Select('existing_namespace');
-        $namespace->setLabel('Select an existing namespace:');
-        $namespaces = $server->getNamespaces();
+        $namespace->setLabel('Namespace:');
+        $namespaces = $server->getNamespaceNames();
 
         // Add each of the servers as an option.
-        foreach ($servers as $server_object) {
+        foreach ($namespaces as $namespace_node) {
 
-            if ($server_object->isOnline()) {
-                $server->addMultiOption($server_object->id, $server_object->name);
-            }
+            $namespace->addMultiOption($namespace_node, $namespace_node);
 
         }
 
-        $submit = new Zend_Form_Element_Submit('select_namespace');
-        $submit->setLabel('Continue');
+        $submit = new Zend_Form_Element_Submit('create_map');
+        $submit->setLabel('Create');
 
         $item = new Zend_Form_Element_Hidden('item_id');
         $item->setValue($item_id);
 
-        $form->addElement($name);
-        $form->addElement($server);
+        $form->addElement($namespace);
         $form->addElement($submit);
         $form->addElement($item);
 

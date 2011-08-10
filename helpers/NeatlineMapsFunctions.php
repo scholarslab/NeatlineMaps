@@ -288,3 +288,32 @@ function _getItems($page = null, $order = null, $search = null)
     return $itemTable->fetchObjects($select);
 
 }
+
+/**
+ * Retrieves a single item with added columns with name, etc.
+ *
+ * @param $id The id of the item.
+ *
+ * @return object $item The item.
+ */
+function _getSingleItem($id)
+{
+
+    $db = get_db();
+    $itemTable = $db->getTable('Item');
+
+    $select = $db->select()
+        ->from(array('item' => $db->prefix . 'items'))
+        ->columns(array('item_id' => 'item.id', 
+            'Type' =>
+            "(SELECT name from `$db->ItemType` WHERE id = item.item_type_id)",
+            'item_name' =>
+            "(SELECT text from `$db->ElementText` WHERE record_id = item.id AND element_id = 50 LIMIT 1)",
+            'creator' =>
+            "(SELECT text from `$db->ElementText` WHERE record_id = item.id AND element_id = 39)"
+            ))
+        ->where('item.id = ' . $id);
+
+    return $itemTable->fetchObject($select);
+
+}

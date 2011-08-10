@@ -56,7 +56,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     }
 
     /**
-     * Choose which item to add the datastream to.
+     * Choose which item to add the map to.
      *
      * @return void
      */
@@ -77,6 +77,37 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $this->view->total_results = $this->getTable('Item')->count();
         $this->view->results_per_page = get_option('per_page_admin');
         $this->view->search = $search;
+
+    }
+
+    /**
+     * Get map name and server.
+     *
+     * @return void
+     */
+    public function getserverAction()
+    {
+
+        $item_id = $this->_request->getParam('item_id');
+
+        $this->view->item = $item;
+        $this->view->form = $this->_doServerForm($item_id);
+
+    }
+
+    /**
+     * Get namespace and files.
+     *
+     * @return void
+     */
+    public function getnamespaceAction()
+    {
+
+        $item_id = $this->_request->getParam('item_id');
+        $item = _getSingleItem($item_id);
+
+        $this->view->item = $item;
+        $this->view->form = $this->_doServerForm($item_id);
 
     }
 
@@ -306,69 +337,44 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
      *
      * @return void
      */
-    // protected function _doNamespaceForm($mode = 'create', $namespace_id = null)
-    // {
+    protected function _doServerForm($item_id)
+    {
 
-    //     $form = new Zend_Form();
+        $form = new Zend_Form();
+        $form->setAction('getnamespace')->getMethod('post');
 
-    //     $name = new Zend_Form_Element_Text('name');
-    //     $name->setRequired(true)
-    //         ->setLabel('Name:')
-    //         ->setAttrib('size', 55);
+        $name = new Zend_Form_Element_Text('name');
+        $name->setRequired(true)
+            ->setLabel('Name:')
+            ->setAttrib('size', 55);
 
-    //     $server = new Zend_Form_Element_Select('server');
-    //     $server->setLabel('Server:');
-    //     $servers = $this->getTable('NeatlineMapsServer')->getServers();
+        $server = new Zend_Form_Element_Select('server');
+        $server->setLabel('Server:');
+        $servers = $this->getTable('NeatlineMapsServer')->getServers();
 
-    //     // Add each of the servers as an option.
-    //     foreach ($servers as $server_object) {
+        // Add each of the servers as an option.
+        foreach ($servers as $server_object) {
 
-    //         if ($server_object->isOnline()) {
-    //             $server->addMultiOption($server_object->id, $server_object->name);
-    //         }
+            if ($server_object->isOnline()) {
+                $server->addMultiOption($server_object->id, $server_object->name);
+            }
 
-    //     }
+        }
 
-    //     $url = new Zend_Form_Element_Text('url');
-    //     $url->setRequired(true)
-    //         ->setLabel('URL:')
-    //         ->setAttrib('size', 55);
+        $submit = new Zend_Form_Element_Submit('select_namespace');
+        $submit->setLabel('Continue');
 
-    //     $form->addElement($name);
-    //     $form->addElement($url);
-    //     $form->addElement($server);
+        $item = new Zend_Form_Element_Hidden('item_id');
+        $item->setValue($item_id);
 
-    //     if ($mode == 'create') {
+        $form->addElement($name);
+        $form->addElement($server);
+        $form->addElement($submit);
+        $form->addElement($item);
 
-    //         $submit = new Zend_Form_Element_Submit('create_submit');
-    //         $submit->setLabel('Create');
+        return $form;
 
-    //         $form->addElement($submit);
-    //         $form->setAction('create')->setMethod('post');
-
-    //     }
-
-    //     else if ($mode == 'edit') {
-
-    //         $id = new Zend_Form_Element_Hidden('id');
-    //         $id->setValue($namespace_id);
-
-    //         $submit = new Zend_Form_Element_Submit('edit_submit');
-    //         $submit->setLabel('Save');
-
-    //         $delete = new Zend_Form_Element_Submit('delete_submit');
-    //         $delete->setLabel('Delete');
-
-    //         $form->addElement($id);
-    //         $form->addElement($submit);
-    //         $form->addElement($delete);
-    //         $form->setAction('')->setMethod('post');
-
-    //     }
-
-    //     return $form;
-
-    // }
+    }
 
 }
 

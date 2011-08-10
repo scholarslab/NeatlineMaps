@@ -9,7 +9,6 @@
 <ul id="section-nav" class="navigation">
 <?php echo nav(array(
     'Maps' => uri('neatline-maps/maps'),
-    'Servers' => uri('neatline-maps/servers'),
-    'Namespaces'  => uri('neatline-maps/namespaces')
+    'Servers' => uri('neatline-maps/servers')
 ))?>
 </ul>

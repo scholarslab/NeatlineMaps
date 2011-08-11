@@ -161,25 +161,31 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     public function addmapAction()
     {
 
-        // $item_id = $this->_request->getParam('item_id');
-        // $item = _getSingleItem($item_id);
+        $item_id = $this->_request->getParam('item_id');
+        $item = _getSingleItem($item_id);
 
-        // $post = $this->_request->getPost();
-        // $form = $this->_doServerForm($item_id);
+        $post = $this->_request->getPost();
+        $namespaceForm = $this->_doNamespaceForm($item_id);
 
-        // if ($form->isValid($post)) {
+        // Is a namespace selected (must select an existing one or enter a name for a new one).
+        if ($post['existing_namespace'] == '-' && $post['new_namespace'] == '') {
+            // Bounce back to get namespace.
+        }
 
-        //     // Show namespace form.
-        //     $this->view->item = $item;
-        //     $this->view->form = $this->_doNamespaceForm($item_id, $post['server']);
+        // Were files selected for upload?
+        if (!isset($_FILES['map'])) {
+            // Bounce back to get files.
+        }
 
-        // }
+        // If files and namespace, do add.
 
-        // else {
 
-        //     $this->_forward('getserver', 'maps', 'neatline-maps');
 
-        // }
+
+
+
+
+
 
     }
 

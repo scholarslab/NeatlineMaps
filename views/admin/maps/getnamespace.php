@@ -7,7 +7,7 @@
     <h2>Step 2: Upload files and select a namespace:</h2>
 
     <div class="field" id="map-inputs">
-        <label>Find a Map File</label>
+        <label>Upload map files:</label>
         <div class="maps inputs">
             <input name="map[1]" id="file-1" type="file" class="fileinput" />
         </div>

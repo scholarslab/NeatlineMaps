@@ -9,7 +9,7 @@
     <div class="field" id="map-inputs">
         <label>Upload map files:</label>
         <div class="maps inputs">
-            <input name="map[1]" id="file-1" type="file" class="fileinput" />
+            <input name="map[0]" id="file-1" type="file" class="fileinput" />
         </div>
     </div>
 

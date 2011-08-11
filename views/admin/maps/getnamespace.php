@@ -6,6 +6,8 @@
 
     <h2>Step 2: Upload files and select a namespace:</h2>
 
+    <form enctype="application/x-www-form-urlencoded" action="addmap" method="post">
+
     <div class="field" id="map-inputs">
         <label>Upload map files:</label>
         <div class="maps inputs">
@@ -45,7 +47,52 @@
 
     </script>
 
-    <?php echo $form; ?>
+      <dl class="zend_form">
+
+        <dt id="existing_namespace-label">
+          <label for="existing_namespace" class="optional">Use existing namespace:</label>
+        </dt>
+
+        <dd id="existing_namespace-element">
+          <select name="existing_namespace" id="existing_namespace">
+          </select>
+        </dd>
+
+        <dt id="new_namespace-label">
+          <label for="new_namespace" class="optional">Create a new namespace:</label>
+        </dt>
+
+        <dd id="new_namespace-element">
+          <input type="text" name="new_namespace" id="new_namespace" value="" size="55">
+        </dd>
+
+        <dt id="new_url-label">
+          <label for="new_url" class="optional">Url for new namespace:</label>
+        </dt>
+
+        <dd id="new_url-element">
+          <input type="text" name="new_url" id="new_url" value="" size="55">
+        </dd>
+
+        <dd id="create_map-element">
+          <input type="submit" name="create_map" id="create_map" value="Create">
+        </dd>
+
+        <dd id="item_id-element">
+          <input type="hidden" name="item_id" value="2" id="item_id">
+        </dd>
+
+        <dd id="server_id-element">
+          <input type="hidden" name="server_id" value="1" id="server_id">
+        </dd>
+
+        <dd id="map_name-element">
+          <input type="hidden" name="map_name" value="Test" id="map_name">
+        </dd>
+
+      </dl>
+
+    </form>
 
 </div>
 

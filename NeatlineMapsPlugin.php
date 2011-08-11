@@ -169,6 +169,7 @@ class NeatlineMapsPlugin
 
         $db = $this->_db;
         $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsMap`");
+        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsMapFile`");
         $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsServer`");
         $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsNamespace`");
 

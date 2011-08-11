@@ -161,10 +161,9 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     public function addmapAction()
     {
 
-        $item_id = $this->_request->getParam('item_id');
-        $item = $this->getTable('Item')->find($item_id);
-        $server = $this->getTable('NeatlineMapsServer')->find($server_id);
         $post = $this->_request->getPost();
+        $item = $this->getTable('Item')->find($post['item_id']);
+        $server = $this->getTable('NeatlineMapsServer')->find($post['server_id']);
 
         // Is a namespace selected (must select an existing one or enter a name for a new one).
         if ($post['existing_namespace'] == '-' && $post['new_namespace'] == '') {
@@ -183,25 +182,25 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             'map',
             array('ignoreNoFile'=>true));
 
-        // // If new namespace is specified, add namespace.
-        // if ($post['new_namespace'] != '') {
+        // If new namespace is specified, add namespace.
+        if ($post['new_namespace'] != '') {
 
-        //     // Create the new namespace.
-        //     _createGeoServerNamespace(
-        //         $server->url,
-        //         $post['new_namespace'],
-        //         $server->username,
-        //         $server->password,
-        //         $post['new_namespace_url']
-        //     );
+            // Create the new namespace.
+            _createGeoServerNamespace(
+                $server->url,
+                $post['new_namespace'],
+                $server->username,
+                $server->password,
+                $post['new_url']
+            );
 
-        //     $namespace = $post['new_namespace'];
+            $namespace = $post['new_namespace'];
 
-        // } else {
+        } else {
 
-        //     $namespace = $post['existing_namespace'];
+            $namespace = $post['existing_namespace'];
 
-        // }
+        }
 
         // // Create the new map object.
         // $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name']);

@@ -47,18 +47,12 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
         // Chaotic query constructs, so as to be able to do column sorting without undue hassle.
         // Is there a better way to do this?
 
-        $namespaceElement = $this->getTable('Element')->fetchObject(
-            $this->getTable('Element')
-                ->getSelect()->where('e.name = "' . NEATLINE_MAPS_NAMESPACE_FIELD_NAME . '"')
-            );
-
         $select = $this->select()
             ->from(array('m' => $db->prefix . 'neatline_maps_maps'))
             ->joinLeft(array('i' => $db->prefix . 'items'), 'm.item_id = i.id')
             ->columns(array(
                 'map_id' => 'm.id',
-                'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)",
-                'namespace' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = " . $namespaceElement->id . " LIMIT 1)"
+                'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)"
             )
         );
 
@@ -90,6 +84,8 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
         $neatlineMap->server_id = $server->id;
         $neatlineMap->name = $name;
         $neatlineMap->save();
+
+        return $neatlineMap;
 
     }
 

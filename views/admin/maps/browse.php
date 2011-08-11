@@ -30,8 +30,6 @@
                         <tr>
                             <td width="220">
                                 <strong><?php echo $map->name; ?></strong>
-                                <br />
-                                <span style="color: gray; font-size: 0.8em"><a href="<?php echo uri('files/show/' . $map->getFile()->id); ?>">View File Record</a></span>
                             </td>
                             <td width="100" class="fedora-td-small"><?php // echo $map->namespace; ?></td>
                             <td width="100" class="fedora-td-small"><?php echo $map->namespace; ?></td>

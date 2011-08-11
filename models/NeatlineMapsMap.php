@@ -33,34 +33,18 @@ class NeatlineMapsMap extends Omeka_record
 
     public $server_id;
     public $item_id;
+    public $name;
 
     /**
-     * Fetch the map's file object.
+     * Get the map's parent server.
      *
-     * @return Omeka_record object The file.
+     * @return Omeka_record The server object.
      */
-    public function getFile()
+    public function getServer()
     {
 
-        // Is there really not more concise way to fetch a single record,
-        // without having to do array indexing on the far side?
-
-        $fileTable = $this->getTable('File');
-        $select = $fileTable->getSelect()->where('f.id = ' . $this->file_id);
-        return $fileTable->fetchObject($select);
-
-    }
-
-    /**
-     * Get the name slug of the file, without the extension.
-     *
-     * @return string The name slug.
-     */
-    public function getLayerName()
-    {
-
-        $nameParts = explode('.', $this->getFile()->original_filename);
-        return $nameParts[0];
+        // $nameParts = explode('.', $this->getFile()->original_filename);
+        // return $nameParts[0];
 
     }
 

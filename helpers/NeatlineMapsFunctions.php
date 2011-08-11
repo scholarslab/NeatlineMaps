@@ -162,7 +162,7 @@ function _createGeoServerNamespace(
         $successCode = 201;
         $buffer = curl_exec($ch);
 
-        return $buffer;
+        // return $buffer;
 
     }
 

@@ -186,24 +186,25 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             array('ignoreNoFile'=>true));
 
         // Create the new map object.
-        $map = new NeatlineMapsMap;
+        $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name']);
 
-        // Throw each of the files at GeoServer and see if it accepts them.
-        foreach ($files as $file) {
 
-            if (!$this->_db->getTable('NeatlineMapsMap')->fileHasNeatlineMap($file)) {
+        // // Throw each of the files at GeoServer and see if it accepts them.
+        // foreach ($files as $file) {
 
-                if (_putFileToGeoServer($file, $record)) { // if GeoServer accepts the file...
-                    $this->_db->getTable('NeatlineMapsMap')->addNewMap($item, $file);
-                }
+        //     if (!$this->_db->getTable('NeatlineMapsMap')->fileHasNeatlineMap($file)) {
 
-                else {
-                    $file->delete();
-                }
+        //         if (_putFileToGeoServer($file, $record)) { // if GeoServer accepts the file...
+        //             $this->_db->getTable('NeatlineMapsMap')->addNewMap($item, $file);
+        //         }
 
-            }
+        //         else {
+        //             $file->delete();
+        //         }
 
-        }
+        //     }
+
+        // }
 
 
 

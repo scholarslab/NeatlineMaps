@@ -81,7 +81,7 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
      *
      * @return void.
      */
-    public function addNewMap($item, $file)
+    public function addNewMap($item, $server, $name)
     {
 
         $neatlineMap = new NeatlineMapsMap();

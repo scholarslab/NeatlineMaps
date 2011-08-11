@@ -100,9 +100,17 @@ class NeatlineMapsPlugin
         $db->query("
             CREATE TABLE IF NOT EXISTS `$db->NeatlineMapsMap` (
                 `id` int(10) unsigned NOT NULL auto_increment,
-                `file_id` int(10) unsigned,
                 `item_id` int(10) unsigned,
                 `name` tinytext collate utf8_unicode_ci,
+                PRIMARY KEY  (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+            ");
+
+        $db->query("
+            CREATE TABLE IF NOT EXISTS `$db->NeatlineMapsMapFile` (
+                `id` int(10) unsigned NOT NULL auto_increment,
+                `file_id` int(10) unsigned,
+                `map_id` int(10) unsigned,
                 PRIMARY KEY  (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");

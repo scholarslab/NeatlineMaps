@@ -56,9 +56,9 @@
         <dd id="existing_namespace-element">
           <select name="existing_namespace" id="existing_namespace">
 
-            <option>-</option>
+            <option value="-">-</option>
             <?php foreach ($namespaces as $namespace): ?>
-              <option><?php echo $namespace; ?></option>
+              <option value="<?php echo $namespace; ?>"><?php echo $namespace; ?></option>
             <?php endforeach; ?>
 
           </select>

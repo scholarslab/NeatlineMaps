@@ -31,7 +31,7 @@
 class NeatlineMapsMap extends Omeka_record
 {
 
-    public $file_id;
+    public $server_id;
     public $item_id;
 
     /**

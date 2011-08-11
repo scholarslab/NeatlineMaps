@@ -2,7 +2,12 @@
     margin-bottom: 20px;
 }
 
-#server_id-element, #map_name-element, #map_name-label, #server_id-label {
+.neatline-maps-getfiles #server_id-element,
+.neatline-maps-getfiles #map_name-element,
+.neatline-maps-getfiles #map_name-label,
+.neatline-maps-getfiles #server_id-label,
+#submitted-label,
+#submitted-element {
     display: none;
 }
 

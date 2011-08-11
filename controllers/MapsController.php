@@ -436,8 +436,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     /**
      * Build the form for server add/edit.
      *
-     * @param $mode 'create' or 'edit.'
-     * @param $server_id The id of the server for hidden input in edit case.
+     * @param $item_id The id of the item that the server is being attached to.
      *
      * @return void
      */

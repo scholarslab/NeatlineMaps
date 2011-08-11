@@ -55,6 +55,12 @@
 
         <dd id="existing_namespace-element">
           <select name="existing_namespace" id="existing_namespace">
+
+            <option>-</option>
+            <?php foreach ($namespaces as $namespace): ?>
+              <option><?php echo $namespace; ?></option>
+            <?php endforeach; ?>
+
           </select>
         </dd>
 
@@ -79,15 +85,15 @@
         </dd>
 
         <dd id="item_id-element">
-          <input type="hidden" name="item_id" value="2" id="item_id">
+          <input type="hidden" name="item_id" value="<?php echo $item_id; ?>" id="item_id">
         </dd>
 
         <dd id="server_id-element">
-          <input type="hidden" name="server_id" value="1" id="server_id">
+          <input type="hidden" name="server_id" value="<?php echo $server_id; ?>" id="server_id">
         </dd>
 
         <dd id="map_name-element">
-          <input type="hidden" name="map_name" value="Test" id="map_name">
+          <input type="hidden" name="map_name" value="<?php echo $map_name; ?>" id="map_name">
         </dd>
 
       </dl>

@@ -28,43 +28,11 @@
 
 <?php
 
-class NeatlineMapsMap extends Omeka_record
+class NeatlineMapsMapFile extends Omeka_record
 {
 
-    public $server_id;
-    public $item_id;
-    public $name;
-    public $namespace;
-
-    /**
-     * Get the map's parent server.
-     *
-     * @return Omeka_record The server object.
-     */
-    public function getServer()
-    {
-
-        return $this->getTable('NeatlineMapsServer')->find($this->server_id);
-
-    }
-
-    /**
-     * Get the number of files associated with the map.
-     *
-     * @return integer The number of files.
-     */
-    public function getNumberOfFiles()
-    {
-
-        $files = count(
-            $this->getTable('NeatlineMapsMapFile')->fetchObjects(
-                $this->getTable('NeatlineMapsMapFile')->getSelect()->where('map_id = 1')
-            )
-        );
-
-        return $files;
-
-    }
+    public $file_id;
+    public $map_id;
 
 }
 

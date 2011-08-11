@@ -103,6 +103,7 @@ class NeatlineMapsPlugin
                 `item_id` int(10) unsigned,
                 `server_id` int(10) unsigned,
                 `name` tinytext collate utf8_unicode_ci,
+                `namespace` tinytext collate utf8_unicode_ci,
                 PRIMARY KEY  (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");

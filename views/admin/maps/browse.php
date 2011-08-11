@@ -20,7 +20,6 @@
                             'Server' => 'server',
                             'Namespace' => 'namespace',
                             'Item' => 'parent_item',
-                            'Preview' => null,
                             'Actions' => null
                         )); ?>
                     </tr>
@@ -28,16 +27,14 @@
                 <tbody>
                     <?php foreach ($maps as $map): ?>
                         <tr>
-                            <td width="220">
-                                <strong><?php echo $map->name; ?></strong>
+                            <td>
+                              <a href="<?php echo uri('neatline-maps/maps/' . $map->id); ?>"><strong><?php echo $map->name; ?></strong></a>
+                              (<?php echo $map->getNumberOfFiles(); ?> <?php echo ($map->getNumberOfFiles() > 1) ? 'files' : 'file'; ?>)
                             </td>
-                            <td width="100" class="fedora-td-small"><?php // echo $map->namespace; ?></td>
-                            <td width="100" class="fedora-td-small"><?php echo $map->namespace; ?></td>
-                            <td class="fedora-td-small"><a href="<?php echo uri('items/show/' . $map->item_id); ?>"><?php echo $map->parent_item; ?></a></td>
-                            <td class="fedora-td-small"><a href="<?php echo uri('fedora-connector/servers/edit/' . $datastream->server_id); ?>"><?php echo $datastream->server_name; ?></a></td>
-                            <!-- <td><?php echo $datastream->metadata_stream; ?></td> -->
-                            <td style="text-align: center;"><?php echo $datastream->renderPreview(); ?></td>
-                            <td width="60"><?php echo $this->partial('datastreams/datastreams-actions.php', array('id' => $datastream->datastream_id)); ?></td>
+                            <td><?php echo $map->getServer()->name; ?></td>
+                            <td><?php echo $map->namespace; ?></td>
+                            <td><a href="<?php echo uri('items/show/' . $map->item_id); ?>"><?php echo $map->parent_item; ?></a></td>
+                            <td><?php echo $this->partial('maps/maps-actions.php', array('id' => $map->id)); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

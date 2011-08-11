@@ -203,7 +203,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         }
 
         // Create the new map object.
-        $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name']);
+        $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name'], $namespace);
 
         // Throw each of the files at GeoServer and see if it accepts them.
         $successCount = 0;
@@ -232,7 +232,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         }
 
-        // $this->redirect->goto('browse');
+        $this->redirect->goto('browse');
 
     }
 

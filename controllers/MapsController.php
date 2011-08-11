@@ -154,6 +154,36 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     }
 
     /**
+     * Create the map.
+     *
+     * @return void
+     */
+    public function addmapAction()
+    {
+
+        // $item_id = $this->_request->getParam('item_id');
+        // $item = _getSingleItem($item_id);
+
+        // $post = $this->_request->getPost();
+        // $form = $this->_doServerForm($item_id);
+
+        // if ($form->isValid($post)) {
+
+        //     // Show namespace form.
+        //     $this->view->item = $item;
+        //     $this->view->form = $this->_doNamespaceForm($item_id, $post['server']);
+
+        // }
+
+        // else {
+
+        //     $this->_forward('getserver', 'maps', 'neatline-maps');
+
+        // }
+
+    }
+
+    /**
      * Show and process form to add new namespace.
      *
      * @return void
@@ -439,15 +469,19 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $form->setAction('addmap')->getMethod('post');
 
         $namespace = new Zend_Form_Element_Select('existing_namespace');
-        $namespace->setLabel('Namespace:');
+        $namespace->setLabel('Use existing namespace:');
         $namespaces = $server->getNamespaceNames();
+
+        $namespace->addMultiOption('-', '(use new namespace below)');
 
         // Add each of the servers as an option.
         foreach ($namespaces as $namespace_node) {
-
             $namespace->addMultiOption($namespace_node, $namespace_node);
-
         }
+
+        $newNamespace = new Zend_Form_Element_Text('new_namespace');
+        $newNamespace->setLabel('Create a new namespace:')
+            ->setAttrib('size', 55);
 
         $submit = new Zend_Form_Element_Submit('create_map');
         $submit->setLabel('Create');
@@ -456,6 +490,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $item->setValue($item_id);
 
         $form->addElement($namespace);
+        $form->addElement($newNamespace);
         $form->addElement($submit);
         $form->addElement($item);
 

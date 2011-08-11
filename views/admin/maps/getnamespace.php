@@ -4,7 +4,7 @@
 
     <?php echo flash(); ?>
 
-    <h2>Step 2: Select a namespace and upload map files:</h2>
+    <h2>Step 2: Upload files and select a namespace:</h2>
 
     <div class="field" id="map-inputs">
         <label>Find a Map File</label>

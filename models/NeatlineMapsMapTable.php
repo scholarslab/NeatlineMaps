@@ -77,7 +77,8 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
      * Inserts a new map.
      *
      * @param Omeka_record $item The parent item.
-     * @param Omeka_record $file The parent file.
+     * @param Omeka_record $server The parent server.
+     * @param string $name The name of the map.
      *
      * @return void.
      */
@@ -86,7 +87,8 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
 
         $neatlineMap = new NeatlineMapsMap();
         $neatlineMap->item_id = $item->id;
-        $neatlineMap->file_id = $file->id;
+        $neatlineMap->server_id = $server->id;
+        $neatlineMap->name = $name;
         $neatlineMap->save();
 
     }

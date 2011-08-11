@@ -163,6 +163,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         $item_id = $this->_request->getParam('item_id');
         $item = _getSingleItem($item_id);
+        $server = $this->getTable('NeatlineMapsServer')->find($server_id);
 
         $post = $this->_request->getPost();
         $namespaceForm = $this->_doNamespaceForm($item_id);
@@ -178,33 +179,54 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         }
 
         // If files and namespace, do add.
-
         $files = insert_files_for_item(
             $record,
             'Upload',
             'map',
             array('ignoreNoFile'=>true));
 
+        // If new namespace is specified, add namespace.
+        if ($post['new_namespace'] != '') {
+
+            // Create the new namespace.
+            _createGeoServerNamespace(
+                $server->url,
+                $post['new_namespace'],
+                $server->username,
+                $server->password,
+                $post['new_namespace_url']
+            );
+
+            $namespace = $post['new_namespace'];
+
+        } else {
+
+            $namespace = $post['existing_namespace'];
+
+        }
+
         // Create the new map object.
         $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name']);
 
+        // Throw each of the files at GeoServer and see if it accepts them.
+        $successCount = 0;
+        foreach ($files as $file) {
 
-        // // Throw each of the files at GeoServer and see if it accepts them.
-        // foreach ($files as $file) {
+            if (_putFileToGeoServer($file, $server, $namespace)) { // if GeoServer accepts the file...
+                $this->_db->getTable('NeatlineMapsMapFile')->addNewMapFile($item, $file);
+                $successCount++;
+            }
 
-        //     if (!$this->_db->getTable('NeatlineMapsMap')->fileHasNeatlineMap($file)) {
+            else {
+                $file->delete();
+            }
 
-        //         if (_putFileToGeoServer($file, $record)) { // if GeoServer accepts the file...
-        //             $this->_db->getTable('NeatlineMapsMap')->addNewMap($item, $file);
-        //         }
+        }
 
-        //         else {
-        //             $file->delete();
-        //         }
-
-        //     }
-
-        // }
+        // If none of the files were successfully posted to GeoServer, delete the empty map record.
+        if ($successCount == 0) {
+            $map->delete();
+        }
 
 
 
@@ -514,6 +536,10 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $newNamespace->setLabel('Create a new namespace:')
             ->setAttrib('size', 55);
 
+        $newNamespaceUrl = new Zend_Form_Element_Text('new_url');
+        $newNamespaceUrl->setLabel('Url for new namespace:')
+            ->setAttrib('size', 55);
+
         $submit = new Zend_Form_Element_Submit('create_map');
         $submit->setLabel('Create');
 
@@ -528,6 +554,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         $form->addElement($namespace);
         $form->addElement($newNamespace);
+        $form->addElement($newNamespaceUrl);
         $form->addElement($submit);
         $form->addElement($item_id_input);
         $form->addElement($server_id_input);

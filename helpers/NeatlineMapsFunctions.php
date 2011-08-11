@@ -162,6 +162,8 @@ function _createGeoServerNamespace(
         $successCode = 201;
         $buffer = curl_exec($ch);
 
+        return $buffer;
+
     }
 
 }
@@ -170,14 +172,13 @@ function _createGeoServerNamespace(
  * Post a file to GeoServer and see if it accepts it as a valid geotiff.
  *
  * @param Omeka_record $file The file to send.
+ * @param Omeka_record $server The server to use.
+ * @param string $namespace The namespace to add the file to.
  *
  * @return boolean True if GeoServer accepts the file.
  */
-function _putFileToGeoServer($file, $item)
+function _putFileToGeoServer($file, $server, $namespace)
 {
-
-    $namespace = $item->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
-    $namespace = $namespace[0]->text;
 
     // Does GeoServer recognize the file as a map?
     $zip = new ZipArchive();
@@ -186,14 +187,14 @@ function _putFileToGeoServer($file, $item)
     $zip->addFile(ARCHIVE_DIR . '/files/' . $file->archive_filename, $file->original_filename);
     $zip->close();
 
-    $coverageAddress = get_option('neatlinemaps_geoserver_url') . '/rest/workspaces/' .
+    $coverageAddress = $server->url . '/rest/workspaces/' .
         $namespace . '/coveragestores/' . $file->original_filename .
         '/file.geotiff';
 
     $ch = curl_init($coverageAddress);
     curl_setopt($ch, CURLOPT_PUT, True);
 
-    $authString = get_option('neatlinemaps_geoserver_user') . ':' . get_option('neatlinemaps_geoserver_password');
+    $authString = $server->username . ':' . $server->password;
     curl_setopt($ch, CURLOPT_USERPWD, $authString);
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/zip'));

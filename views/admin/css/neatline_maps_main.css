@@ -7,7 +7,8 @@
 .neatline-maps-getfiles #map_name-label,
 .neatline-maps-getfiles #server_id-label,
 #submitted-label,
-#submitted-element {
+#submitted-element,
+#create_map-label {
     display: none;
 }
 

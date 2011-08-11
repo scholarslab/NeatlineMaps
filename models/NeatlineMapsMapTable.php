@@ -55,7 +55,6 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
         $select = $this->select()
             ->from(array('m' => $db->prefix . 'neatline_maps_maps'))
             ->joinLeft(array('i' => $db->prefix . 'items'), 'm.item_id = i.id')
-            ->joinLeft(array('f' => $db->prefix . 'files'), 'm.file_id = f.id')
             ->columns(array(
                 'map_id' => 'm.id',
                 'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)",

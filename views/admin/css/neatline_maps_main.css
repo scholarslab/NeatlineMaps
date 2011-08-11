@@ -1,9 +1,13 @@
 .zend_form dd {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+#server_id-element, #map_name-element, #map_name-label, #server_id-label {
+    display: none;
 }
 
 .fedora-preview {
-	max-width: 80px;
+    max-width: 80px;
 }
 
 #edit_submit-element, #delete_submit-element {

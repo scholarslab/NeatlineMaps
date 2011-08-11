@@ -141,7 +141,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
             // Show namespace form.
             $this->view->item = $item;
-            $this->view->form = $this->_doNamespaceForm($item_id, $post['server']);
+            $this->view->form = $this->_doNamespaceForm($item_id, $post['server'], $post['map_name']);
 
         }
 
@@ -179,6 +179,31 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         // If files and namespace, do add.
 
+        $files = insert_files_for_item(
+            $record,
+            'Upload',
+            'map',
+            array('ignoreNoFile'=>true));
+
+        // Create the new map object.
+        $map = new NeatlineMapsMap;
+
+        // Throw each of the files at GeoServer and see if it accepts them.
+        foreach ($files as $file) {
+
+            if (!$this->_db->getTable('NeatlineMapsMap')->fileHasNeatlineMap($file)) {
+
+                if (_putFileToGeoServer($file, $record)) { // if GeoServer accepts the file...
+                    $this->_db->getTable('NeatlineMapsMap')->addNewMap($item, $file);
+                }
+
+                else {
+                    $file->delete();
+                }
+
+            }
+
+        }
 
 
 
@@ -421,7 +446,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $form = new Zend_Form();
         $form->setAction('getnamespace')->getMethod('post');
 
-        $name = new Zend_Form_Element_Text('name');
+        $name = new Zend_Form_Element_Text('map_name');
         $name->setRequired(true)
             ->setLabel('Name:')
             ->setAttrib('size', 55);
@@ -466,7 +491,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
      *
      * @return void
      */
-    protected function _doNamespaceForm($item_id, $server_id)
+    protected function _doNamespaceForm($item_id, $server_id, $map_name)
     {
 
         $server = $this->getTable('NeatlineMapsServer')->find($server_id);
@@ -492,13 +517,21 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $submit = new Zend_Form_Element_Submit('create_map');
         $submit->setLabel('Create');
 
-        $item = new Zend_Form_Element_Hidden('item_id');
-        $item->setValue($item_id);
+        $item_id_input = new Zend_Form_Element_Hidden('item_id');
+        $item_id_input->setValue($item_id);
+
+        $server_id_input = new Zend_Form_Element_Hidden('server_id');
+        $server_id_input->setValue($server_id);
+
+        $map_name_input = new Zend_Form_Element_Hidden('map_name');
+        $map_name_input->setValue($map_name);
 
         $form->addElement($namespace);
         $form->addElement($newNamespace);
         $form->addElement($submit);
-        $form->addElement($item);
+        $form->addElement($item_id_input);
+        $form->addElement($server_id_input);
+        $form->addElement($map_name_input);
 
         return $form;
 

@@ -1,4 +1,4 @@
-<form action="<?php echo uri('/neatline-maps/maps/edit/' . $id); ?>" class="button-form fedora-inline-form-servers">
+<form action="<?php echo uri('/neatline-maps/maps/files/' . $id); ?>" class="button-form fedora-inline-form-servers">
   <input type="submit" value="Edit Files" class="fedora-inline-button bagit-create-bag">
 </form>
 

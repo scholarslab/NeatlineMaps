@@ -29,7 +29,7 @@
                         <tr>
                             <td width="150">
                               <a href="<?php echo uri('neatline-maps/maps/' . $map->id); ?>"><strong><?php echo $map->name; ?></strong></a>
-                              (<?php echo $map->getNumberOfFiles(); ?> <?php echo ($map->getNumberOfFiles() > 1) ? 'files' : 'file'; ?>)
+                              <span style="color: gray; font-size: 0.9em;">(<?php echo $map->getNumberOfFiles(); ?> <?php echo ($map->getNumberOfFiles() > 1) ? 'files' : 'file'; ?> )</span>
                             </td>
                             <td width="130"><?php echo $map->getServer()->name; ?></td>
                             <td><?php echo $map->namespace; ?></td>

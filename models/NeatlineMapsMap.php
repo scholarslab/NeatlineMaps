@@ -56,13 +56,11 @@ class NeatlineMapsMap extends Omeka_record
     public function getNumberOfFiles()
     {
 
-        $files = count(
+        return count(
             $this->getTable('NeatlineMapsMapFile')->fetchObjects(
                 $this->getTable('NeatlineMapsMapFile')->getSelect()->where('map_id = 1')
             )
         );
-
-        return $files;
 
     }
 

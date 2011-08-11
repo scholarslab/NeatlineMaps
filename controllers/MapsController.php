@@ -162,7 +162,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     {
 
         $item_id = $this->_request->getParam('item_id');
-        $item = _getSingleItem($item_id);
+        $item = $this->getTable('Item')->find($item_id);
         $server = $this->getTable('NeatlineMapsServer')->find($server_id);
         $post = $this->_request->getPost();
 

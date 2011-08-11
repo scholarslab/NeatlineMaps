@@ -6,7 +6,7 @@
 
     <h2>Step 2: Upload files and select a namespace:</h2>
 
-    <form enctype="application/x-www-form-urlencoded" action="addmap" method="post">
+    <form enctype="multipart/form-data" action="addmap" method="post">
 
     <div class="field" id="map-inputs">
         <label>Upload map files:</label>
@@ -65,7 +65,7 @@
         </dd>
 
         <dt id="new_namespace-label">
-          <label for="new_namespace" class="optional">Create a new namespace:</label>
+          <label for="new_namespace" class="optional">Or, create a new namespace:</label>
         </dt>
 
         <dd id="new_namespace-element">

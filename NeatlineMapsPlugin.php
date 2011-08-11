@@ -37,10 +37,10 @@ class NeatlineMapsPlugin
         'define_routes',
         'config_form',
         'config',
-        'after_save_file',
+        // 'after_save_file',
         'public_theme_header',
         'admin_theme_header',
-        'after_save_form_item',
+        // 'after_save_form_item',
         'public_append_to_items_show'
     );
 

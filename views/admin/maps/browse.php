@@ -29,9 +29,8 @@
                         <tr>
                             <td width="150">
                               <a href="<?php echo uri('neatline-maps/maps/' . $map->id); ?>"><strong><?php echo $map->name; ?></strong></a>
-                              <span style="color: gray; font-size: 0.9em;">(<?php echo $map->getNumberOfFiles(); ?> <?php echo ($map->getNumberOfFiles() > 1) ? 'files' : 'file'; ?> )</span>
                             </td>
-                            <td width="130"><?php echo $map->getServer()->name; ?></td>
+                            <td width="130"><?php echo $map->server; ?></td>
                             <td><?php echo $map->namespace; ?></td>
                             <td width="120"><a href="<?php echo uri('items/show/' . $map->item_id); ?>"><?php echo $map->parent_item; ?></a></td>
                             <td><?php echo $this->partial('maps/maps-actions.php', array('id' => $map->id)); ?></td>

@@ -31,7 +31,7 @@
                               <a href="<?php echo uri('neatline-maps/maps/' . $map->id); ?>"><strong><?php echo $map->name; ?></strong></a>
                             </td>
                             <td width="130"><a href="<?php echo uri('neatline-maps/servers/edit/' . $map->getServer()->id); ?>"><?php echo $map->server; ?></a></td>
-                            <td><?php echo $map->namespace; ?></td>
+                            <td><a href="<?php echo $map->getNamespaceUrl(); ?>" target="_blank"><?php echo $map->namespace; ?></a></td>
                             <td width="120"><a href="<?php echo uri('items/show/' . $map->item_id); ?>"><?php echo $map->parent_item; ?></a></td>
                             <td><?php echo $this->partial('maps/maps-actions.php', array('id' => $map->map_id)); ?></td>
                         </tr>

@@ -211,6 +211,35 @@ function _putFileToGeoServer($file, $server, $namespace)
 }
 
 /**
+ * Deletes a coveragestore from GeoServer.
+ *
+ * @param Omeka_record $file The file corresponding to the coveragestore.
+ * @param Omeka_record $map The parent map.
+ * @param Omeka_record $server The parent server.
+ *
+ * @return boolean True if GeoServer accepts the file.
+ */
+function _deleteFileFromGeoserver($file, $map, $server)
+{
+
+    $coverageAddress = $server->url . '/rest/workspaces/' .
+        $namespace . '/coveragestores/' . $file->original_filename;
+
+    $ch = curl_init($coverageAddress);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+
+    $authString = $server->username . ':' . $server->password;
+    curl_setopt($ch, CURLOPT_USERPWD, $authString);
+
+    $successCode = 405;
+    $buffer = curl_exec($ch);
+    $info = curl_getinfo($ch);
+
+    return ($info['http_code'] == $successCode);
+
+}
+
+/**
  * Build the main WMS address for the JavaScript.
  *
  * @return string The url.

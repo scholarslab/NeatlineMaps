@@ -48,6 +48,18 @@ class NeatlineMapsMap extends Omeka_record
 
     }
 
+    /**
+     * Get the namespace url.
+     *
+     * @return string The url.
+     */
+    public function getNamespaceUrl()
+    {
+
+        return $this->getServer()->url . '/rest/namespaces/' . $this->namespace;
+
+    }
+
 }
 
 /*

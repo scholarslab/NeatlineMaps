@@ -95,22 +95,46 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
      * Delete a map and all of its component file records.
      *
      * @param integer $id The id of the map to delete;
+     * @param boolean $deleteFiles True if the native file records should be deleted.
+     * @param boolean $deleteLayers True if the native file records should be deleted.
      *
      * @return void.
      */
-    public function deleteMap($id)
+    public function deleteMap($id, $deleteFiles, $deleteLayers)
     {
 
         // Delete the map.
         $map = $this->find($id);
+        $server = $map->getServer();
         $map->delete();
 
         // Delete the file records.
-        $files = $this->getTable('NeatlineMapsMapFile')->fetchObjects(
+        $mapFiles = $this->getTable('NeatlineMapsMapFile')->fetchObjects(
             $this->getTable('NeatlineMapsMapFile')->getSelect()->where('map_id = ' . $id)
         );
 
-        $files->delete();
+        $fileTable = $this->getTable('File');
+
+        foreach($mapFiles as $mapFile) {
+
+            // Delete the NeatlineMapsMapFile record.
+            $mapFile->delete();
+
+            // Delete the native file record.
+            if ($deleteFiles) {
+
+                $file = $fileTable->find($mapFile->file_id);
+                $file->delete();
+
+
+                // Delete the GeoServer layer.
+                if ($deleteLayers) {
+                    _deleteFileFromGeoserver($file, $map, $server);
+                }
+
+            }
+
+        }
 
     }
 

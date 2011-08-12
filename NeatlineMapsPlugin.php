@@ -293,6 +293,7 @@ class NeatlineMapsPlugin
         if ($request->getModuleName() == 'neatline-maps') {
             _doTabAdminHeaderJsAndCss();
             _doItemAdminHeaderJsAndCss();
+            _doHeaderJsAndCss();
         }
 
     }

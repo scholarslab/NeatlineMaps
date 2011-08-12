@@ -34,6 +34,18 @@ class NeatlineMapsMapFile extends Omeka_record
     public $file_id;
     public $map_id;
 
+    /**
+     * Returns the native Omeka file for the Map File record.
+     *
+     * @return Omeka_record The file.
+     */
+    public function getFile()
+    {
+
+        return $this->getTable('File')->find($this->file_id);
+
+    }
+
 }
 
 /*

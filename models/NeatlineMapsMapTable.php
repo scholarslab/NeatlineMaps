@@ -128,9 +128,9 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
 
 
                 // Delete the GeoServer layer.
-                if ($deleteLayers) {
-                    _deleteFileFromGeoserver($file, $map, $server);
-                }
+                // if ($deleteLayers) {
+                //     _deleteFileFromGeoserver($file, $map, $server);
+                // }
 
             }
 

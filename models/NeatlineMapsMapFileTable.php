@@ -32,6 +32,36 @@ class NeatlineMapsMapFileTable extends Omeka_Db_Table
 {
 
     /**
+     * Returns files for the map edit listing.
+     *
+     * @param string $order The constructed SQL order clause.
+     * @param string $page The page.
+     *
+     * @return object The maps.
+     */
+    public function getFiles($map_id, $page = null, $order = null)
+    {
+
+        $db = get_db();
+
+        // Chaotic query constructs, so as to be able to do column sorting without undue hassle.
+        // Is there a better way to do this?
+
+        $select = $this->select()
+            ->from(array('m' => $db->prefix . 'neatline_maps_map_files'));
+
+        if (isset($page)) {
+            $select->limitPage($page, get_option('per_page_admin'));
+        }
+        if (isset($order)) {
+            $select->order($order);
+        }
+
+        return $this->fetchObjects($select);
+
+    }
+
+    /**
      * Inserts a new map file.
      *
      * @param Omeka_record $map The parent map.

@@ -32,7 +32,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 {
 
     /**
-     * Show servers.
+     * Show maps.
      *
      * @return void
      */
@@ -42,12 +42,39 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $sort_field = $this->_request->getParam('sort_field');
         $sort_dir = $this->_request->getParam('sort_dir');
 
-        // Get the servers.
+        // Get the maps.
         $page = $this->_request->page;
         $order = _doColumnSortProcessing($sort_field, $sort_dir);
         $maps = $this->getTable('NeatlineMapsMap')->getMaps($page, $order);
 
         $this->view->maps = $maps;
+
+        $this->view->current_page = $page;
+        $this->view->total_results = $this->getTable('NeatlineMapsMap')->count();
+        $this->view->results_per_page = get_option('per_page_admin');
+
+    }
+
+    /**
+     * View, edit, delete map files.
+     *
+     * @return void
+     */
+    public function editmapAction()
+    {
+
+        $sort_field = $this->_request->getParam('sort_field');
+        $sort_dir = $this->_request->getParam('sort_dir');
+        $id = $this->_request->id;
+
+        // Get the files.
+        $page = $this->_request->page;
+        $order = _doColumnSortProcessing($sort_field, $sort_dir);
+        $files = $this->getTable('NeatlineMapsMapFile')->getFiles($id, $page, $order);
+        $map = $this->getTable('NeatlineMapsMap')->find($id);
+
+        $this->view->files = $files;
+        $this->view->map = $map;
 
         $this->view->current_page = $page;
         $this->view->total_results = $this->getTable('NeatlineMapsMap')->count();

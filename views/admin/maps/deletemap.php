@@ -12,9 +12,9 @@
             <input type="checkbox" name="delete_omeka_files" id="delete_omeka_files" checked> Delete Omeka files?
         </label>
 
-        <label for="delete_geoserver_files">
+        <!-- <label for="delete_geoserver_files">
             <input type="checkbox" name="delete_geoserver_files" id="delete_geoserver_files" checked> Delete GeoServer layers?
-        </label>
+        </label> -->
 
         <input type="submit" name="deleteconfirm_submit" id="delete_submit" class="fedora-delete" value="Delete">
 

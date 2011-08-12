@@ -92,69 +92,25 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
     }
 
     /**
-     * Get all maps associated with an item.
+     * Delete a map and all of its component file records.
      *
-     * @param Omeka_Db_Record $item The item.
+     * @param integer $id The id of the map to delete;
      *
-     * @return array of Omeka_Db_Record objects The maps.
+     * @return void.
      */
-    public function getMapsByItem($item)
+    public function deleteMap($id)
     {
 
-        return $this->findBySql('item_id = ?', array($item->id));
+        // Delete the map.
+        $map = $this->find($id);
+        $map->delete();
 
-    }
+        // Delete the file records.
+        $files = $this->getTable('NeatlineMapsMapFile')->fetchObjects(
+            $this->getTable('NeatlineMapsMapFile')->getSelect()->where('map_id = ' . $id)
+        );
 
-    /**
-     * Get all maps associated with an item.
-     *
-     * @param Omeka_Db_Record $item The item.
-     *
-     * @return array of Omeka_Db_Record objects The maps.
-     */
-    public function getMapFilesByItem($item)
-    {
-
-        $maps = $this->findBySql('item_id = ?', array($item->id));
-        $files = array();
-
-        foreach ($maps as $map) {
-
-            $files[] = $map->getFile();
-
-        }
-
-        return $files;
-
-    }
-
-    /**
-     * See whether there is a NeatlineMaps record for a given file.
-     *
-     * @param Omeka_record $file The file.
-     *
-     * @return boolean True if there is a NeatlineMaps record associated
-     * with the file.
-     */
-    public function fileHasNeatlineMap($file)
-    {
-
-        return (count($this->findBySql('file_id = ?', array($file->id))) > 0);
-
-    }
-
-    /**
-     * See whether there is a NeatlineMaps record for a given item.
-     *
-     * @param Omeka_record $item The item.
-     *
-     * @return boolean True if there is a NeatlineMaps record associated
-     * with the item.
-     */
-    public function itemHasNeatlineMap($item)
-    {
-
-        return (count($this->findBySql('item_id = ?', array($item->id))) > 0);
+        $files->delete();
 
     }
 

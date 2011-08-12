@@ -16,7 +16,7 @@
             <input type="checkbox" name="delete_geoserver_files" id="delete_geoserver_files"> Delete GeoServer files?
         </label>
 
-        <input type="submit" name="deleteconfirm_submit" id="delete_submit" value="Delete">
+        <input type="submit" name="deleteconfirm_submit" id="delete_submit" class="fedora-delete" value="Delete">
 
     </form>
 

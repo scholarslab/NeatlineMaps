@@ -46,6 +46,18 @@ class NeatlineMapsMapFile extends Omeka_record
 
     }
 
+    /**
+     * Returns the parent map.
+     *
+     * @return Omeka_record The file.
+     */
+    public function getMap()
+    {
+
+        return $this->getTable('NeatlineMapsMap')->find($this->map_id);
+
+    }
+
 }
 
 /*

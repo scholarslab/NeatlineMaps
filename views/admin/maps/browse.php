@@ -33,7 +33,7 @@
                             <td width="130"><?php echo $map->server; ?></td>
                             <td><?php echo $map->namespace; ?></td>
                             <td width="120"><a href="<?php echo uri('items/show/' . $map->item_id); ?>"><?php echo $map->parent_item; ?></a></td>
-                            <td><?php echo $this->partial('maps/maps-actions.php', array('id' => $map->id)); ?></td>
+                            <td><?php echo $this->partial('maps/maps-actions.php', array('id' => $map->map_id)); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

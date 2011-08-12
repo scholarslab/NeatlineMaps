@@ -237,222 +237,32 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     }
 
     /**
-     * Show and process form to add new namespace.
+     * Confirm map delete, show options, do delete.
      *
      * @return void
      */
-    // public function createAction()
-    // {
+    public function deletemapAction()
+    {
 
-    //     if ($this->_request->isPost()) {
+        $id = $this->_request->id;
+        $map = $this->getTable('NeatlineMapsMap')->find($id);
+        $post = $this->_request->getPost();
 
-    //         // Get the data, instantiate validator.
-    //         $data = $this->_request->getPost();
-    //         $form = $this->_doNamespaceForm();
+        if (isset($post['deleteconfirm_submit'])) {
 
-    //         // Are all the fields filled out?
-    //         if ($form->isValid($data)) {
+            if ($this->getTable('NeatlineMapsServer')->deleteServer($id)) {
+                $this->flashSuccess('Server ' . $server->name . ' deleted');
+                $this->redirect->goto('browse');
+            } else {
+                $this->flashError('Error: Server ' . $server->name . ' was not deleted');
+                $this->redirect->goto('browse');
+            }
 
-    //             $namespaceStatus = $this->getTable('NeatlineMapsNamespace')->createNamespace($data);
+        }
 
-    //             // Create server, process success.
-    //             if ($namespaceStatus == 'added') {
+        $this->view->map = $map;
 
-    //                 $this->flashSuccess('Namespace created on GeoServer and registered in Neatline.');
-    //                 $this->redirect->goto('browse');
-
-    //             } else if ($namespaceStatus == 'registered') {
-
-    //                 $this->flashSuccess('Namespace registered in Neatline');
-    //                 $this->redirect->goto('browse');
-
-    //             } else if ($namespaceStatus == 'updated') {
-
-
-
-    //             }
-
-    //         }
-
-    //         else {
-
-    //             $form->populate($data);
-    //             $this->view->form = $form;
-
-    //         }
-
-    //     }
-
-    //     else {
-
-    //         if (count($this->getTable('NeatlineMapsServer')->getServers()) > 0) {
-    //             $form = $this->_doNamespaceForm();
-    //             $this->view->form = $form;
-    //         }
-
-    //         else {
-    //             $this->flashError('Before you can create a namespace, you have to add a server.');
-    //             $this->_redirect('/neatline-maps/servers/create');
-    //         }
-
-    //     }
-
-    // }
-
-    /**
-     * Show form to edit existing server.
-     *
-     * @return void
-     */
-    // public function editAction()
-    // {
-
-    //     // If an edited form has been submitted
-    //     if ($this->_request->isPost()) {
-
-    //         // Get the data, instantiate validator.
-    //         $data = $this->_request->getPost();
-    //         $form = $this->_doServerForm('edit', $data['id']);
-
-    //         // If delete was hit, do the delete.
-    //         if (isset($data['delete_submit'])) {
-    //             $this->_redirect('neatline-maps/servers/delete/' . $data['id']);
-    //         }
-
-    //         // Are all the fields filled out?
-    //         if ($form->isValid($data)) {
-
-    //             // If save was hit, do save.
-    //             if (isset($data['edit_submit'])) {
-
-    //                 if ($this->getTable('NeatlineMapsServer')->saveServer($data)) {
-
-    //                     $this->flashSuccess('Information for server ' . $data['name'] . ' saved');
-    //                     $this->redirect->goto('browse');
-
-    //                 } else {
-
-    //                     $this->flashError('Error: Information for server ' . $data['name'] . ' not saved');
-    //                     $this->redirect->goto('browse');
-
-    //                 }
-
-    //             }
-
-    //         }
-
-    //         else {
-
-    //             $form->populate($data);
-    //             $id = $this->_request->id;
-    //             $server = $this->getTable('NeatlineMapsServer')->find($id);
-
-    //             $this->view->form = $form;
-    //             $this->view->server = $server;
-
-    //         }
-
-    //     }
-
-    //     else {
-
-    //         $id = $this->_request->id;
-    //         $server = $this->getTable('NeatlineMapsServer')->find($id);
-
-    //         // Get the form.
-    //         $form = $this->_doServerForm('edit', $id);
-
-    //         // Fill it with the data.
-    //         $form->populate(array(
-    //             'name' => $server->name,
-    //             'url' => $server->url,
-    //             'username' => $server->username,
-    //             'password' => $server->password
-    //         ));
-
-    //         $this->view->form = $form;
-    //         $this->view->server = $server;
-
-    //     }
-
-    // }
-
-    /**
-     * Process edit form - delete or save.
-     *
-     * @return void
-     */
-    // public function updateAction()
-    // {
-
-    //     // // Get the data, instantiate validator.
-    //     // $data = $this->_request->getPost();
-    //     // $form = $this->_doServerForm();
-
-    //     // // If delete was hit, do the delete.
-    //     // if (isset($data['delete_submit'])) {
-    //     //     $this->_redirect('neatline-maps/servers/delete/' . $data['id']);
-    //     //     exit();
-    //     // }
-
-    //     // // Are all the fields filled out?
-    //     // if ($form->isValid($data)) {
-
-    //     //     // If save was hit, do save.
-    //     //     if (isset($data['edit_submit'])) {
-
-    //     //         if ($this->getTable('NeatlineMapsServer')->saveServer($data)) {
-
-    //     //             $this->flashSuccess('Information for server ' . $data['name'] . ' saved');
-    //     //             $this->redirect->goto('browse');
-
-    //     //         } else {
-
-    //     //             $this->flashError('Error: Information for server ' . $data['name'] . ' not saved');
-    //     //             $this->redirect->goto('browse');
-
-    //     //         }
-
-    //     //     }
-
-    //     // }
-
-    //     // else {
-
-    //     //     $this->flashError('The server must have a name, URL, username, and password.');
-    //     //     $this->_redirect('neatline-maps/servers/edit/' . $data['id']);
-
-    //     // }
-
-    // }
-
-    /**
-     * Confirm delete, do delete.
-     *
-     * @return void
-     */
-    // public function deleteAction()
-    // {
-
-    //     $id = $this->_request->id;
-    //     $server = $this->getTable('NeatlineMapsServer')->find($id);
-    //     $post = $this->_request->getPost();
-
-    //     if (isset($post['deleteconfirm_submit'])) {
-
-    //         if ($this->getTable('NeatlineMapsServer')->deleteServer($id)) {
-    //             $this->flashSuccess('Server ' . $server->name . ' deleted');
-    //             $this->redirect->goto('browse');
-    //         } else {
-    //             $this->flashError('Error: Server ' . $server->name . ' was not deleted');
-    //             $this->redirect->goto('browse');
-    //         }
-
-    //     }
-
-    //     $this->view->name = $server->name;
-
-    // }
+    }
 
     /**
      * Build the form for server add/edit.

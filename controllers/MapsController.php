@@ -185,22 +185,36 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     {
 
         $post = $this->_request->getPost();
-        $server = $this->getTable('NeatlineMapsServer')->find($post['server']);
+        $server = $this->getTable('NeatlineMapsServer')->find($post['server_id']);
         $form = $this->_doServerForm($post['item_id']);
 
-        if ($form->isValid($post)) {
+        if (!isset($post['existing_namespace'])) {
 
-            // Show namespace form.
-            $this->view->item_id = $post['item_id'];
-            $this->view->server_id = $post['server'];
-            $this->view->map_name = $post['map_name'];
-            $this->view->namespaces = $server->getNamespaceNames();
+            if ($form->isValid($post)) {
+
+                // Show namespace form.
+                $this->view->item_id = $post['item_id'];
+                $this->view->server_id = $post['server_id'];
+                $this->view->map_name = $post['map_name'];
+                $this->view->namespaces = $server->getNamespaceNames();
+
+            }
+
+            else {
+
+                $this->_forward('getserver', 'maps', 'neatline-maps');
+
+            }
 
         }
 
         else {
 
-            $this->_forward('getserver', 'maps', 'neatline-maps');
+            // Show namespace form.
+            $this->view->item_id = $post['item_id'];
+            $this->view->server_id = $post['server_id'];
+            $this->view->map_name = $post['map_name'];
+            $this->view->namespaces = $server->getNamespaceNames();
 
         }
 
@@ -218,14 +232,17 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $item = $this->getTable('Item')->find($post['item_id']);
         $server = $this->getTable('NeatlineMapsServer')->find($post['server_id']);
 
+
         // Is a namespace selected (must select an existing one or enter a name for a new one).
-        if ($post['existing_namespace'] == '-' && $post['new_namespace'] == '') {
-            // Bounce back to get namespace.
+        if ($post['existing_namespace'] == '-' && $post['new_namespace'] == null) {
+            $this->flashError('Select an existing namespace or enter a new one.');
+            $this->_forward('getnamespace', 'maps', 'neatline-maps');
         }
 
         // Were files selected for upload?
-        if (!isset($_FILES['map'])) {
-            // Bounce back to get files.
+        if ($_FILES['map'][0]['size'] > 0) {
+            $this->flashError('Select files.');
+            $this->_forward('getnamespace', 'maps', 'neatline-maps');
         }
 
         // If files and namespace, do add.
@@ -346,7 +363,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             ->setLabel('Name:')
             ->setAttrib('size', 55);
 
-        $server = new Zend_Form_Element_Select('server');
+        $server = new Zend_Form_Element_Select('server_id');
         $server->setLabel('Server:');
         $servers = $this->getTable('NeatlineMapsServer')->getServers();
 

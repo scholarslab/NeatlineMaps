@@ -79,6 +79,26 @@ class NeatlineMapsMapFileTable extends Omeka_Db_Table
 
     }
 
+    /**
+     * Returns the number of files associated with a map.
+     *
+     * @param integer $map_id The id of the parent map.
+     *
+     * @return void.
+     */
+    public function numberOfFilesInMap($map_id)
+    {
+
+        $numberOfFiles = (int)count(
+            $this->fetchObjects(
+                $this->getSelect()->where('map_id = ' . $map_id)
+            )
+        );
+
+        return $numberOfFiles;
+
+    }
+
 }
 
 /*

@@ -48,7 +48,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $maps = $this->getTable('NeatlineMapsMap')->getMaps($page, $order);
 
         $this->view->maps = $maps;
-
+        $this->view->filesTable = $this->getTable('NeatlineMapsMapFile');
         $this->view->current_page = $page;
         $this->view->total_results = $this->getTable('NeatlineMapsMap')->count();
         $this->view->results_per_page = get_option('per_page_admin');

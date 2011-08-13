@@ -49,6 +49,18 @@ class NeatlineMapsMap extends Omeka_record
     }
 
     /**
+     * Get the map's parent item.
+     *
+     * @return Omeka_record The server object.
+     */
+    public function getItem()
+    {
+
+        return $this->getTable('Item')->find($this->item_id);
+
+    }
+
+    /**
      * Get the namespace url.
      *
      * @return string The url.

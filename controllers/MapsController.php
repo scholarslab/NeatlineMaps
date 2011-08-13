@@ -262,6 +262,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $id = $this->_request->id;
         $map = $this->getTable('NeatlineMapsMap')->find($id);
         $server = $map->getServer();
+        $item = $map->getItem();
 
         // Were files selected for upload?
         if ($_FILES['map'][0]['size'] > 0) {
@@ -275,9 +276,6 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             'Upload',
             'map',
             array('ignoreNoFile'=>true));
-
-        // Create the new map object.
-        $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name'], $namespace);
 
         // Throw each of the files at GeoServer and see if it accepts them.
         $successCount = 0;
@@ -305,7 +303,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         }
 
-        $this->_redirect('neatline-maps/maps/' . $map->id);
+        $this->_redirect('neatline-maps/maps/' . $map->id . '/files');
 
     }
 

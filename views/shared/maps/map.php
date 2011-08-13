@@ -12,6 +12,7 @@ jQuery(document).ready(function() {
     var options = {
       displayProjection: new OpenLayers.Projection("EPSG:32617"),
       units: 'm',
+      maxExtent: new OpenLayers.Bounds(<?php echo $boundingBox; ?>),
       controls: [
           new OpenLayers.Control.PanZoomBar(),
           new OpenLayers.Control.Permalink('permalink'),
@@ -26,14 +27,10 @@ jQuery(document).ready(function() {
 
     var neatline_map = new OpenLayers.Layer.WMS('OpenLayers WMS',
         '<?php echo $wmsAddress; ?>',
-        {layers: '<?php echo $layers; ?>'}
+        {layers: '<?php echo $layers; ?>', format: 'image/png'}
     );
 
     map.addLayer(neatline_map);
-
-    if (!map.getCenter()) {
-        map.zoomToExtent(new OpenLayers.Bounds(<?php echo $boundingBox; ?>));
-    }
 
 });
 

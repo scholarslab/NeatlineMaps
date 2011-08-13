@@ -114,7 +114,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             $this->getTable('NeatlineMapsMapFile')->deleteFile($id, $deleteFiles, $deleteLayers);
 
             $this->flashSuccess('File deleted.');
-            $this->_redirect('neatline-maps/maps/' . $map->id);
+            $this->_redirect('neatline-maps/maps/' . $map->id . '/files');
 
         }
 

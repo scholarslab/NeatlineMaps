@@ -28,7 +28,7 @@
 
 <?php
 
-require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/GeoserverMap/GeoserverMap_Item.php';
+require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/GeoserverMap/GeoserverMap_File.php';
 
 abstract class GeoserverMap_Abstract
 {
@@ -94,8 +94,6 @@ abstract class GeoserverMap_Abstract
         $this->mapTitle = $this->_getMapTitle();
         $this->layers = $this->_getLayers();
         $this->boundingBox = $this->_getBoundingBox();
-
-
 
         // What to do with this?
 

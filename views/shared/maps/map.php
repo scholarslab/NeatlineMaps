@@ -1,28 +1,39 @@
-<div id="map-title"><?php echo $mapTitle; ?></div>
-
-<!-- The inline styling on this element is for development purposes only.
-This should be decoupled from the plugin code and contained fully in the theme. -->
-
-<div id="map" style="width: 800px; height: 512px;"></div>
-<!-- <div id="map"></div> -->
+<div id="map-<?php echo $mapTitle; ?>" class="neatline-maps-admin-preview"></div>
 
 <script>
 
 jQuery(document).ready(function() {
 
+    OpenLayers.IMAGE_RELOAD_ATTEMTPS = 3;
+    OpenLayers.Util.onImageLoadErrorColor = "transparent";
+    OpenLayers.ImgPath = 'http://js.mapbox.com/theme/dark/';
+
     var map;
-    OpenLayers.ProxyHost = 'proxy.cgi?url=';
+    var options = {
+      displayProjection: new OpenLayers.Projection("EPSG:32617"),
+      units: 'm',
+      controls: [
+          new OpenLayers.Control.PanZoomBar(),
+          new OpenLayers.Control.Permalink('permalink'),
+          new OpenLayers.Control.MousePosition(),
+          new OpenLayers.Control.LayerSwitcher({'ascending': false}),
+          new OpenLayers.Control.Navigation(),
+          new OpenLayers.Control.ScaleLine(),
+      ]
+    }
 
-    map = new OpenLayers.Map('map');
+    map = new OpenLayers.Map('map-<?php echo $mapTitle; ?>', options);
 
-    var base = new OpenLayers.Layer.WMS('OpenLayers WMS',
+    var neatline_map = new OpenLayers.Layer.WMS('OpenLayers WMS',
         '<?php echo $wmsAddress; ?>',
         {layers: '<?php echo $layers; ?>'}
     );
 
-    map.addLayer(base);
+    map.addLayer(neatline_map);
 
-    map.zoomToExtent(new OpenLayers.Bounds(<?php echo $boundingBox; ?>));
+    if (!map.getCenter()) {
+        map.zoomToExtent(new OpenLayers.Bounds(<?php echo $boundingBox; ?>));
+    }
 
 });
 

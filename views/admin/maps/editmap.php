@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <?php browse_headings(array(
-                    'File Name' => 'name',
+                    'File Name' => null,
                     'Preview' => null,
                     'Actions' => null
                 )); ?>
@@ -24,7 +24,7 @@
                     </td>
                     <td width="500">
 
-                        <div id="map-preview-<?php echo $file->id; ?>"></div>
+                        <?php new GeoserverMap_File($file); ?>
 
                     </td>
                     <td><?php echo $this->partial('maps/files-actions.php', array('id' => $file->id)); ?></td>

@@ -38,10 +38,7 @@ class GeoserverMap_File extends GeoserverMap_Abstract
      */
     public function _getWmsAddress() {
 
-        $map = $this->map->getMap();
-        $server = $map->getServer();
-
-        return $server->url . '/' . $map->namespace . '/wms';
+        return _getWmsAddress($this->getItem());
 
     }
 
@@ -53,7 +50,7 @@ class GeoserverMap_File extends GeoserverMap_Abstract
     public function _getMapTitle()
     {
 
-        $fileName = explode('.', $this->map->getFile()->original_filename);
+        $fileName = explode('.', $file->original_filename);
         return $fileName[0];
 
     }
@@ -66,10 +63,8 @@ class GeoserverMap_File extends GeoserverMap_Abstract
     public function _getLayers()
     {
 
-        $map = $this->map->getMap();
-
-        $fileName = explode('.', $this->map->getFile()->original_filename);
-        return $map->namespace . ':' . $fileName[0];
+        $fileName = explode('.', $file->original_filename);
+        return $namespace . ':' . $fileName[0];
 
     }
 
@@ -85,47 +80,7 @@ class GeoserverMap_File extends GeoserverMap_Abstract
     public function _getBoundingBox()
     {
 
-        // Get the capabilities XML, scrub out namespace for xpath query.
-        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
-        $client = new Zend_Http_Client($capabilitiesURL);
-        $body = str_replace('xmlns', 'ns', $client->request()->getBody());
 
-        // Query for the layers.
-        $capabilities = new SimpleXMLElement($body);
-        $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
-
-        $layersArray = array();
-        $activeLayers = array();
-
-        $map = $this->map->getMap();
-        $fileName = explode('.', $this->map->getFile()->original_filename);
-
-        // Query for names, filter out layers without an Omeka map file.
-        foreach ($layers as $layer) {
-            if ($layer->Title == $fileName[0]) {
-                $activeLayers[] = $layer;
-            }
-        }
-
-        $minxes = array();
-        $minys = array();
-        $maxxes = array();
-        $maxys = array();
-
-        foreach ($activeLayers as $layer) {
-
-            $minxes[] = (float) $layer->BoundingBox->attributes()->minx;
-            $minys[] = (float) $layer->BoundingBox->attributes()->miny;
-            $maxxes[] = (float) $layer->BoundingBox->attributes()->maxx;
-            $maxys[] = (float) $layer->BoundingBox->attributes()->maxy;
-
-        }
-
-        return implode(',', array(
-            min($minxes),
-            min($minys),
-            max($maxxes),
-            max($maxys)));
 
     }
 

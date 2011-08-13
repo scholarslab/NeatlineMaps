@@ -151,3 +151,7 @@ input.create-new-item {
     background-color: #C50 !important;
     border-color: #C50 !important;
 }
+
+.neatline-maps-admin-preview {
+    height: 400px;
+}

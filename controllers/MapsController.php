@@ -235,6 +235,81 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     }
 
     /**
+     * Get namespace and files.
+     *
+     * @return void
+     */
+    public function addfilesAction()
+    {
+
+        $id = $this->_request->id;
+        $map = $this->getTable('NeatlineMapsMap')->find($id);
+
+
+        // Show files form.
+        $this->view->map = $map;
+
+    }
+
+    /**
+     * Add new files to an already existing map.
+     *
+     * @return void
+     */
+    public function uploadfilesAction()
+    {
+
+        $id = $this->_request->id;
+        $map = $this->getTable('NeatlineMapsMap')->find($id);
+        $server = $map->getServer();
+
+        // Were files selected for upload?
+        if ($_FILES['map'][0]['size'] > 0) {
+            $this->flashError('Select files.');
+            $this->_redirect('neatline-maps/maps/' . $map->id . '/addfiles');
+        }
+
+        // If files and namespace, do add.
+        $files = insert_files_for_item(
+            $item,
+            'Upload',
+            'map',
+            array('ignoreNoFile'=>true));
+
+        // Create the new map object.
+        $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name'], $namespace);
+
+        // Throw each of the files at GeoServer and see if it accepts them.
+        $successCount = 0;
+        foreach ($files as $file) {
+
+            if (_putFileToGeoServer($file, $server, $map->namespace)) { // if GeoServer accepts the file...
+                $this->getTable('NeatlineMapsMapFile')->addNewMapFile($map, $file);
+                $successCount++;
+            }
+
+            else {
+                $file->delete();
+            }
+
+        }
+
+        // If none of the files were successfully posted to GeoServer, delete the empty map record.
+        if ($successCount == 0) {
+
+            $this->flashError('There was an error; the maps were not added.');
+
+        } else {
+
+            $this->flashSuccess('Map created and files added to GeoServer.');
+
+        }
+
+        $this->_redirect('neatline-maps/maps/' . $map->id);
+
+    }
+
+    /**
      * Create the map.
      *
      * @return void

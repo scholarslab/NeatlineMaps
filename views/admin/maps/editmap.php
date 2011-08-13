@@ -2,7 +2,7 @@
 
 <div id="primary">
 
-    <p id="add-item" class="add-button"><a class="add" href="<?php echo html_escape(uri('neatline-maps/maps')); ?>">Add File to Map</a></p>
+    <p id="add-item" class="add-button"><a class="add" href="<?php echo html_escape(uri('neatline-maps/maps/' . $map->id . '/addfiles')); ?>">Add Files to Map</a></p>
 
     <?php echo flash(); ?>
 

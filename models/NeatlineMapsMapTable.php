@@ -92,6 +92,20 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
     }
 
     /**
+     * Get map by the id of one of its files.
+     *
+     * @param Omeka_record $file The file.
+     *
+     * @return void.
+     */
+    public function getMapByFile($file)
+    {
+
+        return $this->find($file->map_id);
+
+    }
+
+    /**
      * Delete a map and all of its component file records.
      *
      * @param integer $id The id of the map to delete;
@@ -106,7 +120,6 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
         // Delete the map.
         $map = $this->find($id);
         $server = $map->getServer();
-        $map->delete();
 
         // Delete the file records.
         $mapFiles = $this->getTable('NeatlineMapsMapFile')->fetchObjects(
@@ -117,9 +130,6 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
 
         foreach($mapFiles as $mapFile) {
 
-            // Delete the NeatlineMapsMapFile record.
-            $mapFile->delete();
-
             // Delete the native file record.
             if ($deleteFiles) {
 
@@ -128,13 +138,18 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
 
 
                 // Delete the GeoServer layer.
-                // if ($deleteLayers) {
-                //     _deleteFileFromGeoserver($file, $map, $server);
-                // }
+                if ($deleteLayers) {
+                    _deleteFileFromGeoserver($file, $map, $server);
+                }
 
             }
 
+            // Delete the NeatlineMapsMapFile record.
+            $mapFile->delete();
+
         }
+
+        $map->delete();
 
     }
 

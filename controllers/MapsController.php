@@ -92,15 +92,29 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         $id = $this->_request->id;
         $file = $this->getTable('NeatlineMapsMapFile')->find($id);
+        $map = $this->getTable('NeatlineMapsMap')->getMapByFile($file);
         $post = $this->_request->getPost();
 
         if (isset($post['deleteconfirm_submit'])) {
 
-        //     // Delete the Map record.
-        //     $this->getTable('NeatlineMapsMap')->deleteMap($id, $deleteFiles, $deleteLayers);
+            $deleteFiles = false;
+            $deleteLayers = false;
 
-        //     $this->flashSuccess('Map deleted.');
-        //     $this->redirect->goto('browse');
+            // If selected, delete the files themselves.
+            if (isset($post['delete_omeka_files'])) {
+                $deleteFiles = true;
+            }
+
+            // If selected, delete the GeoServer layers.
+            if (isset($post['delete_geoserver_files'])) {
+                $deleteLayers = true;
+            }
+
+            // Delete the Map record.
+            $this->getTable('NeatlineMapsMapFile')->deleteFile($id, $deleteFiles, $deleteLayers);
+
+            $this->flashSuccess('File deleted.');
+            $this->_redirect('neatline-maps/maps/' . $map->id);
 
         }
 

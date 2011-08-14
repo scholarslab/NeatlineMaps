@@ -46,7 +46,7 @@ class NeatlineMapsPlugin
 
     private static $_filters = array(
         'admin_navigation_main',
-        // 'admin_items_form_tabs',
+        'admin_items_form_tabs',
         'exhibit_builder_exhibit_display_item'
     );
 

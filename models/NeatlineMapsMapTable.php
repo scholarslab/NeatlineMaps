@@ -75,7 +75,7 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
      * @param Omeka_record $server The parent server.
      * @param string $name The name of the map.
      *
-     * @return void.
+     * @return Omeka_record The new map.
      */
     public function addNewMap($item, $server, $name, $namespace)
     {
@@ -96,12 +96,42 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
      *
      * @param Omeka_record $file The file.
      *
-     * @return void.
+     * @return array of Omeka_records The maps.
      */
     public function getMapByFile($file)
     {
 
         return $this->find($file->map_id);
+
+    }
+
+    /**
+     * Get all maps associated with a given item.
+     *
+     * @param Omeka_record $item The item.
+     *
+     * @return void.
+     */
+    public function getMapsByItem($item)
+    {
+
+        $db = get_db();
+
+        // Chaotic query constructs, so as to be able to do column sorting without undue hassle.
+        // Is there a better way to do this?
+
+        $select = $this->select()
+            ->from(array('m' => $db->prefix . 'neatline_maps_maps'))
+            ->where('m.item_id = ' . $item->id)
+            ->joinLeft(array('i' => $db->prefix . 'items'), 'm.item_id = i.id')
+            ->columns(array(
+                'map_id' => 'm.id',
+                'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)",
+                'server' => "(SELECT name from `$db->NeatlineMapsServer` WHERE id = m.server_id)"
+            )
+        );
+
+        return $this->fetchObjects($select);
 
     }
 

@@ -129,6 +129,39 @@ class GeoserverMap_File extends GeoserverMap_Abstract
 
     }
 
+    /**
+     * Get the projection format.
+     *
+     * @return string The EPSG.
+     */
+    public function _getEPSG()
+    {
+
+        // Get the capabilities XML, scrub out namespace for xpath query.
+        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
+        $client = new Zend_Http_Client($capabilitiesURL);
+        $body = str_replace('xmlns', 'ns', $client->request()->getBody());
+
+        // Query for the layers.
+        $capabilities = new SimpleXMLElement($body);
+        $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
+
+        $layersArray = array();
+
+        $map = $this->map->getMap();
+        $fileName = explode('.', $this->map->getFile()->original_filename);
+
+        // Query for names, filter out layers without an Omeka map file.
+        foreach ($layers as $layer) {
+            if ($layer->Title == $fileName[0]) {
+                $activeLayer = $layer;
+            }
+        }
+
+        return $activeLayer->BoundingBox->attributes()->CRS;
+
+    }
+
 }
 
 /*

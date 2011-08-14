@@ -62,6 +62,13 @@ abstract class GeoserverMap_Abstract
     abstract function _getBoundingBox();
 
     /**
+     * Get the projection.
+     *
+     * @return string $epsg The EPSG.
+     */
+    abstract function _getEPSG();
+
+    /**
      * Set map, fire prep methods.
      *
      * @param object $map The suffix to use for identifying plugin classes.
@@ -94,6 +101,7 @@ abstract class GeoserverMap_Abstract
         $this->mapTitle = $this->_getMapTitle();
         $this->layers = $this->_getLayers();
         $this->boundingBox = $this->_getBoundingBox();
+        $this->epsg = $this->_getEPSG();
 
         // What to do with this?
 
@@ -113,7 +121,8 @@ abstract class GeoserverMap_Abstract
             'mapTitle' => $this->mapTitle,
             'wmsAddress' => $this->wmsAddress,
             'layers' => $this->layers,
-            'boundingBox' => $this->boundingBox
+            'boundingBox' => $this->boundingBox,
+            'epsg' => $this->epsg
         ));
 
     }

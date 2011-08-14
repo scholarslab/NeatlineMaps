@@ -80,8 +80,8 @@ class NeatlineMapsMap extends Omeka_record
     public function getOmekaFiles()
     {
 
-        $mapFiles = $this->getTable('NeatlineMapsMapFiles')->fetchObjects(
-            $this->getTable('NeatlineMapsMapFiles')->findBySql('map_id = ?', array($this->id))
+        $mapFiles = $this->getTable('NeatlineMapsMapFile')->fetchObjects(
+            $this->getTable('NeatlineMapsMapFile')->getSelect()->where('map_id = ' . $this->id)
         );
 
         $files = array();

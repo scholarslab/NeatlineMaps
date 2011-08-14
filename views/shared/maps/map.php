@@ -1,4 +1,4 @@
-<div id="map-<?php echo $mapTitle; ?>" class="neatline-maps-admin-preview"></div>
+<div id="map-<?php echo $mapTitle; ?>" style="height: 400px;"></div>
 
 <script>
 

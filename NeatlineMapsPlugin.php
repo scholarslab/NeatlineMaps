@@ -390,13 +390,10 @@ class NeatlineMapsPlugin
     {
 
         $item = get_current_item();
+        $maps = $this->_db->getTable('NeatlineMapsMap')->getMapsByItemForPublicDisplay($item);
 
-        // Does the item have at least one map file attached to it?
-        if ($this->_db->getTable('NeatlineMapsMap')->itemHasNeatlineMap($item)) {
-
-            // If so, construct the map class, which takes care of the preparation and rendering.
-            $geoserverMap = new GeoserverMap_Item($item);
-
+        foreach ($maps as $map) {
+            new GeoserverMap_Map($map);
         }
 
     }

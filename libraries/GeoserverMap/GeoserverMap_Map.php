@@ -28,7 +28,7 @@
 
 <?php
 
-class GeoserverMap_File extends GeoserverMap_Abstract
+class GeoserverMap_Map extends GeoserverMap_Abstract
 {
 
     /**
@@ -64,10 +64,8 @@ class GeoserverMap_File extends GeoserverMap_Abstract
     {
 
         $layers = array();
-        $files = $this->map->getOmekaFiles($this->map);
-
-        $namespace = $this->map->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
-        $namespace = $namespace[0]->text;
+        $files = $this->map->getOmekaFiles();
+        $namespace = $this->map->namespace;
 
         foreach ($files as $file) {
 
@@ -104,16 +102,16 @@ class GeoserverMap_File extends GeoserverMap_Abstract
         $layersArray = array();
         $activeLayers = array();
 
-
-
-
-
-        $map = $this->map->getMap();
-        $fileName = explode('.', $this->map->getFile()->original_filename);
+        // Get the maps/files associated with the item, pull out the base filenames.
+        $files = $this->map->getOmekaFiles($this->map);
+        foreach ($files as $file) {
+            $fileName = explode('.', $file->original_filename);
+            $layersArray[] = $fileName[0];
+        }
 
         // Query for names, filter out layers without an Omeka map file.
         foreach ($layers as $layer) {
-            if ($layer->Title == $fileName[0]) {
+            if (in_array($layer->Title, $layersArray)) {
                 $activeLayers[] = $layer;
             }
         }
@@ -159,8 +157,10 @@ class GeoserverMap_File extends GeoserverMap_Abstract
 
         $layersArray = array();
 
-        $map = $this->map->getMap();
-        $fileName = explode('.', $this->map->getFile()->original_filename);
+        $files = $this->map->getOmekaFiles();
+        $fileName = explode('.', $files[0]->original_filename);
+
+        // What if different files on the map have different projections??
 
         // Query for names, filter out layers without an Omeka map file.
         foreach ($layers as $layer) {

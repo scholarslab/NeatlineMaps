@@ -136,6 +136,30 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
     }
 
     /**
+     * Get all maps associated with a given item, without the column adds that are necessary for the admin screens.
+     *
+     * @param Omeka_record $item The item.
+     *
+     * @return void.
+     */
+    public function getMapsByItemForPublicDisplay($item)
+    {
+
+        $db = get_db();
+
+        // Chaotic query constructs, so as to be able to do column sorting without undue hassle.
+        // Is there a better way to do this?
+
+        $select = $this->select()
+            ->from(array('m' => $db->prefix . 'neatline_maps_maps'))
+            ->where('m.item_id = ' . $item->id);
+
+        return $this->fetchObjects($select);
+
+    }
+
+
+    /**
      * Delete a map and all of its component file records.
      *
      * @param integer $id The id of the map to delete;

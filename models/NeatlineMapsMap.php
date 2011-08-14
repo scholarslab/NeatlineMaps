@@ -72,6 +72,29 @@ class NeatlineMapsMap extends Omeka_record
 
     }
 
+    /**
+     * Get the native Omeka files that are associated with the map.
+     *
+     * @return array of Omeka_record The files.
+     */
+    public function getOmekaFiles()
+    {
+
+        $mapFiles = $this->getTable('NeatlineMapsMapFiles')->fetchObjects(
+            $this->getTable('NeatlineMapsMapFiles')->findBySql('map_id = ?', array($this->id))
+        );
+
+        $files = array();
+        $filesTable = $this->getTable('File');
+
+        foreach($mapFiles as $mapFile) {
+            $files[] = $filesTable->find($mapFile->file_id);
+        }
+
+        return $files;
+
+    }
+
 }
 
 /*

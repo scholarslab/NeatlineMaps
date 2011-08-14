@@ -59,3 +59,9 @@ div.field {
     padding-left: 32px;
     text-decoration: none;
 }
+
+form.neatline-inline-form-servers {
+    margin: 0 0.6em 0 0;
+    padding: 0;
+    float: left;
+}

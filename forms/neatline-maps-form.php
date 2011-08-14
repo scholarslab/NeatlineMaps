@@ -20,7 +20,22 @@
             <td><a href="<?php echo uri('neatline-maps/servers/edit/' . $map->getServer()->id); ?>"><?php echo $map->server; ?></a></td>
             <td><a href="<?php echo $map->getNamespaceUrl(); ?>" target="_blank"><?php echo $map->namespace; ?></a></td>
             <td><a href="<?php echo uri('items/show/' . $map->item_id); ?>"><?php echo $map->parent_item; ?></a></td>
-            <td></td>
+            <td>
+
+                <form action="<?php echo uri('/neatline-maps/maps/' . $map->map_id . '/files'); ?>" method="post" class="button-form neatline-inline-form-servers">
+                </form>
+
+                <form action="<?php echo uri('/neatline-maps/maps/' . $map->map_id . '/files'); ?>" method="post" class="button-form neatline-inline-form-servers">
+                  <input type="submit" value="View and Edit Files" class="fedora-inline-button bagit-create-bag">
+                </form>
+
+                <form action="<?php echo uri('/neatline-maps/maps/delete/' . $map->map_id); ?>" method="post" class="button-form neatline-inline-form-servers">
+                  <input type="hidden" name="confirm" value="false" />
+                  <input type="submit" value="Delete" class="fedora-inline-button fedora-delete">
+                </form>
+
+            </td>
+
         </tr>
 
     <?php endforeach; ?>

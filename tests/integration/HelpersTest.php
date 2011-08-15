@@ -127,7 +127,7 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
      *
      * @return void.
      */
-    public function testGetItems()
+    public function test_getItems()
     {
 
         // Create items.
@@ -177,6 +177,26 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
 
         $this->assertEquals(count($searchItems), 1);
         $this->assertEquals($searchItems[0]->item_name, '14 Test Item 14');
+
+    }
+
+    /**
+     * Test single item fetch.
+     *
+     * @return void.
+     */
+    public function test_getSingleItem()
+    {
+
+        // Create item.
+        $item = $this->helper->_createItem('Test Item 3', 12, 'David McClure');
+
+        $item = _getSingleItem($item->id);
+
+        // Test column construction.
+        $this->assertEquals($item->item_name, 'Test Item 3');
+        $this->assertEquals($item->Type, 'Person');
+        $this->assertEquals($item->creator, 'David McClure');
 
     }
 

@@ -57,13 +57,7 @@ function _doHeaderJsAndCss()
     ?>
 
     <!-- Neatline Maps Dependencies -->
-
-    <?php
-        queue_css('leaflet', null, null, 'javascripts/leaflet/dist');
-    ?>
-
     <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
-
     <!-- End Neatline Maps Dependencies -->
 
     <?php
@@ -238,22 +232,6 @@ function _deleteFileFromGeoserver($file, $map, $server)
     $info = curl_getinfo($ch);
 
     return ($info['http_code'] == $successCode);
-
-}
-
-/**
- * Build the main WMS address for the JavaScript.
- *
- * @return string The url.
- */
-function _getWmsAddress($item)
-{
-
-    $namespace = $item->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
-    $namespace = $namespace[0]->text;
-
-    return get_option('neatlinemaps_geoserver_url') . '/' .
-        $namespace . '/wms';
 
 }
 

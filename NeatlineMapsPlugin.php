@@ -243,7 +243,10 @@ class NeatlineMapsPlugin
     {
 
         $item = get_current_item();
-        $tabs['Neatline Maps'] = _doItemForm($item);
+
+        if (isset($item->id)) {
+            $tabs['Neatline Maps'] = _doItemForm($item);
+        }
 
         return $tabs;
 

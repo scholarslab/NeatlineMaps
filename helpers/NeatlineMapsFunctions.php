@@ -75,9 +75,7 @@ function _doItemAdminHeaderJsAndCss()
     ?>
 
     <!-- Neatline Maps Dependencies -->
-
     <link rel="stylesheet" href="<?php echo css('neatline-maps-admin'); ?>" />
-
     <!-- End Neatline Maps Dependencies -->
 
     <?php
@@ -95,9 +93,7 @@ function _doTabAdminHeaderJsAndCss()
     ?>
 
     <!-- Neatline Maps Dependencies -->
-
     <link rel="stylesheet" href="<?php echo css('neatline_maps_main'); ?>" />
-
     <!-- End Neatline Maps Dependencies -->
 
     <?php

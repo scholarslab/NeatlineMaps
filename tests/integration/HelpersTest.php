@@ -131,6 +131,52 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
     {
 
         // Create items.
+        $item1 = $this->helper->_createItem('Test Item 1', null, null);
+        $item2 = $this->helper->_createItem('Test Item 2', null, 'David McClure');
+        $item3 = $this->helper->_createItem('Test Item 3', 12, 'David McClure');
+
+        $items = _getItems();
+
+        // Test the number of items returned. Need to subtract 1 because of the null
+        // item created by the testing suite (??).
+        $this->assertEquals(count($items)-1, 3);
+
+        // Test column construction.
+        $this->assertEquals($items[1]->item_name, 'Test Item 1');
+        $this->assertEquals($items[2]->item_name, 'Test Item 2');
+        $this->assertEquals($items[3]->item_name, 'Test Item 3');
+
+        $this->assertEquals($items[1]->Type, '');
+        $this->assertEquals($items[2]->Type, '');
+        $this->assertEquals($items[3]->Type, 'Person');
+
+        $this->assertEquals($items[1]->creator, '');
+        $this->assertEquals($items[2]->creator, 'David McClure');
+        $this->assertEquals($items[3]->creator, 'David McClure');
+
+        // Create a bunch of items to test sorting and paging, and search.
+        $i = 0;
+        while ($i < 20) {
+            $this->helper->_createItem($i . ' Test Item ' . $i);
+            $i++;
+        }
+
+        $perPage = (int) get_option('per_page_admin');
+
+        // Test paging.
+        $page1Items = _getItems(1, 'item_name DESC', null);
+        $page2Items = _getItems(2, 'item_name DESC', null);
+        $allItems = _getItems(null, 'item_name DESC', null);
+
+        $this->assertEquals(count($page1Items), $perPage);
+        $this->assertEquals($page1Items[$perPage-1]->id, $allItems[$perPage-1]->id);
+        $this->assertEquals($page2Items[$perPage-1]->id, $allItems[2*($perPage)-1]->id);
+
+        // Test search.
+        $searchItems = _getItems(null, null, '14');
+
+        $this->assertEquals(count($searchItems), 1);
+        $this->assertEquals($searchItems[0]->item_name, '14 Test Item 14');
 
     }
 

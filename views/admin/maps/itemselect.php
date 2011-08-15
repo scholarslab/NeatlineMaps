@@ -32,8 +32,8 @@
                 <thead>
                     <tr>
                         <?php browse_headings(array(
-                            'Title' => 'item_title',
-                            'Type' => 'name',
+                            'Title' => 'item_name',
+                            'Type' => 'Type',
                             'Creator' => 'creator',
                             'Date Added' => 'added',
                             'Add to Item' => null
@@ -44,7 +44,7 @@
                     <?php foreach ($items as $item): ?>
                         <tr>
                             <td><a href="<?php echo public_uri('items/show/' . $item->id); ?>"><?php echo fedorahelpers_previewString($item->item_name, 50); ?></a></td>
-                            <td><?php echo $item->name != '' ? $item->name : '<span style="font-size: 0.8em; color: gray;">[not available]</span>'; ?></td>
+                            <td><?php echo $item->Type != '' ? $item->Type : '<span style="font-size: 0.8em; color: gray;">[not available]</span>'; ?></td>
                             <td><?php echo $item->creator != '' ? $item->creator : '<span style="font-size: 0.8em; color: gray;">[not available]</span>'; ?></td>
                             <td><?php echo fedorahelpers_formatDate($item->added); ?></td>
                             <td><?php echo $this->partial('maps/map-add-action.php', array('id' => $item->id)); ?></td>

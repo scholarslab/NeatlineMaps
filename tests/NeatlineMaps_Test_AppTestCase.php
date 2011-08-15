@@ -81,6 +81,11 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
         $item = new Item;
         $item->featured = 0;
         $item->public = 1;
+
+        if ($type_id != null) {
+            $item->item_type_id = $type_id;
+        }
+
         $item->save();
 
         $title = new ElementText;
@@ -91,19 +96,14 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
         $title->text = $name;
         $title->save();
 
-        if ($type_id != null) {
-            $item->item_type_id = $type_id;
-            $item->save();
-        }
-
         if ($creator != null) {
-            $creator = new ElementText;
-            $creator->record_id = $item->id;
-            $creator->record_type_id = 2;
-            $creator->element_id = 39;
-            $creator->html = 0;
-            $creator->text = $creator;
-            $creator->save();
+            $creator_element = new ElementText;
+            $creator_element->record_id = $item->id;
+            $creator_element->record_type_id = 2;
+            $creator_element->element_id = 39;
+            $creator_element->html = 0;
+            $creator_element->text = $creator;
+            $creator_element->save();
         }
 
         return $item;

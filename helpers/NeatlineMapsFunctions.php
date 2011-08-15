@@ -247,7 +247,7 @@ function _doColumnSortProcessing($sort_field, $sort_dir)
         $sort_dir = ($sort_dir == 'a') ? 'ASC' : 'DESC';
     }
 
-    return (isset($sort_field)) ? trim(implode(' ', array($sort_field, $sort_dir))) : '';
+    return ($sort_field != '') ? trim(implode(' ', array($sort_field, $sort_dir))) : '';
 
 }
 

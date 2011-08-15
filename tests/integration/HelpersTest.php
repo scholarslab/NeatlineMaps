@@ -103,4 +103,23 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
 
     }
 
+    /**
+     * Test colum sort processing.
+     *
+     * @return void.
+     */
+    public function test_doColumnSortProcessing()
+    {
+
+        // Test for empty string if sort field is undefined.
+        $this->assertEquals(_doColumnSortProcessing('', ''), '');
+        $this->assertEquals(_doColumnSortProcessing('', 'a'), '');
+        $this->assertEquals(_doColumnSortProcessing('', 'd'), '');
+
+        // Test for correctly formatted SQL string when parameters are supplied.
+        $this->assertEquals(_doColumnSortProcessing('test_col', 'd'), 'test_col DESC');
+        $this->assertEquals(_doColumnSortProcessing('test_col', 'a'), 'test_col ASC');
+
+    }
+
 }

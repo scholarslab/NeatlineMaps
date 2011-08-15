@@ -33,7 +33,6 @@ class NeatlineMapsPlugin
 
     private static $_hooks = array(
         'install',
-        'uninstall',
         'define_routes',
         'config_form',
         'config',
@@ -156,22 +155,6 @@ class NeatlineMapsPlugin
             );
 
         insert_item_type($historicMapItemType, $historicMapItemTypeMetadata);
-
-    }
-
-    /**
-     * Uninstall. Drop the _neatline_maps table.
-     *
-     * @return void.
-     */
-    public function uninstall()
-    {
-
-        $db = $this->_db;
-        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsMap`");
-        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsMapFile`");
-        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsServer`");
-        $db->query("DROP TABLE IF EXISTS `$db->NeatlineMapsNamespace`");
 
     }
 

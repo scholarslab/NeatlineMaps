@@ -122,4 +122,16 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
 
     }
 
+    /**
+     * Test item fetching in maps admin.
+     *
+     * @return void.
+     */
+    public function testGetItems()
+    {
+
+        // Create items.
+
+    }
+
 }

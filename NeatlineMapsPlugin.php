@@ -34,8 +34,6 @@ class NeatlineMapsPlugin
     private static $_hooks = array(
         'install',
         'define_routes',
-        'config_form',
-        'config',
         'public_theme_header',
         'admin_theme_header',
         'public_append_to_items_show'
@@ -174,68 +172,6 @@ class NeatlineMapsPlugin
     }
 
     /**
-     * Do config form.
-     *
-     * @return void
-     */
-    public function configForm()
-    {
-
-        include 'forms/config-form.php';
-
-    }
-
-    /**
-     * Save the config form, add the new namespace to GeoServer if necessary.
-     *
-     * @return void
-     */
-    public function config()
-    {
-
-        // Get the form.
-        $geoserver_url = $_POST['neatlinemaps_geoserver_url'];
-        $geoserver_user = $_POST['neatlinemaps_geoserver_user'];
-        $geoserver_password = $_POST['neatlinemaps_geoserver_password'];
-        $geoserver_spatial_reference_service = $_POST['neatlinemaps_geoserver_spatial_reference_service'];
-
-        $startingNamespacePrefix = get_option('neatlinemaps_geoserver_namespace_prefix');
-
-        // Set options.
-        set_option('neatlinemaps_geoserver_url',
-            $geoserver_url);
-
-        set_option('neatlinemaps_geoserver_user',
-            $geoserver_user);
-
-        set_option('neatlinemaps_geoserver_password',
-            $geoserver_password);
-
-        set_option('neatlinemaps_geoserver_spatial_reference_service',
-            $geoserver_spatial_reference_service);
-
-    }
-
-    /**
-     * Load the geoserver raster on file save.
-     *
-     * @return void
-     */
-    public function afterSaveFile($file)
-    {
-
-        if (!$this->_db->getTable('NeatlineMapsMap')->fileHasNeatlineMap($file)) {
-
-            if (_putFileToGeoServer($file, $file->getItem())) { // if GeoServer accepts the file...
-                $item = $file->getItem();
-                $this->_db->getTable('NeatlineMapsMap')->addNewMap($item, $file);
-            }
-
-        }
-
-    }
-
-    /**
      * Include GeoServer JavaScript dependencies.
      *
      * @return void
@@ -277,109 +213,7 @@ class NeatlineMapsPlugin
             _doHeaderJsAndCss();
         }
 
-    }
-
-    /**
-     * Save the new map files.
-     *
-     * @return void
-     */
-    public function afterSaveFormItem($record, $post)
-    {
-
-        $itemType = $this->_db->getTable('ItemType')->find($record->item_type_id);
-
-        // If the saved record is a Historical Map...
-        if ($itemType->name == NEATLINE_MAPS_MAP_ITEM_TYPE_NAME) {
-
-            $namespace = $record->getElementTextsByElementNameAndSetName('Namespace', 'Item Type Metadata');
-            $namespace = $namespace[0]->text;
-
-            $namespaceURL = $record->getElementTextsByElementNameAndSetName('Namespace URL', 'Item Type Metadata');
-            $namespaceURL = $namespaceURL[0]->text;
-
-            // ...then dial out to see whether the defined namespace needs to be added.
-            _createGeoServerNamespace(
-                get_option('neatlinemaps_geoserver_url'),
-                $namespace,
-                get_option('neatlinemaps_geoserver_user'),
-                get_option('neatlinemaps_geoserver_password'),
-                $namespaceURL
-            );
-
-        }
-
-        // Were map files posted from the form?
-        if (isset($_FILES['map'])) {
-
-            $files = insert_files_for_item(
-                $record,
-                'Upload',
-                'map',
-                array('ignoreNoFile'=>true));
-
-            // Throw each of the files at GeoServer and see if it accepts them.
-            foreach ($files as $file) {
-
-                if (!$this->_db->getTable('NeatlineMapsMap')->fileHasNeatlineMap($file)) {
-
-                    if (_putFileToGeoServer($file, $record)) { // if GeoServer accepts the file...
-                        $this->_db->getTable('NeatlineMapsMap')->addNewMap($item, $file);
-                    }
-
-                    else {
-                        $file->delete();
-                    }
-
-                }
-
-            }
-
-        }
-
-        // Do deletes.
-        foreach ($post['delete_maps'] as $key => $id) {
-
-            $neatlineMap = $this->_db->getTable('NeatlineMapsMap')->find($id);
-            $file = $neatlineMap->getFile();
-
-            $neatlineMap->delete();
-            $file->delete();
-
-        }
-
-        // Check to see if any of the marked-for-deletion files in the normal Files tab
-        // is also a map, and if so, delete the record in _neatline_maps.
-        foreach ($post['delete_files'] as $key => $id) {
-
-            $neatlineMap = $this->_db->getTable('NeatlineMapsMap')->findBySql('file_id = ?', array($id));
-
-            if ($neatlineMap[0]) {
-                $neatlineMap[0]->delete();
-            }
-
-        }
-
-    }
-
-    /**
-     * Show the map layers on the item page.
-     *
-     * @return void
-     */
-    public function publicAppendToItemsShow()
-    {
-
-        $item = get_current_item();
-        $maps = $this->_db->getTable('NeatlineMapsMap')->getMapsByItemForPublicDisplay($item);
-
-        foreach ($maps as $map) {
-            new GeoserverMap_Map($map);
-        }
-
-    }
-
-    /**
+    }    /**
      * Filter callbacks:
      *
 

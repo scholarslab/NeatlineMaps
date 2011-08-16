@@ -75,6 +75,40 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
     }
 
+    public function _createMap(
+        $serverName = 'Test Server',
+        $serverUrl = 'http://www.test.com',
+        $serverUsername = 'admin',
+        $serverPassword = 'password',
+        $itemName = 'Test Item',
+        $mapName = 'Test Map',
+        $mapNamespace = 'Test_Namespace')
+    {
+
+        $server = $this->_createServer($serverName, $serverUrl, $serverUsername, $serverPassword);
+        $item = $this->_createItem($itemName);
+        $files = $this->_createFiles(5, $item);
+
+        $map = new NeatlineMapsMap;
+        $map->item_id = $item->id;
+        $map->server_id = $server->id;
+        $map->name = $mapName;
+        $map->namespace = $mapNamespace;
+        $map->save();
+
+        $i = 0;
+        while ($i < 5) {
+            $mapFile = new NeatlineMapsMapFile;
+            $mapFile->file_id = $i;
+            $mapFile->map_id = $map->id;
+            $mapFile->save();
+            $i++;
+        }
+
+        return $map;
+
+    }
+
     public function _createItem($name, $type_id = null, $creator = null)
     {
 
@@ -110,27 +144,19 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
     }
 
-    // public function _createFiles()
-    // {
+    public function _createFiles($number, $item)
+    {
 
-    //     $src = '_files';
-    //     $handle = opendir(BAGIT_TESTS_DIRECTORY . '/' . $src);
-    //     $i = 1;
-    //     while (false !== ($file = readdir($handle))) {
+        $i = 0;
+        while ($i < $number) {
+            $db = get_db();
+            $sql = 'INSERT INTO omeka_files 
+                (item_id, size, has_derivative_image, archive_filename, original_filename) 
+                VALUES (1, 5000, 0, "ArchiveTestFile' . $i . '.jpg", "TestFile' . $i . '.jpg")';
+            $db->query($sql);
+            $i++;
+        }
 
-    //         if (($file != '.') && ($file != '..') && ($file != '.DS_Store')) {
-
-    //             $db = get_db();
-    //             $sql = 'INSERT INTO omeka_files 
-    //                 (item_id, size, has_derivative_image, archive_filename, original_filename) 
-    //                 VALUES (1, 5000, 0, "' . $file . '", "TestFile' . $i . '.jpg")';
-    //             $db->query($sql);
-    //             $i++;
-
-    //         }
-
-    //     }
-
-    // }
+    }
 
 }

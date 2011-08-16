@@ -17,7 +17,7 @@
                     <tr>
                         <?php browse_headings(array(
                             'Map' => 'name',
-                            'Server' => null,
+                            'Server' => 'server',
                             'Namespace' => 'namespace',
                             'Item' => 'parent_item',
                             'Actions' => null

@@ -52,7 +52,8 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
             ->joinLeft(array('i' => $db->prefix . 'items'), 'm.item_id = i.id')
             ->columns(array(
                 'map_id' => 'm.id',
-                'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)"
+                'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)",
+                'server' => "(SELECT name from `$db->NeatlineMapsServer` WHERE id = m.server_id)"
             )
         );
 
@@ -125,7 +126,8 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
             ->joinLeft(array('i' => $db->prefix . 'items'), 'm.item_id = i.id')
             ->columns(array(
                 'map_id' => 'm.id',
-                'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)"
+                'parent_item' => "(SELECT text from `$db->ElementText` WHERE record_id = m.item_id AND element_id = 50 LIMIT 1)",
+                'server' => "(SELECT name from `$db->NeatlineMapsServer` WHERE id = m.server_id)"
             )
         );
 

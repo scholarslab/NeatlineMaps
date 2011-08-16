@@ -99,7 +99,7 @@ class NeatlineMapsPlugin
                 `server_id` int(10) unsigned,
                 `name` tinytext collate utf8_unicode_ci,
                 `namespace` tinytext collate utf8_unicode_ci,
-                PRIMARY KEY  (`id`)
+                PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");
 
@@ -108,7 +108,7 @@ class NeatlineMapsPlugin
                 `id` int(10) unsigned NOT NULL auto_increment,
                 `file_id` int(10) unsigned,
                 `map_id` int(10) unsigned,
-                PRIMARY KEY  (`id`)
+                PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");
 
@@ -119,40 +119,9 @@ class NeatlineMapsPlugin
                 `url` tinytext collate utf8_unicode_ci,
                 `username` tinytext collate utf8_unicode_ci,
                 `password` tinytext collate utf8_unicode_ci,
-                PRIMARY KEY  (`id`)
+                PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");
-
-        $db->query("
-            CREATE TABLE IF NOT EXISTS `$db->NeatlineMapsNamespace` (
-                `id` int(10) unsigned NOT NULL auto_increment,
-                `server_id` int(10) unsigned,
-                `name` tinytext collate utf8_unicode_ci,
-                `url` tinytext collate utf8_unicode_ci,
-                PRIMARY KEY  (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-            ");
-
-        $historicMapItemType = array(
-            'name' => NEATLINE_MAPS_MAP_ITEM_TYPE_NAME,
-            'description' => 'Historical map with WMS service.'
-        );
-
-        $historicMapItemTypeMetadata =
-            array(
-                array(
-                    'name' => NEATLINE_MAPS_NAMESPACE_FIELD_NAME,
-                    'description' => 'The namespace that contains the map\'s layers.',
-                    'data_type' => 'Tiny Text'
-                ),
-                array(
-                    'name' => NEATLINE_MAPS_NAMESPACE_URL_FIELD_NAME,
-                    'description' => 'The URL associated with the map\'s namespace.',
-                    'data_type' => 'Tiny Text'
-                )
-            );
-
-        insert_item_type($historicMapItemType, $historicMapItemTypeMetadata);
 
     }
 

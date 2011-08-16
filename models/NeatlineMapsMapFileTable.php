@@ -51,13 +51,6 @@ class NeatlineMapsMapFileTable extends Omeka_Db_Table
             ->from(array('m' => $db->prefix . 'neatline_maps_map_files'))
             ->where('m.map_id = ' . $map_id);
 
-        if (isset($page)) {
-            $select->limitPage($page, get_option('per_page_admin'));
-        }
-        if (isset($order)) {
-            $select->order($order);
-        }
-
         return $this->fetchObjects($select);
 
     }

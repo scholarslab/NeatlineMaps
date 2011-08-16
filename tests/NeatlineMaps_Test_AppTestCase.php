@@ -97,7 +97,7 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
     {
 
         $server = $this->_createServer($serverName, $serverUrl, $serverUsername, $serverPassword);
-        $files = $this->_createFiles(5, $item);
+        $files = $this->_createFiles(5);
 
         if ($item == null) {
             $item = $this->_createItem('Test Item');
@@ -122,6 +122,40 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
         return $map;
 
     }
+
+    public function _createMapFile(
+        $serverName = 'Test Server',
+        $serverUrl = 'http://www.test.com',
+        $serverUsername = 'admin',
+        $serverPassword = 'password',
+        $item = null,
+        $mapName = 'Test Map',
+        $mapNamespace = 'Test_Namespace')
+    {
+
+        $server = $this->_createServer($serverName, $serverUrl, $serverUsername, $serverPassword);
+        $this->_createFiles(1);
+
+        if ($item == null) {
+            $item = $this->_createItem('Test Item');
+        }
+
+        $map = new NeatlineMapsMap;
+        $map->item_id = $item->id;
+        $map->server_id = $server->id;
+        $map->name = $mapName;
+        $map->namespace = $mapNamespace;
+        $map->save();
+
+        $mapFile = new NeatlineMapsMapFile;
+        $mapFile->file_id = 1;
+        $mapFile->map_id = $map->id;
+        $mapFile->save();
+
+        return $mapFile;
+
+    }
+
 
     public function _createMaps($number)
     {
@@ -173,7 +207,7 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
     }
 
-    public function _createFiles($number, $item)
+    public function _createFiles($number)
     {
 
         $i = 0;

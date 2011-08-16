@@ -96,8 +96,8 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
         $map->namespace = $mapNamespace;
         $map->save();
 
-        $i = 0;
-        while ($i < 5) {
+        $i = 1;
+        while ($i <= 5) {
             $mapFile = new NeatlineMapsMapFile;
             $mapFile->file_id = $i;
             $mapFile->map_id = $map->id;

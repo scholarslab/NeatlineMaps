@@ -90,7 +90,33 @@ class NeatlineMaps_MapTest extends Omeka_Test_AppTestCase
         // Get namespace.
         $namespace = $this->map->getNamespaceUrl();
 
+        // Test the format.
         $this->assertEquals($namespace, 'http://www.test.com/rest/namespaces/Test_Namespace');
+
+
+    }
+
+    /**
+     * Test namespace builder.
+     *
+     * @return void.
+     */
+    public function testGetOmekaFiles()
+    {
+
+        // Get namespace.
+        $files = $this->map->getOmekaFiles();
+
+        // Test the files array.
+        $this->assertEquals(count($files), 5);
+
+        // Test that the files are the files.
+        $i = 0;
+        foreach ($files as $file) {
+            $this->assertEquals($file->original_filename, 'TestFile' . $i . '.jpg');
+            $i++;
+        }
+
 
 
     }

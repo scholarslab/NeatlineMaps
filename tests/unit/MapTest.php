@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * Tests for helper functions.
+ * Map record class tests.
  *
  * PHP version 5
  *

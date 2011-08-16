@@ -80,14 +80,17 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
         $serverUrl = 'http://www.test.com',
         $serverUsername = 'admin',
         $serverPassword = 'password',
-        $itemName = 'Test Item',
+        $item = null,
         $mapName = 'Test Map',
         $mapNamespace = 'Test_Namespace')
     {
 
         $server = $this->_createServer($serverName, $serverUrl, $serverUsername, $serverPassword);
-        $item = $this->_createItem($itemName);
         $files = $this->_createFiles(5, $item);
+
+        if ($item == null) {
+            $item = $this->_createItem('Test Item');
+        }
 
         $map = new NeatlineMapsMap;
         $map->item_id = $item->id;
@@ -106,6 +109,21 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
         }
 
         return $map;
+
+    }
+
+    public function _createMaps($number)
+    {
+
+        $maps = array();
+
+        $i = 0;
+        while ($i < $number) {
+            $maps[] = $this->_createMap();
+            $i++;
+        }
+
+        return $maps;
 
     }
 

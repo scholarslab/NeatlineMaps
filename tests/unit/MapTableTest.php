@@ -305,10 +305,10 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
         // true, and listens for the expected Omeka error that gets thrown
         // when Omeka can't find a physical file to delete that corresponds
         // to the database record.
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('Omeka_Storage_Exception');
 
         // Create a map and files and get table classes.
-        $map = $this->helper->_createMapWithRealFiles();
+        $map = $this->helper->_createMap();
         $mapTable = $this->db->getTable('NeatlineMapsMap');
         $mapFiles = $this->db->getTable('NeatlineMapsMapFile');
         $files = $this->db->getTable('File');

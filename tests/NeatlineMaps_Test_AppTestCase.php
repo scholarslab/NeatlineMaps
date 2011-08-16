@@ -61,6 +61,17 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
     }
 
+    public function _createServers($number)
+    {
+
+        $i = 0;
+        while ($i < $number) {
+            $this->_createServer('Test Server' . $i, 'http://www.test.org', 'admin', 'password');
+            $i++;
+        }
+
+    }
+
     public function _createServer($name, $url, $username, $password)
     {
 

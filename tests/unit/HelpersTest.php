@@ -200,4 +200,37 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
 
     }
 
+    /**
+     * Test string previewer.
+     *
+     * @return void.
+     */
+    public function test_previewString()
+    {
+
+        // Testing string.
+        $string = 'Supercalafragalisticexpialadocious';
+
+        // Test.
+        $this->assertEquals(_previewString($string, 5), 'Super...');
+        $this->assertEquals(_previewString($string, 50), 'Supercalafragalisticexpialadocious');
+
+    }
+
+    /**
+     * Test date formatter.
+     *
+     * @return void.
+     */
+    public function test_formatDate()
+    {
+
+        // Testing datetime.
+        $date = '2011-08-15 15:22:47';
+
+        // Test.
+        $this->assertEquals(_formatDate($date), '<strong>August 15, 2011</strong> at 3:22 pm');
+
+    }
+
 }

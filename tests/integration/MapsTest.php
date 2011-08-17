@@ -28,7 +28,7 @@
 
 <?php
 
-class NeatlineMaps_ItemTabTest extends Omeka_Test_AppTestCase
+class NeatlineMaps_MapsTest extends Omeka_Test_AppTestCase
 {
 
     public function setUp()
@@ -43,102 +43,163 @@ class NeatlineMaps_ItemTabTest extends Omeka_Test_AppTestCase
     }
 
     /**
+     * Test for existence and proper routing for maps browse.
+     *
+     * @return void.
+     */
+    public function testCanViewBrowseMaps()
+    {
+
+        $this->dispatch('neatline-maps/maps');
+        $this->assertModule('neatline-maps');
+        $this->assertController('maps');
+        $this->assertAction('browse');
+        $this->assertResponseCode(200);
+
+    }
+
+    /**
+     * Test for redirect to server add page when no servers.
+     *
+     * @return void.
+     */
+    public function testNoServersRedirect()
+    {
+
+        $this->dispatch('neatline-maps/maps/create');
+        $this->assertModule('neatline-maps');
+        $this->assertController('servers');
+        $this->assertAction('create');
+        $this->assertResponseCode(200);
+
+    }
+
+    /**
+     * Test for no redirect to server add page when servers exist.
+     *
+     * @return void.
+     */
+    public function testServersNoRedirect()
+    {
+
+        $this->helper->_createServer('Test Server', 'http://www.test.org', 'admin', 'password');
+
+        $this->dispatch('neatline-maps/maps/create');
+        $this->assertModule('neatline-maps');
+        $this->assertController('maps');
+        $this->assertAction('itemselect');
+        $this->assertResponseCode(200);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
      * Test browse maps with no pagination.
      *
      * @return void.
      */
-    public function testMapBrowseNoPagination()
-    {
+    // public function testMapBrowseNoPagination()
+    // {
 
-        $this->dispatch('items/add');
-        $this->assertResponseCode(200);
-        $this->assertNotQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
+    //     $this->dispatch('items/add');
+    //     $this->assertResponseCode(200);
+    //     $this->assertNotQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
 
-    }
+    // }
 
     /**
      * Test the empty tab on item edit if there are no maps for the item.
      *
      * @return void.
      */
-    public function testEmptyTabOnItemEdit()
-    {
+    // public function testEmptyTabOnItemEdit()
+    // {
 
-        // Create an item.
-        $item = $this->helper->_createItem('Test Item');
+    //     // Create an item.
+    //     $item = $this->helper->_createItem('Test Item');
 
-        $this->dispatch('items/edit/' . $item->id);
-        $this->assertResponseCode(200);
-        $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
-        $this->assertQueryContentContains('p', 'There are no maps for the item.');
-        $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-        $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="' . $item->id . '"]');
-        $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
+    //     $this->dispatch('items/edit/' . $item->id);
+    //     $this->assertResponseCode(200);
+    //     $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
+    //     $this->assertQueryContentContains('p', 'There are no maps for the item.');
+    //     $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
+    //     $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="' . $item->id . '"]');
+    //     $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
 
-    }
+    // }
 
     /**
      * Test the when the item has a single map.
      *
      * @return void.
      */
-    public function testItemTabWithMap()
-    {
+    // public function testItemTabWithMap()
+    // {
 
-        // Create a map.
-        $map = $this->helper->_createMap();
+    //     // Create a map.
+    //     $map = $this->helper->_createMap();
 
-        $this->dispatch('items/edit/2');
-        $this->assertResponseCode(200);
-        $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
-        $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
-        $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-        $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="2"]');
-        $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
-        $this->assertQueryCount('div[id="map-list"] tbody tr', 1);
-        $this->assertQueryContentContains('a', 'Test Map');
-        $this->assertQueryContentContains('a', 'Test Server');
-        $this->assertQueryContentContains('a', 'Test_Namespace');
-        $this->assertQueryContentContains('a', 'Test Item');
-        $this->assertQueryContentContains('td', '5 files');
+    //     $this->dispatch('items/edit/2');
+    //     $this->assertResponseCode(200);
+    //     $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
+    //     $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
+    //     $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
+    //     $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="2"]');
+    //     $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
+    //     $this->assertQueryCount('div[id="map-list"] tbody tr', 1);
+    //     $this->assertQueryContentContains('a', 'Test Map');
+    //     $this->assertQueryContentContains('a', 'Test Server');
+    //     $this->assertQueryContentContains('a', 'Test_Namespace');
+    //     $this->assertQueryContentContains('a', 'Test Item');
+    //     $this->assertQueryContentContains('td', '5 files');
 
-    }
+    // }
 
     /**
      * Test the when the item has multiple maps.
      *
      * @return void.
      */
-    public function testItemTabWithMaps()
-    {
+    // public function testItemTabWithMaps()
+    // {
 
-        // Create an item.
-        $newItem = $this->helper->_createItem('Test Item');
+    //     // Create an item.
+    //     $newItem = $this->helper->_createItem('Test Item');
 
-        // Create maps, all associated with the same item.
-        $i = 0;
-        while ($i < 10) {
-            $this->helper->_createMap(
-                $serverName = 'Test Server',
-                $serverUrl = 'http://www.test.com',
-                $serverUsername = 'admin',
-                $serverPassword = 'password',
-                $item = $newItem,
-                $mapName = 'Test Map',
-                $mapNamespace = 'Test_Namespace');
-            $i++;
-        }
+    //     // Create maps, all associated with the same item.
+    //     $i = 0;
+    //     while ($i < 10) {
+    //         $this->helper->_createMap(
+    //             $serverName = 'Test Server',
+    //             $serverUrl = 'http://www.test.com',
+    //             $serverUsername = 'admin',
+    //             $serverPassword = 'password',
+    //             $item = $newItem,
+    //             $mapName = 'Test Map',
+    //             $mapNamespace = 'Test_Namespace');
+    //         $i++;
+    //     }
 
-        $this->dispatch('items/edit/2');
-        $this->assertResponseCode(200);
-        $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
-        $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
-        $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-        $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="2"]');
-        $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
-        $this->assertQueryCount('div[id="map-list"] tbody tr', 10);
+    //     $this->dispatch('items/edit/2');
+    //     $this->assertResponseCode(200);
+    //     $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
+    //     $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
+    //     $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
+    //     $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="2"]');
+    //     $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
+    //     $this->assertQueryCount('div[id="map-list"] tbody tr', 10);
 
-    }
+    // }
 
     /**
      * Test for existence and proper routing for add server page.

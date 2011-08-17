@@ -323,3 +323,40 @@ function _getSingleItem($id)
     return $itemTable->fetchObject($select);
 
 }
+
+/**
+ * Truncate a string to a given length and add '...'.
+ *
+ * @param string $string The string to be truncated.
+ * @param int $length The length to truncate to.
+ *
+ * @return string The truncated and formatted string.
+ */
+function _previewString($string, $length)
+{
+
+    if (strlen($string) > $length) {
+        return substr($string, 0, $length) . '...';
+    }
+
+    else {
+        return $string;
+    }
+
+}
+
+/**
+ * Format item add date for map create workflow.
+ *
+ * @param string $date The date in datetime.
+ *
+ * @return string $date The formatted date.
+ */
+function _formatDate($date)
+{
+
+    $date = new DateTime($date);
+    return '<strong>' . $date->format('F j, Y') . '</strong> at ' .
+       $date->format('g:i a');
+
+}

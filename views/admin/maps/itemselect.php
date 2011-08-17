@@ -10,11 +10,7 @@
 
     <?php else: ?>
 
-            <h2>Select an to associate the map with:</h2>
-
-                <!-- <form action="<?php echo uri('/neatline-maps/maps/create/item/' . $id); ?>" method="post" class="fedora-inline-form">
-                  <input type="submit" value="Create a new item for the map" class="create-new-item">
-                </form> -->
+            <h2>Select an item to associate the map with:</h2>
 
             <table>
 
@@ -43,10 +39,10 @@
                 <tbody>
                     <?php foreach ($items as $item): ?>
                         <tr>
-                            <td><a href="<?php echo public_uri('items/show/' . $item->id); ?>"><?php echo fedorahelpers_previewString($item->item_name, 50); ?></a></td>
+                            <td><a href="<?php echo public_uri('items/show/' . $item->id); ?>"><?php echo _previewString($item->item_name, 50); ?></a></td>
                             <td><?php echo $item->Type != '' ? $item->Type : '<span style="font-size: 0.8em; color: gray;">[not available]</span>'; ?></td>
                             <td><?php echo $item->creator != '' ? $item->creator : '<span style="font-size: 0.8em; color: gray;">[not available]</span>'; ?></td>
-                            <td><?php echo fedorahelpers_formatDate($item->added); ?></td>
+                            <td><?php echo _formatDate($item->added); ?></td>
                             <td><?php echo $this->partial('maps/map-add-action.php', array('id' => $item->id)); ?></td>
                         </tr>
                     <?php endforeach; ?>

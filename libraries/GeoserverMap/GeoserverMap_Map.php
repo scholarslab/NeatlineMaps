@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
 /**
- * Concrete class for maps of Item type.
+ * Concrete class for map with multiple files/layers.
  *
  * PHP version 5
  *

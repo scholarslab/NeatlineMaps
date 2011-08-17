@@ -1,5 +1,5 @@
 <?php if ( count($maps) > 0 ): ?>
-    <div id="file-list">
+    <div id="map-list">
     <table>
         <thead>
             <tr>

@@ -182,7 +182,27 @@ class NeatlineMapsPlugin
             _doHeaderJsAndCss();
         }
 
-    }    /**
+    }
+
+    /**
+     * Show the map layers on the item page.
+     *
+     * @return void.
+     */
+    public function publicAppendToItemsShow()
+    {
+
+        $item = get_current_item();
+        $maps = $this->_db->getTable('NeatlineMapsMap')->getMapsByItemForPublicDisplay($item);
+
+        foreach ($maps as $map) {
+            new GeoserverMap_Map($map);
+        }
+
+    }
+
+
+    /**
      * Filter callbacks:
      *
 

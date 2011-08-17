@@ -57,6 +57,48 @@ class NeatlineMaps_ItemTabTest extends Omeka_Test_AppTestCase
     }
 
     /**
+     * Test the empty tab on item edit if there are no maps for the item.
+     *
+     * @return void.
+     */
+    public function testEmptyTabOnItemEdit()
+    {
+
+        // Create an item.
+        $item = $this->helper->_createItem('Test Item');
+
+        $this->dispatch('items/edit/' . $item->id);
+        $this->assertResponseCode(200);
+        $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
+        $this->assertQueryContentContains('p', 'There are no maps for the item.');
+        $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
+        $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="' . $item->id . '"]');
+        $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
+
+    }
+
+    /**
+     * Test the when the item has maps.
+     *
+     * @return void.
+     */
+    public function testItemTabWithMaps()
+    {
+
+        // Create an item.
+        $map = $this->helper->_createMap();
+
+        $this->dispatch('items/edit/1');
+        $this->assertResponseCode(200);
+        $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
+        $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
+        $this->assertNotXpath('//input[@type="submit"][@value="Add a Map"]');
+        $this->assertNotXpath('//input[@type="hidden"][@name="item_id"][@value="' . $item->id . '"]');
+        $this->assertNotXpath('//form[contains(@action, "/maps/create/selectserver")]');
+
+    }
+
+    /**
      * Test for existence and proper routing for add server page.
      *
      * @return void.

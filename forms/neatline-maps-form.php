@@ -44,11 +44,16 @@
     </table>
     </div>
 
+    <form action="<?php echo uri('/neatline-maps/maps/create/selectserver'); ?>" method="post" class="button-form fedora-inline-form">
+      <input type="submit" value="Add a Map" class="bagit-create-bag">
+      <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+    </form>
+
 <?php else: ?>
 
 <p>There are no maps for the item.</p>
 
-<form action="<?php echo uri('/neatline-maps/maps/' . $map->map_id . '/files'); ?>" method="post" class="button-form neatline-inline-form-servers">
+<form action="<?php echo uri(''); ?>" method="post" class="button-form neatline-inline-form-servers">
 </form>
 
 <form action="<?php echo uri('/neatline-maps/maps/create/selectserver'); ?>" method="post" class="button-form fedora-inline-form">

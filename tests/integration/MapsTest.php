@@ -59,6 +59,25 @@ class NeatlineMaps_MapsTest extends Omeka_Test_AppTestCase
     }
 
     /**
+     * Test maps browse and sorting.
+     *
+     * @return void.
+     */
+    public function testBrowseAndSorting()
+    {
+
+        $this->helper->_createMaps(5);
+
+        // No sorting.
+        $this->dispatch('neatline-maps/maps');
+        $this->assertQueryCount('table[class="fedora"] tbody tr', 5);
+
+        // Sorting.
+
+
+    }
+
+    /**
      * Test for redirect to server add page when no servers.
      *
      * @return void.

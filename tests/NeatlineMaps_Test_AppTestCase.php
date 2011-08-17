@@ -164,7 +164,15 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
         $i = 0;
         while ($i < $number) {
-            $maps[] = $this->_createMap();
+            $item = $this->_createItem('Test Item ' . $i);
+            $maps[] = $this->_createMap(
+                $serverName = 'Test Server ' . $i,
+                $serverUrl = 'http://www.test.com',
+                $serverUsername = 'admin',
+                $serverPassword = 'password',
+                $item = $item,
+                $mapName = 'Test Map ' . $i,
+                $mapNamespace = 'Test_Namespace ' . $i);
             $i++;
         }
 

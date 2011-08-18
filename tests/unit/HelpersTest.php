@@ -58,14 +58,14 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
         $this->assertNotEquals(strpos($form, 'There are no maps for the item.'), false);
 
         // This time, create a map for the item.
-        $map = $this->helper->_createMap(
-            $serverName = 'Test Server',
-            $serverUrl = 'http://www.test.com',
-            $serverUsername = 'admin',
-            $serverPassword = 'password',
-            $item = $item,
-            $mapName = 'Test Map',
-            $mapNamespace = 'Test_Namespace');
+        $this->helper->_createMap(
+            'Test Server',
+            'http://www.test.com',
+            'admin',
+            'password',
+            $item,
+            'Test Map',
+            'Test_Namespace');
 
         // Build the form.
         $form = _doItemForm($item);
@@ -150,9 +150,9 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
     {
 
         // Create items.
-        $item1 = $this->helper->_createItem('Test Item 1', null, null);
-        $item2 = $this->helper->_createItem('Test Item 2', null, 'David McClure');
-        $item3 = $this->helper->_createItem('Test Item 3', 12, 'David McClure');
+        $this->helper->_createItem('Test Item 1', null, null);
+        $this->helper->_createItem('Test Item 2', null, 'David McClure');
+        $this->helper->_createItem('Test Item 3', 12, 'David McClure');
 
         $items = _getItems();
 

@@ -94,10 +94,7 @@ class GeoserverMap_File extends GeoserverMap_Abstract
         $capabilities = new SimpleXMLElement($body);
         $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
 
-        $layersArray = array();
         $activeLayers = array();
-
-        $map = $this->map->getMap();
         $fileName = explode('.', $this->map->getFile()->original_filename);
 
         // Query for names, filter out layers without an Omeka map file.
@@ -145,8 +142,6 @@ class GeoserverMap_File extends GeoserverMap_Abstract
         // Query for the layers.
         $capabilities = new SimpleXMLElement($body);
         $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
-
-        $layersArray = array();
 
         $map = $this->map->getMap();
         $fileName = explode('.', $this->map->getFile()->original_filename);

@@ -215,6 +215,22 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
     }
 
+
+    public function _createItems($number)
+    {
+
+        $items = array();
+
+        $i = 0;
+        while ($i < $number) {
+            $item = $this->_createItem('Test Item ' . $i);
+            $i++;
+        }
+
+        return $items;
+
+    }
+
     public function _createFiles($number)
     {
 

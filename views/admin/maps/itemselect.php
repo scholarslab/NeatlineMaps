@@ -12,7 +12,7 @@
 
             <h2>Select an item to associate the map with:</h2>
 
-            <table>
+            <table class="fedora">
 
                 <div id="simple-search-form">
                     <form id="simple-search" action="<?php echo uri('neatline-maps/maps/create'); ?>" method="get">

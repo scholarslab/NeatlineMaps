@@ -115,11 +115,43 @@ class NeatlineMaps_MapsTest extends Omeka_Test_AppTestCase
     }
 
     /**
+     * Test maps browse and sorting.
+     *
+     * @return void.
+     */
+    public function testBrowsePagination()
+    {
+
+        set_option('per_page_admin', 10);
+        $this->helper->_createMaps(25);
+
+        // Page 1.
+        $this->dispatch('neatline-maps/maps');
+        $this->assertQueryCount('table[class="fedora"] tbody tr', 10);
+        $this->assertQueryCount('div[class="pagination"]', 1);
+
+        $this->resetRequest()->resetResponse();
+
+        // Page 2.
+        $this->dispatch('neatline-maps/maps/2');
+        $this->assertQueryCount('table[class="fedora"] tbody tr', 10);
+        $this->assertQueryCount('div[class="pagination"]', 1);
+
+        $this->resetRequest()->resetResponse();
+
+        // Page 3.
+        $this->dispatch('neatline-maps/maps/3');
+        $this->assertQueryCount('table[class="fedora"] tbody tr', 5);
+        $this->assertQueryCount('div[class="pagination"]', 1);
+
+    }
+
+    /**
      * Test for redirect to server add page when no servers.
      *
      * @return void.
      */
-    public function testNoServersRedirect()
+    public function testNoServersAddMapRedirect()
     {
 
         $this->dispatch('neatline-maps/maps/create');
@@ -127,6 +159,7 @@ class NeatlineMaps_MapsTest extends Omeka_Test_AppTestCase
         $this->assertController('servers');
         $this->assertAction('create');
         $this->assertResponseCode(200);
+        $this->assertQueryContentContains('div.error', 'You have to create a server before you can add a map.');
 
     }
 
@@ -135,7 +168,7 @@ class NeatlineMaps_MapsTest extends Omeka_Test_AppTestCase
      *
      * @return void.
      */
-    public function testServersNoRedirect()
+    public function testServersAddMapNoRedirect()
     {
 
         $this->helper->_createServer('Test Server', 'http://www.test.org', 'admin', 'password');
@@ -148,468 +181,52 @@ class NeatlineMaps_MapsTest extends Omeka_Test_AppTestCase
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
     /**
-     * Test browse maps with no pagination.
+     * Test item select item browse and sorting.
      *
      * @return void.
      */
-    // public function testMapBrowseNoPagination()
-    // {
+    public function testItemSelectBrowseAndSorting()
+    {
 
-    //     $this->dispatch('items/add');
-    //     $this->assertResponseCode(200);
-    //     $this->assertNotQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
+        // Create server and maps.
+        $this->helper->_createServer('Test Server', 'http://www.test.org', 'admin', 'password');
+        $this->helper->_createItems(5);
 
-    // }
+        // No sorting.
+        $this->dispatch('neatline-maps/maps/create');
+        $this->assertQueryCount('table[class="fedora"] tbody tr', 6);
+
+        // Map title sorting, ascending.
+        $this->dispatch('neatline-maps/maps/create?sort_field=item_name');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[2]/td[1]/a', 'Test Item 0');
+        $this->dispatch('neatline-maps/maps/create?sort_field=item_name&sort_dir=a');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[2]/td[1]/a', 'Test Item 0');
+
+        // Map title sorting, descending
+        $this->dispatch('neatline-maps/maps/create?sort_field=item_name&sort_dir=d');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[1]/a', 'Test Item 4');
+
+    }
 
     /**
-     * Test the empty tab on item edit if there are no maps for the item.
+     * Test item select item search.
      *
      * @return void.
      */
-    // public function testEmptyTabOnItemEdit()
-    // {
+    public function testItemSelectSearch()
+    {
 
-    //     // Create an item.
-    //     $item = $this->helper->_createItem('Test Item');
+        // Create server and items.
+        $this->helper->_createServer('Test Server', 'http://www.test.org', 'admin', 'password');
+        $this->helper->_createItems(5);
 
-    //     $this->dispatch('items/edit/' . $item->id);
-    //     $this->assertResponseCode(200);
-    //     $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
-    //     $this->assertQueryContentContains('p', 'There are no maps for the item.');
-    //     $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-    //     $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="' . $item->id . '"]');
-    //     $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
+        // No sorting.
+        $this->dispatch('neatline-maps/maps/create?search=3&submit_search=Search+Items');
+        $this->assertQueryCount('table[class="fedora"] tbody tr', 1);
 
-    // }
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[1]/a', 'Test Item 3');
 
-    /**
-     * Test the when the item has a single map.
-     *
-     * @return void.
-     */
-    // public function testItemTabWithMap()
-    // {
-
-    //     // Create a map.
-    //     $map = $this->helper->_createMap();
-
-    //     $this->dispatch('items/edit/2');
-    //     $this->assertResponseCode(200);
-    //     $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
-    //     $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
-    //     $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-    //     $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="2"]');
-    //     $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
-    //     $this->assertQueryCount('div[id="map-list"] tbody tr', 1);
-    //     $this->assertQueryContentContains('a', 'Test Map');
-    //     $this->assertQueryContentContains('a', 'Test Server');
-    //     $this->assertQueryContentContains('a', 'Test_Namespace');
-    //     $this->assertQueryContentContains('a', 'Test Item');
-    //     $this->assertQueryContentContains('td', '5 files');
-
-    // }
-
-    /**
-     * Test the when the item has multiple maps.
-     *
-     * @return void.
-     */
-    // public function testItemTabWithMaps()
-    // {
-
-    //     // Create an item.
-    //     $newItem = $this->helper->_createItem('Test Item');
-
-    //     // Create maps, all associated with the same item.
-    //     $i = 0;
-    //     while ($i < 10) {
-    //         $this->helper->_createMap(
-    //             $serverName = 'Test Server',
-    //             $serverUrl = 'http://www.test.com',
-    //             $serverUsername = 'admin',
-    //             $serverPassword = 'password',
-    //             $item = $newItem,
-    //             $mapName = 'Test Map',
-    //             $mapNamespace = 'Test_Namespace');
-    //         $i++;
-    //     }
-
-    //     $this->dispatch('items/edit/2');
-    //     $this->assertResponseCode(200);
-    //     $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
-    //     $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
-    //     $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-    //     $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="2"]');
-    //     $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
-    //     $this->assertQueryCount('div[id="map-list"] tbody tr', 10);
-
-    // }
-
-    /**
-     * Test for existence and proper routing for add server page.
-     *
-     * @return void.
-     */
-    // public function testCanViewAddServerPage()
-    // {
-
-    //     $this->dispatch('neatline-maps/servers/create');
-    //     $this->assertModule('neatline-maps');
-    //     $this->assertController('servers');
-    //     $this->assertAction('create');
-    //     $this->assertResponseCode(200);
-
-    // }
-
-    /**
-     * Test for correct form correction on failed server add attempt.
-     *
-     * @return void.
-     */
-    // public function testAddServerFail()
-    // {
-
-    //     // Test that the validation rejects the submission unless all
-    //     // of the fields are filled out.
-    //     $this->request->setMethod('POST')
-    //         ->setPost(array(
-    //             'name' => '',
-    //             'url' => '',
-    //             'username' => '',
-    //             'password' => ''
-    //         )
-    //     );
-
-    //     // Test that the form posts back to the same view function.
-    //     $this->dispatch('neatline-maps/servers/create');
-    //     $this->assertModule('neatline-maps');
-    //     $this->assertController('servers');
-    //     $this->assertAction('create');
-    //     $this->assertResponseCode(200);
-
-    //     $this->assertQueryCount('ul.errors', 4);
-
-    //     $this->assertQueryContentContains('dd#name-element ul.errors li',
-    //         'Value is required and can\'t be empty');
-    //     $this->assertQueryContentContains('dd#url-element ul.errors li',
-    //         'Value is required and can\'t be empty');
-    //     $this->assertQueryContentContains('dd#username-element ul.errors li',
-    //         'Value is required and can\'t be empty');
-    //     $this->assertQueryContentContains('dd#password-element ul.errors li',
-    //         'Value is required and can\'t be empty');
-
-    // }
-
-    /**
-     * Test that the add server flow automatically scrubs off trailing slashes
-     * at the end of the server URL.
-     *
-     * @return void.
-     */
-    // public function testAddServerTrailingUrlSlashScrub()
-    // {
-
-    //     // Enter valid data, with a trailing slash on the URL.
-    //     $this->request->setMethod('POST')
-    //         ->setPost(array(
-    //             'name' => 'Test Server',
-    //             'url' => 'http://www.geoserver.com/test/',
-    //             'username' => 'test',
-    //             'password' => 'test'
-    //         )
-    //     );
-
-    //     $this->dispatch('neatline-maps/servers/create');
-    //     $this->assertRedirectTo('/neatline-maps/servers/browse');
-
-    //     $serverCount = $this->serversTable->count();
-    //     $server = $this->serversTable->find(1);
-
-    //     // Test that the server was created.
-    //     $this->assertEquals($serverCount, 1);
-    //     $this->assertEquals($server->name, 'Test Server');
-    //     $this->assertEquals($server->url, 'http://www.geoserver.com/test');
-    //     $this->assertEquals($server->username, 'test');
-    //     $this->assertEquals($server->password, 'test');
-
-    //     // Test redirect back to browse.
-    //     // Why does this not work?
-    //     // $this->assertAction('browse');
-
-    //     $this->resetRequest()->resetResponse();
-
-    //     // For now, since the tests don't follow the redirect..
-    //     $this->dispatch('neatline-maps/servers');
-    //     $this->assertQueryContentContains('td a strong', 'Test Server');
-    //     $this->assertQueryContentContains('td a', 'http://www.geoserver.com/test');
-    //     $this->assertQueryContentContains('td span', 'Offline or inaccessible');
-
-    // }
-
-    /**
-     * Test for successful server add.
-     *
-     * @return void.
-     */
-    // public function testAddServerSuccess()
-    // {
-
-    //     // Enter valid data.
-    //     $this->request->setMethod('POST')
-    //         ->setPost(array(
-    //             'name' => 'Test Server',
-    //             'url' => 'http://www.geoserver.com/test',
-    //             'username' => 'test',
-    //             'password' => 'test'
-    //         )
-    //     );
-
-    //     $this->dispatch('neatline-maps/servers/create');
-    //     $this->assertRedirectTo('/neatline-maps/servers/browse');
-
-    //     $serverCount = $this->serversTable->count();
-    //     $server = $this->serversTable->find(1);
-
-    //     // Test that the server was created.
-    //     $this->assertEquals($serverCount, 1);
-    //     $this->assertEquals($server->name, 'Test Server');
-    //     $this->assertEquals($server->url, 'http://www.geoserver.com/test');
-    //     $this->assertEquals($server->username, 'test');
-    //     $this->assertEquals($server->password, 'test');
-
-    //     // Test redirect back to browse.
-    //     // Why does this not work?
-    //     // $this->assertAction('browse');
-
-    //     $this->resetRequest()->resetResponse();
-
-    //     // For now, since the tests don't follow the redirect..
-    //     $this->dispatch('neatline-maps/servers');
-    //     $this->assertQueryContentContains('td a strong', 'Test Server');
-    //     $this->assertQueryContentContains('td a', 'http://www.geoserver.com/test');
-    //     $this->assertQueryContentContains('td span', 'Offline or inaccessible');
-
-    // }
-
-    /**
-     * Test server edit field population.
-     *
-     * @return void.
-     */
-    // public function testServerEditFieldPopulate()
-    // {
-
-    //     // Create a server.
-    //     $server = $this->helper->_createServer(
-    //         'Test Server',
-    //         'http://www.geoserver.com/test',
-    //         'test',
-    //         'test'
-    //     );
-
-    //     // Test the edit page.
-    //     $this->dispatch('neatline-maps/servers/edit/' . $server->id);
-    //     $this->assertModule('neatline-maps');
-    //     $this->assertController('servers');
-    //     $this->assertAction('edit');
-    //     $this->assertResponseCode(200);
-
-    //     // Test to confirm that form fields are populating.
-    //     $this->assertXpath('//input[@id="name"][@value="Test Server"]');
-    //     $this->assertXpath('//input[@id="url"][@value="http://www.geoserver.com/test"]');
-    //     $this->assertXpath('//input[@id="username"][@value="test"]');
-    //     $this->assertXpath('//input[@id="password"][@value="test"]');
-
-    //     $this->assertQueryContentContains('h2', 'Edit Server "Test Server"');
-
-    // }
-
-    /**
-     * Test for correct form correction on failed server edit attempt.
-     *
-     * @return void.
-     */
-    // public function testServerEditFail()
-    // {
-
-    //     // Create a server.
-    //     $server = $this->helper->_createServer(
-    //         'Test Server',
-    //         'http://www.geoserver.com/test',
-    //         'test',
-    //         'test'
-    //     );
-
-    //     // Test that the validation rejects the submission unless all
-    //     // of the fields are filled out.
-    //     $this->request->setMethod('POST')
-    //         ->setPost(array(
-    //             'name' => '',
-    //             'url' => '',
-    //             'username' => '',
-    //             'password' => '',
-    //             'id' => 1,
-    //             'edit_submit' => 'Save'
-    //         )
-    //     );
-
-    //     // Test that the form posts back to the same view function.
-    //     $this->dispatch('neatline-maps/servers/edit/' . $server->id);
-    //     $this->assertModule('neatline-maps');
-    //     $this->assertController('servers');
-    //     $this->assertAction('edit');
-
-    //     $this->assertQueryCount('ul.errors', 4);
-
-    //     $this->assertQueryContentContains('dd#name-element ul.errors li',
-    //         'Value is required and can\'t be empty');
-    //     $this->assertQueryContentContains('dd#url-element ul.errors li',
-    //         'Value is required and can\'t be empty');
-    //     $this->assertQueryContentContains('dd#username-element ul.errors li',
-    //         'Value is required and can\'t be empty');
-    //     $this->assertQueryContentContains('dd#password-element ul.errors li',
-    //         'Value is required and can\'t be empty');
-
-    // }
-
-    /**
-     * Test for successfull server edit.
-     *
-     * @return void.
-     */
-    // public function testServerEditSucceed()
-    // {
-
-    //     // Create a server.
-    //     $server = $this->helper->_createServer(
-    //         'Test Server',
-    //         'http://www.geoserver.com/test',
-    //         'test',
-    //         'test'
-    //     );
-
-    //     $serverCount = $this->serversTable->count();
-    //     $server = $this->serversTable->find(1);
-
-    //     // Test that the server was created.
-    //     $this->assertEquals($serverCount, 1);
-    //     $this->assertEquals($server->name, 'Test Server');
-    //     $this->assertEquals($server->url, 'http://www.geoserver.com/test');
-    //     $this->assertEquals($server->username, 'test');
-    //     $this->assertEquals($server->password, 'test');
-
-    //     $this->request->setMethod('POST')
-    //         ->setPost(array(
-    //             'name' => 'New Server Name',
-    //             'url' => 'http://www.newurl.url',
-    //             'username' => 'differentpass',
-    //             'password' => 'differentpass',
-    //             'id' => 1,
-    //             'edit_submit' => 'Save'
-    //         )
-    //     );
-
-    //     // Test that the form posts back to the same view function.
-    //     $this->dispatch('neatline-maps/servers/edit/' . $server->id);
-    //     $this->assertModule('neatline-maps');
-    //     $this->assertController('servers');
-    //     $this->assertAction('edit');
-    //     $this->assertRedirectTo('/neatline-maps/servers/browse');
-
-    //     $serverCount = $this->serversTable->count();
-    //     $server = $this->serversTable->find(1);
-
-    //     // Test that the server was created.
-    //     $this->assertEquals($serverCount, 1);
-    //     $this->assertEquals($server->name, 'New Server Name');
-    //     $this->assertEquals($server->url, 'http://www.newurl.url');
-    //     $this->assertEquals($server->username, 'differentpass');
-    //     $this->assertEquals($server->password, 'differentpass');
-
-    //     // Test redirect back to browse.
-    //     // Why does this not work?
-    //     // $this->assertAction('browse');
-
-    //     $this->resetRequest()->resetResponse();
-
-    //     // For now, since the tests don't follow the redirect..
-    //     $this->dispatch('neatline-maps/servers');
-    //     $this->assertQueryContentContains('td a strong', 'New Server Name');
-    //     $this->assertQueryContentContains('td a', 'http://www.newurl.url');
-    //     $this->assertQueryContentContains('td span', 'Offline or inaccessible');
-
-    // }
-
-    /**
-     * Test for successfull server delete.
-     *
-     * @return void.
-     */
-    // public function testServerDelete()
-    // {
-
-    //     // Create a server.
-    //     $server = $this->helper->_createServer(
-    //         'Test Server',
-    //         'http://www.geoserver.com/test',
-    //         'test',
-    //         'test'
-    //     );
-
-    //     $serverCount = $this->serversTable->count();
-    //     $server = $this->serversTable->find(1);
-
-    //     // Mock a post request initiated by clicking on the "Delete" button on
-    //     // either the browse or edit pages.
-    //     $this->request->setMethod('POST')
-    //         ->setPost(array(
-    //             'id' => $server->id,
-    //             'confirm' => 'false'
-    //         )
-    //     );
-
-    //     // Test that the controller routes to the delete action.
-    //     $this->dispatch('neatline-maps/servers/delete/' . $server->id);
-    //     $this->assertModule('neatline-maps');
-    //     $this->assertController('servers');
-    //     $this->assertAction('delete');
-
-    //     $serverCount = $this->serversTable->count();
-    //     $server = $this->serversTable->find(1);
-
-    //     // Test that the server was created.
-    //     $this->assertEquals($serverCount, 1);
-
-    //     // Test that the server is deleted on confirmation.
-
-    //     // Mock a post request initiated by clicking on the "Delete" button on
-    //     // the delete confirm page.
-    //     $this->request->setMethod('POST')
-    //         ->setPost(array(
-    //             'id' => $server->id,
-    //             'delete_confirm' => 'Delete',
-    //         )
-    //     );
-
-    //     // Test that the controller routes to the delete action.
-    //     $this->dispatch('neatline-maps/servers/delete/' . $server->id);
-
-    //     // Confirm that the server is gone from the database.
-    //     $serverCount = $this->serversTable->count();
-    //     $this->assertEquals($serverCount, 1);
-
-    // }
+    }
 
 }

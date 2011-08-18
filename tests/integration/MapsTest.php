@@ -72,8 +72,45 @@ class NeatlineMaps_MapsTest extends Omeka_Test_AppTestCase
         $this->dispatch('neatline-maps/maps');
         $this->assertQueryCount('table[class="fedora"] tbody tr', 5);
 
-        // Sorting.
+        // Map title sorting, ascending.
+        $this->dispatch('neatline-maps/maps?sort_field=name');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[1]/a', 'Test Map 0');
+        $this->dispatch('neatline-maps/maps?sort_field=name&sort_dir=a');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[1]/a', 'Test Map 0');
 
+        // Map title sorting, descending.
+        $this->dispatch('neatline-maps/maps?sort_field=name&sort_dir=d');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[1]/a', 'Test Map 4');
+
+        // Server name sorting, ascending.
+        $this->dispatch('neatline-maps/maps?sort_field=server');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[2]/a', 'Test Server 0');
+        $this->dispatch('neatline-maps/maps?sort_field=name&sort_dir=a');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[2]/a', 'Test Server 0');
+
+        // Server name sorting, descending.
+        $this->dispatch('neatline-maps/maps?sort_field=server&sort_dir=d');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[2]/a', 'Test Server 4');
+
+        // Namespace name sorting, ascending.
+        $this->dispatch('neatline-maps/maps?sort_field=namespace');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[3]/a', 'Test_Namespace 0');
+        $this->dispatch('neatline-maps/maps?sort_field=namespace&sort_dir=a');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[3]/a', 'Test_Namespace 0');
+
+        // Namespace name sorting, descending.
+        $this->dispatch('neatline-maps/maps?sort_field=namespace&sort_dir=d');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[3]/a', 'Test_Namespace 4');
+
+        // Item name sorting, ascending.
+        $this->dispatch('neatline-maps/maps?sort_field=parent_item');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[4]/a', 'Test Item 0');
+        $this->dispatch('neatline-maps/maps?sort_field=parent_item&sort_dir=a');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[4]/a', 'Test Item 0');
+
+        // Namespace name sorting, descending.
+        $this->dispatch('neatline-maps/maps?sort_field=parent_item&sort_dir=d');
+        $this->assertXpathContentContains('//table[@class="fedora"]/tbody/tr[1]/td[4]/a', 'Test Item 4');
 
     }
 

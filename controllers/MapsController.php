@@ -319,7 +319,6 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $item = $this->getTable('Item')->find($post['item_id']);
         $server = $this->getTable('NeatlineMapsServer')->find($post['server_id']);
 
-
         // Is a namespace selected (must select an existing one or enter a name for a new one).
         if ($post['existing_namespace'] == '-' && $post['new_namespace'] == null) {
             $this->flashError('Select an existing namespace or enter a new one.');
@@ -337,7 +336,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             $item,
             'Upload',
             'map',
-            array('ignoreNoFile'=>true));
+            array('ignoreNoFile' => true));
 
         // If new namespace is specified, add namespace.
         if ($post['new_namespace'] != '') {
@@ -377,19 +376,19 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         }
 
-        // If none of the files were successfully posted to GeoServer, delete the empty map record.
-        if ($successCount == 0) {
+        // // If none of the files were successfully posted to GeoServer, delete the empty map record.
+        // if ($successCount == 0) {
 
-            $map->delete();
-            $this->flashError('There was an error; the maps were not added.');
+        //     $map->delete();
+        //     $this->flashError('There was an error; the maps were not added.');
 
-        } else {
+        // } else {
 
-            $this->flashSuccess('Map created and files added to GeoServer.');
+        //     $this->flashSuccess('Map created and files added to GeoServer.');
 
-        }
+        // }
 
-        $this->redirect->goto('browse');
+        // $this->redirect->goto('browse');
 
     }
 

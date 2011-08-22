@@ -197,6 +197,8 @@ function _putFileToGeoServer($file, $server, $namespace)
     $buffer = curl_exec($ch);
     $info = curl_getinfo($ch);
 
+    print_r($info);
+
     return ($info['http_code'] == $successCode);
 
 }

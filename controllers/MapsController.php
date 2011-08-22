@@ -377,19 +377,19 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         }
 
-        // // If none of the files were successfully posted to GeoServer, delete the empty map record.
-        // if ($successCount == 0) {
+        // If none of the files were successfully posted to GeoServer, delete the empty map record.
+        if ($successCount == 0) {
 
-        //     $map->delete();
-        //     $this->flashError('There was an error; the maps were not added.');
+            $map->delete();
+            $this->flashError('There was an error; the maps were not added.');
 
-        // } else {
+        } else {
 
-        //     $this->flashSuccess('Map created and files added to GeoServer.');
+            $this->flashSuccess('Map created and files added to GeoServer.');
 
-        // }
+        }
 
-        // $this->redirect->goto('browse');
+        $this->redirect->goto('browse');
 
     }
 

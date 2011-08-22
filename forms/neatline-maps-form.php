@@ -27,12 +27,12 @@
     </table>
     </div>
 
-    <a href="<?php echo uri('/neatline-maps/maps/create/selectserver?item_id=' . $item->id); ?>">Add a Map</a>
+    <a href="<?php echo uri('/neatline-maps/maps/create/selectserver?item_id=' . $item->id); ?>" style="font-size: 1.4em; font-weight: bold;">Add a Map</a>
 
 <?php else: ?>
 
 <p>There are no maps for the item.</p>
 
-<a href="<?php echo uri('/neatline-maps/maps/create/selectserver?item_id=' . $item->id); ?>">Add a Map</a>
+<a href="<?php echo uri('/neatline-maps/maps/create/selectserver?item_id=' . $item->id); ?>" style="font-size: 1.4em; font-weight: bold;">Add a Map</a>
 
 <?php endif; ?>

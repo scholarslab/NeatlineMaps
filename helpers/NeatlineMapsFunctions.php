@@ -197,8 +197,6 @@ function _putFileToGeoServer($file, $server, $namespace)
     $buffer = curl_exec($ch);
     $info = curl_getinfo($ch);
 
-    print_r($info);
-
     return ($info['http_code'] == $successCode);
 
 }
@@ -212,26 +210,29 @@ function _putFileToGeoServer($file, $server, $namespace)
  *
  * @return boolean True if GeoServer accepts the file.
  */
-function _deleteFileFromGeoserver($file, $map, $server)
-{
 
-    $coverageAddress = $server->url . '/rest/workspaces/' .
-        $namespace . '/coveragestores/' . $file->original_filename .
-        '/file.geotiff';
+// DOES NOT WORK.
 
-    $ch = curl_init($coverageAddress);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+// function _deleteFileFromGeoserver($file, $map, $server)
+// {
 
-    $authString = $server->username . ':' . $server->password;
-    curl_setopt($ch, CURLOPT_USERPWD, $authString);
+//     $coverageAddress = $server->url . '/rest/workspaces/' .
+//         $namespace . '/coveragestores/' . $file->original_filename .
+//         '/file.geotiff';
 
-    $successCode = 405;
-    $buffer = curl_exec($ch);
-    $info = curl_getinfo($ch);
+//     $ch = curl_init($coverageAddress);
+//     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 
-    return ($info['http_code'] == $successCode);
+//     $authString = $server->username . ':' . $server->password;
+//     curl_setopt($ch, CURLOPT_USERPWD, $authString);
 
-}
+//     $successCode = 405;
+//     $buffer = curl_exec($ch);
+//     $info = curl_getinfo($ch);
+
+//     return ($info['http_code'] == $successCode);
+
+// }
 
 /**
  * A homebrew colum sorter, implemented so as to keep more control

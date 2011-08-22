@@ -200,14 +200,15 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         $post = $this->_request->getPost();
         $server = $this->getTable('NeatlineMapsServer')->find($post['server_id']);
-        $form = $this->_doServerForm($post['item_id']);
+        $item_id = $this->_request->getParam('item_id');
+        $form = $this->_doServerForm($item_id);
 
         if (!isset($post['existing_namespace'])) {
 
             if ($form->isValid($post)) {
 
                 // Show namespace form.
-                $this->view->item_id = $post['item_id'];
+                $this->view->item_id = $item_id;
                 $this->view->server_id = $post['server_id'];
                 $this->view->map_name = $post['map_name'];
                 $this->view->namespaces = $server->getNamespaceNames();
@@ -225,7 +226,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         else {
 
             // Show namespace form.
-            $this->view->item_id = $post['item_id'];
+            $this->view->item_id = $item_id;
             $this->view->server_id = $post['server_id'];
             $this->view->map_name = $post['map_name'];
             $this->view->namespaces = $server->getNamespaceNames();

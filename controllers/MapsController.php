@@ -332,12 +332,12 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             $this->_forward('getworkspace', 'maps', 'neatline-maps');
         }
 
-        // // If files and namespace, do add.
-        // $files = insert_files_for_item(
-        //     $item,
-        //     'Upload',
-        //     'map',
-        //     array('ignoreNoFile' => true));
+        // If files and namespace, do add.
+        $files = insert_files_for_item(
+            $item,
+            'Upload',
+            'map',
+            array('ignoreNoFile' => true));
 
         // If new namespace is specified, add namespace.
         if ($post['new_workspace'] != '') {
@@ -351,47 +351,45 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
                 $post['new_url']
             );
 
-            $workspace = $post['new_workpace'];
+            $workspace = $post['new_workspace'];
 
         } else {
 
-            $workspace = $post['existing_workpace'];
+            $workspace = $post['existing_workspace'];
 
         }
 
-        print_r($post);
+        // Create the new map object.
+        $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name'], $workspace);
 
-        // // Create the new map object.
-        // $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name'], $workspace);
+        // Throw each of the files at GeoServer and see if it accepts them.
+        $successCount = 0;
+        foreach ($files as $file) {
 
-        // // Throw each of the files at GeoServer and see if it accepts them.
-        // $successCount = 0;
-        // foreach ($files as $file) {
+            if (_putFileToGeoServer($file, $server, $workspace)) { // if GeoServer accepts the file...
+                $this->getTable('NeatlineMapsMapFile')->addNewMapFile($map, $file);
+                $successCount++;
+            }
 
-        //     if (_putFileToGeoServer($file, $server, $workspace)) { // if GeoServer accepts the file...
-        //         $this->getTable('NeatlineMapsMapFile')->addNewMapFile($map, $file);
-        //         $successCount++;
-        //     }
+            else {
+                $file->delete();
+            }
 
-        //     else {
-        //         $file->delete();
-        //     }
+        }
 
-        // }
+        // If none of the files were successfully posted to GeoServer, delete the empty map record.
+        if ($successCount == 0) {
 
-        // // If none of the files were successfully posted to GeoServer, delete the empty map record.
-        // if ($successCount == 0) {
+            $map->delete();
+            $this->flashError('There was an error; the maps were not added.');
 
-        //     $map->delete();
-        //     $this->flashError('There was an error; the maps were not added.');
+        } else {
 
-        // } else {
+            $this->flashSuccess('Map created and files added to GeoServer.');
 
-        //     $this->flashSuccess('Map created and files added to GeoServer.');
+        }
 
-        // }
-
-        // $this->redirect->goto('browse');
+        $this->redirect->goto('browse');
 
     }
 

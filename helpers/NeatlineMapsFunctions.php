@@ -165,7 +165,7 @@ function _createGeoServerWorkspace(
  *
  * @return boolean True if GeoServer accepts the file.
  */
-function _putFileToGeoServer($file, $server, $workpace)
+function _putFileToGeoServer($file, $server, $workspace)
 {
 
     // Does GeoServer recognize the file as a map?
@@ -176,7 +176,7 @@ function _putFileToGeoServer($file, $server, $workpace)
     $zip->close();
 
     $coverageAddress = $server->url . '/rest/workspaces/' .
-        $workpace . '/coveragestores/' . $file->original_filename .
+        $workspace . '/coveragestores/' . $file->original_filename .
         '/file.geotiff';
 
     $ch = curl_init($coverageAddress);

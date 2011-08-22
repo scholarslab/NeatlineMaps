@@ -195,7 +195,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
      *
      * @return void
      */
-    public function getnamespaceAction()
+    public function getworkspaceAction()
     {
 
         $post = $this->_request->getPost();
@@ -211,7 +211,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
                 $this->view->item_id = $item_id;
                 $this->view->server_id = $post['server_id'];
                 $this->view->map_name = $post['map_name'];
-                $this->view->namespaces = $server->getWorkspaceNames();
+                $this->view->workspaces = $server->getWorkspaceNames();
 
             }
 
@@ -229,7 +229,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             $this->view->item_id = $item_id;
             $this->view->server_id = $post['server_id'];
             $this->view->map_name = $post['map_name'];
-            $this->view->namespaces = $server->getWorkspaceNames();
+            $this->view->workspaces = $server->getWorkspaceNames();
 
         }
 
@@ -321,75 +321,77 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $server = $this->getTable('NeatlineMapsServer')->find($post['server_id']);
 
         // Is a namespace selected (must select an existing one or enter a name for a new one).
-        if ($post['existing_namespace'] == '-' && $post['new_namespace'] == null) {
-            $this->flashError('Select an existing namespace or enter a new one.');
-            $this->_forward('getnamespace', 'maps', 'neatline-maps');
+        if ($post['existing_workpace'] == '-' && $post['new_workpace'] == null) {
+            $this->flashError('Select an existing workpace or enter a new one.');
+            $this->_forward('getworkspace', 'maps', 'neatline-maps');
         }
 
         // Were files selected for upload?
         if ($_FILES['map'][0]['size'] > 0) {
             $this->flashError('Select files.');
-            $this->_forward('getnamespace', 'maps', 'neatline-maps');
+            $this->_forward('getworkspace', 'maps', 'neatline-maps');
         }
 
-        // If files and namespace, do add.
-        $files = insert_files_for_item(
-            $item,
-            'Upload',
-            'map',
-            array('ignoreNoFile' => true));
+        // // If files and namespace, do add.
+        // $files = insert_files_for_item(
+        //     $item,
+        //     'Upload',
+        //     'map',
+        //     array('ignoreNoFile' => true));
 
         // If new namespace is specified, add namespace.
-        if ($post['new_namespace'] != '') {
+        if ($post['new_workspace'] != '') {
 
-            // Create the new namespace.
-            _createGeoServerNamespace(
+            // Create the new workspace.
+            _createGeoServerWorkspace(
                 $server->url,
-                $post['new_namespace'],
+                $post['new_workspace'],
                 $server->username,
                 $server->password,
                 $post['new_url']
             );
 
-            $namespace = $post['new_namespace'];
+            $workspace = $post['new_workpace'];
 
         } else {
 
-            $namespace = $post['existing_namespace'];
+            $workspace = $post['existing_workpace'];
 
         }
 
-        // Create the new map object.
-        $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name'], $namespace);
+        print_r($post);
 
-        // Throw each of the files at GeoServer and see if it accepts them.
-        $successCount = 0;
-        foreach ($files as $file) {
+        // // Create the new map object.
+        // $map = $this->getTable('NeatlineMapsMap')->addNewMap($item, $server, $post['map_name'], $workspace);
 
-            if (_putFileToGeoServer($file, $server, $namespace)) { // if GeoServer accepts the file...
-                $this->getTable('NeatlineMapsMapFile')->addNewMapFile($map, $file);
-                $successCount++;
-            }
+        // // Throw each of the files at GeoServer and see if it accepts them.
+        // $successCount = 0;
+        // foreach ($files as $file) {
 
-            else {
-                $file->delete();
-            }
+        //     if (_putFileToGeoServer($file, $server, $workspace)) { // if GeoServer accepts the file...
+        //         $this->getTable('NeatlineMapsMapFile')->addNewMapFile($map, $file);
+        //         $successCount++;
+        //     }
 
-        }
+        //     else {
+        //         $file->delete();
+        //     }
 
-        // If none of the files were successfully posted to GeoServer, delete the empty map record.
-        if ($successCount == 0) {
+        // }
 
-            $map->delete();
-            $this->flashError('There was an error; the maps were not added.');
+        // // If none of the files were successfully posted to GeoServer, delete the empty map record.
+        // if ($successCount == 0) {
 
-        } else {
+        //     $map->delete();
+        //     $this->flashError('There was an error; the maps were not added.');
 
-            $this->flashSuccess('Map created and files added to GeoServer.');
+        // } else {
 
-        }
+        //     $this->flashSuccess('Map created and files added to GeoServer.');
 
-        $this->redirect->goto('browse');
+        // }
+
+        // $this->redirect->goto('browse');
 
     }
 
@@ -443,7 +445,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     {
 
         $form = new Zend_Form();
-        $form->setAction('getnamespace')->getMethod('post');
+        $form->setAction('getworkspace')->getMethod('post');
 
         $name = new Zend_Form_Element_Text('map_name');
         $name->setRequired(true)
@@ -463,7 +465,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         }
 
-        $submit = new Zend_Form_Element_Submit('select_namespace');
+        $submit = new Zend_Form_Element_Submit('select_workspace');
         $submit->setLabel('Continue');
 
         $item = new Zend_Form_Element_Hidden('item_id');

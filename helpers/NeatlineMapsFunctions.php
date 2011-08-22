@@ -111,17 +111,17 @@ function _doTabAdminHeaderJsAndCss()
  *
  * @return boolean True if GeoServer accepts the file.
  */
-function _createGeoServerNamespace(
+function _createGeoServerWorkspace(
             $geoserver_url,
-            $geoserver_namespace_prefix,
+            $geoserver_workspace_prefix,
             $geoserver_user,
             $geoserver_password,
-            $geoserver_namespace_url)
+            $geoserver_workspace_url)
 {
 
     // Set up curl to dial out to GeoServer.
-    $geoServerConfigurationAddress = $geoserver_url . '/rest/namespaces';
-    $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_namespace_prefix;
+    $geoServerConfigurationAddress = $geoserver_url . '/rest/workspaces';
+    $geoServerNamespaceCheck = $geoServerConfigurationAddress . '/' . $geoserver_workspace_prefix;
 
     $clientCheckNamespace = new Zend_Http_Client($geoServerNamespaceCheck);
     $clientCheckNamespace->setAuth($geoserver_user, $geoserver_password);
@@ -129,14 +129,13 @@ function _createGeoServerNamespace(
     // Does the namespace already exist?
     if (strpos(
             $clientCheckNamespace->request(Zend_Http_Client::GET)->getBody(),
-            'No such namespace:'
+            'No such workspace:'
     ) !== false) {
 
         $namespaceJSON = '
             {
-                "namespace": {
-                    "prefix": "' . $geoserver_namespace_prefix . '",
-                    "uri": "' . $geoserver_namespace_url . '"
+                "workspace": {
+                    "name": "' . $geoserver_workspace_prefix . '"
                 }
             }
         ';
@@ -153,8 +152,6 @@ function _createGeoServerNamespace(
         $successCode = 201;
         $buffer = curl_exec($ch);
 
-        // return $buffer;
-
     }
 
 }
@@ -168,7 +165,7 @@ function _createGeoServerNamespace(
  *
  * @return boolean True if GeoServer accepts the file.
  */
-function _putFileToGeoServer($file, $server, $namespace)
+function _putFileToGeoServer($file, $server, $workpace)
 {
 
     // Does GeoServer recognize the file as a map?
@@ -179,7 +176,7 @@ function _putFileToGeoServer($file, $server, $namespace)
     $zip->close();
 
     $coverageAddress = $server->url . '/rest/workspaces/' .
-        $namespace . '/coveragestores/' . $file->original_filename .
+        $workpace . '/coveragestores/' . $file->original_filename .
         '/file.geotiff';
 
     $ch = curl_init($coverageAddress);

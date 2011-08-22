@@ -44,7 +44,7 @@ class NeatlineMapsServer extends Omeka_record
     public function isOnline()
     {
 
-        $ch = curl_init($this->url . '/rest/namespaces');
+        $ch = curl_init($this->url . '/rest/workspaces');
         // curl_setopt($ch, CURLOPT_GET, True);
 
         $authString = $this->username . ':' . $this->password;

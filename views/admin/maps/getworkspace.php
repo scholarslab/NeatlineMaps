@@ -4,7 +4,7 @@
 
     <?php echo flash(); ?>
 
-    <h2>Step 2: Upload files and select a namespace:</h2>
+    <h2>Step 2: Upload files and select a workspace:</h2>
 
     <form enctype="multipart/form-data" action="addmap" method="post">
 
@@ -50,30 +50,30 @@
       <dl class="zend_form">
 
         <dt id="existing_namespace-label">
-          <label for="existing_namespace" class="optional">Use existing namespace:</label>
+          <label for="existing_namespace" class="optional">Use existing workspace:</label>
         </dt>
 
-        <dd id="existing_namespace-element">
-          <select name="existing_namespace" id="existing_namespace">
+        <dd id="existing_workspace-element">
+          <select name="existing_workspace" id="existing_workspace">
 
             <option value="-">-</option>
-            <?php foreach ($namespaces as $namespace): ?>
-              <option value="<?php echo $namespace; ?>"><?php echo $namespace; ?></option>
+            <?php foreach ($workspaces as $workspace): ?>
+              <option value="<?php echo $workspace; ?>"><?php echo $workspace; ?></option>
             <?php endforeach; ?>
 
           </select>
         </dd>
 
-        <dt id="new_namespace-label">
-          <label for="new_namespace" class="optional">Or, create a new namespace:</label>
+        <dt id="new_workspace-label">
+          <label for="new_workspace" class="optional">Or, create a new workspace:</label>
         </dt>
 
-        <dd id="new_namespace-element">
-          <input type="text" name="new_namespace" id="new_namespace" value="" size="55">
+        <dd id="new_workspace-element">
+          <input type="text" name="new_workspace" id="new_workspace" value="" size="55">
         </dd>
 
         <dt id="new_url-label">
-          <label for="new_url" class="optional">Url for new namespace:</label>
+          <label for="new_url" class="optional">Url for new workspace:</label>
         </dt>
 
         <dd id="new_url-element">

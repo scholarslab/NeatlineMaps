@@ -71,9 +71,7 @@ class NeatlineMaps_ItemTabTest extends Omeka_Test_AppTestCase
         $this->assertResponseCode(200);
         $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
         $this->assertQueryContentContains('p', 'There are no maps for the item.');
-        $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-        $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="' . $item->id . '"]');
-        $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
+        $this->assertQueryContentContains('a', 'Add a Map');
 
     }
 
@@ -92,9 +90,7 @@ class NeatlineMaps_ItemTabTest extends Omeka_Test_AppTestCase
         $this->assertResponseCode(200);
         $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
         $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
-        $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-        $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="2"]');
-        $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
+        $this->assertQueryContentContains('a', 'Add a Map');
         $this->assertQueryCount('div[id="map-list"] tbody tr', 1);
         $this->assertQueryContentContains('a', 'Test Map');
         $this->assertQueryContentContains('a', 'Test Server');
@@ -133,9 +129,7 @@ class NeatlineMaps_ItemTabTest extends Omeka_Test_AppTestCase
         $this->assertResponseCode(200);
         $this->assertQueryContentContains('ul[id="section-nav"] li a', 'Neatline Maps');
         $this->assertNotQueryContentContains('p', 'There are no maps for the item.');
-        $this->assertXpath('//input[@type="submit"][@value="Add a Map"]');
-        $this->assertXpath('//input[@type="hidden"][@name="item_id"][@value="2"]');
-        $this->assertXpath('//form[contains(@action, "/maps/create/selectserver")]');
+        $this->assertQueryContentContains('a', 'Add a Map');
         $this->assertQueryCount('div[id="map-list"] tbody tr', 10);
 
     }

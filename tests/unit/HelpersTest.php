@@ -71,10 +71,12 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
         $form = _doItemForm($item);
         $this->assertEquals(strpos($form, 'There are no maps for the item.'), false);
 
+
+
     }
 
     /**
-     * Test for OpenLayers.js and the map markup.
+     * Test for OpenLayers.js.
      *
      * @return void.
      */

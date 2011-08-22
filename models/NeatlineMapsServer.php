@@ -66,21 +66,21 @@ class NeatlineMapsServer extends Omeka_record
      *
      * @return array The namespaces.
      */
-    public function getNamespaceNames()
+    public function getWorkspaceNames()
     {
 
         // Set up curl to dial out to GeoServer.
-        $geoServerConfigurationAddress = $this->url . '/rest/namespaces.xml';
+        $workspacesAddress = $this->url . '/rest/workspaces.xml';
 
-        $namespaceList = new Zend_Http_Client($geoServerConfigurationAddress);
-        $namespaceList->setAuth($this->username, $this->password);
-        $responseBody = str_replace('xmlns', 'ns', $namespaceList->request(Zend_Http_Client::GET)->getBody());
+        $workspaceList = new Zend_Http_Client($workspacesAddress);
+        $workspaceList->setAuth($this->username, $this->password);
+        $responseBody = str_replace('xmlns', 'ns', $workspaceList->request(Zend_Http_Client::GET)->getBody());
 
         // Query for the namespaces.
         $body = new SimpleXMLElement($responseBody);
-        $namespaces = $body->xpath('//*[local-name()="namespace"]/*[local-name()="name"]');
+        $workspaces = $body->xpath('//*[local-name()="workspace"]/*[local-name()="name"]');
 
-        return $namespaces;
+        return $workspaces;
 
     }
 

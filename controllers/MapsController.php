@@ -211,7 +211,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
                 $this->view->item_id = $item_id;
                 $this->view->server_id = $post['server_id'];
                 $this->view->map_name = $post['map_name'];
-                $this->view->namespaces = $server->getNamespaceNames();
+                $this->view->namespaces = $server->getWorkspaceNames();
 
             }
 
@@ -229,7 +229,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             $this->view->item_id = $item_id;
             $this->view->server_id = $post['server_id'];
             $this->view->map_name = $post['map_name'];
-            $this->view->namespaces = $server->getNamespaceNames();
+            $this->view->namespaces = $server->getWorkspaceNames();
 
         }
 
@@ -477,65 +477,6 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $form->addElement($submit);
         $form->addElement($item);
         $form->addElement($submitted);
-
-        return $form;
-
-    }
-
-    /**
-     * Build the form for server add/edit.
-     *
-     * @param $mode 'create' or 'edit.'
-     * @param $server_id The id of the server for hidden input in edit case.
-     *
-     * @return void
-     */
-    protected function _doNamespaceForm($item_id, $server_id, $map_name)
-    {
-
-        $server = $this->getTable('NeatlineMapsServer')->find($server_id);
-
-        $form = new Zend_Form();
-        $form->setAction('addmap')->getMethod('post');
-
-        $namespace = new Zend_Form_Element_Select('existing_namespace');
-        $namespace->setLabel('Use existing namespace:');
-        $namespaces = $server->getNamespaceNames();
-
-        $namespace->addMultiOption('-', '(use new namespace below)');
-
-        // Add each of the servers as an option.
-        foreach ($namespaces as $namespace_node) {
-            $namespace->addMultiOption($namespace_node, $namespace_node);
-        }
-
-        $newNamespace = new Zend_Form_Element_Text('new_namespace');
-        $newNamespace->setLabel('Create a new namespace:')
-            ->setAttrib('size', 55);
-
-        $newNamespaceUrl = new Zend_Form_Element_Text('new_url');
-        $newNamespaceUrl->setLabel('Url for new namespace:')
-            ->setAttrib('size', 55);
-
-        $submit = new Zend_Form_Element_Submit('create_map');
-        $submit->setLabel('Create');
-
-        $item_id_input = new Zend_Form_Element_Hidden('item_id');
-        $item_id_input->setValue($item_id);
-
-        $server_id_input = new Zend_Form_Element_Hidden('server_id');
-        $server_id_input->setValue($server_id);
-
-        $map_name_input = new Zend_Form_Element_Hidden('map_name');
-        $map_name_input->setValue($map_name);
-
-        $form->addElement($namespace);
-        $form->addElement($newNamespace);
-        $form->addElement($newNamespaceUrl);
-        $form->addElement($submit);
-        $form->addElement($item_id_input);
-        $form->addElement($server_id_input);
-        $form->addElement($map_name_input);
 
         return $form;
 

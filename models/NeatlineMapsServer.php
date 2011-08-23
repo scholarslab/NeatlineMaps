@@ -80,7 +80,24 @@ class NeatlineMapsServer extends Omeka_record
         $body = new SimpleXMLElement($responseBody);
         $workspaces = $body->xpath('//*[local-name()="workspace"]/*[local-name()="name"]');
 
+        // Sort alphabetically.
+        usort($workspaces, array('NeatlineMapsServer', '_compareWorkspaceNames'));
+
         return $workspaces;
+
+    }
+
+    /**
+     * Compare workspace names to see which comes first alphabetically. Used by the sorting step
+     * in getWorkspaceNames().
+     *
+     * @param xml nodes $workspaces The workspaces.
+     *
+     * @return xml nodes The sorted workspaces.
+     */
+    static function _compareWorkspaceNames($workspace1, $workspace2) {
+
+        return strcmp($workspace1, $workspace2);
 
     }
 

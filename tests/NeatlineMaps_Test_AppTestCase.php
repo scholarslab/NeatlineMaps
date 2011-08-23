@@ -123,6 +123,32 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
     }
 
+    public function _createMapForServer($server)
+    {
+
+        $files = $this->_createFiles(5);
+        $item = $this->_createItem('Test Item');
+
+        $map = new NeatlineMapsMap;
+        $map->item_id = $item->id;
+        $map->server_id = $server->id;
+        $map->name = 'Test Map';
+        $map->namespace = 'Test_Namespace';
+        $map->save();
+
+        $i = 1;
+        while ($i <= 5) {
+            $mapFile = new NeatlineMapsMapFile;
+            $mapFile->file_id = $i;
+            $mapFile->map_id = $map->id;
+            $mapFile->save();
+            $i++;
+        }
+
+        return $map;
+
+    }
+
     public function _createMapFile(
         $serverName = 'Test Server',
         $serverUrl = 'http://www.test.com',

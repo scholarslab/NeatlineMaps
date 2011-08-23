@@ -101,6 +101,22 @@ class NeatlineMapsServer extends Omeka_record
 
     }
 
+    /**
+     * Check to see if the server has child maps.
+     *
+     * @return boolean True if there are child maps.
+     */
+    public function hasChildMaps()
+    {
+
+        $childMaps = $this->getTable('NeatlineMapsMap')->fetchObjects(
+            $this->getTable('NeatlineMapsMap')->getSelect()->where('server_id = ' . $this->id)
+        );
+
+        return (bool) $childMaps;
+
+    }
+
 }
 
 /*

@@ -52,19 +52,10 @@ jQuery(document).ready(function() {
             buffer: 0,
             displayOutsideMaxExtent: true,
             isBaseLayer: true
-        } 
+        }
     );
 
-
-    untiled = new OpenLayers.Layer.WMS('Untiled',
-        '<?php echo $wmsAddress; ?>',
-        {
-            layers: '<?php echo $layers; ?>', format: 'image/jpeg'
-        },
-            {singleTile: true, ratio: 1, isBaseLayer: true}
-    );
-
-    map.addLayers([untiled, tiled]);
+    map.addLayers([tiled]);
     map.zoomToExtent(bounds);
 
 });

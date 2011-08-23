@@ -354,7 +354,44 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
     }
 
     /**
-     * Test for successfull server delete.
+     * Test for failed server delete if the server has maps.
+     *
+     * @return void.
+     */
+    public function testServerDeleteFail()
+    {
+
+        // Create a server.
+        $server = $this->helper->_createServer(
+            'Test Server',
+            'http://www.geoserver.com/test',
+            'test',
+            'test'
+        );
+
+        // Create a map
+        $this->helper->_createMapForServer($server);
+
+        // Mock a post request initiated by clicking on the "Delete" button on
+        // the delete confirm page.
+        $this->request->setMethod('POST')
+            ->setPost(array(
+                'id' => $server->id,
+                'deleteconfirm_submit' => 'Delete',
+            )
+        );
+
+        // Test that the controller routes to the delete action.
+        $this->dispatch('neatline-maps/servers/delete/' . $server->id);
+
+        // Confirm that the server is gone from the database.
+        $serverCount = $this->serversTable->count();
+        $this->assertEquals($serverCount, 1);
+
+    }
+
+    /**
+     * Test for successful server delete.
      *
      * @return void.
      */
@@ -376,31 +413,25 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // either the browse or edit pages.
         $this->request->setMethod('POST')
             ->setPost(array(
-                'id' => $server->id,
-                'confirm' => 'false'
+                'id' => $server->id
             )
         );
 
         // Test that the controller routes to the delete action.
-        $this->dispatch('neatline-maps/servers/delete/' . $server->id);
+        $this->dispatch('neatline-maps/servers/delete/' . $server->id . '?confirm=false');
         $this->assertModule('neatline-maps');
         $this->assertController('servers');
         $this->assertAction('delete');
 
-        $serverCount = $this->serversTable->count();
-        $server = $this->serversTable->find(1);
-
         // Test that the server was created.
         $this->assertEquals($serverCount, 1);
-
-        // Test that the server is deleted on confirmation.
 
         // Mock a post request initiated by clicking on the "Delete" button on
         // the delete confirm page.
         $this->request->setMethod('POST')
             ->setPost(array(
                 'id' => $server->id,
-                'delete_confirm' => 'Delete',
+                'deleteconfirm_submit' => 'Delete',
             )
         );
 
@@ -409,7 +440,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
 
         // Confirm that the server is gone from the database.
         $serverCount = $this->serversTable->count();
-        $this->assertEquals($serverCount, 1);
+        $this->assertEquals($serverCount, 0);
 
     }
 

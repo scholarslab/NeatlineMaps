@@ -36,18 +36,6 @@ if (!defined('NEATLINE_MAPS_PLUGIN_DIR')) {
     define('NEATLINE_MAPS_PLUGIN_DIR', dirname(__FILE__));
 }
 
-if (!defined('NEATLINE_MAPS_MAP_ITEM_TYPE_NAME')) {
-    define('NEATLINE_MAPS_MAP_ITEM_TYPE_NAME', 'Historical Map');
-}
-
-if (!defined('NEATLINE_MAPS_NAMESPACE_FIELD_NAME')) {
-    define('NEATLINE_MAPS_NAMESPACE_FIELD_NAME', 'Namespace');
-}
-
-if (!defined('NEATLINE_MAPS_NAMESPACE_URL_FIELD_NAME')) {
-    define('NEATLINE_MAPS_NAMESPACE_URL_FIELD_NAME', 'Namespace URL');
-}
-
 require_once 'NeatlineMapsPlugin.php';
 require_once NEATLINE_MAPS_PLUGIN_DIR . '/helpers/NeatlineMapsFunctions.php';
 require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/Curl/Curl.php';

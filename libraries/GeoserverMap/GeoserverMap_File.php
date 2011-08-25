@@ -46,6 +46,21 @@ class GeoserverMap_File extends GeoserverMap_Abstract
     }
 
     /**
+     * Fetch the XML for the datastream capabilities.
+     *
+     * @return string $title The address.
+     */
+    public function _getCapabilitiesXml()
+    {
+
+        // Get the capabilities XML, scrub out namespace for xpath query.
+        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
+        $client = new Zend_Http_Client($capabilitiesURL);
+        return str_replace('xmlns', 'ns', $client->request()->getBody());
+
+    }
+
+    /**
      * Fetch fields for the map.
      *
      * @return string $title The title.
@@ -85,13 +100,8 @@ class GeoserverMap_File extends GeoserverMap_Abstract
     public function _getBoundingBox()
     {
 
-        // Get the capabilities XML, scrub out namespace for xpath query.
-        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
-        $client = new Zend_Http_Client($capabilitiesURL);
-        $body = str_replace('xmlns', 'ns', $client->request()->getBody());
-
         // Query for the layers.
-        $capabilities = new SimpleXMLElement($body);
+        $capabilities = new SimpleXMLElement($this->capabilitiesXml);
         $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
 
         $activeLayers = array();
@@ -134,13 +144,8 @@ class GeoserverMap_File extends GeoserverMap_Abstract
     public function _getEPSG()
     {
 
-        // Get the capabilities XML, scrub out namespace for xpath query.
-        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
-        $client = new Zend_Http_Client($capabilitiesURL);
-        $body = str_replace('xmlns', 'ns', $client->request()->getBody());
-
         // Query for the layers.
-        $capabilities = new SimpleXMLElement($body);
+        $capabilities = new SimpleXMLElement($this->capabilitiesXml);
         $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
 
         $map = $this->map->getMap();

@@ -36,10 +36,26 @@ class GeoserverMap_Map extends GeoserverMap_Abstract
      *
      * @return string $title The address.
      */
-    public function _getWmsAddress() {
+    public function _getWmsAddress()
+    {
 
         $server = $this->map->getServer();
         return $server->url . '/' . $map->namespace . '/wms';
+
+    }
+
+    /**
+     * Fetch the XML for the datastream capabilities.
+     *
+     * @return string $title The address.
+     */
+    public function _getCapabilitiesXml()
+    {
+
+        // Get the capabilities XML, scrub out namespace for xpath query.
+        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
+        $client = new Zend_Http_Client($capabilitiesURL);
+        return str_replace('xmlns', 'ns', $client->request()->getBody());
 
     }
 
@@ -90,13 +106,8 @@ class GeoserverMap_Map extends GeoserverMap_Abstract
     public function _getBoundingBox()
     {
 
-        // Get the capabilities XML, scrub out namespace for xpath query.
-        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
-        $client = new Zend_Http_Client($capabilitiesURL);
-        $body = str_replace('xmlns', 'ns', $client->request()->getBody());
-
         // Query for the layers.
-        $capabilities = new SimpleXMLElement($body);
+        $capabilities = new SimpleXMLElement($this->capabilitiesXml);
         $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
 
         $layersArray = array();
@@ -146,13 +157,8 @@ class GeoserverMap_Map extends GeoserverMap_Abstract
     public function _getEPSG()
     {
 
-        // Get the capabilities XML, scrub out namespace for xpath query.
-        $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
-        $client = new Zend_Http_Client($capabilitiesURL);
-        $body = str_replace('xmlns', 'ns', $client->request()->getBody());
-
         // Query for the layers.
-        $capabilities = new SimpleXMLElement($body);
+        $capabilities = new SimpleXMLElement($this->capabilitiesXml);
         $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
 
         $layersArray = array();

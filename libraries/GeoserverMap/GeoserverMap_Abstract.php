@@ -99,6 +99,7 @@ abstract class GeoserverMap_Abstract
 
         // Fire off class methods to get parameters.
         $this->wmsAddress = $this->_getWmsAddress();
+        $this->capabilitiesXml = $this->_getCapabilitiesXml();
         $this->mapTitle = $this->_getMapTitle();
         $this->layers = $this->_getLayers();
         $this->boundingBox = $this->_getBoundingBox();

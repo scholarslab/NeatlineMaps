@@ -147,6 +147,25 @@ class NeatlineMaps_MapsTest extends Omeka_Test_AppTestCase
     }
 
     /**
+     * Test browsing component files.
+     *
+     * @return void.
+     */
+    public function testBrowseFiles()
+    {
+
+        // Create a map and hit the edit url.
+        $map = $this->helper->_createMap();
+        $this->dispatch('neatline-maps/maps/' . $map->id);
+
+        // Count the rows.
+        $this->assertQueryCount('table[class="fedora"] tbody tr', 5);
+
+
+
+    }
+
+    /**
      * Test for redirect to server add page when no servers.
      *
      * @return void.

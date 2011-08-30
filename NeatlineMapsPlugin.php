@@ -216,7 +216,7 @@ class NeatlineMapsPlugin
     public function adminNavigationMain($tabs)
     {
 
-        $tabs['Neatline Maps'] = uri('neatline-maps/maps');
+        $tabs['Neatline Maps'] = uri('neatline-maps');
         return $tabs;
 
     }

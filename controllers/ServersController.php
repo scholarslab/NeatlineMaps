@@ -129,12 +129,12 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
 
                     if ($this->getTable('NeatlineMapsServer')->saveServer($data)) {
 
-                        $this->flashSuccess('Information for server ' . $data['name'] . ' saved');
+                        $this->flashSuccess('Information for server ' . $data['name'] . ' saved.');
                         $this->redirect->goto('browse');
 
                     } else {
 
-                        $this->flashError('Error: Information for server ' . $data['name'] . ' not saved');
+                        $this->flashError('Error: Information for server ' . $data['name'] . ' not saved.');
                         $this->redirect->goto('browse');
 
                     }

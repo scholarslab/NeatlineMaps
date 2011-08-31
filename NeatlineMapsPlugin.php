@@ -168,18 +168,14 @@ class NeatlineMapsPlugin
 
         $request = Zend_Controller_Front::getInstance()->getRequest();
 
-        if ($request->getModuleName() == 'default' &&
-            ($request->getActionName() == 'edit') ||
-            ($request->getActionName() == 'add')) {
-
-            _doItemAdminHeaderJsAndCss();
-
+        // Queue the neatline admin stylesheet.
+        if (in_array($request->getModuleName(), array('default', 'neatline-maps'))) {
+            _queueAdminCss();
         }
 
+        // Queue OpenLayers.js.
         if ($request->getModuleName() == 'neatline-maps') {
-            _doTabAdminHeaderJsAndCss();
-            _doItemAdminHeaderJsAndCss();
-            _doHeaderJsAndCss();
+            _queueOpenLayers();
         }
 
     }
@@ -192,9 +188,11 @@ class NeatlineMapsPlugin
     public function publicAppendToItemsShow()
     {
 
+        // Fetch the maps.
         $item = get_current_item();
         $maps = $this->_db->getTable('NeatlineMapsMap')->getMapsByItemForPublicDisplay($item);
 
+        // Instantiate GeoserverMap_Map objects for each.
         foreach ($maps as $map) {
             new GeoserverMap_Map($map);
         }
@@ -204,7 +202,7 @@ class NeatlineMapsPlugin
 
     /**
      * Filter callbacks:
-     *
+     */
 
     /**
      * Add link to main admin menu bar.

@@ -76,55 +76,6 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
     }
 
     /**
-     * Test for OpenLayers.js.
-     *
-     * @return void.
-     */
-    public function test_doHeaderJsAndCss()
-    {
-
-        // Do.
-
-    }
-
-    /**
-     * Test that the neatline_maps_main.css is getting included in neatline-maps admin.
-     *
-     * @return void.
-     */
-    public function test_doTabAdminHeaderJsAndCss()
-    {
-
-        // Dispatch to maps browse.
-        $this->dispatch('neatline-maps/maps');
-
-        // Check that the css is there.
-        $this->assertXpath('//link[@rel="stylesheet"][contains(@href, "neatline_maps_main.css")]');
-
-    }
-
-    /**
-     * Test that the neatline_maps_admin.css is getting included in neatline-maps admin.
-     *
-     * @return void.
-     */
-    public function test_doItemAdminHeaderJsAndCss()
-    {
-
-        // Create an item.
-        $item = $this->helper->_createItem('Test Item');
-
-        // Test edit.
-        $this->dispatch('items/edit/' . $item->id);
-        $this->assertXpath('//link[@rel="stylesheet"][contains(@href, "neatline-maps-admin.css")]');
-
-        // Test add.
-        $this->dispatch('items/add');
-        $this->assertXpath('//link[@rel="stylesheet"][contains(@href, "neatline-maps-admin.css")]');
-
-    }
-
-    /**
      * Test colum sort processing.
      *
      * @return void.

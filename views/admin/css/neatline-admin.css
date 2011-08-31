@@ -37,10 +37,6 @@
     display: none;
 }
 
-.fedora-preview {
-    max-width: 80px;
-}
-
 #edit_submit-element, #delete_submit-element {
     display: inline;
 }

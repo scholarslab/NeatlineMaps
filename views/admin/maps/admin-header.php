@@ -5,7 +5,7 @@
 
 ?>
 
-<h1 class="fedora-nowrap"><?php echo $header['title']; ?></h1>
+<h1 class="neatline-nowrap"><?php echo $header['title']; ?></h1>
 <ul id="section-nav" class="navigation">
 <?php echo nav(array(
     'Maps' => uri('neatline-maps/maps'),

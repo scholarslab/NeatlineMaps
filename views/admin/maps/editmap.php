@@ -6,7 +6,7 @@
 
     <?php echo flash(); ?>
 
-    <table class="fedora">
+    <table class="neatline">
         <thead>
             <tr>
                 <?php browse_headings(array(

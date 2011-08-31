@@ -59,33 +59,33 @@
     margin-top: 1em;
 }
 
-.fedora-inline-button {
+.neatline-inline-button {
     font-size: 0.8em;
     margin: 0 !important;
     border: none !important;
 }
 
-form.fedora-inline-form {
+form.neatline-inline-form {
     padding: 0;
     float: left;
 }
 
-form.fedora-inline-form-servers {
+form.neatline-inline-form-servers {
     margin: 0 0.6em 0 0;
     padding: 0;
     float: left;
 }
 
-.fedora-delete {
+.neatline-delete {
     background-color: #800 !important;
     border-color: #800 !important;
 }
 
-.fedora-reset-link {
+.neatline-reset-link {
     float: right;
 }
 
-h2.fedora-select-item {
+h2.neatline-select-item {
     margin-left: 8px; 
     float: left;
 }
@@ -94,7 +94,7 @@ dd#datastreams-element label {
     clear: both;
 }
 
-p.fedora-connector-search-reset {
+p.neatline-connector-search-reset {
     clear: both;
     float: right;
     margin: -12px 3px 0 0;
@@ -102,19 +102,15 @@ p.fedora-connector-search-reset {
     position: relative;
 }
 
-.fedora-connector-datastreams-form label {
-    width: 400px;
-}
-
-h1.fedora-nowrap {
+h1.neatline-nowrap {
     white-space: nowrap;
 }
 
-.fedora-td-small {
+.neatline-td-small {
     font-size: 0.9em;
 }
 
-table.fedora td {
+table.neatline td {
     vertical-align: middle;
 }
 

@@ -66,12 +66,19 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $sort_field = $this->_request->getParam('sort_field');
         $sort_dir = $this->_request->getParam('sort_dir');
         $id = $this->_request->id;
+        $map = $this->getTable('NeatlineMapsMap')->find($id);
+
+        if (!$map->getServer()->isOnline()) {
+
+            $this->flashError('The server for this map is currently offline.');
+            $this->_forward('browse', 'maps', 'neatline-maps');
+
+        }
 
         // Get the files.
         $page = $this->_request->page;
         $order = _doColumnSortProcessing($sort_field, $sort_dir);
         $files = $this->getTable('NeatlineMapsMapFile')->getFiles($id, $page, $order);
-        $map = $this->getTable('NeatlineMapsMap')->find($id);
 
         $this->view->files = $files;
         $this->view->map = $map;
@@ -134,7 +141,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         if ($serverTable->count() == 0 || !$serverTable->isAvailableServer()) {
 
-            $this->flashError('You have to create a server before you can add a map.');
+            $this->flashError('There has to be at least one active server registered before you can add a map.');
             $this->_forward('create', 'servers', 'neatline-maps');
 
         }

@@ -471,6 +471,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         $submit = new Zend_Form_Element_Submit('select_workspace');
         $submit->setLabel('Continue');
+        $submit->removeDecorator('DtDdWrapper');
 
         $item = new Zend_Form_Element_Hidden('item_id');
         $item->setValue($item_id);

@@ -123,6 +123,25 @@ class NeatlineMapsServerTable extends Omeka_Db_Table
 
     }
 
+    /**
+     * Checks to see if there is at least one server that is online.
+     *
+     * @return boolean True if there is an available server.
+     */
+    public function isAvailableServer()
+    {
+
+        $servers = $this->findAll();
+        $statuses = array();
+
+        foreach ($servers as $server) {
+            $statuses[] = true ? $server->isOnline() : false;
+        }
+
+        return in_array(true, $statuses);
+
+    }
+
 }
 
 /*

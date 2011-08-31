@@ -130,7 +130,9 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
     public function itemselectAction()
     {
 
-        if ($this->getTable('NeatlineMapsServer')->count() == 0) {
+        $serverTable = $this->getTable('NeatlineMapsServer');
+
+        if ($serverTable->count() == 0 || !$serverTable->isAvailableServer()) {
 
             $this->flashError('You have to create a server before you can add a map.');
             $this->_forward('create', 'servers', 'neatline-maps');

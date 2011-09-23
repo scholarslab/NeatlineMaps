@@ -153,7 +153,7 @@ class NeatlineMapsPlugin
         // Is there a way to hone in on the items module, more specifically
         // than using 'default' here?
         if ($request->getModuleName() == 'default' && $request->getActionName() == 'show') {
-            _doHeaderJsAndCss();
+            _queueOpenLayers();
         }
 
     }

@@ -113,7 +113,7 @@ abstract class GeoserverMap_Abstract
 
     }
 
-    protected function display()
+    public function display()
     {
 
         echo __v()->partial('maps/map.php', array(

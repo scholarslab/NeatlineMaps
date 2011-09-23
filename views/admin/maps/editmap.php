@@ -24,7 +24,10 @@
                     </td>
                     <td width="500">
 
-                        <?php new GeoserverMap_File($file); ?>
+                        <?php
+                            $fileMap = new GeoserverMap_File($file);
+                            $fileMap->display();
+                        ?>
 
                     </td>
                     <td><?php echo $this->partial('maps/files-actions.php', array('id' => $file->id)); ?></td>

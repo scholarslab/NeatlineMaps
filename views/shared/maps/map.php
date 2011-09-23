@@ -19,7 +19,7 @@ jQuery(document).ready(function() {
 
     format = 'image/png';
     if(pureCoverage) {
-        format = "image/jpeg";
+        format = "image/png8";
     }
 
     var bounds = new OpenLayers.Bounds(<?php echo $boundingBox; ?>);
@@ -37,6 +37,7 @@ jQuery(document).ready(function() {
         projection: "<?php echo $epsg; ?>",
         units: 'm'
     };
+
     map = new OpenLayers.Map('map-<?php echo $mapTitle; ?>', options);
 
     tiled = new OpenLayers.Layer.WMS(

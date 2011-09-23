@@ -85,9 +85,6 @@ abstract class GeoserverMap_Abstract
         // Build out parameters.
         $this->getParams();
 
-        // Display the may.
-        $this->display();
-
     }
 
     /**

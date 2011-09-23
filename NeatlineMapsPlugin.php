@@ -159,7 +159,7 @@ class NeatlineMapsPlugin
     }
 
     /**
-     * Include the javascript for the add-files functionality in the maps item tab.
+     * Include extra .js and .css in admin header.
      *
      * @return void
      */
@@ -194,7 +194,8 @@ class NeatlineMapsPlugin
 
         // Instantiate GeoserverMap_Map objects for each.
         foreach ($maps as $map) {
-            new GeoserverMap_Map($map);
+            $map = new GeoserverMap_Map($map);
+            $map->display();
         }
 
     }

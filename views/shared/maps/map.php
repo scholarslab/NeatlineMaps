@@ -33,7 +33,7 @@ jQuery(document).ready(function() {
           new OpenLayers.Control.ScaleLine(),
         ],
         maxExtent: bounds,
-        maxResolution: 64.70332499999859,
+        maxResolution: 'auto',
         projection: "<?php echo $epsg; ?>",
         units: 'm'
     };

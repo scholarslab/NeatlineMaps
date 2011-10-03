@@ -114,25 +114,20 @@ class GeoserverMap_File extends GeoserverMap_Abstract
             }
         }
 
-        $minxes = array();
-        $minys = array();
-        $maxxes = array();
-        $maxys = array();
+        $minxes = (float) $activeLayers[0]->BoundingBox->attributes()->minx;
+        $minys = (float) $activeLayers[0]->BoundingBox->attributes()->miny;
+        $maxxes = (float) $activeLayers[0]->BoundingBox->attributes()->maxx;
+        $maxys = (float) $activeLayers[0]->BoundingBox->attributes()->maxy;
 
-        foreach ($activeLayers as $layer) {
+        $string = implode(',', array(
+            $minxes,
+            $minys,
+            $maxxes,
+            $maxys));
 
-            $minxes[] = (float) $layer->BoundingBox->attributes()->minx;
-            $minys[] = (float) $layer->BoundingBox->attributes()->miny;
-            $maxxes[] = (float) $layer->BoundingBox->attributes()->maxx;
-            $maxys[] = (float) $layer->BoundingBox->attributes()->maxy;
+        echo $string;
 
-        }
-
-        return implode(',', array(
-            min($minxes),
-            min($minys),
-            max($maxxes),
-            max($maxys)));
+        return $string;
 
     }
 

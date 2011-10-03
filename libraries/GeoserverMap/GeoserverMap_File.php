@@ -125,8 +125,6 @@ class GeoserverMap_File extends GeoserverMap_Abstract
             $maxxes,
             $maxys));
 
-        echo $string;
-
         return $string;
 
     }

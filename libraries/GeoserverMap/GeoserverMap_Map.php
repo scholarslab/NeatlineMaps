@@ -141,11 +141,26 @@ class GeoserverMap_Map extends GeoserverMap_Abstract
 
         }
 
-        return implode(',', array(
-            min($minxes),
-            min($minys),
-            max($maxxes),
-            max($maxys)));
+        // Check for reverse axis order.
+        $espgNumber = explode(':', $this->epsg);
+        if ($espgNumber[1] >= 4000 && $espgNumber[1] <= 5000) {
+            $string = implode(',', array(
+                min($minys),
+                min($minxes),
+                max($maxys),
+                max($maxxes)));
+        }
+
+        // If not between 4000 and 5000, do normal order.
+        else {
+            $string = implode(',', array(
+                min($minxes),
+                min($minys),
+                max($maxxes),
+                max($maxys)));
+        }
+
+        return $string;
 
     }
 

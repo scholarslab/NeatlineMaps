@@ -119,11 +119,24 @@ class GeoserverMap_File extends GeoserverMap_Abstract
         $maxxes = (float) $activeLayers[0]->BoundingBox->attributes()->maxx;
         $maxys = (float) $activeLayers[0]->BoundingBox->attributes()->maxy;
 
-        $string = implode(',', array(
-            $minxes,
-            $minys,
-            $maxxes,
-            $maxys));
+        // Check for reverse axis order.
+        $espgNumber = explode(':', $this->epsg);
+        if ($espgNumber[1] >= 4000 && $espgNumber[1] <= 5000) {
+            $string = implode(',', array(
+                $minys,
+                $minxes,
+                $maxys,
+                $maxxes));
+        }
+
+        // If not between 4000 and 5000, do normal order.
+        else {
+            $string = implode(',', array(
+                $minxes,
+                $minys,
+                $maxxes,
+                $maxys));
+        }
 
         return $string;
 

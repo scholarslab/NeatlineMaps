@@ -327,29 +327,11 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $item = $this->getTable('Item')->find($post['item_id']);
         $server = $this->getTable('NeatlineMapsServer')->find($post['server_id']);
 
-        // Redirect code not working.
-
-        // // Is a namespace selected (must select an existing one or enter a name for a new one).
-        // if ($post['existing_workpace'] == '-' && $post['new_workpace'] == null) {
-        //     $this->flashError('Select an existing workpace or enter a new one.');
-        //     $this->_redirect('neatline-maps/maps/create/getworkspace');
-        //     // $this->redirect->goto('getworkspace');
-        //     // $this->_forward('getworkspace', 'maps', 'neatline-maps');
-        // }
-
-        // // Were files selected for upload?
-        // if ($_FILES['map'][0]['size'] > 0) {
-        //     $this->flashError('Select files.');
-        //     $this->_redirect('neatline-maps/maps/create/getworkspace');
-        //     // $this->redirect->goto('getworkspace');
-        //     // $this->_forward('getworkspace', 'maps', 'neatline-maps');
-        // }
-
         // If files and namespace, do add.
         $files = insert_files_for_item(
             $item,
             'Upload',
-            'map',
+            $map,
             array('ignoreNoFile' => true));
 
         // If new namespace is specified, add namespace.

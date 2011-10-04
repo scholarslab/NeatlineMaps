@@ -99,17 +99,8 @@ abstract class GeoserverMap_Abstract
         $this->capabilitiesXml = $this->_getCapabilitiesXml();
         $this->mapTitle = $this->_getMapTitle();
         $this->layers = $this->_getLayers();
-        $this->boundingBox = $this->_getBoundingBox();
         $this->epsg = $this->_getEPSG();
-
-        // What to do with this?
-
-        // // Get the the proj4js params.
-        // $client->resetParameters();
-        // $proj4jsURL = get_option('neatlinemaps_geoserver_spatial_reference_service') . '/' .
-        //     str_replace(':', '/', strtolower($params['crs'])) . '/proj4js/';
-        // $client->setUri($proj4jsURL);
-        // $params['proj4js'] = $client->request()->getBody();
+        $this->boundingBox = $this->_getBoundingBox();
 
     }
 

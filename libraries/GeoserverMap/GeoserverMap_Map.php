@@ -55,7 +55,7 @@ class GeoserverMap_Map extends GeoserverMap_Abstract
         // Get the capabilities XML, scrub out namespace for xpath query.
         $capabilitiesURL = $this->wmsAddress . '?request=GetCapabilities';
         $client = new Zend_Http_Client($capabilitiesURL, array('timeout' => 30));
-        return str_replace('xmlns', 'ns', $client->request()->getBody());
+        return $client->request()->getBody();
 
     }
 
@@ -108,7 +108,8 @@ class GeoserverMap_Map extends GeoserverMap_Abstract
 
         // Query for the layers.
         $capabilities = new SimpleXMLElement($this->capabilitiesXml);
-        $layers = $capabilities->xpath('//*[local-name()="Layer"][@queryable=1]');
+        $capabilities->registerXPathNamespace('gis', 'http://www.opengis.net/wms');
+        $layers = $capabilities->xpath('//gis:Layer[@queryable="1"]');
 
         $layersArray = array();
         $activeLayers = array();

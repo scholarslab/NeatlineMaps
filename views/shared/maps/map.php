@@ -4,7 +4,6 @@
 
 jQuery(document).ready(function() {
 
-    OpenLayers.IMAGE_RELOAD_ATTEMTPS = 3;
     OpenLayers.Util.onImageLoadErrorColor = "transparent";
     OpenLayers.ImgPath = 'http://js.mapbox.com/theme/dark/';
 

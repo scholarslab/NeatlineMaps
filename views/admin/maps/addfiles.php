@@ -1,5 +1,27 @@
 <?php echo $this->partial('maps/admin-header.php', array('subtitle' => 'Create Map')); ?>
+<?php
+  $postSize = return_bytes(ini_get('post_max_size'));
+  $fileSize = return_bytes(ini_get('upload_max_filesize'));
 
+  function return_bytes($val) 
+  {
+    $val = trim($val);
+    $last = strtolower($val[strlen($val) - 1]);
+    switch($last) {
+    case 'g':
+      $val *= 1024;
+    case 'm':
+      $val *= 1024;
+    case 'k':
+      $val *= 1024;
+    }
+    return $val;
+  }
+
+  function return_mb($val) {
+    return round(($val / 1048576), 2) . "MB";
+  }
+?>
 <div id="primary" class="neatline-maps-getfiles">
 
     <?php echo flash(); ?>
@@ -7,9 +29,8 @@
     <h2>Upload more files to map "<?php echo $map->name; ?>":</h2>
 
     <form enctype="multipart/form-data" action="uploadfiles" method="post">
-
     <div class="field" id="map-inputs">
-        <label>Upload map files:</label>
+    <label>Upload map files (<span class="smaller"><?php echo return_mb(min($postSize, $fileSize)); ?>):</label>
         <div class="maps inputs">
             <input name="map[0]" id="file-1" type="file" class="fileinput" />
         </div>

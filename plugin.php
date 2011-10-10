@@ -14,15 +14,14 @@
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  *
- * @package     omeka
- * @subpackage  neatlinemaps
+ * @package     Omeka
+ * @subpackage  NeatlineMaps
  * @author      Scholars' Lab <>
- * @author      Bethany Nowviskie <bethany@virginia.edu>
  * @author      Adam Soroka <ajs6f@virginia.edu>
  * @author      David McClure <david.mcclure@virginia.edu>
  * @copyright   2010 The Board and Visitors of the University of Virginia
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
- * @version     $Id$
+ * @category    plugins
  */
 ?>
 
@@ -42,3 +41,12 @@ require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/Curl/Curl.php';
 require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/GeoserverMap/GeoserverMap_Abstract.php';
 
 new NeatlineMapsPlugin;
+
+/*
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * c-hanging-comment-ender-p: nil
+ * End:
+ */
+

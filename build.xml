@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="NeatlineMaps">
+  <property name="project.name" value="NeatlineMaps" />
+  <property name="build.dir" value="${basedir}/build" />
+  <property name="test.dir" value="${basedir}/tests" />
+  <property name="dist.dir" value="${basedir}/dist" />
+
+  <tstamp />
+  <property name="now" value="${DSTAMP}-${TSTAMP}" />
+  <property name="tar" value="${project.name}-${now}.tar" />
+  <property name="gzip" value="${tar}.gz" />
+
+  <target name="clean" description="Clean up the build directory">
+    <delete dir="${build.dir}" />
+    <delete dir="${dist.dir}" />
+  </target>
+
+  <target name="setup" description="Create the directory structure for various reports">
+    <mkdir dir="${build.dir}/api" />
+    <mkdir dir="${build.dir}/code-browser" />
+    <mkdir dir="${build.dir}/coverage" />
+    <mkdir dir="${build.dir}/phpmd" />
+    <mkdir dir="${build.dir}/logs" />
+  </target>
+
+  <target name="package" description="Create a gzipped package of the current branch for distribution">
+    <mkdir dir="${dist.dir}" />
+
+    <tar destfile="${dist.dir}/${project.name}-${now}.tar"
+      basedir="${basedir}"
+      excludes="${build.dir}/**, ${dist.dir}/**, ${test.dir}/**" />
+    <gzip zipfile="${dist.dir}/${gzip}" src="${dist.dir}/${tar}" />
+
+    <delete file="${dist.dir}/${tar}" />
+  </target>
+
+  <target name="phpunit" depends="setup" description="Run PHPUnit tests and generate code coverage report">
+    <exec executable="phpunit" failonerror="false" />
+  </target>
+
+  <target name="build" depends="clean,setup">
+  
+  </target>
+</project>

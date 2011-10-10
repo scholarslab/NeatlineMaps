@@ -1,6 +1,7 @@
 .*.sw*$
 *~$
 build/
+dist/
 TAGS
 .settings
 .hgignore

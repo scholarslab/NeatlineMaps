@@ -8,9 +8,9 @@ in a “slippy” interface.
 
 # Installation and Configuration
 [![](http://github.com/scholarslab/NeatlineMaps/tarball/master)][1]
-1. Download the most current version of NeatlineMaps
-2. Install the plugin
-3. Tell the plugin where to look for [GeoServer] by adding a new server. 
+* Download the most current version of NeatlineMaps
+* Install the plugin
+* Tell the plugin where to look for [GeoServer] by adding a new server. 
 
 ## Feedback
 We rely on the [Github issues tracker][issues] for feedback on issues

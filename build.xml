@@ -20,6 +20,7 @@
     <mkdir dir="${build.dir}/code-browser" />
     <mkdir dir="${build.dir}/coverage" />
     <mkdir dir="${build.dir}/phpmd" />
+    <mkdir dir="${build.dir}/jdepend" />
     <mkdir dir="${build.dir}/logs" />
   </target>
 
@@ -37,6 +38,59 @@
   <target name="phpunit" depends="setup" description="Run PHPUnit tests and generate code coverage report">
     <exec executable="phpunit" failonerror="false" />
   </target>
+
+  <target name="lint" description="Link the project">
+    <apply executable="php" failonerror="true">
+      <arg value="-l" />
+
+      <fileset dir="${basedir}">
+        <include name="**/*.php" />
+      </fileset>
+    </apply>
+  </target>
+
+  <target name="phploc" depends="setup" description="Measure project size using PHPLOC">
+    <exec executable="phploc">
+      <arg value="--log-csv"/>
+      <arg value="${build.dir}/logs/phploc.csv" />
+      <arg path="${basedir}" />
+    </exec>
+  </target>
+
+  <target name="pdepend" depends="setup" description="Calculates software metrics using PHP_Depend">
+    <exec executable="pdepend">
+      <arg value="--jdepend-xml=${build.dir}/logs/jdepend.xml" />
+      <arg value="--jdepend-chart=${build.dir}/pdepend/dependencies.svg" />
+      <arg value="--overview-pyramid=${build.dir}/pdepend/overview-pyramid.svg" />
+      <arg path="${basedir}" />
+    </exec>
+  </target>
+
+  <target name="phpmd" depends="setup" description="Perform project mess detection using PHPMD">
+    <exec executable="phpmd">
+      <arg path="${basedir}" />
+      <arg value="text" />
+      <arg value="${build.dir}/phpmd.xml" />
+    </exec>
+  </target>
+
+  <target name="phpcpd" description="Find duplicate code using PHPCPD">
+    <exec executable="phpcpd">
+      <arg value="--log-pmd" />
+      <arg value="${build.dir}/logs/pmd-cpd.xml" />
+      <arg value="${basedir}" />
+    </exec>
+  </target>
+
+  <target name="phpcs"
+         description="Find coding standard violations using PHP_CodeSniffer">
+      <exec executable="phpcs">
+        <arg value="--standard=${basedir}/phpcs.xml" />
+        <arg value="--ignore=autoload.php" />
+        <arg path="${basedir}" />
+    </exec>
+  </target>
+
 
   <target name="build" depends="clean,setup">
   

@@ -47,6 +47,42 @@ function _doItemForm($item)
 }
 
 /**
+ * Returns a size value as a byte integer in the format 8M, 2G, or 32k
+ *
+ * @param integer $val Value to convert
+ * 
+ * @return integer $val in bytes
+ */
+function return_bytes($val) 
+{
+    $val = trim($val);
+    $last = strtolower($val[strlen($val) - 1]);
+    switch($last) {
+    case 'g':
+      $val *= 1024;
+    case 'm':
+      $val *= 1024;
+    case 'k':
+      $val *= 1024;
+    }
+    return $val;
+}
+
+/**
+ * Byte decorator to display in MB
+ * 
+ * @param integer $val Bytes to format in MB
+ *
+ * @return bytes formatted in Megabytes
+ */
+function return_mb($val) {
+  return round(($val / 1048576), 2) . "MB";
+}
+
+
+
+
+/**
  * Include the OpenLayers.js library.
  *
  * @return void.

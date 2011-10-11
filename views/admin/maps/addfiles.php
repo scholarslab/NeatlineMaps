@@ -2,25 +2,6 @@
 <?php
   $postSize = return_bytes(ini_get('post_max_size'));
   $fileSize = return_bytes(ini_get('upload_max_filesize'));
-
-  function return_bytes($val) 
-  {
-    $val = trim($val);
-    $last = strtolower($val[strlen($val) - 1]);
-    switch($last) {
-    case 'g':
-      $val *= 1024;
-    case 'm':
-      $val *= 1024;
-    case 'k':
-      $val *= 1024;
-    }
-    return $val;
-  }
-
-  function return_mb($val) {
-    return round(($val / 1048576), 2) . "MB";
-  }
 ?>
 <div id="primary" class="neatline-maps-getfiles">
 

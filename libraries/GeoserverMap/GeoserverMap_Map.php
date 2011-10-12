@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
-/**
+/** {{{ docblock
  * Concrete class for map with multiple files/layers.
  *
  * PHP version 5
@@ -13,16 +13,7 @@
  * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
- *
- * @package     omeka
- * @subpackage  neatlinemaps
- * @author      Scholars' Lab <>
- * @author      Bethany Nowviskie <bethany@virginia.edu>
- * @author      Adam Soroka <ajs6f@virginia.edu>
- * @author      David McClure <david.mcclure@virginia.edu>
- * @copyright   2010 The Board and Visitors of the University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
- * @version     $Id$
+ * }}}
  */
 ?>
 
@@ -205,4 +196,3 @@ class GeoserverMap_Map extends GeoserverMap_Abstract
  * End:
  */
 
-?>

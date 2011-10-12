@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
-/**
+/** {{{docblock
  * Configuration form.
  *
  * PHP version 5
@@ -13,16 +13,7 @@
  * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
- *
- * @package     omeka
- * @subpackage  theplugin
- * @author      Organization <>
- * @author      Author McAuthor <author.mcauthor@virginia.edu>
- * @copyright   2010 The Board and Visitors of the University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
- * @version     $Id$
- * @link        http://omeka.org/add-ons/plugins/FedoraConnector/
- * @tutorial    tutorials/omeka/FedoraConnector.pkg
+ * }}}
  */
 ?>
 
@@ -55,4 +46,3 @@
  * End:
  */
 
-?>

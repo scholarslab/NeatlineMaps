@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
-/**
+/** {{{docblock
  * Ignition file. Just instantiates the NeatlineMaps class, which does all work.
  *
  * PHP version 5
@@ -22,6 +22,7 @@
  * @copyright   2010 The Board and Visitors of the University of Virginia
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  * @category    plugins
+ *}}} 
  */
 ?>
 

@@ -108,7 +108,7 @@ function _queueOpenLayers()
 function _queueAdminCss()
 {
 
-    queue_css('neatline-admin');
+    queue_css('neatline-maps-admin');
 
 }
 

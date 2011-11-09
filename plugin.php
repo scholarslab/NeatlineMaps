@@ -14,14 +14,16 @@
  * OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  *
- * @package     Omeka
- * @subpackage  NeatlineMaps
- * @author      Scholars' Lab <>
  * @author      Adam Soroka <ajs6f@virginia.edu>
  * @author      David McClure <david.mcclure@virginia.edu>
+ * @author      Wayne Graham <wayne.graham@virginia.edu>
+ * @author      Jeremy Boggs <jkb2b@virginia.edu>
  * @copyright   2010 The Board and Visitors of the University of Virginia
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  * @category    plugins
+ * @package     Omeka
+ * @subpackage  NeatlineMaps
+ * @link        https://github.com/scholarslab/NeatlineMaps/
  */
 ?>
 

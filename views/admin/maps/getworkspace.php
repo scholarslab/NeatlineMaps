@@ -102,5 +102,4 @@
 
 </div>
 
-<?php foot(); ?>
-
+<?php foot();

@@ -20,7 +20,7 @@
                             'Server' => 'server',
                             'Namespace' => 'namespace',
                             'Item' => 'parent_item',
-                            'Actions' => null
+                            'Actions' => NULL
                         )); ?>
                     </tr>
                 </thead>
@@ -55,4 +55,4 @@
 
 </div>
 
-<?php foot(); ?>
+<?php foot();

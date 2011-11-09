@@ -4,7 +4,7 @@
 
     <?php echo flash(); ?>
 
-    <?php if (count($items) == 0 && $search == null): ?>
+    <?php if (count($items) == 0 && $search == NULL): ?>
 
         <p>There are no items yet.</p>
 
@@ -32,7 +32,7 @@
                             'Type' => 'Type',
                             'Creator' => 'creator',
                             'Date Added' => 'added',
-                            'Add to Item' => null
+                            'Add to Item' => NULL
                         )); ?>
                     </tr>
                 </thead>
@@ -53,7 +53,8 @@
 
           <div class="pagination">
 
-              <?php echo pagination_links(array('scrolling_style' => 'All', 
+<?php echo pagination_links(array('scrolling_style' => 'All',
+:
               'page_range' => '5',
               'partial_file' => 'common/pagination_control.php',
               'page' => $current_page,
@@ -65,4 +66,3 @@
 </div>
 
 <?php foot(); ?>
-

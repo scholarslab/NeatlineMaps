@@ -10,9 +10,9 @@
         <thead>
             <tr>
                 <?php browse_headings(array(
-                    'File Name' => null,
-                    'Preview' => null,
-                    'Actions' => null
+                    'File Name' => NULL,
+                    'Preview' => NULL,
+                    'Actions' => NULL
                 )); ?>
             </tr>
         </thead>
@@ -20,7 +20,9 @@
             <?php foreach ($files as $file): ?>
                 <tr>
                     <td width="150">
-                      <a href="<?php echo uri('files/show/' . $file->getFile()->id); ?>"><strong><?php echo $file->getFile()->original_filename; ?></strong></a>
+                      <a href="<?php echo uri('files/show/' . $file->getFile()->id); ?>">
+                        <strong><?php echo $file->getFile()->original_filename; ?></strong>
+                      </a>
                     </td>
                     <td width="500">
 
@@ -38,7 +40,7 @@
 
     <div class="pagination">
 
-        <?php echo pagination_links(array('scrolling_style' => 'All', 
+        <?php echo pagination_links(array('scrolling_style' => 'All',
         'page_range' => '5',
         'partial_file' => 'common/pagination_control.php',
         'page' => $current_page,
@@ -49,4 +51,4 @@
 
 </div>
 
-<?php foot(); ?>
+<?php foot();

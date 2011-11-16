@@ -75,6 +75,8 @@ class NeatlineMapsPlugin
             add_filter($filterName, array($this, $functionName));
         }
 
+        add_mime_display_type(array('image/tiff', 'image/tif'), array($this, 'filterNeatlineMapsFiles'));
+
     }
 
     // {{{ hookcallbacks
@@ -187,17 +189,7 @@ class NeatlineMapsPlugin
      */
     public function publicAppendToItemsShow()
     {
-
-        // Fetch the maps.
-        $item = get_current_item();
-        $maps = $this->_db->getTable('NeatlineMapsMap')->getMapsByItemForPublicDisplay($item);
-
-        // Instantiate GeoserverMap_Map objects for each.
-        foreach ($maps as $map) {
-            $map = new GeoserverMap_Map($map);
-            $map->display();
-        }
-
+        echo neatline_maps_display_maps_for_item();
     }
     // }}}
 
@@ -256,6 +248,18 @@ class NeatlineMapsPlugin
 
   //}}}
 
+    /**
+     * Removes display of NeatlineMaps geotiffs from Omeka_View_Helper_Media,
+     * for display elsewhere.
+     */
+    public function filterNeatlineMapsFiles($file)
+    {
+        $mapFile = get_db()->getTable('NeatlineMapsMapFile')->findBy(array('file_id' => $file->id));
+        if ($mapFile) {
+            $html = '';
+        }
+        return $html;
+    }
 }
 
 /*

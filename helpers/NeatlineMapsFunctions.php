@@ -369,3 +369,53 @@ function _formatDate($date)
        $date->format('g:i a');
 
 }
+
+/**
+ * Displays a specific NeatlineMap.
+ *
+ * @param NeatlineMapsMap
+ * @return string HTML
+ */
+function neatline_maps_display_map(NeatlineMapsMap $map)
+{
+    $html = '';
+
+    if ($map) {
+        $map = new GeoserverMap_Map($map);
+
+        $html = __v()->partial('maps/map.php', array(
+            'mapTitle' => $map->mapTitle,
+            'wmsAddress' => $map->wmsAddress,
+            'layers' => $map->layers,
+            'boundingBox' => $map->boundingBox,
+            'epsg' => $map->epsg
+        ));
+    }
+
+    return $html;
+}
+
+/**
+ * Display all the maps for a given Item
+ *
+ * @param Item
+ * @return string HTML
+ */
+function neatline_maps_display_maps_for_item($item = null)
+{
+    if (!$item) {
+        $item = get_current_item();
+    }
+
+    $html = '';
+
+    $maps = get_db()->getTable('NeatlineMapsMap')->getMapsByItemForPublicDisplay($item);
+    
+    if ($maps) {
+        foreach ($maps as $map) {
+            $html = neatline_maps_display_map($map);
+        }
+    }
+
+    return $html;
+}

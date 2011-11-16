@@ -27,8 +27,7 @@
                     <td width="500">
 
                         <?php
-                            $fileMap = new GeoserverMap_File($file);
-                            $fileMap->display();
+                            echo neatline_maps_display_map_file($file);
                         ?>
 
                     </td>

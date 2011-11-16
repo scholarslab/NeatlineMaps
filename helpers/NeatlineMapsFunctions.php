@@ -419,3 +419,28 @@ function neatline_maps_display_maps_for_item($item = null)
 
     return $html;
 }
+
+/**
+ * Displays a specific NeatlineMapsMapFile.
+ *
+ * @param NeatlineMapsMap
+ * @return string HTML
+ */
+function neatline_maps_display_map_file(NeatlineMapsMapFile $mapFile)
+{
+    $html = '';
+
+    if ($mapFile) {
+        $mapFile = new GeoserverMap_File($mapFile);
+
+        $html = __v()->partial('maps/map.php', array(
+            'mapTitle' => $mapFile->mapTitle,
+            'wmsAddress' => $mapFile->wmsAddress,
+            'layers' => $mapFile->layers,
+            'boundingBox' => $mapFile->boundingBox,
+            'epsg' => $mapFile->epsg
+        ));
+    }
+
+    return $html;
+}

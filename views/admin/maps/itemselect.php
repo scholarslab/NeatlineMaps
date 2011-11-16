@@ -54,7 +54,6 @@
           <div class="pagination">
 
 <?php echo pagination_links(array('scrolling_style' => 'All',
-:
               'page_range' => '5',
               'partial_file' => 'common/pagination_control.php',
               'page' => $current_page,

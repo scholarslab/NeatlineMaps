@@ -76,9 +76,6 @@ function return_mb($val) {
   return round(($val / 1048576), 2) . "MB";
 }
 
-
-
-
 /**
  * Include the OpenLayers.js library.
  *
@@ -259,8 +256,6 @@ function _doColumnSortProcessing($sort_field, $sort_dir)
     return ($sort_field != '') ? trim(implode(' ', array($sort_field, $sort_dir))) : '';
 
 }
-
-
 
 /**
  * Retrieves items to populate the listings in the itemselect view.

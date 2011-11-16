@@ -35,7 +35,8 @@ class NeatlineMapsPlugin
         'define_routes',
         'public_theme_header',
         'admin_theme_header',
-        'public_append_to_items_show'
+        'public_append_to_items_show',
+        'admin_append_to_items_show_primary'
     );
 
     private static $_filters = array(
@@ -176,14 +177,14 @@ class NeatlineMapsPlugin
         }
 
         // Queue OpenLayers.js.
-        if ($request->getModuleName() == 'neatline-maps') {
+        if ($request->getModuleName() == 'neatline-maps' || ($request->getControllerName() == 'items' && $request->getActionName() == 'show')) {
             _queueOpenLayers();
         }
 
     }
 
     /**
-     * Show the map layers on the item page.
+     * Show the map layers on the public items/show view.
      *
      * @return void.
      */
@@ -192,6 +193,16 @@ class NeatlineMapsPlugin
         echo neatline_maps_display_maps_for_item();
     }
     // }}}
+
+    /**
+     * Show the map layers on the admin items/show view.
+     *
+     * @return void.
+     */
+    public function adminAppendToItemsShowPrimary()
+    {
+        echo neatline_maps_display_maps_for_item();
+    }
 
     // {{{ filtercallbacks
 

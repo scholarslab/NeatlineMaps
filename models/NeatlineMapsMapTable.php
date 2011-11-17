@@ -178,9 +178,9 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
             // Delete the native file record.
             if ($deleteFiles) {
 
-                $file = $fileTable->find($mapFile->file_id);
-                $file->delete();
-
+                if($file = $fileTable->find($mapFile->file_id)) {
+                    $file->delete();
+                }
 
                 // Delete the GeoServer layer.
                 if ($deleteLayers) {

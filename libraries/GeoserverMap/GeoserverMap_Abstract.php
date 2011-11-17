@@ -95,19 +95,6 @@ abstract class GeoserverMap_Abstract
 
     }
 
-    public function display()
-    {
-
-        echo __v()->partial('maps/map.php', array(
-            'mapTitle' => $this->mapTitle,
-            'wmsAddress' => $this->wmsAddress,
-            'layers' => $this->layers,
-            'boundingBox' => $this->boundingBox,
-            'epsg' => $this->epsg
-        ));
-
-    }
-
 }
 
 /*

@@ -27,7 +27,8 @@ class NeatlineMapsPlugin
         'define_routes',
         'public_theme_header',
         'admin_theme_header',
-        'public_append_to_items_show'
+        'public_append_to_items_show',
+        'admin_append_to_items_show_primary'
     );
 
     private static $_filters = array(
@@ -66,6 +67,8 @@ class NeatlineMapsPlugin
             $functionName = Inflector::variablize($filterName);
             add_filter($filterName, array($this, $functionName));
         }
+
+        add_mime_display_type(array('image/tiff', 'image/tif'), array($this, 'filterNeatlineMapsFiles'));
 
     }
 
@@ -166,32 +169,32 @@ class NeatlineMapsPlugin
         }
 
         // Queue OpenLayers.js.
-        if ($request->getModuleName() == 'neatline-maps') {
+        if ($request->getModuleName() == 'neatline-maps' || ($request->getControllerName() == 'items' && $request->getActionName() == 'show')) {
             _queueOpenLayers();
         }
 
     }
 
     /**
-     * Show the map layers on the item page.
+     * Show the map layers on the public items/show view.
      *
      * @return void.
      */
     public function publicAppendToItemsShow()
     {
-
-        // Fetch the maps.
-        $item = get_current_item();
-        $maps = $this->_db->getTable('NeatlineMapsMap')->getMapsByItemForPublicDisplay($item);
-
-        // Instantiate GeoserverMap_Map objects for each.
-        foreach ($maps as $map) {
-            $map = new GeoserverMap_Map($map);
-            $map->display();
-        }
-
+        echo neatline_maps_display_maps_for_item();
     }
     // }}}
+
+    /**
+     * Show the map layers on the admin items/show view.
+     *
+     * @return void.
+     */
+    public function adminAppendToItemsShowPrimary()
+    {
+        echo neatline_maps_display_maps_for_item();
+    }
 
     // {{{ filtercallbacks
 
@@ -248,6 +251,18 @@ class NeatlineMapsPlugin
 
   //}}}
 
+    /**
+     * Removes display of NeatlineMaps geotiffs from Omeka_View_Helper_Media,
+     * for display elsewhere.
+     */
+    public function filterNeatlineMapsFiles($file)
+    {
+        $mapFile = get_db()->getTable('NeatlineMapsMapFile')->findBy(array('file_id' => $file->id));
+        if ($mapFile) {
+            $html = '';
+        }
+        return $html;
+    }
 }
 
 /*

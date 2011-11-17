@@ -15,9 +15,6 @@
  * language governing permissions and limitations under the License.
  * }}}
  */
-?>
-
-<?php
 
 /**
  * Do the Item tab form.
@@ -70,9 +67,6 @@ function return_mb($val) {
   return round(($val / 1048576), 2) . "MB";
 }
 
-
-
-
 /**
  * Include the OpenLayers.js library.
  *
@@ -99,7 +93,7 @@ function _queueOpenLayers()
 function _queueAdminCss()
 {
 
-    queue_css('neatline-admin');
+    queue_css('neatline-maps-admin');
 
 }
 
@@ -254,8 +248,6 @@ function _doColumnSortProcessing($sort_field, $sort_dir)
 
 }
 
-
-
 /**
  * Retrieves items to populate the listings in the itemselect view.
  *
@@ -363,6 +355,82 @@ function _formatDate($date)
        $date->format('g:i a');
 
 }
+
+/**
+ * Displays a specific NeatlineMap.
+ *
+ * @param NeatlineMapsMap
+ * @return string HTML
+ */
+function neatline_maps_display_map(NeatlineMapsMap $map)
+{
+    $html = '';
+
+    if ($map) {
+        $map = new GeoserverMap_Map($map);
+
+        $html = __v()->partial('maps/map.php', array(
+            'mapTitle' => $map->mapTitle,
+            'wmsAddress' => $map->wmsAddress,
+            'layers' => $map->layers,
+            'boundingBox' => $map->boundingBox,
+            'epsg' => $map->epsg
+        ));
+    }
+
+    return $html;
+}
+
+/**
+ * Display all the maps for a given Item
+ *
+ * @param Item
+ * @return string HTML
+ */
+function neatline_maps_display_maps_for_item($item = null)
+{
+    if (!$item) {
+        $item = get_current_item();
+    }
+
+    $html = '';
+
+    $maps = get_db()->getTable('NeatlineMapsMap')->getMapsByItemForPublicDisplay($item);
+    
+    if ($maps) {
+        foreach ($maps as $map) {
+            $html = neatline_maps_display_map($map);
+        }
+    }
+
+    return $html;
+}
+
+/**
+ * Displays a specific NeatlineMapsMapFile.
+ *
+ * @param NeatlineMapsMap
+ * @return string HTML
+ */
+function neatline_maps_display_map_file(NeatlineMapsMapFile $mapFile)
+{
+    $html = '';
+
+    if ($mapFile) {
+        $mapFile = new GeoserverMap_File($mapFile);
+
+        $html = __v()->partial('maps/map.php', array(
+            'mapTitle' => $mapFile->mapTitle,
+            'wmsAddress' => $mapFile->wmsAddress,
+            'layers' => $mapFile->layers,
+            'boundingBox' => $mapFile->boundingBox,
+            'epsg' => $mapFile->epsg
+        ));
+    }
+
+    return $html;
+}
+
 /*
  * Local variables:
  * tab-width: 4
@@ -370,3 +438,4 @@ function _formatDate($date)
  * c-hanging-comment-ender-p: nil
  * End:
  */
+

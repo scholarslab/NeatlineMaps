@@ -65,7 +65,7 @@ class NeatlineMapsServer extends Omeka_record
 
         $workspaceList = new Zend_Http_Client($workspacesAddress);
         $workspaceList->setAuth($this->username, $this->password);
-        $responseBody = str_replace('xmlns', 'ns', $workspaceList->request(Zend_Http_Client::GET)->getBody());
+        $responseBody = $workspaceList->request(Zend_Http_Client::GET)->getBody();
 
         // Query for the namespaces.
         $body = new SimpleXMLElement($responseBody);

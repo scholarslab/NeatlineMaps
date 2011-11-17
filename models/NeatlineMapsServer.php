@@ -69,7 +69,7 @@ class NeatlineMapsServer extends Omeka_record
 
         // Query for the namespaces.
         $body = new SimpleXMLElement($responseBody);
-        $workspaces = $body->xpath('//*[local-name()="workspace"]/*[local-name()="name"]');
+        $workspaces = $body->xpath('//workspace/name');
 
         // Sort alphabetically.
         usort($workspaces, array('NeatlineMapsServer', '_compareWorkspaceNames'));

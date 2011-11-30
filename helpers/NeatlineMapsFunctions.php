@@ -399,7 +399,7 @@ function neatline_maps_display_maps_for_item($item = null)
     
     if ($maps) {
         foreach ($maps as $map) {
-            $html = neatline_maps_display_map($map);
+            $html .= neatline_maps_display_map($map);
         }
     }
 

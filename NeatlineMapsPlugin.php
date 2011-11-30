@@ -242,10 +242,18 @@ class NeatlineMapsPlugin
      *
      * @return void
      */
-    public function exhibitBuilderExhibitDisplayItem()
+    public function exhibitBuilderExhibitDisplayItem($html, $displayFilesOptions, $linkOptions, $item)
     {
 
-      return;
+        $mapsHtml = neatline_maps_display_maps_for_item($item);
+
+        // neatline_maps_display_maps_for_item() returns empty string if there are no maps for the item.
+        if ($mapsHtml != '') {
+            _queueOpenLayers();
+            $html = $mapsHtml;
+        }
+
+        return $html;
 
     }
 

@@ -15,9 +15,6 @@
  * language governing permissions and limitations under the License.
  * }}}
  */
-?>
-
-<?php
 
 class NeatlineMapsMap extends Omeka_record
 {

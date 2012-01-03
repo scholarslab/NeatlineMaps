@@ -26,9 +26,6 @@
  * @link        https://github.com/scholarslab/NeatlineMaps/
  *}}} 
  */
-?>
-
-<?php
 
 if (!defined('NEATLINE_MAPS_PLUGIN_VERSION')) {
     define('NEATLINE_MAPS_PLUGIN_VERSION', get_plugin_ini('NeatlineMaps', 'version'));

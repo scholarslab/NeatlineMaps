@@ -22,9 +22,6 @@
  * PHP version 5
  *
  */
-?>
-
-<?php
 
 require_once '../NeatlineMapsPlugin.php';
 

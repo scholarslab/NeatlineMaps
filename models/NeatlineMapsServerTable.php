@@ -15,9 +15,6 @@
  * language governing permissions and limitations under the License.
  * }}}
  */
-?>
-
-<?php
 
 class NeatlineMapsServerTable extends Omeka_Db_Table
 {

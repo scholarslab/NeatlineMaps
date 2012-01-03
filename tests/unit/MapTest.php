@@ -24,9 +24,6 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  * @version     $Id$
  */
-?>
-
-<?php
 
 class NeatlineMaps_MapTest extends Omeka_Test_AppTestCase
 {

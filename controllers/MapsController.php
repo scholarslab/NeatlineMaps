@@ -15,9 +15,6 @@
  * language governing permissions and limitations under the License.
  *}}}
  */
-?>
-
-<?php
 
 class NeatlineMaps_MapsController extends Omeka_Controller_Action
 {

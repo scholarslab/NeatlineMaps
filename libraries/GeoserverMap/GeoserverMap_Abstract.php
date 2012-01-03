@@ -15,9 +15,6 @@
  * language governing permissions and limitations under the License.
  * }}}
  */
-?>
-
-<?php
 
 require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/GeoserverMap/GeoserverMap_File.php';
 require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/GeoserverMap/GeoserverMap_Map.php';

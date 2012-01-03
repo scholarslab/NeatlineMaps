@@ -15,9 +15,6 @@
  * language governing permissions and limitations under the License.
  * }}}
  */
-?>
-
-<?php
 
 class GeoserverMap_Map extends GeoserverMap_Abstract
 {

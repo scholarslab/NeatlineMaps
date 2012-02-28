@@ -40,7 +40,7 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
     }
 
     /**
-     * Test getServer().
+     * Test getMaps().
      *
      * @return void.
      */
@@ -72,6 +72,30 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
         $this->assertEquals(count($page1Maps), $perPage);
         $this->assertEquals($page1Maps[$perPage-1]->id, $allMaps[$perPage-1]->id);
         $this->assertEquals($page2Maps[$perPage-1]->id, $allMaps[2*($perPage)-1]->id);
+
+    }
+
+    /**
+     * Test getMapsForSelect().
+     *
+     * @return void.
+     */
+    public function testGetMapsForSelect()
+    {
+
+        // Create maps.
+        $this->helper->_createMaps(5);
+
+        // Get maps.
+        $maps = $this->mapTable->getMapsForSelect();
+
+        // Check length and structure.
+        $this->assertEquals(5, count($maps));
+        $this->assertEquals($maps[1], 'Test Map 0');
+        $this->assertEquals($maps[2], 'Test Map 1');
+        $this->assertEquals($maps[3], 'Test Map 2');
+        $this->assertEquals($maps[4], 'Test Map 3');
+        $this->assertEquals($maps[5], 'Test Map 4');
 
     }
 
@@ -291,33 +315,9 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
      *
      * @return void.
      */
-    // public function testDeleteMapDeleteOmekaFiles()
-    // {
+    public function testDeleteMapDeleteOmekaFiles()
+    {
 
-    //     // Because the setup code for these tests just mocks Omeka files as
-    //     // database objects (no real files), file delete is hard to test here
-    //     // without actually copying dummy files into the testing install of
-    //     // Omeka, which causes a lot of other problems. In lieu of that, this
-    //     // code just calls the deleteMap() function with file delete set to
-    //     // true, and listens for the expected Omeka error that gets thrown
-    //     // when Omeka can't find a physical file to delete that corresponds
-    //     // to the database record.
-
-    //     // Create a map and files and get table classes.
-    //     $map = $this->helper->_createMap();
-    //     $mapTable = $this->db->getTable('NeatlineMapsMap');
-    //     $mapFiles = $this->db->getTable('NeatlineMapsMapFile');
-    //     $files = $this->db->getTable('File');
-
-    //     // Check record counts.
-    //     $this->assertEquals($mapTable->count(), 1);
-    //     $this->assertEquals($mapFiles->count(), 5);
-    //     $this->assertEquals($files->count(), 5);
-
-    //     // Delete the map but don't delete the files.
-    //     $this->mapTable->deleteMap($map->id, true, false);
-    //     $this->setExpectedException('Omeka_Storage_Exception');
-
-    // }
+    }
 
 }

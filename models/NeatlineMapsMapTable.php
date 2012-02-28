@@ -57,6 +57,28 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
     }
 
     /**
+     * Build an array of maps of format [id] => [name].
+     *
+     * @return void.
+     */
+    public function getMapsForSelect()
+    {
+
+        $maps = array();
+
+        // Get the records.
+        $records = $this->fetchObjects($this->getSelect());
+
+        // Build the array.
+        foreach($records as $record) {
+            $maps[$record->id] = $record->name;
+        };
+
+        return $maps;
+
+    }
+
+    /**
      * Inserts a new map.
      *
      * @param Omeka_record $item The parent item.

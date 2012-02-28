@@ -134,7 +134,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         $sort_field = $this->_request->getParam('sort_field');
         $sort_dir = $this->_request->getParam('sort_dir');
-        $search = $this->_request->getParam('search');
+        $search = mysql_escape_string($this->_request->getParam('search'));
 
         // Get the datastreams.
         $page = $this->_request->page;

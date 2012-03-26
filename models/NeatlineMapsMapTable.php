@@ -64,7 +64,7 @@ class NeatlineMapsMapTable extends Omeka_Db_Table
     public function getMapsForSelect()
     {
 
-        $maps = array();
+        $maps = array('none' => '-');
 
         // Get the records.
         $records = $this->fetchObjects($this->getSelect());

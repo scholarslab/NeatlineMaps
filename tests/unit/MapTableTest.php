@@ -90,7 +90,8 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
         $maps = $this->mapTable->getMapsForSelect();
 
         // Check length and structure.
-        $this->assertEquals(5, count($maps));
+        $this->assertEquals(6, count($maps));
+        $this->assertEquals($maps['none'], '-');
         $this->assertEquals($maps[1], 'Test Map 0');
         $this->assertEquals($maps[2], 'Test Map 1');
         $this->assertEquals($maps[3], 'Test Map 2');

@@ -21,6 +21,8 @@ class NeatlineMapsServer extends Omeka_record
 
     public $name;
     public $url;
+    public $username;
+    public $password;
 
     /**
      * Checks to see if the server is online.

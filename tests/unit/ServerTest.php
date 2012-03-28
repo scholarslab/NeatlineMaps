@@ -52,10 +52,14 @@ class NeatlineMaps_ServerTest extends Omeka_Test_AppTestCase
         // Set.
         $server->name = 'Test Server';
         $server->url = 'http://www.test.com/geoserver';
+        $server->username = 'username';
+        $server->password = 'password';
 
         // Get.
         $this->assertEquals($server->name, 'Test Server');
         $this->assertEquals($server->url, 'http://www.test.com/geoserver');
+        $this->assertEquals($server->username, 'username');
+        $this->assertEquals($server->password, 'password');
 
 
     }

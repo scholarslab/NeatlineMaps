@@ -72,7 +72,7 @@ class ServerForm extends Omeka_Form
                         )
                     )
                 ),
-                array('validator' => 'Neatline_Validate_IsUrl', 'breakChainOnFailure' => true, 'options' =>
+                array('validator' => 'IsUrl', 'breakChainOnFailure' => true, 'options' =>
                     array(
                         'messages' => array(
                             Neatline_Validate_IsUrl::INVALID_URL => 'Enter a valid URL.'
@@ -80,6 +80,11 @@ class ServerForm extends Omeka_Form
                     )
                 )
             )
+        ));
+
+        // Submit.
+        $this->addElement('submit', 'submit', array(
+            'label' => 'Create'
         ));
 
         // Group the fields.

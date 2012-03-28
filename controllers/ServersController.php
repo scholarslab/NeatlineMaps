@@ -55,7 +55,7 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
 
             // Get the data, instantiate validator.
             $data = $this->_request->getPost();
-            $form = $this->_doServerForm();
+            $form = new ServerForm;
 
             // Are all the fields filled out?
             if ($form->isValid($data)) {
@@ -82,7 +82,7 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
 
         else {
 
-            $form = $this->_doServerForm();
+            $form = new ServerForm;
             $this->view->form = $form;
 
         }
@@ -201,60 +201,6 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
         }
 
         $this->view->name = $server->name;
-
-    }
-
-    /**
-     * Build the form for server add/edit.
-     *
-     * @param $mode 'create' or 'edit.'
-     * @param $server_id The id of the server for hidden input in edit case.
-     *
-     * @return void
-     */
-    protected function _doServerForm($mode = 'create', $server_id = null)
-    {
-
-        $form = new Zend_Form();
-
-        $name = new Zend_Form_Element_Text('name');
-        $name->setRequired(true)
-            ->setLabel('Name:')
-            ->setAttrib('size', 55);
-
-        $url = new Zend_Form_Element_Text('url');
-        $url->setRequired(true)
-            ->setLabel('URL:')
-            ->setAttrib('size', 55);
-
-        $form->addElement($name);
-        $form->addElement($url);
-
-        if ($mode == 'create') {
-
-            $submit = new Zend_Form_Element_Submit('create_submit');
-            $submit->setLabel('Create');
-
-            $form->addElement($submit);
-            $form->setAction('create')->setMethod('post');
-
-        }
-
-        else if ($mode == 'edit') {
-
-            $id = new Zend_Form_Element_Hidden('id');
-            $id->setValue($server_id);
-
-            $submit = new Zend_Form_Element_Submit('edit_submit');
-            $submit->setLabel('Save');
-
-            $form->addElement($id);
-            $form->addElement($submit);
-            $form->setAction('')->setMethod('post');
-
-        }
-
-        return $form;
 
     }
 

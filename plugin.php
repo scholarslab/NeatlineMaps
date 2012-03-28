@@ -37,6 +37,7 @@ if (!defined('NEATLINE_MAPS_PLUGIN_DIR')) {
 
 require_once 'NeatlineMapsPlugin.php';
 require_once NEATLINE_MAPS_PLUGIN_DIR . '/helpers/NeatlineMapsFunctions.php';
+require_once NEATLINE_MAPS_PLUGIN_DIR . '/forms/ServerForm.php';
 require_once NEATLINE_MAPS_PLUGIN_DIR . '/forms/Validate/isUrl.php';
 require_once 'Zend/Http/Client/Adapter/Curl.php';
 require_once NEATLINE_MAPS_PLUGIN_DIR . '/libraries/GeoserverMap/GeoserverMap_Abstract.php';

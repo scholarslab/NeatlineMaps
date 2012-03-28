@@ -97,35 +97,28 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
     public function editAction()
     {
 
+        // Get the server.
+        $server = $this->getTable('NeatlineMapsServer')->find($this->_request->id);
+
         // If an edited form has been submitted
         if ($this->_request->isPost()) {
 
             // Get the data, instantiate validator.
             $data = $this->_request->getPost();
-            $form = $this->_doServerForm('edit', $data['id']);
-
-            // If delete was hit, do the delete.
-            if (isset($data['delete_submit'])) {
-                $this->_redirect('neatline-maps/servers/delete/' . $data['id']);
-            }
+            $form = new ServerForm;
 
             // Are all the fields filled out?
             if ($form->isValid($data)) {
 
-                // If save was hit, do save.
-                if (isset($data['edit_submit'])) {
+                if ($this->getTable('NeatlineMapsServer')->saveServer($server, $data)) {
 
-                    if ($this->getTable('NeatlineMapsServer')->saveServer($data)) {
+                    $this->flashSuccess('Information for server ' . $data['name'] . ' saved.');
+                    $this->redirect->goto('browse');
 
-                        $this->flashSuccess('Information for server ' . $data['name'] . ' saved.');
-                        $this->redirect->goto('browse');
+                } else {
 
-                    } else {
-
-                        $this->flashError('Error: Information for server ' . $data['name'] . ' not saved.');
-                        $this->redirect->goto('browse');
-
-                    }
+                    $this->flashError('Error: Information for server ' . $data['name'] . ' not saved.');
+                    $this->redirect->goto('browse');
 
                 }
 
@@ -134,9 +127,6 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
             else {
 
                 $form->populate($data);
-                $id = $this->_request->id;
-                $server = $this->getTable('NeatlineMapsServer')->find($id);
-
                 $this->view->form = $form;
                 $this->view->server = $server;
 
@@ -146,18 +136,13 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
 
         else {
 
-            $id = $this->_request->id;
-            $server = $this->getTable('NeatlineMapsServer')->find($id);
-
             // Get the form.
-            $form = $this->_doServerForm('edit', $id);
+            $form = new ServerForm;
 
             // Fill it with the data.
             $form->populate(array(
                 'name' => $server->name,
-                'url' => $server->url,
-                'username' => $server->username,
-                'password' => $server->password
+                'url' => $server->url
             ));
 
             $this->view->form = $form;

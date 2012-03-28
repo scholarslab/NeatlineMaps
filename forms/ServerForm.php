@@ -68,7 +68,7 @@ class ServerForm extends Omeka_Form
                 array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
                     array(
                         'messages' => array(
-                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a url.'
+                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a URL.'
                         )
                     )
                 ),
@@ -84,7 +84,7 @@ class ServerForm extends Omeka_Form
 
         // Submit.
         $this->addElement('submit', 'submit', array(
-            'label' => 'Create'
+            'label' => 'Save'
         ));
 
         // Group the fields.

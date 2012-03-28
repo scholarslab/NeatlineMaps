@@ -84,13 +84,11 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         $post = array(
             'id' => $server->id,
             'name' => 'New Test Server Name',
-            'url' => 'http://www.newurl.com',
-            'username' => 'admin2',
-            'password' => 'password2'
+            'url' => 'http://www.newurl.com'
         );
 
         // Pass in the new data.
-        $this->serverTable->saveServer($post);
+        $this->serverTable->saveServer($server, $post);
         $updatedServer = $this->serverTable->find($server->id);
 
         // Check for updated values.
@@ -108,7 +106,7 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         );
 
         // Pass in the new data.
-        $this->serverTable->saveServer($post);
+        $this->serverTable->saveServer($server, $post);
         $updatedServer = $this->serverTable->find($server->id);
 
         // Check for updated values.

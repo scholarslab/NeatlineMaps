@@ -48,14 +48,14 @@ class NeatlineMapsServerTable extends Omeka_Db_Table
     /**
      * Save server information.
      *
+     * @param Omeka_record $server The server record.
      * @param array $data The field data posted from the form.
      *
      * @return boolean True if save succeeds.
      */
-    public function saveServer($data)
+    public function saveServer($server, $data)
     {
 
-        $server = $this->find($data['id']);
         $server->name = $data['name'];
         $server->url = $data['url'];
 

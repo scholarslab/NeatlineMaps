@@ -76,7 +76,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
      *
      * @return void.
      */
-    public function testAddServerFail()
+    public function testAddServerEmptyFields()
     {
 
         // Test that the validation rejects the submission unless all
@@ -97,10 +97,41 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
 
         $this->assertQueryCount('ul.errors', 2);
 
-        $this->assertQueryContentContains('dd#name-element ul.errors li',
-            'Value is required and can\'t be empty');
-        $this->assertQueryContentContains('dd#url-element ul.errors li',
-            'Value is required and can\'t be empty');
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a name.');
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a URL.');
+
+    }
+
+    /**
+     * Test for correct form correction on failed server add attempt.
+     *
+     * @return void.
+     */
+    public function testAddServerInvalidUrl()
+    {
+
+        // Test that the validation rejects the submission unless all
+        // of the fields are filled out.
+        $this->request->setMethod('POST')
+            ->setPost(array(
+                'name' => 'Test Server',
+                'url' => 'invalid'
+            )
+        );
+
+        // Test that the form posts back to the same view function.
+        $this->dispatch('neatline-maps/servers/create');
+        $this->assertModule('neatline-maps');
+        $this->assertController('servers');
+        $this->assertAction('create');
+        $this->assertResponseCode(200);
+
+        $this->assertQueryCount('ul.errors', 1);
+
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a valid URL.');
 
     }
 
@@ -132,17 +163,12 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertEquals($server->name, 'Test Server');
         $this->assertEquals($server->url, 'http://www.geoserver.com/test');
 
-        // Test redirect back to browse.
-        // Why does this not work?
-        // $this->assertAction('browse');
-
         $this->resetRequest()->resetResponse();
 
         // For now, since the tests don't follow the redirect..
         $this->dispatch('neatline-maps/servers');
-        $this->assertQueryContentContains('td a strong', 'Test Server');
+        $this->assertQueryContentContains('td', 'Test Server');
         $this->assertQueryContentContains('td a', 'http://www.geoserver.com/test');
-        $this->assertQueryContentContains('td span', 'Offline or inaccessible');
 
     }
 
@@ -173,17 +199,12 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertEquals($server->name, 'Test Server');
         $this->assertEquals($server->url, 'http://www.geoserver.com/test');
 
-        // Test redirect back to browse.
-        // Why does this not work?
-        // $this->assertAction('browse');
-
         $this->resetRequest()->resetResponse();
 
         // For now, since the tests don't follow the redirect..
         $this->dispatch('neatline-maps/servers');
-        $this->assertQueryContentContains('td a strong', 'Test Server');
+        $this->assertQueryContentContains('td', 'Test Server');
         $this->assertQueryContentContains('td a', 'http://www.geoserver.com/test');
-        $this->assertQueryContentContains('td span', 'Offline or inaccessible');
 
     }
 
@@ -221,7 +242,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
      *
      * @return void.
      */
-    public function testServerEditFail()
+    public function testServerEditEmptyFields()
     {
 
         // Create a server.
@@ -235,9 +256,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => '',
-                'url' => '',
-                'id' => 1,
-                'edit_submit' => 'Save'
+                'url' => ''
             )
         );
 
@@ -249,10 +268,46 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
 
         $this->assertQueryCount('ul.errors', 2);
 
-        $this->assertQueryContentContains('dd#name-element ul.errors li',
-            'Value is required and can\'t be empty');
-        $this->assertQueryContentContains('dd#url-element ul.errors li',
-            'Value is required and can\'t be empty');
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a name.');
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a URL.');
+
+    }
+
+    /**
+     * Test for correct form correction for invalid url.
+     *
+     * @return void.
+     */
+    public function testServerEditInvalidUrl()
+    {
+
+        // Create a server.
+        $server = $this->helper->_createServer(
+            'Test Server',
+            'http://www.geoserver.com/test'
+        );
+
+        // Test that the validation rejects the submission unless all
+        // of the fields are filled out.
+        $this->request->setMethod('POST')
+            ->setPost(array(
+                'name' => 'New Name',
+                'url' => 'invalid'
+            )
+        );
+
+        // Test that the form posts back to the same view function.
+        $this->dispatch('neatline-maps/servers/edit/' . $server->id);
+        $this->assertModule('neatline-maps');
+        $this->assertController('servers');
+        $this->assertAction('edit');
+
+        $this->assertQueryCount('ul.errors', 1);
+
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a valid URL.');
 
     }
 
@@ -281,9 +336,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'New Server Name',
-                'url' => 'http://www.newurl.url',
-                'id' => 1,
-                'edit_submit' => 'Save'
+                'url' => 'http://www.newurl.com'
             )
         );
 
@@ -300,19 +353,14 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Test that the server was created.
         $this->assertEquals($serverCount, 1);
         $this->assertEquals($server->name, 'New Server Name');
-        $this->assertEquals($server->url, 'http://www.newurl.url');
-
-        // Test redirect back to browse.
-        // Why does this not work?
-        // $this->assertAction('browse');
+        $this->assertEquals($server->url, 'http://www.newurl.com');
 
         $this->resetRequest()->resetResponse();
 
         // For now, since the tests don't follow the redirect..
         $this->dispatch('neatline-maps/servers');
-        $this->assertQueryContentContains('td a strong', 'New Server Name');
-        $this->assertQueryContentContains('td a', 'http://www.newurl.url');
-        $this->assertQueryContentContains('td span', 'Offline or inaccessible');
+        $this->assertQueryContentContains('td strong', 'New Server Name');
+        $this->assertQueryContentContains('td a', 'http://www.newurl.com');
 
     }
 
@@ -327,9 +375,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Create a server.
         $server = $this->helper->_createServer(
             'Test Server',
-            'http://www.geoserver.com/test',
-            'test',
-            'test'
+            'http://www.geoserver.com/test'
         );
 
         // Create a map
@@ -364,9 +410,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Create a server.
         $server = $this->helper->_createServer(
             'Test Server',
-            'http://www.geoserver.com/test',
-            'test',
-            'test'
+            'http://www.geoserver.com/test'
         );
 
         $serverCount = $this->serversTable->count();

@@ -38,7 +38,6 @@
 
 #delete_submit-element input {
     background-color: #800;
-    border: 1px solid #800;
 }
 
 #delete_submit-label, #edit_submit-label, #item_id-label, #pid_submit-label {

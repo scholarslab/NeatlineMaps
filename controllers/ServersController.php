@@ -248,12 +248,8 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
             $submit = new Zend_Form_Element_Submit('edit_submit');
             $submit->setLabel('Save');
 
-            $delete = new Zend_Form_Element_Submit('delete_submit');
-            $delete->setLabel('Delete');
-
             $form->addElement($id);
             $form->addElement($submit);
-            $form->addElement($delete);
             $form->setAction('')->setMethod('post');
 
         }

@@ -114,8 +114,6 @@ class NeatlineMaps_ItemTabTest extends Omeka_Test_AppTestCase
             $this->helper->_createMap(
                 $serverName = 'Test Server',
                 $serverUrl = 'http://www.test.com',
-                $serverUsername = 'admin',
-                $serverPassword = 'password',
                 $item = $newItem,
                 $mapName = 'Test Map',
                 $mapNamespace = 'Test_Namespace');

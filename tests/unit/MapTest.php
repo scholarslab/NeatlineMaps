@@ -54,8 +54,6 @@ class NeatlineMaps_MapTest extends Omeka_Test_AppTestCase
         $this->assertEquals(count($server), 1);
         $this->assertEquals($server->name, 'Test Server');
         $this->assertEquals($server->url, 'http://www.test.com');
-        $this->assertEquals($server->username, 'admin');
-        $this->assertEquals($server->password, 'password');
 
     }
 

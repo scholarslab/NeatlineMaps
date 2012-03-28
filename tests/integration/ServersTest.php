@@ -84,9 +84,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => '',
-                'url' => '',
-                'username' => '',
-                'password' => ''
+                'url' => ''
             )
         );
 
@@ -97,15 +95,11 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertAction('create');
         $this->assertResponseCode(200);
 
-        $this->assertQueryCount('ul.errors', 4);
+        $this->assertQueryCount('ul.errors', 2);
 
         $this->assertQueryContentContains('dd#name-element ul.errors li',
             'Value is required and can\'t be empty');
         $this->assertQueryContentContains('dd#url-element ul.errors li',
-            'Value is required and can\'t be empty');
-        $this->assertQueryContentContains('dd#username-element ul.errors li',
-            'Value is required and can\'t be empty');
-        $this->assertQueryContentContains('dd#password-element ul.errors li',
             'Value is required and can\'t be empty');
 
     }
@@ -123,9 +117,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'Test Server',
-                'url' => 'http://www.geoserver.com/test/',
-                'username' => 'test',
-                'password' => 'test'
+                'url' => 'http://www.geoserver.com/test/'
             )
         );
 
@@ -139,8 +131,6 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertEquals($serverCount, 1);
         $this->assertEquals($server->name, 'Test Server');
         $this->assertEquals($server->url, 'http://www.geoserver.com/test');
-        $this->assertEquals($server->username, 'test');
-        $this->assertEquals($server->password, 'test');
 
         // Test redirect back to browse.
         // Why does this not work?
@@ -168,9 +158,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'Test Server',
-                'url' => 'http://www.geoserver.com/test',
-                'username' => 'test',
-                'password' => 'test'
+                'url' => 'http://www.geoserver.com/test'
             )
         );
 
@@ -184,8 +172,6 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertEquals($serverCount, 1);
         $this->assertEquals($server->name, 'Test Server');
         $this->assertEquals($server->url, 'http://www.geoserver.com/test');
-        $this->assertEquals($server->username, 'test');
-        $this->assertEquals($server->password, 'test');
 
         // Test redirect back to browse.
         // Why does this not work?
@@ -212,9 +198,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Create a server.
         $server = $this->helper->_createServer(
             'Test Server',
-            'http://www.geoserver.com/test',
-            'test',
-            'test'
+            'http://www.geoserver.com/test'
         );
 
         // Test the edit page.
@@ -227,8 +211,6 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Test to confirm that form fields are populating.
         $this->assertXpath('//input[@id="name"][@value="Test Server"]');
         $this->assertXpath('//input[@id="url"][@value="http://www.geoserver.com/test"]');
-        $this->assertXpath('//input[@id="username"][@value="test"]');
-        $this->assertXpath('//input[@id="password"][@value="test"]');
 
         $this->assertQueryContentContains('h2', 'Edit Server "Test Server"');
 
@@ -245,9 +227,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Create a server.
         $server = $this->helper->_createServer(
             'Test Server',
-            'http://www.geoserver.com/test',
-            'test',
-            'test'
+            'http://www.geoserver.com/test'
         );
 
         // Test that the validation rejects the submission unless all
@@ -256,8 +236,6 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
             ->setPost(array(
                 'name' => '',
                 'url' => '',
-                'username' => '',
-                'password' => '',
                 'id' => 1,
                 'edit_submit' => 'Save'
             )
@@ -269,15 +247,11 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertController('servers');
         $this->assertAction('edit');
 
-        $this->assertQueryCount('ul.errors', 4);
+        $this->assertQueryCount('ul.errors', 2);
 
         $this->assertQueryContentContains('dd#name-element ul.errors li',
             'Value is required and can\'t be empty');
         $this->assertQueryContentContains('dd#url-element ul.errors li',
-            'Value is required and can\'t be empty');
-        $this->assertQueryContentContains('dd#username-element ul.errors li',
-            'Value is required and can\'t be empty');
-        $this->assertQueryContentContains('dd#password-element ul.errors li',
             'Value is required and can\'t be empty');
 
     }
@@ -293,9 +267,7 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Create a server.
         $server = $this->helper->_createServer(
             'Test Server',
-            'http://www.geoserver.com/test',
-            'test',
-            'test'
+            'http://www.geoserver.com/test'
         );
 
         $serverCount = $this->serversTable->count();
@@ -305,15 +277,11 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertEquals($serverCount, 1);
         $this->assertEquals($server->name, 'Test Server');
         $this->assertEquals($server->url, 'http://www.geoserver.com/test');
-        $this->assertEquals($server->username, 'test');
-        $this->assertEquals($server->password, 'test');
 
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'New Server Name',
                 'url' => 'http://www.newurl.url',
-                'username' => 'differentpass',
-                'password' => 'differentpass',
                 'id' => 1,
                 'edit_submit' => 'Save'
             )
@@ -333,8 +301,6 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertEquals($serverCount, 1);
         $this->assertEquals($server->name, 'New Server Name');
         $this->assertEquals($server->url, 'http://www.newurl.url');
-        $this->assertEquals($server->username, 'differentpass');
-        $this->assertEquals($server->password, 'differentpass');
 
         // Test redirect back to browse.
         // Why does this not work?

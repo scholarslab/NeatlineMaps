@@ -96,8 +96,6 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         // Check for updated values.
         $this->assertEquals($updatedServer->name, 'New Test Server Name');
         $this->assertEquals($updatedServer->url, 'http://www.newurl.com');
-        $this->assertEquals($updatedServer->username, 'admin2');
-        $this->assertEquals($updatedServer->password, 'password2');
 
         // Test that the function detects and scrubs a trailing slash
         // on the url.
@@ -106,9 +104,7 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         $post = array(
             'id' => $server->id,
             'name' => 'New Test Server Name',
-            'url' => 'http://www.newurl.com/',
-            'username' => 'admin2',
-            'password' => 'password2'
+            'url' => 'http://www.newurl.com/'
         );
 
         // Pass in the new data.
@@ -118,8 +114,6 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         // Check for updated values.
         $this->assertEquals($updatedServer->name, 'New Test Server Name');
         $this->assertEquals($updatedServer->url, 'http://www.newurl.com');
-        $this->assertEquals($updatedServer->username, 'admin2');
-        $this->assertEquals($updatedServer->password, 'password2');
 
     }
 
@@ -134,9 +128,7 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         // Mock post.
         $post = array(
             'name' => 'Test Server',
-            'url' => 'http://www.test.org',
-            'username' => 'admin',
-            'password' => 'password'
+            'url' => 'http://www.test.org'
         );
 
         // Pass in the new data.
@@ -147,8 +139,6 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         $this->assertEquals($this->serverTable->count(), 1);
         $this->assertEquals($newServer->name, 'Test Server');
         $this->assertEquals($newServer->url, 'http://www.test.org');
-        $this->assertEquals($newServer->username, 'admin');
-        $this->assertEquals($newServer->password, 'password');
 
         $newServer->delete();
 
@@ -158,9 +148,7 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         // Mock post.
         $post = array(
             'name' => 'Test Server',
-            'url' => 'http://www.test.org/',
-            'username' => 'admin',
-            'password' => 'password'
+            'url' => 'http://www.test.org/'
         );
 
         // Pass in the new data.
@@ -171,8 +159,6 @@ class NeatlineMaps_ServerTableTest extends Omeka_Test_AppTestCase
         $this->assertEquals($this->serverTable->count(), 1);
         $this->assertEquals($newServer->name, 'Test Server');
         $this->assertEquals($newServer->url, 'http://www.test.org');
-        $this->assertEquals($newServer->username, 'admin');
-        $this->assertEquals($newServer->password, 'password');
 
     }
 

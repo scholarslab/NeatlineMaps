@@ -39,6 +39,28 @@ class NeatlineMaps_ServerTest extends Omeka_Test_AppTestCase
     }
 
     /**
+     * Test attribute get/set.
+     *
+     * @return void.
+     */
+    public function testAttributeAccess()
+    {
+
+        // Create a new server.
+        $server = $this->helper->_createServer();
+
+        // Set.
+        $server->name = 'Test Server';
+        $server->url = 'http://www.test.com/geoserver';
+
+        // Get.
+        $this->assertEquals($server->name, 'Test Server');
+        $this->assertEquals($server->url, 'http://www.test.com/geoserver');
+
+
+    }
+
+    /**
      * Test hasChildMaps().
      *
      * @return void.
@@ -47,7 +69,7 @@ class NeatlineMaps_ServerTest extends Omeka_Test_AppTestCase
     {
 
         // Create a new server.
-        $server = $this->helper->_createServer('Test Server', 'http://www.test.com', 'admin', 'password');
+        $server = $this->helper->_createServer();
 
         // Check when no maps.
         $this->assertFalse($server->hasChildMaps());

@@ -51,11 +51,8 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
     public function _addBagItPluginHooksAndFilters($plugin_broker, $plugin_name)
     {
-
         $plugin_broker->setCurrentPluginDirName($plugin_name);
-
         new NeatlineMapsPlugin;
-
     }
 
     public function _createServers($number)
@@ -63,20 +60,21 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
 
         $i = 0;
         while ($i < $number) {
-            $this->_createServer('Test Server' . $i, 'http://www.test.org', 'admin', 'password');
+            $this->_createServer('Test Server' . $i, 'http://www.test.org');
             $i++;
         }
 
     }
 
-    public function _createServer($name, $url, $username, $password)
+    public function _createServer(
+        $name = 'Test Server',
+        $url = 'http://www.test.com'
+    )
     {
 
         $server = new NeatlineMapsServer;
         $server->name = $name;
         $server->url = $url;
-        $server->username = $username;
-        $server->password = $password;
         $server->save();
 
         return $server;
@@ -86,14 +84,12 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
     public function _createMap(
         $serverName = 'Test Server',
         $serverUrl = 'http://www.test.com',
-        $serverUsername = 'admin',
-        $serverPassword = 'password',
         $item = null,
         $mapName = 'Test Map',
         $mapNamespace = 'Test_Namespace')
     {
 
-        $server = $this->_createServer($serverName, $serverUrl, $serverUsername, $serverPassword);
+        $server = $this->_createServer($serverName, $serverUrl);
         $files = $this->_createFiles(5);
 
         if ($item == null) {
@@ -149,14 +145,12 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
     public function _createMapFile(
         $serverName = 'Test Server',
         $serverUrl = 'http://www.test.com',
-        $serverUsername = 'admin',
-        $serverPassword = 'password',
         $item = null,
         $mapName = 'Test Map',
         $mapNamespace = 'Test_Namespace')
     {
 
-        $server = $this->_createServer($serverName, $serverUrl, $serverUsername, $serverPassword);
+        $server = $this->_createServer($serverName, $serverUrl);
         $this->_createFiles(1);
 
         if ($item == null) {
@@ -191,8 +185,6 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
             $maps[] = $this->_createMap(
                 $serverName = 'Test Server ' . $i,
                 $serverUrl = 'http://www.test.com',
-                $serverUsername = 'admin',
-                $serverPassword = 'password',
                 $item = $item,
                 $mapName = 'Test Map ' . $i,
                 $mapNamespace = 'Test_Namespace ' . $i);
@@ -260,7 +252,7 @@ class NeatlineMaps_Test_AppTestCase extends Omeka_Test_AppTestCase
         $i = 0;
         while ($i < $number) {
             $db = get_db();
-            $sql = 'INSERT INTO omeka_files 
+            $sql = 'INSERT INTO omeka_files
                 (item_id, size, has_derivative_image, archive_filename, original_filename) 
                 VALUES (1, 5000, 0, "ArchiveTestFile' . $i . '.jpg", "TestFile' . $i . '.jpg")';
             $db->query($sql);

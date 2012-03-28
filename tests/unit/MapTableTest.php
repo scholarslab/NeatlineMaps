@@ -165,8 +165,6 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
             $this->helper->_createMap(
                 $serverName = 'Test Server 1',
                 $serverUrl = 'http://www.test.com',
-                $serverUsername = 'admin',
-                $serverPassword = 'password',
                 $item = $i1,
                 $mapName = 'Test Map' . $i,
                 $mapNamespace = 'Test_Namespace');
@@ -177,8 +175,6 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
             $this->helper->_createMap(
                 $serverName = 'Test Server 2',
                 $serverUrl = 'http://www.test.com',
-                $serverUsername = 'admin',
-                $serverPassword = 'password',
                 $item = $i2,
                 $mapName = 'Test Map' . $i,
                 $mapNamespace = 'Test_Namespace');
@@ -235,8 +231,6 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
             $this->helper->_createMap(
                 $serverName = 'Test Server 1',
                 $serverUrl = 'http://www.test.com',
-                $serverUsername = 'admin',
-                $serverPassword = 'password',
                 $item = $i1,
                 $mapName = 'Test Map' . $i,
                 $mapNamespace = 'Test_Namespace');
@@ -247,8 +241,6 @@ class NeatlineMaps_MapTableTest extends Omeka_Test_AppTestCase
             $this->helper->_createMap(
                 $serverName = 'Test Server 2',
                 $serverUrl = 'http://www.test.com',
-                $serverUsername = 'admin',
-                $serverPassword = 'password',
                 $item = $i2,
                 $mapName = 'Test Map' . $i,
                 $mapNamespace = 'Test_Namespace');

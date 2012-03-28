@@ -58,8 +58,6 @@ class NeatlineMaps_HelpersTest extends Omeka_Test_AppTestCase
         $this->helper->_createMap(
             'Test Server',
             'http://www.test.com',
-            'admin',
-            'password',
             $item,
             'Test Map',
             'Test_Namespace');

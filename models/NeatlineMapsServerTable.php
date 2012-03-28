@@ -58,8 +58,6 @@ class NeatlineMapsServerTable extends Omeka_Db_Table
         $server = $this->find($data['id']);
         $server->name = $data['name'];
         $server->url = $data['url'];
-        $server->username = $data['username'];
-        $server->password = $data['password'];
 
         // If there is a trailing slash on the URL, remove it.
         if (substr($server->url, -1) == '/') {
@@ -83,8 +81,6 @@ class NeatlineMapsServerTable extends Omeka_Db_Table
         $server = new NeatlineMapsServer;
         $server->name = $data['name'];
         $server->url = $data['url'];
-        $server->username = $data['username'];
-        $server->password = $data['password'];
 
         // If there is a trailing slash on the URL, remove it.
         if (substr($server->url, -1) == '/') {

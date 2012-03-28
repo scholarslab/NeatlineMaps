@@ -127,25 +127,25 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
         $serverTable = $this->getTable('NeatlineMapsServer');
 
         // Make sure that there is at least one viable server before allowing map create flow to start.
-        if ($serverTable->count() == 0 || !$serverTable->isAvailableServer()) {
+        if ($serverTable->count() == 0) {
             $this->flashError('There has to be at least one active server registered before you can add a map.');
             $this->_forward('create', 'servers', 'neatline-maps');
         }
 
-        $sort_field = $this->_request->getParam('sort_field');
-        $sort_dir = $this->_request->getParam('sort_dir');
-        $search = mysql_escape_string($this->_request->getParam('search'));
+        // $sort_field = $this->_request->getParam('sort_field');
+        // $sort_dir = $this->_request->getParam('sort_dir');
+        // $search = mysql_escape_string($this->_request->getParam('search'));
 
-        // Get the datastreams.
-        $page = $this->_request->page;
-        $order = _doColumnSortProcessing($sort_field, $sort_dir);
-        $items = _getItems($page, $order, $search);
+        // // Get the datastreams.
+        // $page = $this->_request->page;
+        // $order = _doColumnSortProcessing($sort_field, $sort_dir);
+        // $items = _getItems($page, $order, $search);
 
-        $this->view->items = $items;
-        $this->view->current_page = $page;
-        $this->view->total_results = $this->getTable('Item')->count();
-        $this->view->results_per_page = get_option('per_page_admin');
-        $this->view->search = $search;
+        // $this->view->items = $items;
+        // $this->view->current_page = $page;
+        // $this->view->total_results = $this->getTable('Item')->count();
+        // $this->view->results_per_page = get_option('per_page_admin');
+        // $this->view->search = $search;
 
     }
 

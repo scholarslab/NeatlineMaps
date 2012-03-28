@@ -65,7 +65,10 @@ class NeatlineMapsPlugin
             add_filter($filterName, array($this, $functionName));
         }
 
-        add_mime_display_type(array('image/tiff', 'image/tif'), array($this, 'filterNeatlineMapsFiles'));
+        add_mime_display_type(
+            array('image/tiff', 'image/tif'),
+            array($this, 'filterNeatlineMapsFiles')
+        );
 
     }
 
@@ -109,8 +112,6 @@ class NeatlineMapsPlugin
                 `id` int(10) unsigned NOT NULL auto_increment,
                 `name` tinytext collate utf8_unicode_ci,
                 `url` tinytext collate utf8_unicode_ci,
-                `username` tinytext collate utf8_unicode_ci,
-                `password` tinytext collate utf8_unicode_ci,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");
@@ -262,11 +263,16 @@ class NeatlineMapsPlugin
      */
     public function filterNeatlineMapsFiles($file)
     {
-        $mapFile = get_db()->getTable('NeatlineMapsMapFile')->findBy(array('file_id' => $file->id));
-        if ($mapFile) {
-            $html = '';
-        }
+
+        // Get out the Neatline Map record.
+        $mapFile = get_db()->getTable('NeatlineMapsMapFile')
+            ->findBy(array('file_id' => $file->id));
+
+        // If a map is present, scrub out the display markup.
+        if ($mapFile) { $html = ''; }
+
         return $html;
+
     }
 }
 

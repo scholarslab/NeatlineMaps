@@ -132,20 +132,20 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
             $this->_forward('create', 'servers', 'neatline-maps');
         }
 
-        // $sort_field = $this->_request->getParam('sort_field');
-        // $sort_dir = $this->_request->getParam('sort_dir');
-        // $search = mysql_escape_string($this->_request->getParam('search'));
+        $sort_field = $this->_request->getParam('sort_field');
+        $sort_dir = $this->_request->getParam('sort_dir');
+        $search = mysql_escape_string($this->_request->getParam('search'));
 
-        // // Get the datastreams.
-        // $page = $this->_request->page;
-        // $order = _doColumnSortProcessing($sort_field, $sort_dir);
-        // $items = _getItems($page, $order, $search);
+        // Get the datastreams.
+        $page = $this->_request->page;
+        $order = _doColumnSortProcessing($sort_field, $sort_dir);
+        $items = _getItems($page, $order, $search);
 
-        // $this->view->items = $items;
-        // $this->view->current_page = $page;
-        // $this->view->total_results = $this->getTable('Item')->count();
-        // $this->view->results_per_page = get_option('per_page_admin');
-        // $this->view->search = $search;
+        $this->view->items = $items;
+        $this->view->current_page = $page;
+        $this->view->total_results = $this->getTable('Item')->count();
+        $this->view->results_per_page = get_option('per_page_admin');
+        $this->view->search = $search;
 
     }
 
@@ -439,11 +439,7 @@ class NeatlineMaps_MapsController extends Omeka_Controller_Action
 
         // Add each of the servers as an option.
         foreach ($servers as $server_object) {
-
-            if ($server_object->isOnline()) {
-                $server->addMultiOption($server_object->id, $server_object->name);
-            }
-
+            $server->addMultiOption($server_object->id, $server_object->name);
         }
 
         $submit = new Zend_Form_Element_Submit('select_workspace');

@@ -57,9 +57,7 @@ class NeatlineMapsServer extends Omeka_record
      * @return xml nodes The sorted workspaces.
      */
     static function _compareWorkspaceNames($workspace1, $workspace2) {
-
         return strcmp($workspace1, $workspace2);
-
     }
 
     /**

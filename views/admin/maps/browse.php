@@ -2,8 +2,6 @@
 
 <div id="primary">
 
-    <p id="add-item" class="add-button"><a class="add" href="<?php echo html_escape(uri('neatline-maps/maps/create')); ?>">Add Map</a></p>
-
     <?php echo flash(); ?>
 
     <?php if (count($maps) == 0): ?>

@@ -82,13 +82,47 @@ class ServerForm extends Omeka_Form
             )
         ));
 
+        // Username.
+        $this->addElement('text', 'username', array(
+            'label'         => 'Username',
+            'description'   => 'Enter the Geoserver username.',
+            'size'          => 40,
+            'required'      => true,
+            'validators'    => array(
+                array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
+                    array(
+                        'messages' => array(
+                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a username.'
+                        )
+                    )
+                )
+            )
+        ));
+
+        // Password.
+        $this->addElement('password', 'password', array(
+            'label'         => 'Password',
+            'description'   => 'Enter the Geoserver password.',
+            'size'          => 40,
+            'required'      => true,
+            'validators'    => array(
+                array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
+                    array(
+                        'messages' => array(
+                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a password.'
+                        )
+                    )
+                )
+            )
+        ));
+
         // Submit.
         $this->addElement('submit', 'submit', array(
             'label' => 'Save'
         ));
 
-        // Group the fields.
-        $this->addDisplayGroup(array('name', 'url'), 'server_information');
+        // Group the data fields.
+        $this->addDisplayGroup(array('name', 'url', 'username', 'password'), 'server_information');
 
         // Group the submit button sparately.
         $this->addDisplayGroup(array('submit'), 'submit_button');

@@ -84,7 +84,9 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => '',
-                'url' => ''
+                'url' => '',
+                'username' => '',
+                'password' => ''
             )
         );
 
@@ -95,12 +97,16 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertAction('create');
         $this->assertResponseCode(200);
 
-        $this->assertQueryCount('ul.errors', 2);
+        $this->assertQueryCount('ul.errors', 4);
 
         $this->assertQueryContentContains('ul.errors li',
             'Enter a name.');
         $this->assertQueryContentContains('ul.errors li',
             'Enter a URL.');
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a username.');
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a password.');
 
     }
 
@@ -117,7 +123,9 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'Test Server',
-                'url' => 'invalid'
+                'url' => 'invalid',
+                'username' => 'username',
+                'password' => 'password'
             )
         );
 
@@ -148,7 +156,9 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'Test Server',
-                'url' => 'http://www.geoserver.com/test/'
+                'url' => 'http://www.geoserver.com/test/',
+                'username' => 'username',
+                'password' => 'password'
             )
         );
 
@@ -184,7 +194,9 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'Test Server',
-                'url' => 'http://www.geoserver.com/test'
+                'url' => 'http://www.geoserver.com/test',
+                'username' => 'username',
+                'password' => 'password'
             )
         );
 
@@ -198,6 +210,8 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertEquals($serverCount, 1);
         $this->assertEquals($server->name, 'Test Server');
         $this->assertEquals($server->url, 'http://www.geoserver.com/test');
+        $this->assertEquals($server->username, 'username');
+        $this->assertEquals($server->password, 'password');
 
         $this->resetRequest()->resetResponse();
 
@@ -256,7 +270,9 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => '',
-                'url' => ''
+                'url' => '',
+                'username' => '',
+                'password' => ''
             )
         );
 
@@ -266,12 +282,16 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertController('servers');
         $this->assertAction('edit');
 
-        $this->assertQueryCount('ul.errors', 2);
+        $this->assertQueryCount('ul.errors', 4);
 
         $this->assertQueryContentContains('ul.errors li',
             'Enter a name.');
         $this->assertQueryContentContains('ul.errors li',
             'Enter a URL.');
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a username.');
+        $this->assertQueryContentContains('ul.errors li',
+            'Enter a password.');
 
     }
 
@@ -294,7 +314,9 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'New Name',
-                'url' => 'invalid'
+                'url' => 'invalid',
+                'username' => 'username',
+                'password' => 'password'
             )
         );
 
@@ -322,7 +344,9 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         // Create a server.
         $server = $this->helper->_createServer(
             'Test Server',
-            'http://www.geoserver.com/test'
+            'http://www.geoserver.com/test',
+            'username',
+            'password'
         );
 
         $serverCount = $this->serversTable->count();
@@ -336,7 +360,9 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->request->setMethod('POST')
             ->setPost(array(
                 'name' => 'New Server Name',
-                'url' => 'http://www.newurl.com'
+                'url' => 'http://www.newurl.com',
+                'username' => 'newusername',
+                'password' => 'newpassword'
             )
         );
 
@@ -354,13 +380,8 @@ class NeatlineMaps_ServersTest extends Omeka_Test_AppTestCase
         $this->assertEquals($serverCount, 1);
         $this->assertEquals($server->name, 'New Server Name');
         $this->assertEquals($server->url, 'http://www.newurl.com');
-
-        $this->resetRequest()->resetResponse();
-
-        // For now, since the tests don't follow the redirect..
-        $this->dispatch('neatline-maps/servers');
-        $this->assertQueryContentContains('td strong', 'New Server Name');
-        $this->assertQueryContentContains('td a', 'http://www.newurl.com');
+        $this->assertEquals($server->username, 'newusername');
+        $this->assertEquals($server->password, 'newpassword');
 
     }
 

@@ -18,7 +18,8 @@
                         <?php browse_headings(array(
                             'Name' => 'name',
                             'URL' => 'url',
-                            'Actions' => NULL
+                            'Status' => null,
+                            'Actions' => null
                         )); ?>
                     </tr>
                 </thead>
@@ -27,6 +28,15 @@
                         <tr>
                             <td><strong><?php echo $server->name; ?></strong></td>
                             <td><a href="<?php echo $server->url; ?>"><?php echo $server->url; ?></a></td>
+                            <td>
+                            <?php
+                                if ($server->isOnline()) {
+                                    echo '<span style="font-size: 0.8em; color: green;">Online</span>';
+                                } else {
+                                    echo '<span style="font-size: 0.8em; color: red;">Offline or inaccessible</span>';
+                                }
+                            ?>
+                            </td>
                             <td><?php echo $this->partial('servers/servers-actions.php', array('id' => $server->id)); ?></td>
                         </tr>
                     <?php endforeach; ?>

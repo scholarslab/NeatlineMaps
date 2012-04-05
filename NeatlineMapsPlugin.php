@@ -21,6 +21,7 @@ class NeatlineMapsPlugin
 
     private static $_hooks = array(
         'install',
+        'uninstall',
         'define_routes',
         'public_theme_header',
         'admin_theme_header',
@@ -117,6 +118,28 @@ class NeatlineMapsPlugin
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
             ");
+
+    }
+
+    /**
+     * Uninstall.
+     *
+     * @return void.
+     */
+    public function uninstall()
+    {
+
+        // Drop the exhibits table.
+        $sql = "DROP TABLE IF EXISTS `{$this->_db->prefix}neatline_maps_maps`";
+        $this->_db->query($sql);
+
+        // Drop the data table.
+        $sql = "DROP TABLE IF EXISTS `{$this->_db->prefix}neatline_maps_map_files`";
+        $this->_db->query($sql);
+
+        // Drop the data table.
+        $sql = "DROP TABLE IF EXISTS `{$this->_db->prefix}neatline_maps_servers`";
+        $this->_db->query($sql);
 
     }
 

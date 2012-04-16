@@ -1,23 +1,29 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
-/** {{{docblock
+/**
  * Servers controller.
  *
- * PHP version 5
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
- * applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
- * }}}
+ * @package     omeka
+ * @subpackage  neatline
+ * @author      Scholars' Lab <>
+ * @author      David McClure <david.mcclure@virginia.edu>
+ * @copyright   2012 The Board and Visitors of the University of Virginia
+ * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  */
 
 class NeatlineMaps_ServersController extends Omeka_Controller_Action
 {
+
+    /**
+     * Initialize.
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $this->serversTable = $this->getTable('NeatlineMapsServer');
+    }
 
     /**
      * Show servers.
@@ -26,177 +32,149 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
      */
     public function browseAction()
     {
-
-        $sort_field = $this->_request->getParam('sort_field');
-        $sort_dir = $this->_request->getParam('sort_dir');
-
-        // Get the servers.
-        $page = $this->_request->page;
-        $order = _doColumnSortProcessing($sort_field, $sort_dir);
-        $servers = $this->getTable('NeatlineMapsServer')->getServers($page, $order);
-
-        $this->view->servers = $servers;
-
-        $this->view->current_page = $page;
-        $this->view->total_results = $this->getTable('NeatlineMapsServer')->count();
-        $this->view->results_per_page = get_option('per_page_admin');
-
+        $this->view->servers = $this->serversTable->findAll();
     }
 
     /**
-     * Show form to add new server.
+     * Add server.
      *
      * @return void
      */
-    public function createAction()
+    public function addAction()
     {
 
+        // Create server and form.
+        $server = new NeatlineMapsServer;
+        $form = new ServerForm;
+
+        // If a form as been posted.
         if ($this->_request->isPost()) {
 
-            // Get the data, instantiate validator.
-            $data = $this->_request->getPost();
-            $form = new ServerForm;
+            // Get post.
+            $post = $this->_request->getPost();
 
-            // Are all the fields filled out?
-            if ($form->isValid($data)) {
+            // If form is valid.
+            if ($form->isValid($post)) {
 
-                // Create server, process success.
-                if ($this->getTable('NeatlineMapsServer')->createServer($data)) {
-                    $this->flashSuccess('Server created.');
-                    $this->redirect->goto('browse');
-                } else {
-                    $this->flashError('Error: The server was not created');
-                    $this->redirect->goto('browse');
-                }
+                // Create server.
+                $this->serversTable->updateServer($server, $post);
+
+                // Redirect to browse.
+                $this->redirect->goto('browse');
 
             }
 
+            // If form is invalid.
             else {
-
-                $form->populate($data);
-                $this->view->form = $form;
-
+                $form->populate($post);
             }
 
         }
 
-        else {
-
-            $form = new ServerForm;
-            $this->view->form = $form;
-
-        }
+        // Push form to view.
+        $this->view->form = $form;
 
     }
 
     /**
-     * Show form to edit existing server.
+     * Edit server.
      *
      * @return void
      */
     public function editAction()
     {
 
-        // Get the server.
-        $server = $this->getTable('NeatlineMapsServer')->find($this->_request->id);
+        // Get server.
+        $server = $this->serversTable->find(
+            $this->_request->getParam('id')
+        );
 
-        // If an edited form has been submitted
+        // Get form.
+        $form = new ServerForm;
+
+        // Populate the form.
+        $form->populate(array(
+            'name' => $server->name,
+            'url' => $server->url,
+            'workspace' => $server->namespace,
+            'username' => $server->username,
+            'password' => $server->password,
+            'active' => $server->active
+        ));
+
+        // If a form as been posted.
         if ($this->_request->isPost()) {
 
-            // Get the data, instantiate validator.
-            $data = $this->_request->getPost();
-            $form = new ServerForm;
+            // Get post.
+            $post = $this->_request->getPost();
 
-            // Are all the fields filled out?
-            if ($form->isValid($data)) {
+            // If form is valid.
+            if ($form->isValid($post)) {
 
-                if ($this->getTable('NeatlineMapsServer')->saveServer($server, $data)) {
+                // Create server.
+                $this->serversTable->updateServer($server, $post);
 
-                    $this->flashSuccess('Information for server ' . $data['name'] . ' saved.');
-                    $this->redirect->goto('browse');
-
-                } else {
-
-                    $this->flashError('Error: Information for server ' . $data['name'] . ' not saved.');
-                    $this->redirect->goto('browse');
-
-                }
+                // Redirect to browse.
+                $this->redirect->goto('browse');
 
             }
 
+            // If form is invalid.
             else {
-
-                $form->populate($data);
-                $this->view->form = $form;
-                $this->view->server = $server;
-
+                $form->populate($post);
             }
 
         }
 
-        else {
-
-            // Get the form.
-            $form = new ServerForm;
-
-            // Fill it with the data.
-            $form->populate(array(
-                'name' => $server->name,
-                'url' => $server->url
-            ));
-
-            $this->view->form = $form;
-            $this->view->server = $server;
-
-        }
+        // Push form to view.
+        $this->view->form = $form;
 
     }
 
     /**
-     * Confirm delete, do delete.
+     * Delete server.
      *
      * @return void
      */
     public function deleteAction()
     {
 
-        $id = $this->_request->id;
-        $server = $this->getTable('NeatlineMapsServer')->find($id);
-        $post = $this->_request->getPost();
+        // Get server.
+        $server = $this->serversTable->find(
+            $this->_request->getParam('id')
+        );
 
-        if (isset($post['deleteconfirm_submit'])) {
-
-            if (!$server->hasChildMaps()) {
-
-                if ($this->getTable('NeatlineMapsServer')->deleteServer($id)) {
-                    $this->flashSuccess('Server ' . $server->name . ' deleted');
-                    $this->redirect->goto('browse');
-                } else {
-                    $this->flashError('Error: Server ' . $server->name . ' was not deleted');
-                    $this->redirect->goto('browse');
-                }
-
-            } else {
-
-                $this->flashError('Error: Server ' . $server->name . ' cannot be deleted because it has maps associated with it.');
-                $this->redirect->goto('browse');
-
-            }
-
+        // If a form as been posted.
+        if ($this->_request->isPost()) {
+            $server->delete();
+            $this->redirect->goto('browse');
         }
 
-        $this->view->name = $server->name;
+        // Push server to view.
+        $this->view->server = $server;
+
+    }
+
+    /**
+     * Set server active.
+     *
+     * @return void
+     */
+    public function activeAction()
+    {
+
+        // Get server.
+        $server = $this->serversTable->find(
+            $this->_request->getParam('id')
+        );
+
+        // Set active and save.
+        $server->active = 1;
+        $server->save();
+
+        // Redirect to browse.
+        $this->redirect->goto('browse');
 
     }
 
 }
-
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * c-hanging-comment-ender-p: nil
- * End:
- */
-

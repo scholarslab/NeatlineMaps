@@ -49,7 +49,7 @@ class Neatline_Validate_IsUrl extends Zend_Validate_Abstract
         }
         //
         //if we have a valid URI then we check the hostname for valid TLDs, and not local urls
-        $hostnameValidator = new Zend_Validate_Hostname(Zend_Validate_Hostname::ALLOW_DNS); //do not allow local hostnames, this is the default
+        $hostnameValidator = new Zend_Validate_Hostname(Zend_Validate_Hostname::ALLOW_LOCAL); //do not allow local hostnames, this is the default
 
         if (!$hostnameValidator->isValid($uriHttp->getHost())) {
             $this->_error(self::INVALID_URL);

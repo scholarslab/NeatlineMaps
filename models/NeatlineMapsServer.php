@@ -1,28 +1,50 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
 
-/** {{{ docblock
- * Record class for NeatlineMaps Server.
+/**
+ * Server row class.
  *
- * PHP version 5
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
- * applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
- * }}}
+ * @package     omeka
+ * @subpackage  neatline
+ * @author      Scholars' Lab <>
+ * @author      David McClure <david.mcclure@virginia.edu>
+ * @copyright   2012 The Board and Visitors of the University of Virginia
+ * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  */
 
 class NeatlineMapsServer extends Omeka_record
 {
 
+    /**
+     * The name of the server [string].
+     */
     public $name;
+
+    /**
+     * The Geoserver URL [string].
+     */
     public $url;
+
+    /**
+     * The Geoserver username [string].
+     */
     public $username;
+
+    /**
+     * The Geoserver password [string].
+     */
     public $password;
+
+    /**
+     * The Geoserver namespace [string].
+     */
+    public $namespace;
+
+    /**
+     * Whether the server is active [0/1].
+     */
+    public $active;
+
 
     /**
      * Checks to see if the server is online.
@@ -49,66 +71,59 @@ class NeatlineMapsServer extends Omeka_record
     }
 
     /**
-     * Get namespaces for the server from GeoServer.
+     * Construct the WMS address for the server.
      *
-     * @return array The namespaces.
+     * @return boolean True if the server is online.
      */
-    public function getWorkspaceNames()
+    public function getWmsAddress()
+    {
+        return $this->url . '/' . $this->namespace . '/wms';
+    }
+
+    /**
+     * Manage unique `active` field on save.
+     *
+     * @return void.
+     */
+    public function save()
     {
 
-        // Set up curl to dial out to GeoServer.
-        $workspacesAddress = $this->url . '/rest/workspaces.xml';
+        // Get the current active server.
+        $serversTable = $this->getTable('NeatlineMapsServer');
+        $active = $serversTable->getActiveServer();
 
-        $workspaceList = new Zend_Http_Client($workspacesAddress);
-        $workspaceList->setAuth($this->username, $this->password);
-        $responseBody = $workspaceList->request(Zend_Http_Client::GET)->getBody();
+        // Is active set to true?
+        if ($this->active == 1) {
 
-        // Query for the namespaces.
-        $body = new SimpleXMLElement($responseBody);
-        $workspaces = $body->xpath('//workspace/name');
+            // Is the current active non-self?
+            if ($active && $active->id !== $this->id) {
 
-        // Sort alphabetically.
-        usort($workspaces, array('NeatlineMapsServer', '_compareWorkspaceNames'));
+                // Switch active server.
+                $active->active = 0;
+                $active->parentSave();
 
-        return $workspaces;
+            }
+
+        }
+
+        // If there is no current active server, set self active.
+        else if (!$active) {
+            $this->active = 1;
+        }
+
+        // Call parent.
+        parent::save();
 
     }
 
     /**
-     * Compare workspace names to see which comes first alphabetically. Used by the sorting step
-     * in getWorkspaceNames().
+     * Raw save.
      *
-     * @param xml nodes $workspaces The workspaces.
-     *
-     * @return xml nodes The sorted workspaces.
+     * @return void.
      */
-    static function _compareWorkspaceNames($workspace1, $workspace2) {
-        return strcmp($workspace1, $workspace2);
-    }
-
-    /**
-     * Check to see if the server has child maps.
-     *
-     * @return boolean True if there are child maps.
-     */
-    public function hasChildMaps()
+    public function parentSave()
     {
-
-        $childMaps = $this->getTable('NeatlineMapsMap')->fetchObjects(
-            $this->getTable('NeatlineMapsMap')->getSelect()->where('server_id = ' . $this->id)
-        );
-
-        return (bool) $childMaps;
-
+        parent::save();
     }
 
 }
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * c-hanging-comment-ender-p: nil
- * End:
- */
-

@@ -74,10 +74,10 @@ function nlwms_renderMap($item)
 
     // Get table.
     $_db = get_db();
-    $_wmsTable = $_db->getTable('NeatlineWms');
+    $_servicesTable = $_db->getTable('NeatlineMapsService');
 
     // Try to get the service.
-    $service = $_wmsTable->findByItem($item);
+    $service = $_servicesTable->findByItem($item);
 
     // If a service exists, render it.
     if ($service) {

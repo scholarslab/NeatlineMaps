@@ -43,7 +43,7 @@ class NeatlineMapsPlugin
     public function __construct()
     {
         $this->_db = get_db();
-        $this->wmsTable = $this->_db->getTable('NeatlineWms');
+        $this->servicesTable = $this->_db->getTable('NeatlineMapsService');
         $this->serversTable = $this->_db->getTable('NeatlineMapsServer');
         self::addHooksAndFilters();
     }
@@ -97,7 +97,7 @@ class NeatlineMapsPlugin
         $this->_db->query($sql);
 
         // Web map services table.
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}neatline_wms` (
+        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}neatline_maps_services` (
                 `id`              int(10) unsigned not null auto_increment,
                 `item_id`         int(10) unsigned unique,
                 `address`         text collate utf8_unicode_ci,
@@ -183,7 +183,7 @@ class NeatlineMapsPlugin
             empty($_FILES['file']['size'][0])) {
 
             // Create/update/delete WMS.
-            $this->wmsTable->createOrUpdate(
+            $this->servicesTable->createOrUpdate(
                 $item,
                 $post['address'],
                 $post['layers']
@@ -217,12 +217,12 @@ class NeatlineMapsPlugin
 
                 // Get parent item and WMS.
                 $item = $file->getItem();
-                $wms = $this->wmsTable->findByItem($item);
+                $wms = $this->servicesTable->findByItem($item);
 
                 // If no WMS exists, create one for the file that
                 // was just uploaded to Geoserver.
                 if (!$wms) {
-                    $this->wmsTable->createFromFileAndServer($file, $server);
+                    $this->servicesTable->createFromFileAndServer($file, $server);
                 }
 
                 // If a WMS already exists and the address is the
@@ -270,7 +270,7 @@ class NeatlineMapsPlugin
      */
     public function beforeDeleteItem($item)
     {
-        $wms = $this->wmsTable->findByItem($item);
+        $wms = $this->servicesTable->findByItem($item);
         if ($wms) { $wms->delete(); }
     }
 
@@ -351,7 +351,7 @@ class NeatlineMapsPlugin
 
         // If there is an item, try to get a service.
         if (!is_null($item->id)) {
-            $service = $this->wmsTable->findByItem($item);
+            $service = $this->servicesTable->findByItem($item);
         }
 
         // Insert tab.

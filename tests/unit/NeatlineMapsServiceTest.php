@@ -12,7 +12,7 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  */
 
-class NLMAPS_NeatlineWmsTest extends NLMAPS_Test_AppTestCase
+class NLMAPS_NeatlineMapsServiceTest extends NLMAPS_Test_AppTestCase
 {
 
     /**
@@ -34,7 +34,7 @@ class NLMAPS_NeatlineWmsTest extends NLMAPS_Test_AppTestCase
     {
 
         // Create a record.
-        $wms = new NeatlineWms();
+        $wms = new NeatlineMapsService();
 
         // Set.
         $wms->item_id = 1;
@@ -43,7 +43,7 @@ class NLMAPS_NeatlineWmsTest extends NLMAPS_Test_AppTestCase
         $wms->save();
 
         // Re-get the edition object.
-        $wms = $this->wmsTable->find($wms->id);
+        $wms = $this->servicesTable->find($wms->id);
 
         // Get.
         $this->assertEquals($wms->item_id, 1);
@@ -64,7 +64,7 @@ class NLMAPS_NeatlineWmsTest extends NLMAPS_Test_AppTestCase
         $item = $this->__item();
 
         // Create a record.
-        $wms = new NeatlineWms($item);
+        $wms = new NeatlineMapsService($item);
 
         // Check.
         $this->assertEquals($wms->item_id, $item->id);
@@ -83,7 +83,7 @@ class NLMAPS_NeatlineWmsTest extends NLMAPS_Test_AppTestCase
         $item = $this->__item();
 
         // Create a record.
-        $wms = new NeatlineWms($item);
+        $wms = new NeatlineMapsService($item);
 
         // Check ids.
         $this->assertEquals($wms->getItem()->id, $item->id);

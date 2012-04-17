@@ -12,7 +12,7 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  */
 
-class NeatlineWmsTable extends Omeka_Db_Table
+class NeatlineMapsServiceTable extends Omeka_Db_Table
 {
 
     /**
@@ -51,7 +51,7 @@ class NeatlineWmsTable extends Omeka_Db_Table
         $record = $this->findByItem($item);
 
         // If no record exists, create a new one.
-        if (!$record) { $record = new NeatlineWms($item); }
+        if (!$record) { $record = new NeatlineMapsService($item); }
 
         // If the data is empty, delete.
         if ($address === '' && $layers === '') {
@@ -92,7 +92,7 @@ class NeatlineWmsTable extends Omeka_Db_Table
         }
 
         // Create service.
-        $wms = new NeatlineWms($item);
+        $wms = new NeatlineMapsService($item);
         $wms->address = $server->getWmsAddress();
         $wms->layers = nlwms_layerName($server, $file);
         $wms->save();

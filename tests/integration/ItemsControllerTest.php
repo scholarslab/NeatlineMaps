@@ -113,7 +113,7 @@ class NLMAPS_IndexControllerTest extends NLMAPS_Test_AppTestCase
     {
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Set exhibit id.
         $this->request->setMethod('POST')
@@ -131,10 +131,10 @@ class NLMAPS_IndexControllerTest extends NLMAPS_Test_AppTestCase
         $this->dispatch('items/add');
 
         // +1 editions.
-        $this->assertEquals($this->wmsTable->count(), $count+1);
+        $this->assertEquals($this->servicesTable->count(), $count+1);
 
         // Get out service and check.
-        $service = $this->wmsTable->find(1);
+        $service = $this->servicesTable->find(1);
         $this->assertEquals($service->address, 'address');
         $this->assertEquals($service->layers, 'layers');
 
@@ -153,7 +153,7 @@ class NLMAPS_IndexControllerTest extends NLMAPS_Test_AppTestCase
         $item = $this->__item();
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Set exhibit id.
         $this->request->setMethod('POST')
@@ -171,10 +171,10 @@ class NLMAPS_IndexControllerTest extends NLMAPS_Test_AppTestCase
         $this->dispatch('items/edit/' . $item->id);
 
         // +1 editions.
-        $this->assertEquals($this->wmsTable->count(), $count+1);
+        $this->assertEquals($this->servicesTable->count(), $count+1);
 
         // Get out service and check.
-        $service = $this->wmsTable->find(1);
+        $service = $this->servicesTable->find(1);
         $this->assertEquals($service->address, 'address');
         $this->assertEquals($service->layers, 'layers');
 
@@ -194,7 +194,7 @@ class NLMAPS_IndexControllerTest extends NLMAPS_Test_AppTestCase
         $service = $this->__service($item, 'address1', 'layers1');
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Set exhibit id.
         $this->request->setMethod('POST')
@@ -212,10 +212,10 @@ class NLMAPS_IndexControllerTest extends NLMAPS_Test_AppTestCase
         $this->dispatch('items/edit/' . $item->id);
 
         // +1 editions.
-        $this->assertEquals($this->wmsTable->count(), $count);
+        $this->assertEquals($this->servicesTable->count(), $count);
 
         // Get out service and check.
-        $service = $this->wmsTable->find(1);
+        $service = $this->servicesTable->find(1);
         $this->assertEquals($service->address, 'address2');
         $this->assertEquals($service->layers, 'layers2');
 
@@ -235,7 +235,7 @@ class NLMAPS_IndexControllerTest extends NLMAPS_Test_AppTestCase
         $service = $this->__service($item, 'address1', 'layers1');
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Set exhibit id.
         $this->request->setMethod('POST')
@@ -253,10 +253,10 @@ class NLMAPS_IndexControllerTest extends NLMAPS_Test_AppTestCase
         $this->dispatch('items/edit/' . $item->id);
 
         // +1 editions.
-        $this->assertEquals($this->wmsTable->count(), $count-1);
+        $this->assertEquals($this->servicesTable->count(), $count-1);
 
         // Check for no service.
-        $this->assertFalse($this->wmsTable->findByItem($item));
+        $this->assertFalse($this->servicesTable->findByItem($item));
 
 
     }

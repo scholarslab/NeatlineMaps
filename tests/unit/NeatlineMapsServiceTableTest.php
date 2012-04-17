@@ -12,7 +12,7 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  */
 
-class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
+class NLMAPS_NeatlineMapsServiceTableTest extends NLMAPS_Test_AppTestCase
 {
 
     /**
@@ -23,7 +23,6 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
     public function setUp()
     {
         $this->setUpPlugin();
-        $this->wmsTable = $this->db->getTable('NeatlineWms');
     }
 
     /**
@@ -39,7 +38,7 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
         $service = $this->__service($item);
 
         // Get out the service.
-        $retrievedService = $this->wmsTable->findByItem($item);
+        $retrievedService = $this->servicesTable->findByItem($item);
         $this->assertEquals($retrievedService->id, $service->id);
 
     }
@@ -56,7 +55,7 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
         $item = $this->__item();
 
         // Try to get out a service.
-        $this->assertFalse($this->wmsTable->findByItem($item));
+        $this->assertFalse($this->servicesTable->findByItem($item));
 
     }
 
@@ -72,13 +71,13 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
         $item = $this->__item();
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Create new record.
-        $service = $this->wmsTable->createOrUpdate($item, 'address', 'layers');
+        $service = $this->servicesTable->createOrUpdate($item, 'address', 'layers');
 
         // Check for count++.
-        $this->assertEquals($this->wmsTable->count(), $count+1);
+        $this->assertEquals($this->servicesTable->count(), $count+1);
 
         // Check attributes.
         $this->assertEquals($service->address, 'address');
@@ -99,13 +98,13 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
         $service = $this->__service($item, 'address1', 'layers1');
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Create new record.
-        $service = $this->wmsTable->createOrUpdate($item, 'address2', 'layers2');
+        $service = $this->servicesTable->createOrUpdate($item, 'address2', 'layers2');
 
         // Check for count.
-        $this->assertEquals($this->wmsTable->count(), $count);
+        $this->assertEquals($this->servicesTable->count(), $count);
 
         // Check attributes.
         $this->assertEquals($service->address, 'address2');
@@ -127,16 +126,16 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
         $service = $this->__service($item, 'address1', 'layers1');
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Create new record.
-        $service = $this->wmsTable->createOrUpdate($item, '', '');
+        $service = $this->servicesTable->createOrUpdate($item, '', '');
 
         // Check for count.
-        $this->assertEquals($this->wmsTable->count(), $count-1);
+        $this->assertEquals($this->servicesTable->count(), $count-1);
 
         // Check for no record for the item.
-        $this->assertFalse($this->wmsTable->findByItem($item));
+        $this->assertFalse($this->servicesTable->findByItem($item));
 
     }
 
@@ -158,13 +157,13 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
         $file = $this->__file($item, 'test.tif');
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Try to create new service.
-        $this->assertFalse($this->wmsTable->createFromFileAndServer($file, $server));
+        $this->assertFalse($this->servicesTable->createFromFileAndServer($file, $server));
 
         // Check for count.
-        $this->assertEquals($this->wmsTable->count(), $count);
+        $this->assertEquals($this->servicesTable->count(), $count);
 
     }
 
@@ -185,13 +184,13 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
         $file = $this->__file($item, 'test.tif');
 
         // Capture starting count.
-        $count = $this->wmsTable->count();
+        $count = $this->servicesTable->count();
 
         // Create new service.
-        $wms = $this->wmsTable->createFromFileAndServer($file, $server);
+        $wms = $this->servicesTable->createFromFileAndServer($file, $server);
 
         // Check for count.
-        $this->assertEquals($this->wmsTable->count(), $count+1);
+        $this->assertEquals($this->servicesTable->count(), $count+1);
 
         // Check address.
         $this->assertEquals(
@@ -216,7 +215,7 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
     public function testGetServicesForSelectWithNoServices()
     {
         $this->assertEquals(
-            $this->wmsTable->getServicesForSelect(),
+            $this->servicesTable->getServicesForSelect(),
             array('none' => '-')
         );
     }
@@ -243,7 +242,7 @@ class NLMAPS_NeatlineWmsTableTest extends NLMAPS_Test_AppTestCase
         $service2 = $this->__service($item2);
 
         // Get services.
-        $services = $this->wmsTable->getServicesForSelect();
+        $services = $this->servicesTable->getServicesForSelect();
 
         // Check construction.
         $this->assertEquals(count($services), 3);

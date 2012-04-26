@@ -307,7 +307,7 @@ class NeatlineMapsPlugin
         if ($request->getModuleName() == 'default' &&
             $request->getActionName() == 'show') {
                 queue_css('openlayers/style');
-                queue_js('Openlayers/openlayers');
+                queue_js('openlayers/OpenLayers');
         }
 
     }

@@ -118,11 +118,11 @@ class NeatlineMapsPlugin
     {
 
         // Drop the servers table.
-        $sql = "DROP TABLE IF EXISTS `{$this->_db->prefix}neatline_servers`";
+        $sql = "DROP TABLE IF EXISTS `{$this->_db->prefix}neatline_maps_servers`";
         $this->_db->query($sql);
 
         // Drop the services table.
-        $sql = "DROP TABLE IF EXISTS `{$this->_db->prefix}neatline_wms`";
+        $sql = "DROP TABLE IF EXISTS `{$this->_db->prefix}neatline_maps_services`";
         $this->_db->query($sql);
 
     }

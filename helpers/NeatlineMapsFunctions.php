@@ -154,7 +154,7 @@ function _putFileToGeoserver($file, $server)
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/zip'));
     curl_setopt($ch, CURLOPT_INFILESIZE, filesize($zipFileName));
     curl_setopt($ch, CURLOPT_INFILE, fopen($zipFileName, "r"));
-    curl_setopt($ch, CURLOPT_PUTFIELDS, $zipFileName);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $zipFileName);
 
     $buffer = curl_exec($ch);
     $info = curl_getinfo($ch);

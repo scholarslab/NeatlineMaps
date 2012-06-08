@@ -1,25 +1,37 @@
 # Neatline Maps
 
-Neatline Maps allows users to connect items in an Omeka collection to web map services delivered by [Geoserver][geoserver], a powerful open-source geospatial server. Web map services can be linked with items in two ways:
+Working with geospatial data can be difficult. The NeatlineMaps plugin allows you to upload georeferenced maps to the popular open source [Geoserver][geoserver], allowing you to not only easily use your data in Omeka, but share it with others.
 
-  1. If the service already exists, the the WMS address and list of layers can be added directly to the item record in the standard Omeka administrative interface. Neatline Maps will then display the map in an Openlayers slippy map on all item views.
 
-  2. If you have login access to a Geoserver instance and want to upload a _new_ georeferenced .tiff file, you can point the plugin to the Geoserver and upload the .tiff on an item as you would a regular file. Neatline Maps will detect the geoencoded file, create a new coverage store and layer on Geoserver, and link the item to the newly-created WMS by automatically populating the WMS address and layer fields.
+GeoServer is a Java-based software server that implements to the open standards developed by the [Open Geospatial Consortium (OGC)][ogc]. 
+GeoServer not only integrates with Omeka with the NeatlineMaps plugin, but also works with many of the popular mapping applications like 
+[Google Maps][gmaps], [Google Earth][gearth], [Yahoo Maps][ymaps], and [Microsoft Virtual Earth][msve]. Additionally, GeoServer can be used more traditional GIS architectures like [ESRI ArcGIS][arcgis].
 
-Web map services created by way of Neatine Maps have plug-and-play
-interoperability with exhibits created in the Neatline editor - if you
-add a WMS to an Omeka item, and then activate the item on the map in a
-Neatline exhibit, the WMS map will automatically render in the exhibit.
+NeatlineMaps allows you to connect to one, or more, GeoServer instance to easily create “slippy” maps that you can use with Omeka items and exhibits.
 
-## Installation and Configuration
+## Installation
 
-  1. Go to the [Neatline Maps download page][neatline-maps-download] and download the plugin.
-  2. Once the file is finished downloading, uncompress the .zip file and place the "NeatlineMaps" directory in the plugins/ folder in your Omeka installation.
-  3. Open a web browser, go to the Omeka administrative interface, and click on the "Settings" button at the top right of the screen.
-  4. Click on the "Plugins" tab in the vertical column on the left and find the listing for the Neatline Maps plugin.
-  5. Click the "Install" button.
+** Note: ** You must have access to a GeoServer instance to use this plugin. You can download the appropriate [installation package from the GeoServer site][geodownload]. This plage also contains [documentation for installing and configuring][geodocs] the software. This plugin also requires that the PHP 
+**Zip** and **Curl** modules be installed on your server. The plugin
+will notify you if you are missing these modules.
 
-Once the installation is finished, you'll see a new tab along the top of the administrative interface labeled "Neatline Maps."
+
+  * Upload the ‘NeatlineMaps’ plugin directory to your Omeka installation’s ‘plugins’ directory. See [Installing a Plugin][plugininstall].
+  * Activate the plugin from the admin → Settings → Plugins page.
+
+## Usage
+
+### Adding a Server
+You can add as many GeoServer instances as you have access to. This is particularly useful in a situation where you have a testing and production environment, or working with colleagues from different institutions with a centralized, shared GeoServer instance.
+
+  1. Log on to the Omeka Admin panel
+  2. Click on the Neatline Maps tab
+  3. Select the Servers tab and click on Add Server
+![Add a NeatlineMaps server](http://23.21.98.97/wp-content/uploads/2011/05/maps_server1.png)
+  4. Fill out the information to connect to your GeoServer instance. If you have a default installation of GeoServer, the username/password combination is ‘admin/geoserver’. [We recommend you change this setting][geopassword].
+![Geoserver Password](http://23.21.98.97/wp-content/uploads/2011/05/maps_server2.png)
+  5. After clicking on the Create button, you will be presented with a list of servers which you have defined, including the status of the server (green Online or red Offline).
+![Servers](http://23.21.98.97/wp-content/uploads/2011/05/maps_server31.png)
 
 ## Adding Web Map Services to Items 
 
@@ -94,3 +106,13 @@ Neatline will automatically render the map on the exhibit. In this way, you can 
 
 [geoserver]: http://geoserver.org
 [neatline-maps-download]: http://neatline.scholarslab.org/plugins/neatline-maps
+[ogc]: http://www.opengeospatial.org/
+[gmaps]: http://maps.google.com/
+[gearth]: http://earth.google.com/
+[ymaps]: http://maps.yahoo.com/
+[msve]: http://www.microsoft.com/VIRTUALEARTH
+[arcgis]: http://www.esri.com/arcgis
+[geodownload]: http://geoserver.org/display/GEOS/Stable
+[geodocs]: http://docs.geoserver.org/stable/en/user/
+[plugininstall]: http://omeka.org/codex/Installing_a_Plugin
+[geopassword]: http://docs.geoserver.org/latest/en/user/gettingstarted/web-admin-quickstart/index.html#logging-in

@@ -11,7 +11,9 @@ NeatlineMaps allows you to connect to one, or more, GeoServer instance to easily
 
 ## Installation
 
-** Note: ** You must have access to a GeoServer instance to use this plugin. You can download the appropriate [installation package from the GeoServer site][geodownload]. This plage also contains [documentation for installing and configuring][geodocs] the software.
+** Note: ** You must have access to a GeoServer instance to use this plugin. You can download the appropriate [installation package from the GeoServer site][geodownload]. This plage also contains [documentation for installing and configuring][geodocs] the software. This plugin also requires that the PHP 
+**Zip** and **Curl** modules be installed on your server. The plugin
+will notify you if you are missing these modules.
 
 
   * Upload the ‘NeatlineMaps’ plugin directory to your Omeka installation’s ‘plugins’ directory. See [Installing a Plugin][plugininstall].

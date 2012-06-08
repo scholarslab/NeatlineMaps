@@ -1,7 +1,25 @@
-<phpunit bootstrap="../../../application/tests/bootstrap.php"
-         convertErrorsToExceptions="true"
-         convertWarningsToExceptions="true">
-    <testsuite name="Neatline Maps Tests">
-        <file>AllTests.php</file>
-    </testsuite>
+<phpunit bootstrap="bootstrap.php"
+  convertErrorsToExceptions="true"
+  convertWarningsToExceptions="true"
+  verbose="true">
+
+  <php>
+    <includePath>..</includePath>
+    <includePath>../../</includePath>
+  </php>
+
+  <testsuite name="Neatline Maps Tests">
+    <directory>fixtures</directory>
+    <directory>integration</directory>
+    <directory>unit</directory>
+  </testsuite>
+
+  <logging>
+    <log type="coverage-html"
+      target="../build/coverage"
+      charset="UTF-8" yui="true"
+      highlight="true"
+      lowUpperBound="35"
+      highLowerbound="70" />
+  </logging>
 </phpunit>

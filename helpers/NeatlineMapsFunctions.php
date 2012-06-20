@@ -46,11 +46,10 @@ function nlwms_getItemMetadata($item, $elementSet, $elementName)
     // Try to find a text.
     $existingTexts = $elementTextTable->fetchObjects(
 
-        $elementTextTable->getSelect()->where(
-                'record_id = ' . $item->id
-                . ' AND record_type_id = ' . $itemTypeId
-                . ' AND element_id = ' . $element->id
-            )
+        $elementTextTable->getSelect()
+            ->where('record_id=?',      $item->id)
+            ->where('record_type_id=?', $itemTypeId)
+            ->where('element_id=?',     $element->id)
 
     );
 

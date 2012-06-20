@@ -3,11 +3,6 @@
   convertWarningsToExceptions="true"
   verbose="true">
 
-  <php>
-    <includePath>..</includePath>
-    <includePath>../../</includePath>
-  </php>
-
   <testsuite name="Neatline Maps Tests">
     <directory>fixtures</directory>
     <directory>integration</directory>

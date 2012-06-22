@@ -15,7 +15,7 @@
 
 <div id="neatline-header">
 
-    <h1>Neatline Maps | <?php echo $subtitle; ?></h1>
+    <h1><?php echo $title; ?></h1>
 
     <p class="add-button">
         <a class="add" href="<?php echo html_escape(uri($add_button_uri)); ?>">

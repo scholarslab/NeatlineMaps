@@ -354,7 +354,7 @@ class NeatlineMapsPlugin
     public function adminNavigationMain($tabs)
     {
 
-        $tabs['Neatline Maps'] = uri('neatline-maps');
+        $tabs[__('Neatline Maps')] = uri('neatline-maps');
         return $tabs;
 
     }
@@ -381,7 +381,7 @@ class NeatlineMapsPlugin
         }
 
         // Insert tab.
-        $tabs['Web Map Service'] = __v()->partial(
+        $tabs[__('Web Map Service')] = __v()->partial(
             'items/_serviceForm.php', array(
                 'service' => $service
             )

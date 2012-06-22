@@ -14,13 +14,14 @@
 ?>
 
 <?php
-head(array('content_class' => 'neatline'));
+$title = __('Neatline Maps | Create Server');
+head(array('content_class' => 'neatline', 'title' => $title));
 ?>
 
 <?php echo $this->partial('servers/_header.php', array(
-    'subtitle' => 'Create Server',
+    'title' => $title,
     'add_button_uri' => 'neatline-maps/add',
-    'add_button_text' => 'Create a Server'
+    'add_button_text' => __('Create a Server')
 )); ?>
 
 <div id="primary">

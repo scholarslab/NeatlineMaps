@@ -31,15 +31,15 @@ class ServerForm extends Omeka_Form
 
         // Name.
         $this->addElement('text', 'name', array(
-            'label'         => 'Name',
-            'description'   => 'An internal (non-public) identifier for the server.',
+            'label'         => __('Name'),
+            'description'   => __('An internal (non-public) identifier for the server.'),
             'size'          => 40,
             'required'      => true,
             'validators'    => array(
                 array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
                     array(
                         'messages' => array(
-                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a name.'
+                            Zend_Validate_NotEmpty::IS_EMPTY => __('Enter a name.')
                         )
                     )
                 )
@@ -48,22 +48,22 @@ class ServerForm extends Omeka_Form
 
         // URL.
         $this->addElement('text', 'url', array(
-            'label'         => 'URL',
-            'description'   => 'The location of the server.',
+            'label'         => __('URL'),
+            'description'   => __('The location of the server.'),
             'size'          => 40,
             'required'      => true,
             'validators'    => array(
                 array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
                     array(
                         'messages' => array(
-                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a URL.'
+                            Zend_Validate_NotEmpty::IS_EMPTY => __('Enter a URL.')
                         )
                     )
                 ),
                 array('validator' => 'IsUrl', 'breakChainOnFailure' => true, 'options' =>
                     array(
                         'messages' => array(
-                            Neatline_Validate_IsUrl::INVALID_URL => 'Enter a valid URL.'
+                            Neatline_Validate_IsUrl::INVALID_URL => ('Enter a valid URL.')
                         )
                     )
                 )
@@ -72,15 +72,15 @@ class ServerForm extends Omeka_Form
 
         // Namespace.
         $this->addElement('text', 'workspace', array(
-            'label'         => 'Workspace',
-            'description'   => 'Enter the Geoserver workspace.',
+            'label'         => __('Workspace'),
+            'description'   => __('Enter the Geoserver workspace.'),
             'size'          => 40,
             'required'      => true,
             'validators'    => array(
                 array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
                     array(
                         'messages' => array(
-                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a workspace.'
+                            Zend_Validate_NotEmpty::IS_EMPTY => __('Enter a workspace.')
                         )
                     )
                 )
@@ -89,15 +89,15 @@ class ServerForm extends Omeka_Form
 
         // Username.
         $this->addElement('text', 'username', array(
-            'label'         => 'Username',
-            'description'   => 'Enter the Geoserver username.',
+            'label'         => __('Username'),
+            'description'   => __('Enter the Geoserver username.'),
             'size'          => 40,
             'required'      => true,
             'validators'    => array(
                 array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
                     array(
                         'messages' => array(
-                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a username.'
+                            Zend_Validate_NotEmpty::IS_EMPTY => __('Enter a username.')
                         )
                     )
                 )
@@ -106,8 +106,8 @@ class ServerForm extends Omeka_Form
 
         // Password.
         $this->addElement('password', 'password', array(
-            'label'         => 'Password',
-            'description'   => 'Enter the Geoserver password.',
+            'label'         => __('Password'),
+            'description'   => __('Enter the Geoserver password.'),
             'size'          => 40,
             'required'      => true,
             'renderPassword'=> true,
@@ -115,7 +115,7 @@ class ServerForm extends Omeka_Form
                 array('validator' => 'NotEmpty', 'breakChainOnFailure' => true, 'options' =>
                     array(
                         'messages' => array(
-                            Zend_Validate_NotEmpty::IS_EMPTY => 'Enter a password.'
+                            Zend_Validate_NotEmpty::IS_EMPTY => __('Enter a password.')
                         )
                     )
                 )
@@ -124,14 +124,14 @@ class ServerForm extends Omeka_Form
 
         // Active.
         $this->addElement('checkbox', 'active', array(
-            'label'         => 'Active',
-            'description'   => 'Should this server be used to handle new GeoTiff uploads?',
+            'label'         => __('Active'),
+            'description'   => __('Should this server be used to handle new GeoTiff uploads?'),
             'checked'       => true
         ));
 
         // Submit.
         $this->addElement('submit', 'submit', array(
-            'label' => 'Save'
+            'label' => __('Save')
         ));
 
         // Group the data fields.

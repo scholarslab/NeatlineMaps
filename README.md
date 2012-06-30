@@ -16,6 +16,7 @@ NeatlineMaps allows you to connect to one, or more, GeoServer instance to easily
 will notify you if you are missing these modules.
 
   * Upload the ‘NeatlineMaps’ plugin directory to your Omeka installation’s ‘plugins’ directory. See [Installing a Plugin][plugininstall].
+
   * Activate the plugin from the admin → Settings → Plugins page.
 
 ## Usage
@@ -24,18 +25,31 @@ will notify you if you are missing these modules.
 You can add as many GeoServer instances as you have access to. This is particularly useful in a situation where you have a testing and production environment, or working with colleagues from different institutions with a centralized, shared GeoServer instance.
 
   1. Log on to the Omeka Admin panel
+
   2. Click on the Neatline Maps tab
+
   3. Click on the Create Server link or button
+
 ![Neatline Maps Tab](http://23.21.98.97/wp-content/uploads/2012/06/maps-tab.png)
+
   4. Fill out the information to connect to your GeoServer instance. If you have a default installation of GeoServer, the username/password combination is ‘admin/geoserver’. [We recommend you change this setting][geopassword].
+
     * **Name**: An internal, non-public identifier for the server.
+
     * **URL**: The root URL for the Geoserver instance. This should look something like http://localhost:8080/geoserver
+
     * **Workspace**: The workspace on the server where the new GeoTIFF stores should be created.
+
     * **Username**: The Geoserver username.
+
     * **Password**: The Geoserver password.
+
     * **Active**: Check this box if the new server should be the active server (see below for more information - the active server can be changed at any point).
+
 ![Geoserver Password](http://23.21.98.97/wp-content/uploads/2012/06/add-server.png)
+
   5. After clicking on the Create button, you will be presented with a list of servers which you have defined, including the status of the server (green Online or red Offline).
+
 ![Servers](http://23.21.98.97/wp-content/uploads/2012/06/add-server.png)
 
 You may create as many sever records as you wish, but at any given point exactly one of the servers will always be the "active" server - this is the server the Neatline Maps will use to handle new GeoTIFF files that are uploaded as files attachments to items.
@@ -47,8 +61,8 @@ If you have more than one server record, you can change the active server by eit
 
 There are two ways to add a map on a Geoserver instance. 
 
-1. Link to the map _directly_ by adding a [WMS][wms] address and a list
-   of layers to include
+1. Link to the map _directly_ by adding a [WMS][wms] address and a list of layers to include
+
 2. Upload a [Geotiff][geotiff] as a file
 
 ### Using an existing WMS (web map service)
@@ -56,25 +70,30 @@ There are two ways to add a map on a Geoserver instance.
 To link an item to an existing service:
 
   1. In the Add/Edit view of an item, click on the "Web Map Service" in the vertical stack of tabs on the left.
+
   2. Enter the WMS address of the server and a comma-delimited list of layers in the two fields.
+
 ![Add WMS](http://23.21.98.97/wp-content/uploads/2012/06/wms-item.png)
+
   3. Click the "Save Changes" button (or "Add Item," if you're creating a new Item).
 
 If the WMS address and layers point to a valid web map service, the map will be displayed along with the regular metadata on all item-specific views throughout the site.
 
 ### Upload GeoTIFFs
 
-You will need to ensure you have set up a server to post your GeoTiff
-images to. See [Adding a Server](#adding-a-server).  You will also need administrative access to a [Geoserver][geoserver] instance
-in order to use this feature. With this option, you will upload a
-GeoTiff as you would any file, and the Neatline Maps plugin will
+You will need to ensure you have set up a server to post your GeoTiff images to. See [Adding a Server](#adding-a-server).  You will also need administrative access to a [Geoserver][geoserver] instance in order to use this feature. With this option, you will upload a GeoTiff as you would any file, and the Neatline Maps plugin will
 communicate with the Geoserver to set up the web map service for you.
 
 1. Create a new Omeka item, filling out pertinant metadata fields
+
 2. Click on the *Files* tab 
+
 ![Add File](http://23.21.98.97/wp-content/uploads/2012/06/add-file.png)
+
 3. Browse to where you have stored your GeoTiff
+
 4. Click Add/Edit Item
+
 ![Save file](http://23.21.98.97/wp-content/uploads/2012/06/file-save.png)
 
 **Neatline Maps will detect that a GeoTiff file has been uploaded and attempt to upload the file to the Geoserver instance that is currently marked as "active" in the list of servers under the "Neatline Maps" tab.** If the plugin is able to connect to the server and the .tiff file is a well-formed GeoTIFF, Neatline Maps will create a new coverage store and generate a layer for the store. In your Omeka site, Neatline Maps will automatically fill in the information in the "Web Map Service" tab for the item with the WMS address and layer name of the new GeoTIFF that was just uploaded to the active server.
@@ -83,9 +102,7 @@ What if you try to upload a new GeoTIFF to an item that already has existing dat
 
 #### Preparing and formatting GeoTIFFs
 
-For an excellent introduction to georectifying maps for use with the
-Neatline Maps plugin, see [Creating GIS Dataset from Historic
-Maps][georectify].
+For an excellent introduction to georectifying maps for use with the Neatline Maps plugin, see [Creating GIS Dataset from Historic Maps][georectify].
 
 
 ### Integration with Neatline exhibits

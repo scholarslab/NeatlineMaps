@@ -34,17 +34,17 @@ You can add as many GeoServer instances as you have access to. This is particula
 
   4. Fill out the information to connect to your GeoServer instance. If you have a default installation of GeoServer, the username/password combination is ‘admin/geoserver’. [We recommend you change this setting][geopassword].
 
-    * **Name**: An internal, non-public identifier for the server.
+  * **Name**: An internal, non-public identifier for the server.
 
-    * **URL**: The root URL for the Geoserver instance. This should look something like http://localhost:8080/geoserver
+  * **URL**: The root URL for the Geoserver instance. This should look something like http://localhost:8080/geoserver
 
-    * **Workspace**: The workspace on the server where the new GeoTIFF stores should be created.
+  * **Workspace**: The workspace on the server where the new GeoTIFF stores should be created.
 
-    * **Username**: The Geoserver username.
+  * **Username**: The Geoserver username.
 
-    * **Password**: The Geoserver password.
+  * **Password**: The Geoserver password.
 
-    * **Active**: Check this box if the new server should be the active server (see below for more information - the active server can be changed at any point).
+  * **Active**: Check this box if the new server should be the active server (see below for more information - the active server can be changed at any point).
 
 ![Geoserver Password](http://23.21.98.97/wp-content/uploads/2012/06/add-server.png)
 

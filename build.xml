@@ -22,7 +22,7 @@
   <property name="report.dir" value="${build.dir}/report" />
   <property name="dist.dir" value="${build.dir}/dist" />
   <property name="tmp.dir" value="${build.dir}/tmp" />
-  <property name="staging.dir" value="${build.dir}/tmp/Neatline" />
+  <property name="staging.dir" value="${build.dir}/tmp/NeatlineMaps" />
 
   <property name="dir.views" value="views" />
 

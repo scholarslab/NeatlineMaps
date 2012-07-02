@@ -15,13 +15,14 @@
 
 <?php
 queue_css('neatline-maps-admin');
-head(array('content_class' => 'neatline'));
+$title = __('Neatline Maps | Browse Servers');
+head(array('content_class' => 'neatline', 'title' => $title));
 ?>
 
 <?php echo $this->partial('servers/_header.php', array(
-    'subtitle' => 'Browse Servers',
+    'title' => $title,
     'add_button_uri' => 'neatline-maps/add',
-    'add_button_text' => 'Create a Server'
+    'add_button_text' => __('Create a Server')
 )); ?>
 
 <div id="primary">
@@ -36,12 +37,12 @@ head(array('content_class' => 'neatline'));
         <tr>
         <!-- Column headings. -->
         <?php browse_headings(array(
-            'Server' => null,
-            'URL' => null,
-            'Workspace' => null,
-            'Status' => null,
-            'Active' => null,
-            'Actions' => null
+            __('Server') => null,
+            __('URL') => null,
+            __('Workspace') => null,
+            __('Status') => null,
+            __('Active') => null,
+            __('Actions') => null
         )); ?>
         </tr>
     </thead>
@@ -57,16 +58,16 @@ head(array('content_class' => 'neatline'));
             <td><?php echo $server->namespace; ?></td>
             <td>
                 <?php if ($server->isOnline()): ?>
-                    <span class="online">Online</span>
+                <span class="online"><?php echo __('Online'); ?></span>
                 <?php else: ?>
-                    <span class="offline">Offline</span>
+                <span class="offline"><?php echo __('Offline'); ?></span>
                 <?php endif; ?>
             </td>
             <td>
                 <?php if ($server->active): ?>
                     <img src="<?php echo img('silk-icons/tick.png'); ?>" />
                 <?php else: ?>
-                    <a href="<?php echo uri('neatline-maps/active/' . $server->id); ?>" class="">Set Active</a>
+                <a href="<?php echo uri('neatline-maps/active/' . $server->id); ?>" class=""><?php echo __('Set Active'); ?></a>
                 <?php endif; ?>
             </td>
             <td>
@@ -82,8 +83,8 @@ head(array('content_class' => 'neatline'));
 
 <?php else: ?>
 
-    <p class="neatline-alert">There are no servers yet.
-    <a href="<?php echo uri('neatline-maps/add'); ?>">Create one!</a></p>
+    <p class="neatline-alert"><?php echo __('There are no servers yet.'); ?>
+    <a href="<?php echo uri('neatline-maps/add'); ?>"><?php echo __('Create one!'); ?></a></p>
 
 <?php endif; ?>
 

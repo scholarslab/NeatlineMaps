@@ -1,20 +1,13 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
-
-/**
- * Testing helper class.
- *
- * @package     omeka
- * @subpackage  neatline
- * @author      Scholars' Lab <>
- * @author      David McClure <david.mcclure@virginia.edu>
- * @copyright   2011 The Board and Visitors of the University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
- */
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 require_once '../NeatlineMapsPlugin.php';
 require_once 'mocks/FileMock.php';
 
+/**
+ * Testing helper class.
+ *
+ */
 class NLMAPS_Test_AppTestCase extends Omeka_Test_AppTestCase
 {
 
@@ -48,6 +41,9 @@ class NLMAPS_Test_AppTestCase extends Omeka_Test_AppTestCase
     /**
      * Install Neatline WMS.
      *
+     * @param PluginBroker $plugin_broker Omeka plugin broker
+     * @param string       $plugin_name   Plugin name
+     *
      * @return void.
      */
     public function _addHooksAndFilters($plugin_broker, $plugin_name)
@@ -77,6 +73,10 @@ class NLMAPS_Test_AppTestCase extends Omeka_Test_AppTestCase
     /**
      * Create a service.
      *
+     * @param OmekaItem $item    Item
+     * @param string    $address Address to test
+     * @param string    $layers  Layers to query
+     *
      * @return Omeka_record $service The service.
      */
     public function __service(
@@ -102,18 +102,14 @@ class NLMAPS_Test_AppTestCase extends Omeka_Test_AppTestCase
     /**
      * Create an element text for an item.
      *
-     * @param Omeka_record $item The item.
-     * @param string $elementSet The element set.
-     * @param string $elementName The element name.
-     * @param string $value The value for the text.
+     * @param Omeka_record $item        The item.
+     * @param string       $elementSet  The element set.
+     * @param string       $elementName The element name.
+     * @param string       $value       The value for the text.
      *
      * @return Omeka_record $text The new text.
      */
-    public function __text(
-        $item,
-        $elementSet,
-        $elementName,
-        $value)
+    public function __text($item, $elementSet, $elementName, $value)
     {
 
         // Get tables.
@@ -167,11 +163,12 @@ class NLMAPS_Test_AppTestCase extends Omeka_Test_AppTestCase
     /**
      * Mock a file.
      *
+     * @param OmekaItem $item             Omeka item
+     * @param string    $originalFilename Filename
+     *
      * @return StdClass $file The mock.
      */
-    public function __file(
-        $item=null,
-        $originalFilename='test.tif')
+    public function __file($item=null, $originalFilename='test.tif')
     {
 
         // If no item, create one.

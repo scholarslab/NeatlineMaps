@@ -14,23 +14,24 @@
 ?>
 
 <?php
-head(array('content_class' => 'neatline'));
+$title = __('Neatline Maps | Delete Server %s', $server->name);
+head(array('content_class' => 'neatline', 'title' => $title));
 ?>
 
 <?php echo $this->partial('servers/_header.php', array(
-    'subtitle' => 'Delete Server "' . $server->name . '"',
+    'title' => $title,
     'add_button_uri' => 'neatline-maps/add',
-    'add_button_text' => 'Create a Server'
+    'add_button_text' => __('Create a Server')
 )); ?>
 
 <div id="primary" class="neatline-delete-confirm-static">
 
-    <h1>Are you sure?</h1>
-    <p>This will permanently delete the "<?php echo $server->name; ?>" server.</p>
+  <h1><?php echo __('Are you sure?'); ?></h1>
+    <p><?php echo __('This will permanently delete the %s server.', $server->name); ?></p>
 
     <div class="alert-actions">
         <form method="post">
-            <input type="submit" name="delete-neatline" id="delete-neatline" value="Delete" class="neatline btn delete large">
+        <input type="submit" name="delete-neatline" id="delete-neatline" value="<?php echo __('Delete'); ?>" class="neatline btn delete large">
         </form>
     </div>
 

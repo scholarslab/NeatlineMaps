@@ -1,18 +1,9 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Plugin runner.
- *
- * @package     omeka
- * @subpackage  neatline
- * @author      Scholars' Lab <>
- * @author      David McClure <david.mcclure@virginia.edu>
- * @copyright   2012 The Board and Visitors of the University of Virginia
- * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
+ * Plugin runner for NeatlineMaps
  */
-
-
 class NeatlineMapsPlugin
 {
 
@@ -68,11 +59,38 @@ class NeatlineMapsPlugin
 
     }
 
+    /**
+     * Check if the module dependencies are met
+     *
+     * @return bool if the dependencies are met
+     */
+    public function checkDependencies()
+    {
+
+        return (extension_loaded('curl') && extension_loaded('zip'));
+
+    }
 
     /**
-     * Hook callbacks:
+     * Pretty warnings is dependencies are not met
+     *
+     * @return message
      */
+    public function getWarnings()
+    {
+        $message = '';
 
+        if (!extension_loaded('curl')) {
+            $message .= "\nPHP Curl module is not loaded, please contact your system administrator.\n";
+        }
+
+        if (!extension_loaded('zip')) {
+            $message .= 'PHP Zip module is not loaded, please contact your system administrator.';
+        }
+
+        return $message;
+
+    }
 
     /**
      * Install.
@@ -82,28 +100,33 @@ class NeatlineMapsPlugin
     public function install()
     {
 
+        if (!self::checkDependencies()) {
+
+            throw new Exception("\nModule dependencies not met: " . self::getWarnings());
+        }
+
         // Servers table.
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}neatline_maps_servers` (
-                `id`              int(10) unsigned not null auto_increment,
-                `name`            tinytext collate utf8_unicode_ci,
-                `url`             tinytext collate utf8_unicode_ci,
-                `username`        tinytext collate utf8_unicode_ci,
-                `password`        tinytext collate utf8_unicode_ci,
-                `namespace`       tinytext collate utf8_unicode_ci,
-                `active`          tinyint(1) NOT NULL,
-                 PRIMARY KEY (`id`)
-               ) ENGINE=innodb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            `id`              int(10) unsigned not null auto_increment,
+            `name`            tinytext collate utf8_unicode_ci,
+            `url`             tinytext collate utf8_unicode_ci,
+            `username`        tinytext collate utf8_unicode_ci,
+            `password`        tinytext collate utf8_unicode_ci,
+            `namespace`       tinytext collate utf8_unicode_ci,
+            `active`          tinyint(1) NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=innodb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
         $this->_db->query($sql);
 
         // Web map services table.
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}neatline_maps_services` (
-                `id`              int(10) unsigned not null auto_increment,
-                `item_id`         int(10) unsigned unique,
-                `address`         text collate utf8_unicode_ci,
-                `layers`          text collate utf8_unicode_ci,
-                 PRIMARY KEY (`id`)
-               ) ENGINE=innodb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            `id`              int(10) unsigned not null auto_increment,
+            `item_id`         int(10) unsigned unique,
+            `address`         text collate utf8_unicode_ci,
+            `layers`          text collate utf8_unicode_ci,
+            PRIMARY KEY (`id`)
+        ) ENGINE=innodb DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
 
         $this->_db->query($sql);
 
@@ -170,7 +193,7 @@ class NeatlineMapsPlugin
     /**
      * Process WMS data on item add/edit.
      *
-     * @param Item $record The item.
+     * @param Item  $item The item.
      * @param array $post The complete $_POST.
      *
      * @return void.
@@ -178,16 +201,17 @@ class NeatlineMapsPlugin
     public function afterSaveFormItem($item, $post)
     {
 
-        if (!isset($_FILES['file']) ||
-            count($_FILES['file']['size']) == 1 &&
-            empty($_FILES['file']['size'][0])) {
+        if (!isset($_FILES['file']) 
+            || count($_FILES['file']['size']) == 1
+            && empty($_FILES['file']['size'][0])
+        ) {
 
-            // Create/update/delete WMS.
-            $this->servicesTable->createOrUpdate(
-                $item,
-                $post['address'],
-                $post['layers']
-            );
+                // Create/update/delete WMS.
+                $this->servicesTable->createOrUpdate(
+                    $item,
+                    $post['address'],
+                    $post['layers']
+                );
 
         }
 
@@ -219,13 +243,14 @@ class NeatlineMapsPlugin
                 // If no WMS exists, create one for the file that
                 // was just uploaded to Geoserver.
                 if (!$wms) {
-                    $this->servicesTable->createFromFileAndServer($file, $server);
-                }
 
-                // If a WMS already exists and the address is the
-                // same as the address of the active server, append
-                // the new layer to the active layers list.
-                else if ($wms->address == $server->getWmsAddress()) {
+                    $this->servicesTable->createFromFileAndServer($file, $server);
+
+                } else if ($wms->address == $server->getWmsAddress()) {
+
+                    // If a WMS already exists and the address is the
+                    // same as the address of the active server, append
+                    // the new layer to the active layers list.
                     $wms->layers .= ',' . nlwms_layerName($server, $file);
                     $wms->save();
                 }
@@ -268,7 +293,9 @@ class NeatlineMapsPlugin
     public function beforeDeleteItem($item)
     {
         $wms = $this->servicesTable->findByItem($item);
-        if ($wms) { $wms->delete(); }
+        if ($wms) {
+            $wms->delete();
+        }
     }
 
     /**
@@ -282,10 +309,11 @@ class NeatlineMapsPlugin
     {
 
         // Listen for items show.
-        if ($request->getModuleName() == 'default' &&
-            $request->getActionName() == 'show') {
-                queue_css('openlayers/style');
-                queue_js('openlayers/OpenLayers');
+        if ($request->getModuleName() == 'default'
+            && $request->getActionName() == 'show'
+        ) {
+            queue_css('openlayers/style');
+            queue_js('openlayers/OpenLayers');
         }
 
     }
@@ -301,10 +329,11 @@ class NeatlineMapsPlugin
     {
 
         // Listen for items show.
-        if ($request->getModuleName() == 'default' &&
-            $request->getActionName() == 'show') {
-                queue_css('openlayers/style');
-                queue_js('openlayers/OpenLayers');
+        if ($request->getModuleName() == 'default'
+            && $request->getActionName() == 'show'
+        ) {
+            queue_css('openlayers/style');
+            queue_js('openlayers/OpenLayers');
         }
 
     }
@@ -325,7 +354,7 @@ class NeatlineMapsPlugin
     public function adminNavigationMain($tabs)
     {
 
-        $tabs['Neatline Maps'] = uri('neatline-maps');
+        $tabs[__('Neatline Maps')] = uri('neatline-maps');
         return $tabs;
 
     }
@@ -352,10 +381,10 @@ class NeatlineMapsPlugin
         }
 
         // Insert tab.
-        $tabs['Web Map Service'] = __v()->partial(
-          'items/_serviceForm.php', array(
-            'service' => $service
-          )
+        $tabs[__('Web Map Service')] = __v()->partial(
+            'items/_serviceForm.php', array(
+                'service' => $service
+            )
         );
 
         return $tabs;

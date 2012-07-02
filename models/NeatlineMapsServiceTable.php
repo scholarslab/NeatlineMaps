@@ -26,7 +26,7 @@ class NeatlineMapsServiceTable extends Omeka_Db_Table
     {
 
         $service = $this->fetchObject(
-            $this->getSelect()->where('item_id = ' . $item->id)
+            $this->getSelect()->where('item_id=?', $item->id)
         );
 
         return $service ? $service : false;

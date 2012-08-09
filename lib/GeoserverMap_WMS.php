@@ -133,23 +133,27 @@ class GeoserverMap_WMS extends Map_Abstract
 
         }
 
-        // Check for reverse axis order.
-        $espgNumber = explode(':', $this->epsg);
-        if ($espgNumber[1] >= 4000 && $espgNumber[1] <= 5000) {
-            $string = implode(',', array(
-                min($minys),
-                min($minxes),
-                max($maxys),
-                max($maxxes)));
-        }
+        if (count($minxes) > 0) {
+            // Check for reverse axis order.
+            $espgNumber = explode(':', $this->epsg);
+            if ($espgNumber[1] >= 4000 && $espgNumber[1] <= 5000) {
+                $string = implode(',', array(
+                    min($minys),
+                    min($minxes),
+                    max($maxys),
+                    max($maxxes)));
+            }
 
-        // If not between 4000 and 5000, do normal order.
-        else {
-            $string = implode(',', array(
-                min($minxes),
-                min($minys),
-                max($maxxes),
-                max($maxys)));
+            // If not between 4000 and 5000, do normal order.
+            else {
+                $string = implode(',', array(
+                    min($minxes),
+                    min($minys),
+                    max($maxxes),
+                    max($maxys)));
+            }
+        } else {
+            $string = '0,0,0,0';
         }
 
         return $string;

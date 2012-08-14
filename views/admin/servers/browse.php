@@ -57,11 +57,10 @@ head(array('content_class' => 'neatline', 'title' => $title));
             <td><a href="<?php echo $server->url; ?>" target="_blank"><?php echo $server->url; ?></a></td>
             <td><?php echo $server->namespace; ?></td>
             <td>
-                <?php if ($server->isOnline()): ?>
-                <span class="online"><?php echo __('Online'); ?></span>
-                <?php else: ?>
-                <span class="offline"><?php echo __('Offline'); ?></span>
-                <?php endif; ?>
+                <?php $status = $server->getStatusDisplay(); ?>
+                <span class="<?php echo $status['class'] ?>">
+                    <?php echo $status['message'] ?>
+                </span>
             </td>
             <td>
                 <?php if ($server->active): ?>

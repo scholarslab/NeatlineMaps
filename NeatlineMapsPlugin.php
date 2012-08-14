@@ -201,20 +201,41 @@ class NeatlineMapsPlugin
     public function afterSaveFormItem($item, $post)
     {
 
-        if (!isset($_FILES['file']) 
-            || count($_FILES['file']['size']) == 1
-            && empty($_FILES['file']['size'][0])
-        ) {
+        $hasTiff = false;
+        if (isset($_FILES['file'])) {
 
-                // Create/update/delete WMS.
-                $this->servicesTable->createOrUpdate(
-                    $item,
-                    $post['address'],
-                    $post['layers']
-                );
+            $fcount = count($_FILES['file']['name']);
+            for ($i=0; $i<$fcount; $i++) {
+                $hasTiff = $hasTiff ||
+                    (!empty($_FILES['file']['size'][$i]) &&
+                     $_FILES['file']['type'][$i] == 'image/tiff');
+            }
 
         }
 
+        if (!$hasTiff) {
+            $this->_createOrUpdateWMS($item, $post);
+        }
+
+    }
+
+
+    /**
+     * This creates or updates the WMS server on an item.
+     *
+     * @param Item  $item The item.
+     * @param array $post The complete $_POST.
+     *
+     * @return void
+     * @author Eric Rochester <erochest@virginia.edu>
+     **/
+    protected function _createOrUpdateWMS($item, $post)
+    {
+        $this->servicesTable->createOrUpdate(
+            $item,
+            $post['address'],
+            $post['layers']
+        );
     }
 
     /**

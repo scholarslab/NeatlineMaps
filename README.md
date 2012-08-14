@@ -151,6 +151,21 @@ Neatline will automatically render the map on the exhibit. In this way, you can
 configure any combination of WMS maps in the exhibit by activating or
 deactivating the Omeka items associated with that exhibit.
 
+### Migrating Data to Another Server
+
+Often when developing a site, it's useful to be able to work on a separate
+server running GeoServer, whether on your laptop or on a staging site. You can
+easily migrate this information to your production server. GeoServer keeps all
+configuration and data in its [data directory][geoserver-data]. To find where
+this is, go into GeoServer and click the *Server Status* link at the top of the
+left column. The first item on the status page is the location of the data
+directory.
+
+![GeoServer Data Directory](http://neatline.org/wp-content/uploads/2012/08/geoserver-data-dir.png)
+
+Now after you install GeoServer on the final server, you can copy the data
+directory from the old server onto the new server and have access to your data.
+
 ## Support
 
 We use an [issue tracker][issues] for feedback on issues and requested
@@ -158,6 +173,7 @@ improvements. If you have general questions, you may also post them to
 the [Omeka Forums][forums]  or the [Omeka Developers Group][groups].
 
 [geoserver]: http://geoserver.org
+[geoserver-data]: http://docs.geoserver.org/latest/en/user/datadirectory/index.html
 [neatline-maps-download]: http://neatline.scholarslab.org/plugins/neatline-maps
 [ogc]: http://www.opengeospatial.org/
 [gmaps]: http://maps.google.com/

@@ -18,7 +18,8 @@ class NeatlineMapsPlugin
         'public_append_to_items_show',
         'before_delete_item',
         'public_theme_header',
-        'admin_theme_header'
+        'admin_theme_header',
+        'initialize'
     );
 
     private static $_filters = array(
@@ -357,6 +358,18 @@ class NeatlineMapsPlugin
             queue_js('openlayers/OpenLayers');
         }
 
+    }
+
+    /**
+     * Initialization.
+     *
+     * Adds translation source.
+     *
+     * @return void.
+     */
+    public function initialize()
+    {
+        add_translation_source(dirname(__FILE__) . '/languages');
     }
 
 

@@ -172,6 +172,12 @@ We use an [issue tracker][issues] for feedback on issues and requested
 improvements. If you have general questions, you may also post them to
 the [Omeka Forums][forums]  or the [Omeka Developers Group][groups].
 
+## Credits
+
+### Translations
+
+* Katina Rogers (French)
+
 [geoserver]: http://geoserver.org
 [geoserver-data]: http://docs.geoserver.org/latest/en/user/datadirectory/index.html
 [neatline-maps-download]: http://neatline.scholarslab.org/plugins/neatline-maps

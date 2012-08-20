@@ -176,6 +176,7 @@ the [Omeka Forums][forums]  or the [Omeka Developers Group][groups].
 
 ### Translations
 
+* Gillian Price (Spanish)
 * Katina Rogers (French)
 
 [geoserver]: http://geoserver.org

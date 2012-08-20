@@ -29,7 +29,7 @@ head(array('content_class' => 'neatline', 'title' => $title));
 
 <?php echo flash(); ?>
 
-<?php if(count($servers) > 0): ?>
+<?php if(count($neatlinemapsservers) > 0): ?>
 
 <table>
 
@@ -49,7 +49,7 @@ head(array('content_class' => 'neatline', 'title' => $title));
 
     <tbody>
         <!-- Servers listings. -->
-        <?php foreach ($servers as $server): ?>
+        <?php foreach ($neatlinemapsservers as $server): ?>
         <tr serverid="<?php echo $server->id; ?>">
             <td class="title">
                 <div><?php echo $server->name; ?></div>

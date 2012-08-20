@@ -12,8 +12,10 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  */
 
-class NeatlineMapsServer extends Omeka_record
+class NeatlineMapsServer extends Omeka_Record implements Zend_Acl_Resource_Interface
 {
+
+    CONST RESOURCE_ID = 'NeatlineMaps_Servers';
 
     /**
      * The name of the server [string].
@@ -180,6 +182,19 @@ class NeatlineMapsServer extends Omeka_record
     public function parentSave()
     {
         parent::save();
+    }
+
+    /**
+     * Required by Zend_Acl_Resource_Interface.
+     *
+     * Identifies records as relating to the NeatlineMaps_Servers ACL
+     * resource.
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return self::RESOURCE_ID;
     }
 
 }

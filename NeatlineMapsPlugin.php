@@ -19,7 +19,8 @@ class NeatlineMapsPlugin
         'before_delete_item',
         'public_theme_header',
         'admin_theme_header',
-        'initialize'
+        'initialize',
+        'define_acl'
     );
 
     private static $_filters = array(
@@ -372,6 +373,35 @@ class NeatlineMapsPlugin
         add_translation_source(dirname(__FILE__) . '/languages');
     }
 
+    /**
+     * Define the ACL
+     */
+    public function defineAcl($acl)
+    {
+        $resourceName = 'NeatlineMaps_Servers';
+
+        $resourceList = array(
+            $resourceName => array(
+                'add',
+                'browse',
+                'edit',
+                'delete',
+                'show',
+                'active'
+            )
+        );
+
+        if (!$acl->has($resourceName)) {
+            $acl->loadResourceList($resourceList);
+            foreach ($resourceList as $resource => $privileges) {
+                $acl->deny(null, $resource);
+                $acl->allow('super', $resource);
+                $acl->allow('admin', $resource);
+            }
+        }
+
+
+    }
 
     /**
      * Filter callbacks:
@@ -388,7 +418,10 @@ class NeatlineMapsPlugin
     public function adminNavigationMain($tabs)
     {
 
-        $tabs[__('Neatline Maps')] = uri('neatline-maps');
+        if (has_permission('NeatlineMaps_Servers', 'browse')) {
+            $tabs['Neatline Maps'] = uri('neatline-maps');
+        }
+
         return $tabs;
 
     }

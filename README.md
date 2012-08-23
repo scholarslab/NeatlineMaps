@@ -1,5 +1,7 @@
 # Neatline Maps
 
+[![Build Status](https://secure.travis-ci.org/scholarslab/NeatlineMaps.png)](http://travis-ci.org/scholarslab/NeatlineMaps)
+
 Working with geospatial data can be difficult. The NeatlineMaps plugin allows
 you to upload georeferenced maps to the popular open source
 [Geoserver][geoserver], allowing you not only to use your data easily in Omeka,

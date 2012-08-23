@@ -1,6 +1,6 @@
 # Neatline Maps
 
-[![Build Status](https://secure.travis-ci.org/scholarslab/NealtineMaps.png)](http://travis-ci.org/scholarslab/NeatlineMaps)
+[![Build Status](https://secure.travis-ci.org/scholarslab/NeatlineMaps.png)](http://travis-ci.org/scholarslab/NeatlineMaps)
 
 Working with geospatial data can be difficult. The NeatlineMaps plugin allows
 you to upload georeferenced maps to the popular open source

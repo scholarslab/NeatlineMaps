@@ -178,7 +178,9 @@ the [Omeka Forums][forums]  or the [Omeka Developers Group][groups].
 
 ### Translations
 
+* Martin Liebeskind (German)
 * Gillian Price (Spanish)
+* Oguljan Reyimbaeva (Russian)
 * Katina Rogers (French)
 
 [geoserver]: http://geoserver.org

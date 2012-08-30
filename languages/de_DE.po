@@ -2,12 +2,13 @@
 # 
 # Translators:
 #   <martin.liebeskind@live.de>, 2012.
+# Martin Liebeskind <martin.liebeskind@live.de>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Neatline\n"
 "Report-Msgid-Bugs-To: http://github.com/scholarslab/\n"
 "POT-Creation-Date: 2012-06-22 11:30-0500\n"
-"PO-Revision-Date: 2012-08-24 19:46+0000\n"
+"PO-Revision-Date: 2012-08-28 18:57+0000\n"
 "Last-Translator: Martin Liebeskind <martin.liebeskind@live.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/neatline/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -27,11 +28,11 @@ msgstr "Dies löscht den %s Server unwiderruflich."
 
 #: forms/ServerForm.php:35
 msgid "An internal (non-public) identifier for the server."
-msgstr "Eine intere (nicht öffentliche) Kennung für den Server."
+msgstr "Eine interne (nicht öffentliche) Kennung für den Server."
 
 #: forms/ServerForm.php:42
 msgid "Enter a name."
-msgstr "Bitte namen eingeben."
+msgstr "Bitte einen Namen eingeben."
 
 #: forms/ServerForm.php:51 views/admin/servers/browse.php:41
 msgid "URL"
@@ -39,7 +40,7 @@ msgstr "URL"
 
 #: forms/ServerForm.php:52
 msgid "The location of the server."
-msgstr "Die Adresse von dem Server"
+msgstr "Die Adresse des Servers."
 
 #: forms/ServerForm.php:59
 msgid "Enter a URL."
@@ -55,11 +56,11 @@ msgstr "Bitte den Geoserver Arbeitsbereich eingeben."
 
 #: forms/ServerForm.php:83
 msgid "Enter a workspace."
-msgstr "Bitte den Arbeitsbereich eingeben."
+msgstr "Bitte einen Arbeitsbereich eingeben."
 
 #: forms/ServerForm.php:93
 msgid "Enter the Geoserver username."
-msgstr "Bitte den Benutzernamen vom Geoserver eingeben."
+msgstr "Bitte den Benutzernamen des Geoservers eingeben."
 
 #: forms/ServerForm.php:100
 msgid "Enter a username."
@@ -67,7 +68,7 @@ msgstr "Bitte einen Benutzernamen eingeben"
 
 #: forms/ServerForm.php:110
 msgid "Enter the Geoserver password."
-msgstr "Bitte das Passwort vom Geoserver eingeben."
+msgstr "Bitte das Passwort des Geoservers eingeben."
 
 #: forms/ServerForm.php:118
 msgid "Enter a password."
@@ -103,11 +104,11 @@ msgstr "Bitte die WMS Adresse der Karte eingeben."
 
 #: views/admin/items/_serviceForm.php:25
 msgid "Layers"
-msgstr "Layers"
+msgstr "Ebenen"
 
 #: views/admin/items/_serviceForm.php:29
 msgid "Enter a comma-delimited list of layers."
-msgstr "Bitte eine komma-serparierte Liste von Layern eingeben."
+msgstr "Bitte eine komma-separierte Liste von Ebenen eingeben."
 
 #: views/admin/servers/add.php:17
 msgid "Neatline Maps | Create Server"
@@ -128,7 +129,7 @@ msgstr "Server"
 
 #: views/admin/servers/browse.php:43
 msgid "Status"
-msgstr "tatus"
+msgstr "Status"
 
 #: views/admin/servers/browse.php:45
 msgid "Actions"

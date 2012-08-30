@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Neatline\n"
 "Report-Msgid-Bugs-To: http://github.com/scholarslab/\n"
 "POT-Creation-Date: 2012-06-22 11:30-0500\n"
-"PO-Revision-Date: 2012-08-25 22:10+0000\n"
+"PO-Revision-Date: 2012-08-30 18:59+0000\n"
 "Last-Translator: Oguljan <or8r@virginia.edu>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/neatline/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -51,11 +51,11 @@ msgstr "Рабочая область памяти"
 
 #: forms/ServerForm.php:76
 msgid "Enter the Geoserver workspace."
-msgstr "Войти в рабочую область Geoserver."
+msgstr "Введите рабочую область Geoserver."
 
 #: forms/ServerForm.php:83
 msgid "Enter a workspace."
-msgstr "Войти в рабочую область."
+msgstr "Введите рабочую область."
 
 #: forms/ServerForm.php:93
 msgid "Enter the Geoserver username."

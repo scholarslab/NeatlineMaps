@@ -1,5 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * Server row class.
@@ -12,8 +12,10 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0.html Apache 2 License
  */
 
-class NeatlineMapsServer extends Omeka_record
+class NeatlineMapsServer extends Omeka_Record implements Zend_Acl_Resource_Interface
 {
+
+    CONST RESOURCE_ID = 'NeatlineMaps_Servers';
 
     /**
      * The name of the server [string].
@@ -53,21 +55,77 @@ class NeatlineMapsServer extends Omeka_record
      */
     public function isOnline()
     {
+        return ($this->_getHttpCode() == 200);
+    }
 
-        $ch = curl_init($this->url . '/rest/workspaces');
+    /**
+     * Tries to contact the GeoServer and authenticate and returns the HTTP 
+     * status code.
+     *
+     * @return int $code The HTTP status code.
+     * @author Eric Rochester <erochest@virginia.edu>
+     **/
+    protected function _getHttpCode()
+    {
+        $ch     = curl_init($this->url . '/rest/workspaces');
 
-        $authString = $this->username . ':' . $this->password;
-        curl_setopt($ch, CURLOPT_USERPWD, $authString);
-
+        curl_setopt($ch, CURLOPT_USERPWD, "{$this->username}:{$this->password}");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/xml'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 
-        $successCode = 200;
         $buffer = curl_exec($ch);
-        $info = curl_getinfo($ch);
+        $info   = curl_getinfo($ch);
+        $code   = $info['http_code'];
 
-        return ($info['http_code'] == $successCode);
+        return $code;
+    }
 
+    /**
+     * This returns a string indicating the server's status and a CSS class for 
+     * the wrapping element.
+     *
+     * Currently, this is one of these values:
+     *
+     * * 'Online': Everything's just great;
+     * * 'Offline': I can't even talk to the server; or
+     * * 'Authentication Error': The server doesn't recognize me or my
+     *   password.
+     *
+     * Actually, it returns those values after they've been translated for the 
+     * viewer's current locale.
+     *
+     * @return array An array with two keys: 'class' for the class for the span 
+     * and 'message' for the translated string.
+     * @author Eric Rochester <erochest@virginia.edu>
+     **/
+    public function getStatusDisplay()
+    {
+        $online  = __('Online');
+        $offline = __('Offline');
+        $authErr = __('Authentication Error');
+
+        switch ($this->_getHttpCode()) {
+        case 200:
+            $status = $online;
+            $class  = 'online';
+            break;
+
+        case 401:
+        case 403:
+            $status = $authErr;
+            $class  = 'offline';
+            break;
+
+        default:
+            $status = $offline;
+            $class  = 'offline';
+            break;
+        }
+
+        return array(
+            'class'   => $class,
+            'message' => $status
+        );
     }
 
     /**
@@ -124,6 +182,19 @@ class NeatlineMapsServer extends Omeka_record
     public function parentSave()
     {
         parent::save();
+    }
+
+    /**
+     * Required by Zend_Acl_Resource_Interface.
+     *
+     * Identifies records as relating to the NeatlineMaps_Servers ACL
+     * resource.
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return self::RESOURCE_ID;
     }
 
 }

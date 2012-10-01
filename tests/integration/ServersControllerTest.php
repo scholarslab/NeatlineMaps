@@ -1,5 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * Servers controller integration tests.
@@ -428,38 +428,6 @@ class NLMAPS_ServersControllerTest extends NLMAPS_Test_AppTestCase
         $server2 = $this->serversTable->find(2);
         $this->assertEquals($server1->active, 1);
         $this->assertEquals($server2->active, 0);
-
-    }
-
-    /**
-     * /delete should delete the server.
-     *
-     * @return void.
-     */
-    public function testDeleteServer()
-    {
-
-        // Create servers.
-        $server1 = $this->__server();
-        $server2 = $this->__server();
-
-        // Form post.
-        $this->request->setMethod('POST')
-            ->setPost(array()
-        );
-
-        // Capture starting count.
-        $count = $this->serversTable->count();
-
-        // Delete.
-        $this->dispatch('neatline-maps/delete/' . $server1->id);
-
-        // Check count-1.
-        $this->assertEquals($this->serversTable->count(), $count-1);
-
-        // Check correct deletion.
-        $this->assertNull($this->serversTable->find($server1->id));
-        $this->assertNotNull($this->serversTable->find($server2->id));
 
     }
 

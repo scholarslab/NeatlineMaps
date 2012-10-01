@@ -1,150 +1,152 @@
 # Translation for the Neatline Time plugin for Omeka.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
+# Translators:
+# Jeremy Boggs <jeremy@clioweb.org>, 2012.
+#   <katina.rogers@gmail.com>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: NeatlineMaps\n"
-"Report-Msgid-Bugs-To: http://github.com/scholarslab/NeatlineMaps/issues\n"
+"Project-Id-Version: Neatline\n"
+"Report-Msgid-Bugs-To: http://github.com/scholarslab/\n"
 "POT-Creation-Date: 2012-06-22 11:30-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2012-08-20 16:52+0000\n"
+"Last-Translator: Jeremy Boggs <jeremy@clioweb.org>\n"
+"Language-Team: French (http://www.transifex.com/projects/p/neatline/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: NeatlineMapsPlugin.php:451
 msgid "Web Map Service"
-msgstr ""
+msgstr "Web Map Service"
 
 #: controllers/ServersController.php:159
 #, php-format
 msgid "This will permanently delete the %s server."
-msgstr ""
+msgstr "Cette action supprimera définitivement le serveur %s"
 
 #: forms/ServerForm.php:35
 msgid "An internal (non-public) identifier for the server."
-msgstr ""
+msgstr "Un identifiant à l'usage interne (privé) pour le serveur."
 
 #: forms/ServerForm.php:42
 msgid "Enter a name."
-msgstr ""
+msgstr "Indiquez le nom."
 
 #: forms/ServerForm.php:51 views/admin/servers/browse.php:41
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: forms/ServerForm.php:52
 msgid "The location of the server."
-msgstr ""
+msgstr "La localisation du serveur."
 
 #: forms/ServerForm.php:59
 msgid "Enter a URL."
-msgstr ""
+msgstr "Indiquez l'URL."
 
 #: forms/ServerForm.php:75 views/admin/servers/browse.php:42
 msgid "Workspace"
-msgstr ""
+msgstr "Espace de travail"
 
 #: forms/ServerForm.php:76
 msgid "Enter the Geoserver workspace."
-msgstr ""
+msgstr "Indiquez l'espace du travail Geoserver"
 
 #: forms/ServerForm.php:83
 msgid "Enter a workspace."
-msgstr ""
+msgstr "Indiquez un espace de travail."
 
 #: forms/ServerForm.php:93
 msgid "Enter the Geoserver username."
-msgstr ""
+msgstr "Indiquez un nom d'utilisateur pour Geoserver."
 
 #: forms/ServerForm.php:100
 msgid "Enter a username."
-msgstr ""
+msgstr "Indiquez un nom d'utilisateur."
 
 #: forms/ServerForm.php:110
 msgid "Enter the Geoserver password."
-msgstr ""
+msgstr "Indiquez le mot de passe pour Geoserver."
 
 #: forms/ServerForm.php:118
 msgid "Enter a password."
-msgstr ""
+msgstr "Choisissez un mot de passe."
 
 #: forms/ServerForm.php:128
 msgid "Should this server be used to handle new GeoTiff uploads?"
-msgstr ""
+msgstr "Voulez-vous utiliser ce serveur pour gérer des nouveaux objets GeoTiff téléchargés?"
 
 #: forms/ServerForm.php:134
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: models/NeatlineMapsServer.php:103
 msgid "Online"
-msgstr ""
+msgstr "En ligne"
 
 #: models/NeatlineMapsServer.php:104
 msgid "Offline"
-msgstr ""
+msgstr "Déconnecté"
 
 #: models/NeatlineMapsServer.php:105
 msgid "Authentication Error"
-msgstr ""
+msgstr "Erreur d'authentification"
 
 #: views/admin/items/_serviceForm.php:17
 msgid "WMS Address"
-msgstr ""
+msgstr "Adresse WMS"
 
 #: views/admin/items/_serviceForm.php:21
 msgid "Enter the WMS address of the map."
-msgstr ""
+msgstr "Indiquez l'adresse WMS de la carte."
 
 #: views/admin/items/_serviceForm.php:25
 msgid "Layers"
-msgstr ""
+msgstr "Calques"
 
 #: views/admin/items/_serviceForm.php:29
 msgid "Enter a comma-delimited list of layers."
-msgstr ""
+msgstr "Indiquez une liste de calques separées par virgules."
 
 #: views/admin/servers/add.php:17
 msgid "Neatline Maps | Create Server"
-msgstr ""
+msgstr "Neatline Maps | Créer un serveur"
 
 #: views/admin/servers/add.php:24 views/admin/servers/browse.php:25
 #: views/admin/servers/edit.php:24
 msgid "Create a Server"
-msgstr ""
+msgstr "Créez un serveur"
 
 #: views/admin/servers/browse.php:18
 msgid "Neatline Maps | Browse Servers"
-msgstr ""
+msgstr "Neatline Maps | Feuilleter des serveurs"
 
 #: views/admin/servers/browse.php:40
 msgid "Server"
-msgstr ""
+msgstr "Serveur"
 
 #: views/admin/servers/browse.php:43
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: views/admin/servers/browse.php:45
 msgid "Actions"
-msgstr ""
+msgstr "Actions"
 
 #: views/admin/servers/browse.php:69
 msgid "Set Active"
-msgstr ""
+msgstr "Définir comme actif"
 
 #: views/admin/servers/browse.php:85
 msgid "There are no servers yet."
-msgstr ""
+msgstr "Il n'existe pas de serveurs."
 
 #: views/admin/servers/browse.php:86
 msgid "Create one!"
-msgstr ""
+msgstr "Créez-en un!"
 
 #: views/admin/servers/edit.php:17
 msgid "Neatline Maps | Edit Server"
-msgstr ""
+msgstr "Neatline Maps | Modifier le serveur"

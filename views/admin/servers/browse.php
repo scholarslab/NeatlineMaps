@@ -1,5 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * Browser servers.
@@ -29,7 +29,7 @@ head(array('content_class' => 'neatline', 'title' => $title));
 
 <?php echo flash(); ?>
 
-<?php if(count($servers) > 0): ?>
+<?php if(count($neatlinemapsservers) > 0): ?>
 
 <table>
 
@@ -49,7 +49,7 @@ head(array('content_class' => 'neatline', 'title' => $title));
 
     <tbody>
         <!-- Servers listings. -->
-        <?php foreach ($servers as $server): ?>
+        <?php foreach ($neatlinemapsservers as $server): ?>
         <tr serverid="<?php echo $server->id; ?>">
             <td class="title">
                 <div><?php echo $server->name; ?></div>
@@ -57,11 +57,10 @@ head(array('content_class' => 'neatline', 'title' => $title));
             <td><a href="<?php echo $server->url; ?>" target="_blank"><?php echo $server->url; ?></a></td>
             <td><?php echo $server->namespace; ?></td>
             <td>
-                <?php if ($server->isOnline()): ?>
-                <span class="online"><?php echo __('Online'); ?></span>
-                <?php else: ?>
-                <span class="offline"><?php echo __('Offline'); ?></span>
-                <?php endif; ?>
+                <?php $status = $server->getStatusDisplay(); ?>
+                <span class="<?php echo $status['class'] ?>">
+                    <?php echo $status['message'] ?>
+                </span>
             </td>
             <td>
                 <?php if ($server->active): ?>

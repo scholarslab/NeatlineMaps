@@ -1,5 +1,5 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4; */
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
  * Servers controller.
@@ -22,17 +22,19 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
      */
     public function init()
     {
-        $this->serversTable = $this->getTable('NeatlineMapsServer');
-    }
 
-    /**
-     * Show servers.
-     *
-     * @return void
-     */
-    public function browseAction()
-    {
-        $this->view->servers = $this->serversTable->findAll();
+        $modelName = 'NeatlineMapsServer';
+        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
+            $this->_helper->db->setDefaultModelName($modelName);
+        } else {
+            $this->_modelClass = $modelName;
+        }
+
+        try {
+            $this->_table = $this->getTable($modelName);
+            $this->aclResource = $this->findById();
+        } catch (Omeka_Controller_Exception_404 $e) {}
+
     }
 
     /**
@@ -57,7 +59,7 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
             if ($form->isValid($post)) {
 
                 // Create server.
-                $this->serversTable->updateServer($server, $post);
+                $this->_table->updateServer($server, $post);
 
                 // Redirect to browse.
                 $this->redirect->goto('browse');
@@ -85,9 +87,7 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
     {
 
         // Get server.
-        $server = $this->serversTable->find(
-            $this->_request->getParam('id')
-        );
+        $server = $this->findById();
 
         // Get form.
         $form = new ServerForm;
@@ -112,7 +112,7 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
             if ($form->isValid($post)) {
 
                 // Create server.
-                $this->serversTable->updateServer($server, $post);
+                $this->_table->updateServer($server, $post);
 
                 // Redirect to browse.
                 $this->redirect->goto('browse');
@@ -132,30 +132,6 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
     }
 
     /**
-     * Delete server.
-     *
-     * @return void
-     */
-    public function deleteAction()
-    {
-
-        // Get server.
-        $server = $this->serversTable->find(
-            $this->_request->getParam('id')
-        );
-
-        // If a form as been posted.
-        if ($this->_request->isPost()) {
-            $server->delete();
-            $this->redirect->goto('browse');
-        }
-
-        // Push server to view.
-        $this->view->server = $server;
-
-    }
-
-    /**
      * Set server active.
      *
      * @return void
@@ -164,9 +140,7 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
     {
 
         // Get server.
-        $server = $this->serversTable->find(
-            $this->_request->getParam('id')
-        );
+        $server = $this->findById();
 
         // Set active and save.
         $server->active = 1;
@@ -177,4 +151,11 @@ class NeatlineMaps_ServersController extends Omeka_Controller_Action
 
     }
 
+    /**
+     * Sets the delete confirm message
+     */
+    protected function _getDeleteConfirmMessage($server)
+    {
+        return __('This will permanently delete the %s server.', $server->name);
+    }
 }

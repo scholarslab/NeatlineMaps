@@ -87,9 +87,7 @@ class NeatlineMapsServiceTable extends Omeka_Db_Table
         $item = $file->getItem();
 
         // If the parent item already has a service, break;
-        if ($this->findByItem($item)) {
-            return false;
-        }
+        if ($this->findByItem($item)) return false;
 
         // Create service.
         $wms = new NeatlineMapsService($item);

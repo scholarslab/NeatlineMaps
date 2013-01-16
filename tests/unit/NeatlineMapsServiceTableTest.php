@@ -192,17 +192,9 @@ class NLMAPS_NeatlineMapsServiceTableTest extends NLMAPS_Test_AppTestCase
         // Check for count.
         $this->assertEquals($this->servicesTable->count(), $count+1);
 
-        // Check address.
-        $this->assertEquals(
-            $wms->address,
-            $server->getWmsAddress()
-        );
-
-        // Check layers.
-        $this->assertEquals(
-            $wms->layers,
-            $server->namespace . ':test'
-        );
+        // Check address and layers.
+        $this->assertEquals($wms->address, $server->getWmsAddress());
+        $this->assertEquals($wms->layers, 'test');
 
     }
 

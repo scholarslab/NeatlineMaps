@@ -115,7 +115,7 @@ function nlwms_renderMap($item)
 function nlwms_layerName($server, $file)
 {
     $layer = explode('.', $file->original_filename);
-    return $server->namespace . ':' . $layer[0];
+    return $layer[0];
 }
 
 /**

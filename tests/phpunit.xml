@@ -2,19 +2,9 @@
   convertErrorsToExceptions="true"
   convertWarningsToExceptions="true"
   verbose="true">
-
   <testsuite name="Neatline Maps Tests">
     <directory>fixtures</directory>
     <directory>integration</directory>
     <directory>unit</directory>
   </testsuite>
-
-  <logging>
-    <log type="coverage-html"
-      target="../build/coverage"
-      charset="UTF-8" yui="true"
-      highlight="true"
-      lowUpperBound="35"
-      highLowerbound="70" />
-  </logging>
 </phpunit>
